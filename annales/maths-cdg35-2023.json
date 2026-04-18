@@ -1,0 +1,103 @@
+{
+  "id": "maths-cdg35-2023",
+  "theme": "maths",
+  "year": 2023,
+  "title": "CDG35 — Mathématiques — Session 2023",
+  "duration_min": 60,
+  "pdf_sujet": "annales/maths-cdg35-2023.pdf",
+  "pdf_corrige": null,
+  "instructions": "13 questions réparties en 3 problèmes. Durée : 1 heure. Une seule réponse exacte par question. Calculatrice non autorisée. Barème : chaque question vaut 0,5, 1, 1,5 ou 2 points.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        1
+      ],
+      "expl": "B. Pythagore dans le triangle rectangle formé par la pente : h² + l² = p² (avec l = 4 m base du triangle, p = 5 m hypoténuse). Donc h² = 25 - 16 = 9, soit h = 3 m."
+    },
+    {
+      "num": 2,
+      "correct": [
+        2
+      ],
+      "expl": "C. Aire grisée = L × p = 12 × 5 = 60 m² (rectangle formant une face de la toiture)."
+    },
+    {
+      "num": 3,
+      "correct": [
+        0
+      ],
+      "expl": "A. Nombre de tapis = L/largeur_tapis = 12/1,5 = 8 tapis."
+    },
+    {
+      "num": 4,
+      "correct": [
+        1
+      ],
+      "expl": "B. Volume piscine = 15 × 4 × 1,4 = 84 m³. Nombre de tapis = ceil(84/30) = 3 (un tapis couvre 30 m³)."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. Les 2 demi-disques forment 1 disque complet. Diamètre = 100 m, rayon = 50 m. Aire = π × 50² ≈ 3,14 × 2 500 = 7 850 m²."
+    },
+    {
+      "num": 6,
+      "correct": [
+        0
+      ],
+      "expl": "A. Foot : 105 × 68 = 7 140 m². Zone athlétisme : rectangle 180 × 100 = 18 000 m² + disque de rayon 50 m = 7 850 m². Total = 7 140 + 18 000 + 7 850 ≈ 33 000 m² = 3,3 ha."
+    },
+    {
+      "num": 7,
+      "correct": [
+        2
+      ],
+      "expl": "C. Masse = 33 000 m² × 30 g/m² = 990 000 g = 990 kg ≈ 1 tonne."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. Coût = 1 000 kg × 7,84€/kg = 7 840€."
+    },
+    {
+      "num": 9,
+      "correct": [
+        2
+      ],
+      "expl": "C. V = π × r² × h = 3,14 × 0,5² × 2 = 3,14 × 0,25 × 2 = 1,57 m³."
+    },
+    {
+      "num": 10,
+      "correct": [
+        3
+      ],
+      "expl": "D. Périmètre piste = 2 longueurs + 1 cercle complet (2 demi-disques). Longueur droite = 180 m, rayon demi-disque = 100/2 = 50 m. Périmètre = 2 × 180 + 2π × 50 = 360 + 314,16 ≈ 674 m."
+    },
+    {
+      "num": 11,
+      "correct": [
+        3
+      ],
+      "expl": "D. 1 min 30 s = 90 s. Vitesse = 400 m / 90 s = 4,44 m/s = 4,44 × 3,6 = 16 km/h."
+    },
+    {
+      "num": 12,
+      "correct": [
+        2
+      ],
+      "expl": "C. 15 km/h = 15 000/3 600 m/s ≈ 4,17 m/s. Temps = 400/4,17 = 96 s = 1 min 36 s."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. Temps réduit de 5% = 96 × 0,95 = 91,2 s ≈ 1 min 31 s."
+    }
+  ]
+}

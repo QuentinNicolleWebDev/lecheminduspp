@@ -1,0 +1,152 @@
+{
+  "id": "maths-cdg13-2021",
+  "theme": "maths",
+  "year": 2021,
+  "title": "SDIS 13 — Mathématiques — Session 2021",
+  "duration_min": 60,
+  "pdf_sujet": "annales/maths-cdg13-2021.pdf",
+  "pdf_corrige": null,
+  "instructions": "20 questions réparties en 3 problèmes. Durée : 1 heure. Une seule réponse exacte par question. Calculatrice non autorisée. Barème : +1 point bonne réponse, 0 sinon.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. Rectangle 350 m × 750 m = 262 500 m²."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0
+      ],
+      "expl": "A. Échelle 1/40 000 : 3 cm × 40 000 = 120 000 cm = 1 200 m = 1,2 km."
+    },
+    {
+      "num": 3,
+      "correct": [
+        3
+      ],
+      "expl": "D. V parallélépipède = 15 × 9 × 3 = 405 m³ = 405 000 L."
+    },
+    {
+      "num": 4,
+      "correct": [
+        2
+      ],
+      "expl": "C. 12 km / 45 km/h = 12/45 h = 12/45 × 60 = 16 min."
+    },
+    {
+      "num": 5,
+      "correct": [
+        3
+      ],
+      "expl": "D. 548 000 m² / 10 000 (m²/ha) = 54,8 ha."
+    },
+    {
+      "num": 6,
+      "correct": [
+        1
+      ],
+      "expl": "B. 4,5 m³ = 4 500 L. Débit = 4 500 L / 15 min = 300 L/min."
+    },
+    {
+      "num": 7,
+      "correct": [
+        0
+      ],
+      "expl": "A. De 17h48 à 5h37 (J+1) : 17h48 → 24h = 6h12 min ; 0h → 5h37 = 5h37 min. Total = 6h12 + 5h37 = 11h 49 min."
+    },
+    {
+      "num": 8,
+      "correct": [
+        4
+      ],
+      "expl": "E. Prix après remise de 8% = 150 × (1 - 0,08) = 150 × 0,92 = 138€."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. Nombre de battements en 3h = 50 × 60 × 3 = 9 000 battements."
+    },
+    {
+      "num": 10,
+      "correct": [
+        2
+      ],
+      "expl": "C. 55 kcal/kg/jour × 75 kg × 2 jours = 8 250 kcal."
+    },
+    {
+      "num": 11,
+      "correct": [
+        4
+      ],
+      "expl": "E (5h 49). Conversion en minutes : 5h40=340, 6h15=375, 5h58=358, 4h50=290, 6h22=382. Somme = 1 745. Moyenne = 1 745/5 = 349 min = 5h 49 min."
+    },
+    {
+      "num": 12,
+      "correct": [
+        4
+      ],
+      "expl": "E (53 min). T = P × V / Q = 303 × 7 / 40 = 2 121/40 ≈ 53,025 min ≈ 53 min (arrondi à l'unité)."
+    },
+    {
+      "num": 13,
+      "correct": [
+        0
+      ],
+      "expl": "A. Volume en 2h = 16 inspirations/min × 60 min × 2 h × 0,5 L = 960 L."
+    },
+    {
+      "num": 14,
+      "correct": [
+        3
+      ],
+      "expl": "D. Augmentation = (81 - 75)/75 × 100 = 6/75 × 100 = 8%."
+    },
+    {
+      "num": 15,
+      "correct": [
+        3
+      ],
+      "expl": "D. TTC = HT × 1,20 = 1 238 × 1,20 = 1 485,60€."
+    },
+    {
+      "num": 16,
+      "correct": [
+        1
+      ],
+      "expl": "B. Aller-retour = 140 × 2 = 280 km. Consommation = 280 × 11/100 = 30,8 L."
+    },
+    {
+      "num": 17,
+      "correct": [
+        4
+      ],
+      "expl": "E. Vitesse = 21 km / (18/60) h = 21 × 60/18 = 70 km/h."
+    },
+    {
+      "num": 18,
+      "correct": [
+        4
+      ],
+      "expl": "E. Volume total = 0,75 + 0,5 + 1,5 = 2,75 L = 275 cL. Nombre de verres de 20 cL = 275/20 = 13,75 → 13 verres entiers."
+    },
+    {
+      "num": 19,
+      "correct": [
+        3
+      ],
+      "expl": "D. Distance = 9 tours × circonférence = 9 × (π × diamètre) = 9 × 3,14 × 30 = 847,8 m."
+    },
+    {
+      "num": 20,
+      "correct": [
+        0
+      ],
+      "expl": "A. Si 10 = 2/9 × total, alors total = 10 × 9/2 = 45 pompiers."
+    }
+  ]
+}

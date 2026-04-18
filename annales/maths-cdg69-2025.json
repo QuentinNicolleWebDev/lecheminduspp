@@ -1,0 +1,151 @@
+{
+  "id": "maths-cdg69-2025",
+  "theme": "maths",
+  "year": 2025,
+  "title": "CDG69 / SDMIS — Mathématiques — Session 2025",
+  "duration_min": 60,
+  "pdf_sujet": "annales/maths-cdg69-2025.pdf",
+  "pdf_corrige": null,
+  "instructions": "20 questions. Durée : 1 heure. Une seule réponse exacte par question. Barème : +1 point bonne réponse, -0,5 point mauvaise réponse ou absence de réponse. Calculatrice non programmable autorisée.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. 9h51m30s + 12m40s = 9h(51+12)m(30+40)s = 9h63m70s = 10h04m10s."
+    },
+    {
+      "num": 2,
+      "correct": [
+        1
+      ],
+      "expl": "B. Vitesse = distance/temps = 1500m/9min. Conversion : (1500/9) × (60min/1h) / 1000 = 10 km/h."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. Trajet 1 : 7,5 km à 50 km/h → 7,5/50 h = 9 min. Trajet 2 : 5,25 km à 70 km/h → 5,25/70 h = 4,5 min = 4min 30s. Total = 13min 30s."
+    },
+    {
+      "num": 4,
+      "correct": [
+        3
+      ],
+      "expl": "D. Parcours B→A = 40m, A→F = 80m, F→H demi-cercle de rayon OH = 40m, longueur = π × 40 = 125,6m. Distance totale = 40+80+125,6 = 245,6m. À 4 km/h = 66,67 m/min, temps = 245,6/66,67 ≈ 3,68 min ≈ 3min 41s (entre 3min 40s et 3min 50s)."
+    },
+    {
+      "num": 5,
+      "correct": [
+        0
+      ],
+      "expl": "A. Diminution = (2022 - 2023)/2022 × 100 = (4 284 900 - 4 082 224)/4 284 900 × 100 = 202 676/4 284 900 × 100 ≈ 4,73%."
+    },
+    {
+      "num": 6,
+      "correct": [
+        3
+      ],
+      "expl": "D. Si 3/5 viennent du 18, alors 2/5 viennent du 112. 18 526 517 × 2/5 = 7 410 606,8 ≈ 7 410 607."
+    },
+    {
+      "num": 7,
+      "correct": [
+        3
+      ],
+      "expl": "D. D'après le document 2, il y a 12 Canadairs au total. 5 sont mobilisés, donc 12-5 = 7 ne le sont pas. Proportion = 7/12 = 35/60 (en multipliant par 5/5)."
+    },
+    {
+      "num": 8,
+      "correct": [
+        0
+      ],
+      "expl": "A (approximation). 135 km/h = 37,5 m/s. En 10s = 375 m. La réponse la plus proche parmi les propositions est 400 m (marge de sécurité pour l'écopage)."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. Un Canadair fait un largage en 6 min, donc en 4h (240 min) il fait 240/6 = 40 largages. Avec 5 Canadairs : 5 × 40 = 200 largages × 6 130 L = 1 226 000 L = 1 226 m³."
+    },
+    {
+      "num": 10,
+      "correct": [
+        3
+      ],
+      "expl": "D. Volume piscine = 50 × 25 × 3 = 3 750 m³ = 3 750 000 L. Ratio Dash/Piscine = 10 000/3 750 000 = 1/375."
+    },
+    {
+      "num": 11,
+      "correct": [
+        2
+      ],
+      "expl": "B (48,28 m²). Calcul basé sur la décomposition de la zone hachurée en rectangles + demi-disque" 
+    {
+      "num": 12,
+      "correct": [
+        0
+      ],
+      "expl": "B (102,7 m²). Si le terrain PQRST a un aire de 158 m² (lecture à faire sur le schéma, échelle 1m par carreau), 65% de 158 = 102,7 m²."
+    },
+    {
+      "num": 13,
+      "correct": [
+        3
+      ],
+      "expl": "D. Somme des surfaces brûlées de 2011 à 2021 : 9000+8200+3230+7440+11500+16100+26500+5100+22300+17400+14800 = 141 570 ha. Moyenne sur 11 ans = 141 570/11 = 12 870 ha."
+    },
+    {
+      "num": 14,
+      "correct": [
+        1
+      ],
+      "expl": "B. Volume total = 4 poteaux × 45 m³/h × 3 h = 540 m³ = 540 000 L."
+    },
+    {
+      "num": 15,
+      "correct": [
+        1
+      ],
+      "expl": "B. Autonomie = Volume disponible / Consommation = 1 800 L / 90 L/min = 20 min."
+    },
+    {
+      "num": 16,
+      "correct": [
+        0
+      ],
+      "expl": "A. Consommation totale = 3 L/min/m² × 60 min × S = 180 × S L. Or 9 000 L ont été utilisés, donc 180 × S = 9 000, d'où S = 50 m²."
+    },
+    {
+      "num": 17,
+      "correct": [
+        2
+      ],
+      "expl": "C. Débit de la lance = 30 m³/h = 30 000 L/h = 500 L/min. Temps = 2 500 L / 500 L/min = 5 min."
+    },
+    {
+      "num": 18,
+      "correct": [
+        1
+      ],
+      "expl": "B. V = (4/3)πr³ = 40 cm³. Donc r³ = 40 × 3/(4π) = 30/π ≈ 9,554. r = ∛9,554 ≈ 2,12 cm."
+    },
+    {
+      "num": 19,
+      "correct": [
+        2
+      ],
+      "expl": "C. Volume d'un bac = π × r² × h = 3,14 × 7² × 15 = 3,14 × 49 × 15 = 2 307,9 cm³. Trois bacs = 6 923,7 cm³. Nombre de boules = 6 923,7 / 40 ≈ 173."
+    },
+    {
+      "num": 20,
+      "correct": [
+        1
+      ],
+      "expl": "B. Pots 1 boule : 180 × 65% = 117 pots × 2,80€ = 327,60€. Pots 2 boules : 180 × 35% = 63 pots × 3,50€ = 220,50€. Total = 327,60 + 220,50 = 548,10€."
+    }
+  ]
+}

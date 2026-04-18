@@ -1,0 +1,152 @@
+{
+  "id": "maths-cdg13-2023",
+  "theme": "maths",
+  "year": 2023,
+  "title": "SDIS 13 — Mathématiques — Session 2023",
+  "duration_min": 60,
+  "pdf_sujet": "annales/maths-cdg13-2023.pdf",
+  "pdf_corrige": null,
+  "instructions": "20 questions réparties en 3 problèmes. Durée : 1 heure. Une seule réponse exacte par question. Calculatrice non autorisée. Barème : +1 point bonne réponse, 0 sinon.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. Carré 250 m × 250 m = 62 500 m²."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0
+      ],
+      "expl": "A. V = π × r² × h = 3,14 × 2² × 5 = 62,8 m³ = 62 800 L."
+    },
+    {
+      "num": 3,
+      "correct": [
+        4
+      ],
+      "expl": "E (337). De 12h35 à 18h12 : 12h35 → 13h = 25 min ; 13h → 18h = 5×60 = 300 min ; 18h → 18h12 = 12 min. Total = 25 + 300 + 12 = 337 min."
+    },
+    {
+      "num": 4,
+      "correct": [
+        2
+      ],
+      "expl": "C. Vitesse = 10 km / (8/60) h = 10 × 60/8 = 75 km/h."
+    },
+    {
+      "num": 5,
+      "correct": [
+        4
+      ],
+      "expl": "E (1 km²). Échelle 1/20 000 : 1 cm sur carte = 20 000 cm réels = 200 m. Donc 1 cm² sur carte = 200² m² = 40 000 m². 25 cm² = 25 × 40 000 = 1 000 000 m² = 1 km²."
+    },
+    {
+      "num": 6,
+      "correct": [
+        3
+      ],
+      "expl": "D. 57 min + 1h06 min (66 min) + 1h18 (78 min) = 201 min. Moyenne = 201/3 = 67 min = 1 h 07 min."
+    },
+    {
+      "num": 7,
+      "correct": [
+        1
+      ],
+      "expl": "B. Étape 1 : 5/8 utilisés → reste 3/8 × 16 000 = 6 000 L. Étape 2 : +8 000 L → 14 000 L. Étape 3 : 3/4 utilisés → reste 1/4 × 14 000 = 3 500 L."
+    },
+    {
+      "num": 8,
+      "correct": [
+        2
+      ],
+      "expl": "C. IMC = 85 / 2² = 85 / 4 = 21,25."
+    },
+    {
+      "num": 9,
+      "correct": [
+        3
+      ],
+      "expl": "D. Si 510 kcal = 20%, alors 100% = 510 / 0,20 = 2 550 kcal."
+    },
+    {
+      "num": 10,
+      "correct": [
+        3
+      ],
+      "expl": "D. De 21h43 à 22h00 = 17 min. De 22h00 à 8h00 = 10 h. De 8h00 à 8h17 = 17 min. Total = 10 h 34 min."
+    },
+    {
+      "num": 11,
+      "correct": [
+        1
+      ],
+      "expl": "B. Consommation en 2h : 55 ml × 75 kg × 120 min = 495 000 ml = 495 L."
+    },
+    {
+      "num": 12,
+      "correct": [
+        4
+      ],
+      "expl": "E (605 g). 85 g + 150 g (steak, 15 dag = 150 g) + 220 g (pâtes mangées, 270 g - 50 g laissés) + 150 g (pomme, 15 000 cg = 150 g) = 605 g."
+    },
+    {
+      "num": 13,
+      "correct": [
+        0
+      ],
+      "expl": "A. Répartition proportionnelle : total parts = 10+15+20 = 45. Part 10 ans = 10/45 × 900 = 200€."
+    },
+    {
+      "num": 14,
+      "correct": [
+        3
+      ],
+      "expl": "D. Surface des 4 murs uniquement = 2 × (L + l) × h = 2 × (6+4) × 3 = 60 m²."
+    },
+    {
+      "num": 15,
+      "correct": [
+        4
+      ],
+      "expl": "E. HT = 2×852 + 10×37 + 2×65 = 1 704 + 370 + 130 = 2 204€. TTC = 2 204 × 1,20 = 2 644,80€."
+    },
+    {
+      "num": 16,
+      "correct": [
+        2
+      ],
+      "expl": "C. Règle de proportionnalité : 20 ml pour 8 L → x ml pour 15 L. x = 20 × 15/8 = 37,5 ml."
+    },
+    {
+      "num": 17,
+      "correct": [
+        1
+      ],
+      "expl": "B. 47 min × 8 = 376 min = 6 h 16 min."
+    },
+    {
+      "num": 18,
+      "correct": [
+        2
+      ],
+      "expl": "C. Masse = volume × densité + masse bidon = 5 L × 0,92 kg/L + 0,150 kg = 4,6 + 0,150 = 4,75 kg."
+    },
+    {
+      "num": 19,
+      "correct": [
+        3
+      ],
+      "expl": "D. Proportionnalité : 300 g pour 12 personnes → x pour 19. x = 300 × 19/12 = 475 g."
+    },
+    {
+      "num": 20,
+      "correct": [
+        2
+      ],
+      "expl": "C. Besoin en peinture = 20 m² × 0,3 L/m² × 2 couches = 12 L. Pots de 5 L : ceil(12/5) = 3 pots."
+    }
+  ]
+}

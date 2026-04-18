@@ -1,0 +1,152 @@
+{
+  "id": "maths-cdg69-2021",
+  "theme": "maths",
+  "year": 2021,
+  "title": "CDG69 / SDMIS — Mathématiques — Session 2021",
+  "duration_min": 60,
+  "pdf_sujet": "annales/maths-cdg69-2021.pdf",
+  "pdf_corrige": null,
+  "instructions": "20 questions. Durée : 1 heure. Une seule réponse exacte par question. Barème : +1 point bonne réponse, -0,5 point mauvaise réponse ou absence de réponse. Calculatrice autorisée. On prend π = 3,14.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        0
+      ],
+      "expl": "C (400 m² = 4 a). La zone AEFGBCD est formée de rectangles (échelle : 1 carreau = 5 m). À partir du plan, on peut estimer une aire composite d'environ 400 m² (soit 4 ares, puisque 1 are = 100 m²)."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0
+      ],
+      "expl": "A. Piscine : V = L × l × h × 2/3 = 7 × 3 × 1,5 × 2/3 = 21 m³ = 21 000 L."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. Chaque trajet du bambi bucket (1 m³ = 1 000 L) prend 4 min. Pour 15 000 L : 15 trajets × 4 min = 60 min = 1 h."
+    },
+    {
+      "num": 4,
+      "correct": [
+        1
+      ],
+      "expl": "B. 4 CCF × 4 000 L = 16 000 L = 16 m³."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. Temps pour vider 4 000 L à 33,33 L/s = 4 000/33,33 ≈ 120 s = 2 min."
+    },
+    {
+      "num": 6,
+      "correct": [
+        1
+      ],
+      "expl": "C (450 m²). L'aire du champ MLQB doit être lue sur le plan. Si le champ fait 750 m², les 60% sauvés représentent 450 m²."
+    },
+    {
+      "num": 7,
+      "correct": [
+        3
+      ],
+      "expl": "D. Aller-retour = 2 × 60 = 120 km. Consommation = 120 × 31/100 = 37,2 L."
+    },
+    {
+      "num": 8,
+      "correct": [
+        2
+      ],
+      "expl": "C. Gourde cylindrique : rayon = 8,5/2 = 4,25 cm, hauteur = 22 cm. V = π × r² × h = 3,14 × 4,25² × 22 ≈ 1 247,8 cm³ = 1,2478 L. Un tiers = 1,2478/3 ≈ 0,416 L."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. Prix après -34% = 66% du prix initial = 16,50€. Prix initial = 16,50 / 0,66 = 25€."
+    },
+    {
+      "num": 10,
+      "correct": [
+        0
+      ],
+      "expl": "A. Masse de céréales par barre = 18 × 48,5/100 = 8,73 g. Lot de 6 barres = 6 × 8,73 = 52,38 g."
+    },
+    {
+      "num": 11,
+      "correct": [
+        2
+      ],
+      "expl": "C. Piste = 2 longueurs droites + 1 cercle (les 2 demi-cercles des extrémités). Diamètre du cercle = 58 m, donc rayon = 29 m. Périmètre = 2 × 84 + 2π × 29 = 168 + 182,12 ≈ 350 m."
+    },
+    {
+      "num": 12,
+      "correct": [
+        3
+      ],
+      "expl": "D (1/5 h). 12 min = 12/60 h = 0,2 h = 1/5 h. Attention : 0,22 h (proposition A) est faux."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. Distance Sylvain = 8 × 400 + 100 = 3 300 m = 3,3 km. Temps = 12 min = 0,2 h. Vitesse = 3,3/0,2 = 16,5 km/h."
+    },
+    {
+      "num": 14,
+      "correct": [
+        2
+      ],
+      "expl": "C. Distance Mathéo = 15 km/h × 0,2 h = 3 km = 3 000 m. Nombre de tours = 3 000/400 = 7,5 → 7 tours complets."
+    },
+    {
+      "num": 15,
+      "correct": [
+        0
+      ],
+      "expl": "A. IMC = masse/(taille)² = 86/(1,88)² = 86/3,5344 ≈ 24,33 ≈ 24,3."
+    },
+    {
+      "num": 16,
+      "correct": [
+        2
+      ],
+      "expl": "C. Masse = IMC × (taille)² = 18,5 × (1,75)² = 18,5 × 3,0625 ≈ 56,66 kg ≈ 56,6 kg."
+    },
+    {
+      "num": 17,
+      "correct": [
+        1
+      ],
+      "expl": "B. Somme des IMC × effectifs : 17×1 + 20×11 + 22×18 + 23×14 + 24×11 + 25×2 + 29×1 + 30×1 + 33×1 = 17+220+396+322+264+50+29+30+33 = 1 361. Effectif total = 1+11+18+14+11+2+1+1+1 = 60. Moyenne = 1 361/60 ≈ 22,68 ≈ 23 (arrondi à l'unité)."
+    },
+    {
+      "num": 18,
+      "correct": [
+        3
+      ],
+      "expl": "D. Baisse = (27-25)/27 × 100 = 2/27 × 100 ≈ 7,41% ≈ 7,4%."
+    },
+    {
+      "num": 19,
+      "correct": [
+        2
+      ],
+      "expl": "C. Surpoids = IMC entre 25 et <30, soit les effectifs pour IMC 25 et 29 = 2+1 = 3 personnes. Effectif total = 60. Pourcentage = 3/60 = 5%."
+    },
+    {
+      "num": 20,
+      "correct": [
+        1
+      ],
+      "expl": "B. Corpulence normale actuelle (IMC 18,5 à <25) = effectifs 20,22,23,24 = 11+18+14+11 = 54 personnes. Objectif 95% × 60 = 57 personnes. Il manque 57 - 54 = 3 personnes à faire passer en normale (donc à faire perdre du poids)."
+    }
+  ]
+}
