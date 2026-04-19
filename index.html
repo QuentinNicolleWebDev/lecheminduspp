@@ -2042,7 +2042,7 @@ function hasPaidAccess(member) {
     var isActive = status === '' || activeStatuses.indexOf(status) !== -1;
     if (!isActive) continue;
     // Rapproche planId et priceId (selon versions d'API Memberstack)
-    var candidates = [c.planId, c.priceId, c.id, c.plan && c.plan.id, c.price && c.price.id];
+    var candidates = [c.planId, c.priceId, c.id, c.plan && c.plan.id, c.price && c.price.id, c.payment && c.payment.priceId];
     for (var j = 0; j < candidates.length; j++) {
       if (candidates[j] && PAID_PLAN_IDS.indexOf(candidates[j]) !== -1) return true;
     }
