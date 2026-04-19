@@ -199,8 +199,70 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(245,240,232,
 .qcm-selection-summary{font-size:.86rem;color:var(--gray);margin-bottom:14px;line-height:1.55;min-height:40px}
 .qcm-nb-btn{padding:10px 16px;border:1.5px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s}
 .qcm-nb-btn.active{background:var(--red);color:white;border-color:var(--red)}
-.qcm-layout{display:grid;grid-template-columns:420px 1fr;gap:0;min-height:calc(100vh - 68px);margin-top:68px}
-.qcm-sidebar{background:white;border-right:1px solid var(--border);padding:40px 32px;position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto}
+
+/* ===== LAYOUT HORIZONTAL QCM ===== */
+.qcm-layout{display:block;min-height:calc(100vh - 68px);margin-top:68px;background:var(--cream)}
+
+/* Bandeau démo (non-payants) — au-dessus de tout */
+.qcm-demo-banner{background:linear-gradient(135deg,var(--red) 0%,var(--red-dark) 100%);color:white;padding:14px 5%;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;font-size:.92rem;font-weight:500;line-height:1.4;text-align:center}
+.qcm-demo-banner strong{font-weight:700}
+.qcm-demo-banner-count{background:rgba(255,255,255,.18);padding:4px 12px;border-radius:4px;font-weight:700;font-size:.88rem;letter-spacing:.5px}
+
+/* Barre horizontale de sélection */
+.qcm-topbar{background:white;border-bottom:1px solid var(--border);padding:24px 5% 20px}
+.qcm-topbar-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.qcm-topbar-row:last-child{margin-bottom:0}
+.qcm-mode-tabs{display:inline-flex;gap:6px;background:var(--cream2);padding:4px;border-radius:4px;flex-shrink:0}
+.qcm-mode-tab{padding:8px 16px;background:transparent;border:none;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .15s;border-radius:3px}
+.qcm-mode-tab.active{background:white;color:var(--red);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.qcm-topbar-score{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--gray)}
+.qcm-topbar-score strong{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--red);font-weight:900}
+
+.qcm-sb-section{font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-right:12px;flex-shrink:0}
+
+/* Pastilles de thèmes (remplacent les lignes verticales) */
+.qcm-chips-wrap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;flex:1}
+.qcm-chip{padding:8px 14px;font-size:.84rem;color:var(--gray);cursor:pointer;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--border);background:white;transition:all .15s;user-select:none;border-radius:4px;white-space:nowrap}
+.qcm-chip:hover{background:var(--cream);border-color:var(--gray-light)}
+.qcm-chip.checked{background:var(--red-pale);border-color:var(--red);color:var(--red-dark);font-weight:600}
+.qcm-chip.checked .qcm-chip-icon{color:var(--red)}
+.qcm-chip-icon{font-size:.95rem;line-height:1}
+.qcm-chip-count{background:var(--cream2);padding:2px 7px;font-size:.72rem;color:var(--gray-light);font-weight:600;border-radius:3px}
+.qcm-chip.checked .qcm-chip-count{background:white;color:var(--red)}
+.qcm-chip-all{background:var(--red-pale);border-color:var(--red-pale2);color:var(--red);font-weight:600;border-style:dashed}
+.qcm-chip-all:hover{background:var(--red-pale2)}
+
+/* Panneau dépliable des doctrines (sous-catégories) */
+.qcm-doctrines-panel{display:none;width:100%;margin-top:10px;padding:14px 16px;background:var(--cream);border:1px solid var(--border);border-radius:4px}
+.qcm-doctrines-panel.open{display:flex;flex-wrap:wrap;gap:6px}
+.qcm-chip-sub{padding:6px 12px;font-size:.78rem}
+
+/* Bouton de lancement (inline dans la topbar) */
+.qcm-launch-inline{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.qcm-selection-summary{font-size:.83rem;color:var(--gray);line-height:1.5}
+.qcm-launch-btn-inline{padding:11px 22px;font-size:.88rem}
+
+/* Zone principale QCM */
+.qcm-main{padding:32px 5% 48px;background:var(--cream)}
+
+/* CTA d'achat en bas (non-payants) */
+.qcm-bottom-cta{max-width:760px;margin:32px auto 0;background:white;border:1px solid var(--red-pale2);border-left:4px solid var(--red);padding:24px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.qcm-bottom-cta-text{flex:1;min-width:240px}
+.qcm-bottom-cta-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--charcoal);margin-bottom:4px;font-weight:700}
+.qcm-bottom-cta-sub{font-size:.88rem;color:var(--gray);line-height:1.5}
+
+/* Responsive : retour à une disposition plus compacte sur mobile */
+@media (max-width:900px){
+  .qcm-topbar{padding:18px 5% 16px}
+  .qcm-topbar-row{gap:12px}
+  .qcm-mode-tabs{width:100%}
+  .qcm-mode-tab{flex:1}
+  .qcm-topbar-score{margin-left:0;width:100%;justify-content:center}
+  .qcm-sb-section{width:100%;margin-bottom:8px}
+  .qcm-chip{font-size:.8rem;padding:7px 12px}
+  .qcm-launch-inline{width:100%;flex-direction:column;align-items:stretch}
+  .qcm-launch-btn-inline{width:100%;justify-content:center}
+}
 .qcm-sb-title{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:28px;color:var(--charcoal);padding-bottom:16px;border-bottom:2px solid var(--red)}
 .qcm-cat{padding:12px 16px;font-size:.95rem;color:var(--gray);cursor:pointer;border:1px solid transparent;transition:all .2s;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .qcm-cat:hover{background:var(--cream);border-color:var(--border)}
@@ -782,8 +844,6 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
   .hero-right{display:none}
   .offer-grid{grid-template-columns:1fr}
   .story-grid{grid-template-columns:1fr}
-  .qcm-layout{grid-template-columns:1fr}
-  .qcm-sidebar{position:static;height:auto}
   .actu-featured{grid-template-columns:1fr}
   .actu-secondary-grid{grid-template-columns:1fr}
   .ch-hero{grid-template-columns:1fr;gap:40px}
@@ -1197,77 +1257,91 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
   <div style="margin-top:68px"></div>
   <div class="qcm-layout" style="margin-top:0">
 
-    <!-- SIDEBAR -->
-    <div class="qcm-sidebar">
+    <!-- BANDEAU DÉMO (non-payants uniquement) -->
+    <div class="qcm-demo-banner" id="qcm-demo-banner" style="display:none">
+      <span>🎁 <strong>Session démo gratuite</strong> — 10 QCM aléatoires par jour, piochés parmi les 590+ du concours.</span>
+      <span class="qcm-demo-banner-count"><span id="demo-banner-count">10</span> restants aujourd'hui</span>
+    </div>
 
-      <!-- MODE SELECTOR -->
-      <div class="qcm-mode-tabs">
-        <button class="qcm-mode-tab active" id="tab-select" onclick="switchQcmMode('select')">🎯 Par thème</button>
-        <button class="qcm-mode-tab" id="tab-random" onclick="switchQcmMode('random')">🔀 Aléatoire</button>
+    <!-- BARRE HORIZONTALE DE SÉLECTION -->
+    <div class="qcm-topbar">
+
+      <!-- Ligne 1 : onglets + score -->
+      <div class="qcm-topbar-row">
+        <div class="qcm-mode-tabs">
+          <button class="qcm-mode-tab active" id="tab-select" onclick="switchQcmMode('select')">🎯 Par thème</button>
+          <button class="qcm-mode-tab" id="tab-random" onclick="switchQcmMode('random')">🔀 Aléatoire</button>
+        </div>
+        <div class="qcm-topbar-score">
+          <span>Ton score :</span>
+          <strong id="score-display">0 / 0</strong>
+        </div>
       </div>
 
       <!-- MODE: PAR THÈME -->
       <div id="qcm-panel-select">
-        <div class="qcm-sb-section">Sélectionne un ou plusieurs thèmes</div>
-
-        <!-- Tout sélectionner -->
-        <div class="qcm-select-all" onclick="toggleSelectAll()">
-          <span id="select-all-icon">☐</span> <span id="select-all-label">Tout sélectionner</span>
+        <!-- Ligne 2 : chips de thèmes -->
+        <div class="qcm-topbar-row">
+          <div class="qcm-sb-section">Thèmes</div>
+          <div class="qcm-chips-wrap">
+            <div class="qcm-chip qcm-chip-all" onclick="toggleSelectAll()">
+              <span class="qcm-chip-icon" id="select-all-icon">☐</span>
+              <span id="select-all-label">Tout</span>
+            </div>
+            <div class="qcm-chip" onclick="toggleCat('statut')">
+              <span class="qcm-chip-icon" id="chk-statut">☐</span>
+              <span>Statut SPP</span>
+              <span class="qcm-chip-count" id="count-statut">105</span>
+            </div>
+            <div class="qcm-chip" onclick="toggleCat('sis')">
+              <span class="qcm-chip-icon" id="chk-sis">☐</span>
+              <span>SIS</span>
+              <span class="qcm-chip-count" id="count-sis">50</span>
+            </div>
+            <div class="qcm-chip" onclick="toggleDoctrinesPanel(event)">
+              <span class="qcm-chip-icon" id="chk-doctrines">☐</span>
+              <span>Doctrines Op.</span>
+              <span class="qcm-chip-count" id="count-doctrines">534</span>
+              <span class="qcm-subcat-arrow" id="arrow-doctrines">▸</span>
+            </div>
+            <div class="qcm-chip" onclick="toggleCat('divers')">
+              <span class="qcm-chip-icon" id="chk-divers">☐</span>
+              <span>Divers</span>
+              <span class="qcm-chip-count" id="count-divers">18</span>
+            </div>
+            <div class="qcm-chip" onclick="toggleCat('textes')">
+              <span class="qcm-chip-icon" id="chk-textes">☐</span>
+              <span>Textes structurants</span>
+              <span class="qcm-chip-count" id="count-textes">29</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Catégories à cocher -->
-        <div class="qcm-check-item" onclick="toggleCat('statut')">
-          <span class="qcm-checkbox" id="chk-statut">☐</span>
-          <span class="qcm-check-label">Statut SPP &amp; Fonctionnaire</span>
-          <span class="qcm-cat-count" id="count-statut">105</span>
-        </div>
-        <div class="qcm-check-item" onclick="toggleCat('sis')">
-          <span class="qcm-checkbox" id="chk-sis">☐</span>
-          <span class="qcm-check-label">Organisation d'un SIS</span>
-          <span class="qcm-cat-count" id="count-sis">50</span>
-        </div>
-
-        <!-- Doctrines avec sous-cats -->
-        <div class="qcm-check-item qcm-check-parent" onclick="toggleDoctrinesPanel(event)">
-          <span class="qcm-checkbox" id="chk-doctrines">☐</span>
-          <span class="qcm-check-label">Doctrines Opérationnelles</span>
-          <span style="display:flex;align-items:center;gap:4px"><span class="qcm-cat-count" id="count-doctrines">534</span><span class="qcm-subcat-arrow" id="arrow-doctrines">▸</span></span>
-        </div>
-        <div class="qcm-subcats" id="doctrines-sub">
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-ventilation',event)"><span class="qcm-checkbox" id="chk-gto-ventilation">☐</span><span class="qcm-check-label">GTO Ventilation Opérationnelle</span><span class="qcm-cat-count" id="count-gto-ventilation">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvetage',event)"><span class="qcm-checkbox" id="chk-gto-sauvetage">☐</span><span class="qcm-check-label">GTO Sauvetage &amp; Mise en Sécurité</span><span class="qcm-cat-count" id="count-gto-sauvetage">49</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvegarde',event)"><span class="qcm-checkbox" id="chk-gto-sauvegarde">☐</span><span class="qcm-check-label">GTO Sauvegarde Opérationnelle</span><span class="qcm-cat-count" id="count-gto-sauvegarde">73</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-forets',event)"><span class="qcm-checkbox" id="chk-gto-forets">☐</span><span class="qcm-check-label">GTO Luttes Feux de Forêts &amp; EN</span><span class="qcm-cat-count" id="count-gto-forets">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-extinctions',event)"><span class="qcm-checkbox" id="chk-gto-extinctions">☐</span><span class="qcm-check-label">GTO Établissements &amp; Extinctions</span><span class="qcm-cat-count" id="count-gto-extinctions">73</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-vicie',event)"><span class="qcm-checkbox" id="chk-gto-vicie">☐</span><span class="qcm-check-label">GTO Engagement Milieu Vicié</span><span class="qcm-cat-count" id="count-gto-vicie">100</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ssuap',event)"><span class="qcm-checkbox" id="chk-gdo-ssuap">☐</span><span class="qcm-check-label">GDO SSUAP</span><span class="qcm-cat-count" id="count-gdo-ssuap">14</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-fumees',event)"><span class="qcm-checkbox" id="chk-gdo-fumees">☐</span><span class="qcm-check-label">GDO Toxicité des Fumées</span><span class="qcm-cat-count" id="count-gdo-fumees">11</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-elec',event)"><span class="qcm-checkbox" id="chk-gdo-elec">☐</span><span class="qcm-check-label">GDO Présence Électricité</span><span class="qcm-cat-count" id="count-gdo-elec">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-silos',event)"><span class="qcm-checkbox" id="chk-gdo-silos">☐</span><span class="qcm-check-label">GDO Intervention Silos</span><span class="qcm-cat-count" id="count-gdo-silos">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-gaz',event)"><span class="qcm-checkbox" id="chk-gdo-gaz">☐</span><span class="qcm-check-label">GDO Présence Gaz</span><span class="qcm-cat-count" id="count-gdo-gaz">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-agricole',event)"><span class="qcm-checkbox" id="chk-gdo-agricole">☐</span><span class="qcm-check-label">GDO Milieu Agricole</span><span class="qcm-cat-count" id="count-gdo-agricole">14</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-incendie',event)"><span class="qcm-checkbox" id="chk-gdo-incendie">☐</span><span class="qcm-check-label">GDO Incendie Structure</span><span class="qcm-cat-count" id="count-gdo-incendie">60</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ulm',event)"><span class="qcm-checkbox" id="chk-gdo-ulm">☐</span><span class="qcm-check-label">GDO Présence ULM</span><span class="qcm-cat-count" id="count-gdo-ulm">8</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-routier',event)"><span class="qcm-checkbox" id="chk-gdo-routier">☐</span><span class="qcm-check-label">GDO Milieu Routier</span><span class="qcm-cat-count" id="count-gdo-routier">62</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-foret',event)"><span class="qcm-checkbox" id="chk-gdo-foret">☐</span><span class="qcm-check-label">GDO Feux Forêt &amp; Espace Naturel</span><span class="qcm-cat-count" id="count-gdo-foret">10</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('pse',event)"><span class="qcm-checkbox" id="chk-pse">☐</span><span class="qcm-check-label">Secourisme PSE1 / PSE2</span><span class="qcm-cat-count" id="count-pse">0</span></div>
+        <!-- Panneau dépliable : sous-catégories Doctrines -->
+        <div class="qcm-doctrines-panel" id="doctrines-sub">
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-ventilation',event)"><span class="qcm-chip-icon" id="chk-gto-ventilation">☐</span><span>GTO Ventilation</span><span class="qcm-chip-count" id="count-gto-ventilation">12</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-sauvetage',event)"><span class="qcm-chip-icon" id="chk-gto-sauvetage">☐</span><span>GTO Sauvetage</span><span class="qcm-chip-count" id="count-gto-sauvetage">49</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-sauvegarde',event)"><span class="qcm-chip-icon" id="chk-gto-sauvegarde">☐</span><span>GTO Sauvegarde</span><span class="qcm-chip-count" id="count-gto-sauvegarde">73</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-forets',event)"><span class="qcm-chip-icon" id="chk-gto-forets">☐</span><span>GTO Feux Forêts</span><span class="qcm-chip-count" id="count-gto-forets">12</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-extinctions',event)"><span class="qcm-chip-icon" id="chk-gto-extinctions">☐</span><span>GTO Extinctions</span><span class="qcm-chip-count" id="count-gto-extinctions">73</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gto-vicie',event)"><span class="qcm-chip-icon" id="chk-gto-vicie">☐</span><span>GTO Milieu Vicié</span><span class="qcm-chip-count" id="count-gto-vicie">100</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-ssuap',event)"><span class="qcm-chip-icon" id="chk-gdo-ssuap">☐</span><span>GDO SSUAP</span><span class="qcm-chip-count" id="count-gdo-ssuap">14</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-fumees',event)"><span class="qcm-chip-icon" id="chk-gdo-fumees">☐</span><span>GDO Fumées</span><span class="qcm-chip-count" id="count-gdo-fumees">11</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-elec',event)"><span class="qcm-chip-icon" id="chk-gdo-elec">☐</span><span>GDO Électricité</span><span class="qcm-chip-count" id="count-gdo-elec">12</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-silos',event)"><span class="qcm-chip-icon" id="chk-gdo-silos">☐</span><span>GDO Silos</span><span class="qcm-chip-count" id="count-gdo-silos">12</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-gaz',event)"><span class="qcm-chip-icon" id="chk-gdo-gaz">☐</span><span>GDO Gaz</span><span class="qcm-chip-count" id="count-gdo-gaz">12</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-agricole',event)"><span class="qcm-chip-icon" id="chk-gdo-agricole">☐</span><span>GDO Agricole</span><span class="qcm-chip-count" id="count-gdo-agricole">14</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-incendie',event)"><span class="qcm-chip-icon" id="chk-gdo-incendie">☐</span><span>GDO Incendie</span><span class="qcm-chip-count" id="count-gdo-incendie">60</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-ulm',event)"><span class="qcm-chip-icon" id="chk-gdo-ulm">☐</span><span>GDO ULM</span><span class="qcm-chip-count" id="count-gdo-ulm">8</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-routier',event)"><span class="qcm-chip-icon" id="chk-gdo-routier">☐</span><span>GDO Routier</span><span class="qcm-chip-count" id="count-gdo-routier">62</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('gdo-foret',event)"><span class="qcm-chip-icon" id="chk-gdo-foret">☐</span><span>GDO Forêt & EN</span><span class="qcm-chip-count" id="count-gdo-foret">10</span></div>
+          <div class="qcm-chip qcm-chip-sub" onclick="toggleSubCat('pse',event)"><span class="qcm-chip-icon" id="chk-pse">☐</span><span>PSE1 / PSE2</span><span class="qcm-chip-count" id="count-pse">0</span></div>
         </div>
 
-        <div class="qcm-check-item" onclick="toggleCat('divers')">
-          <span class="qcm-checkbox" id="chk-divers">☐</span>
-          <span class="qcm-check-label">Divers</span>
-          <span class="qcm-cat-count" id="count-divers">18</span>
-        </div>
-        <div class="qcm-check-item" onclick="toggleCat('textes')">
-          <span class="qcm-checkbox" id="chk-textes">☐</span>
-          <span class="qcm-check-label">Textes structurants du concours</span>
-          <span class="qcm-cat-count" id="count-textes">29</span>
-        </div>
-
-        <!-- Résumé sélection + bouton lancer -->
-        <div class="qcm-launch-wrap">
+        <!-- Ligne 3 : résumé + bouton lancer -->
+        <div class="qcm-topbar-row qcm-launch-inline">
           <div class="qcm-selection-summary" id="qcm-selection-summary">Aucun thème sélectionné</div>
-          <button class="btn btn-red" id="qcm-launch-btn" style="width:100%;justify-content:center;display:flex;font-size:.85rem;padding:12px;opacity:.4;pointer-events:none" onclick="launchQcm()">
+          <button class="btn btn-red qcm-launch-btn-inline" id="qcm-launch-btn" style="opacity:.4;pointer-events:none" onclick="launchQcm()">
             Lancer les QCM →
           </button>
         </div>
@@ -1275,44 +1349,25 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 
       <!-- MODE: ALÉATOIRE -->
       <div id="qcm-panel-random" style="display:none">
-        <div class="qcm-sb-section">Mode entraînement</div>
-        <div style="font-size:.83rem;color:var(--gray);line-height:1.6;margin-bottom:16px">Les questions piochent aléatoirement dans <strong style="color:var(--charcoal)">tous les thèmes</strong> du concours.</div>
-
-        <div style="margin-bottom:12px">
-          <div style="font-size:.75rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px">Nombre de questions</div>
+        <div class="qcm-topbar-row">
+          <div class="qcm-sb-section">Nombre de questions</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <button class="qcm-nb-btn active" onclick="setQcmNb(this,5)">5</button>
             <button class="qcm-nb-btn" onclick="setQcmNb(this,10)">10</button>
             <button class="qcm-nb-btn" onclick="setQcmNb(this,20)">20</button>
             <button class="qcm-nb-btn" onclick="setQcmNb(this,30)">30</button>
           </div>
+          <button class="btn btn-red qcm-launch-btn-inline" style="margin-left:auto" onclick="launchRandomQcm()">
+            🔀 Lancer l'entraînement →
+          </button>
         </div>
-
-        <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.85rem;padding:12px;margin-top:8px" onclick="launchRandomQcm()">
-          🔀 Lancer l'entraînement →
-        </button>
-
-        <div style="margin-top:16px;background:var(--cream2);border:1px solid var(--border);padding:12px;font-size:.8rem;color:var(--gray);line-height:1.55">
-          💡 Idéal pour simuler les conditions du concours et ne pas stagner dans un seul thème.
+        <div class="qcm-topbar-row">
+          <div style="font-size:.82rem;color:var(--gray);line-height:1.55">
+            💡 Les questions piochent aléatoirement dans <strong style="color:var(--charcoal)">tous les thèmes</strong> du concours — idéal pour simuler les conditions du jour J.
+          </div>
         </div>
       </div>
 
-      <!-- SCORE + CTA -->
-      <div style="border-top:1px solid var(--border);margin-top:28px;padding-top:22px">
-        <div style="font-size:.78rem;color:var(--gray-light);margin-bottom:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Ton score</div>
-        <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--red);line-height:1.1" id="score-display">0 / 0</div>
-        <div style="font-size:.88rem;color:var(--gray);margin-top:4px">questions répondues</div>
-      </div>
-      <div style="margin-top:22px;background:var(--red-pale);border:1px solid var(--red-pale2);padding:20px" id="qcm-unlock-cta">
-        <div style="font-size:.88rem;font-weight:600;color:var(--red);margin-bottom:8px">🎁 Session démo gratuite</div>
-        <div style="font-size:.9rem;color:var(--gray);line-height:1.55;margin-bottom:6px"><span id="demo-quota-left">10</span> QCM restants aujourd'hui.</div>
-        <div style="font-size:.82rem;color:var(--gray);line-height:1.5;margin-bottom:14px">Débloque les <strong>590+ QCM</strong> pour t'entraîner sans limite.</div>
-        <button class="btn btn-red" style="width:100%;font-size:.88rem;padding:13px" onclick="goTo('formation')">Débloquer — 59€ →</button>
-      </div>
-      <div style="margin-top:22px;background:#edf7ee;border:1px solid #c3e6c8;padding:20px;display:none" id="qcm-member-cta">
-        <div style="font-size:.88rem;font-weight:600;color:#1a5c25;margin-bottom:8px">✅ Accès complet activé</div>
-        <div style="font-size:.9rem;color:var(--gray);line-height:1.55">Tu as accès à tous les QCM.</div>
-      </div>
     </div>
 
     <!-- MAIN QCM -->
@@ -1323,7 +1378,7 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
           <div style="font-size:3rem;margin-bottom:20px">🎯</div>
           <div class="s-eyebrow" style="text-align:center">Prêt à t'entraîner ?</div>
           <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:12px;line-height:1.2">Choisis tes thèmes<br>ou lance un entraînement aléatoire</div>
-          <div style="font-size:.9rem;color:var(--gray);max-width:400px;line-height:1.7">Sélectionne les thèmes dans la colonne de gauche, puis clique sur <strong style="color:var(--charcoal)">Lancer les QCM</strong>.</div>
+          <div style="font-size:.9rem;color:var(--gray);max-width:480px;line-height:1.7">Sélectionne les thèmes dans la barre au-dessus, puis clique sur <strong style="color:var(--charcoal)">Lancer les QCM</strong>.</div>
           <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
             <div style="background:white;border:1px solid var(--border);padding:20px 24px;text-align:left;min-width:160px">
               <div style="font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Par thème</div>
@@ -1351,6 +1406,16 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
         <div id="qcm-area"></div>
       </div>
     </div>
+
+    <!-- CTA D'ACHAT EN BAS (non-payants) -->
+    <div class="qcm-bottom-cta" id="qcm-bottom-cta" style="display:none">
+      <div class="qcm-bottom-cta-text">
+        <div class="qcm-bottom-cta-title">🔒 Tu es en mode démo</div>
+        <div class="qcm-bottom-cta-sub">Tu accèdes à <strong>10 questions aléatoires par jour</strong> piochées parmi les 590+ du concours. Débloque l'accès complet pour t'entraîner sans limite, thème par thème, sur la totalité de la banque.</div>
+      </div>
+      <button class="btn btn-red" onclick="msPay('prc_acc-s-plateforme-de-pr-paration-candidat-54v0222')">Débloquer — 59€ →</button>
+    </div>
+
   </div>
 </div>
 
@@ -2482,7 +2547,9 @@ function updateCheckbox(cat) {
   var el = document.getElementById('chk-' + cat);
   if (!el) return;
   el.textContent = selectedCats[cat] ? '☑' : '☐';
-  var item = el.closest('.qcm-check-item, .qcm-subcheck-item');
+  // Compatible avec l'ancien HTML (.qcm-check-item/.qcm-subcheck-item)
+  // et la nouvelle barre horizontale (.qcm-chip)
+  var item = el.closest('.qcm-chip, .qcm-check-item, .qcm-subcheck-item');
   if (item) item.classList.toggle('checked', !!selectedCats[cat]);
 }
 
@@ -3703,14 +3770,19 @@ function checkAccessGate(page) {
   // "CTA membre"    = affiché uniquement pour les payants
   var hasPaid = isPaidMember;
   if (page === 'qcm') {
-    var unlockCta = document.getElementById('qcm-unlock-cta');
-    var memberCta = document.getElementById('qcm-member-cta');
-    if (unlockCta) unlockCta.style.display = hasPaid ? 'none' : 'block';
-    if (memberCta) memberCta.style.display = hasPaid ? 'block' : 'none';
-    // Mise à jour du compteur démo restant (non-payants)
+    // Affichage conditionnel des éléments non-payant : bandeau haut + CTA bas
+    var demoBanner = document.getElementById('qcm-demo-banner');
+    var bottomCta  = document.getElementById('qcm-bottom-cta');
+    if (demoBanner) demoBanner.style.display = hasPaid ? 'none' : 'flex';
+    if (bottomCta)  bottomCta.style.display  = hasPaid ? 'none' : 'flex';
+
+    // Mise à jour des compteurs démo restants (si non-payant)
     if (!hasPaid) {
-      var remainEl = document.getElementById('demo-quota-left');
-      if (remainEl) remainEl.textContent = getDemoRemaining();
+      var remaining = getDemoRemaining();
+      var remain1 = document.getElementById('demo-banner-count');
+      var remain2 = document.getElementById('demo-quota-left');
+      if (remain1) remain1.textContent = remaining;
+      if (remain2) remain2.textContent = remaining;
     }
   }
 }
