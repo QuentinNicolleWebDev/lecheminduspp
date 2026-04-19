@@ -4,7 +4,7 @@
   "year": 2025,
   "title": "CDG69 / SDMIS — Mathématiques — Session 2025",
   "duration_min": 60,
-  "pdf_sujet": "annales/maths-cdg69-2025.pdf",
+  "pdf_sujet": "annales/maths/mathematiques-cdg69-2025.pdf",
   "pdf_corrige": null,
   "instructions": "20 questions. Durée : 1 heure. Une seule réponse exacte par question. Barème : +1 point bonne réponse, -0,5 point mauvaise réponse ou absence de réponse. Calculatrice non programmable autorisée.",
   "questions": [
@@ -83,7 +83,8 @@
       "correct": [
         2
       ],
-      "expl": "B (48,28 m²). Calcul basé sur la décomposition de la zone hachurée en rectangles + demi-disque" 
+      "expl": "B (48,28 m²). Calcul basé sur la décomposition de la zone hachurée en rectangles + demi-disque."
+    },
     {
       "num": 12,
       "correct": [
