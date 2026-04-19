@@ -21,86 +21,75 @@
   },
   "annales": [
     {
-      "id": "etude-texte-demo",
-      "theme": "etude-texte",
-      "year": 2025,
-      "title": "Démo gratuite — Étude de texte",
-      "nb_questions": 3,
-      "duration_min": 60,
-      "is_demo": true
-    },
-    {
-      "id": "maths-demo",
-      "theme": "maths",
-      "year": 2025,
-      "title": "Démo gratuite — Mathématiques",
-      "nb_questions": 3,
-      "duration_min": 60,
-      "is_demo": true
-    },
-    {
       "id": "equipier-demo",
       "theme": "equipier",
       "year": 2025,
-      "title": "Démo gratuite — Équipier SPV",
+      "title": "Session 2025 — Équipier SPV (exemple)",
       "nb_questions": 3,
-      "duration_min": 60,
-      "is_demo": true
+      "duration_min": 60
     },
     {
-      "id": "equipier-cdg69-2025",
-      "theme": "equipier",
+      "id": "etudedetexte-cdg69-2025",
+      "theme": "etude-texte",
       "year": 2025,
-      "title": "CDG69 / SDMIS — Session 2025",
-      "nb_questions": 40,
+      "title": "CDG69 / SDMIS — Session 2025 (Pollens et allergies)",
+      "nb_questions": 30,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg35-2023",
-      "theme": "equipier",
+      "id": "etudedetexte1-cdg35-2023",
+      "theme": "etude-texte",
       "year": 2023,
-      "title": "CDG35 — Session 2023 (Ille-et-Vilaine)",
-      "nb_questions": 49,
+      "title": "CDG35 / SDIS 35 — Session 2023 — Sujet 1 (Alcool)",
+      "nb_questions": 28,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg69-2023",
-      "theme": "equipier",
+      "id": "etudedetexte2-cdg35-2023",
+      "theme": "etude-texte",
       "year": 2023,
-      "title": "CDG69 / SDMIS — Session 2023",
-      "nb_questions": 40,
+      "title": "CDG35 / SDIS 35 — Session 2023 — Sujet 2 (Béton romain)",
+      "nb_questions": 26,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg13-2021",
-      "theme": "equipier",
+      "id": "etudedetexte1-cdg13-2021",
+      "theme": "etude-texte",
       "year": 2021,
-      "title": "CDG13 — Session 2021 (Bouches-du-Rhône)",
-      "nb_questions": 40,
+      "title": "CDG13 / SDIS 13 — Session 2021 — Sujet 1 (Giono)",
+      "nb_questions": 30,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg35-2021",
-      "theme": "equipier",
+      "id": "etudedetexte2-cdg13-2021",
+      "theme": "etude-texte",
       "year": 2021,
-      "title": "CDG35 — Session 2021 (Ille-et-Vilaine)",
-      "nb_questions": 50,
+      "title": "CDG13 / SDIS 13 — Session 2021 — Sujet 2 (L'Arlésienne)",
+      "nb_questions": 30,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg57-2021",
-      "theme": "equipier",
+      "id": "etudedetexte1-cdg35-2021",
+      "theme": "etude-texte",
       "year": 2021,
-      "title": "CDG57 — Session 2021 (Moselle)",
-      "nb_questions": 40,
+      "title": "CDG35 / SDIS 35 — Session 2021 — Sujet 1 (Biodiversité)",
+      "nb_questions": 30,
       "duration_min": 60
     },
     {
-      "id": "equipier-cdg69-2021",
-      "theme": "equipier",
+      "id": "etudedetexte2-cdg35-2021",
+      "theme": "etude-texte",
       "year": 2021,
-      "title": "CDG69 / SDMIS — Session 2021",
-      "nb_questions": 60,
+      "title": "CDG35 / SDIS 35 — Session 2021 — Sujet 2 (IA — Bronner)",
+      "nb_questions": 29,
+      "duration_min": 60
+    },
+    {
+      "id": "etudedetexte1-cdg69-2021",
+      "theme": "etude-texte",
+      "year": 2021,
+      "title": "CDG69 / SDMIS — Session 2021 — Sujet 1 (Incendies Australie)",
+      "nb_questions": 30,
       "duration_min": 60
     }
   ]

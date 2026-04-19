@@ -1,0 +1,223 @@
+{
+  "id": "etudedetexte1-cdg35-2021",
+  "theme": "etude-texte",
+  "year": 2021,
+  "title": "CDG35 / SDIS 35 — Session 2021 — Sujet 1 (Biodiversité et humanité)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte1-cdg35-2021-sujet.pdf",
+  "instructions": "30 questions. Durée : 1 heure. Barème : 1 point si toutes les réponses exactes sont sélectionnées, 0 sinon. Pénalité de -1 point en cas de mauvaise réponse ou de réponse incomplète.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. La biodiversité désigne l'ensemble des êtres vivants (animaux, végétaux, micro-organismes) et des écosystèmes. Elle englobe toute « la variété des formes de vie »."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0
+      ],
+      "expl": "A. « L'équipe pluridisciplinaire […] a affiné un modèle afin de prédire l'usage passé des sols » — le modèle permet de reconstituer comment les hommes ont utilisé les sols dans le passé. Il ne prédit pas le futur."
+    },
+    {
+      "num": 3,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Il y a douze mille ans l'homme s'était répandu sur les trois quarts de la surface de la Terre, à l'exception de l'Antarctique ». L'homme occupait donc la majeure partie (75 %) de la surface terrestre hors Antarctique."
+    },
+    {
+      "num": 4,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Depuis les années 1960, les défenseurs de l'environnement ont toujours eu une solution toute prête […] : il faut protéger les zones naturelles de l'influence de l'homme ». Ils proposent de créer des zones hors de toute influence humaine."
+    },
+    {
+      "num": 5,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Nuit » (verbe nuire) signifie causer du tort, porter préjudice. Son antonyme est « favorise » (aider, soutenir). « Empêche » et « dégrade » ne sont pas les antonymes précis."
+    },
+    {
+      "num": 6,
+      "correct": [
+        1
+      ],
+      "expl": "B. Un anthropologue (du grec anthropos = homme) étudie les hommes, leur culture, leur évolution. Pas les paysages ou les forêts."
+    },
+    {
+      "num": 7,
+      "correct": [
+        1
+      ],
+      "expl": "B. Danielle Wood explique que « ce ne sont pas les êtres humains en eux-mêmes qui sont responsables […] mais la surexploitation des ressources […] Si ces pratiques sont durables, il n'est pas nécessaire d'écarter l'homme ». La condition est donc la durabilité des pratiques."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Ce ne sont pas les êtres humains en eux-mêmes qui sont responsables de la chute catastrophique de la biodiversité, mais la surexploitation des ressources »."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1,
+        2
+      ],
+      "expl": "B, C. « Indigène » signifie originaire d'un lieu, autochtone (B). Plus largement « qui est originaire d'un lieu » (C). Le sens restreint « indien » (A) est incorrect : un indigène peut être de n'importe quelle région du monde."
+    },
+    {
+      "num": 10,
+      "correct": [
+        0
+      ],
+      "expl": "A. « À l'époque des mammouths, l'espèce humaine s'était déjà étendue sur les trois quarts de la surface de la Terre » — les humains coexistaient donc bien avec les mammouths. Les populations préhistoriques ont même contribué à leur extinction."
+    },
+    {
+      "num": 11,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Tord le cou à un mythe » est une expression qui signifie contredire, invalider une idée reçue. L'article n'est donc pas d'accord avec ce mythe."
+    },
+    {
+      "num": 12,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le mythe remis en cause est celui qui présente l'homme comme nécessairement nuisible à la biodiversité. L'article montre au contraire que l'homme a pu contribuer à la maintenir ou l'augmenter."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. Dans ce contexte, « mythe » désigne une croyance largement répandue mais fausse — une histoire (narratif dominant) qui ne correspond pas à la réalité scientifique. Pas de légende antique ni de mensonge au sens strict."
+    },
+    {
+      "num": 14,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Naturelles », « intactes », « sauvages » expriment tous l'idée d'une nature non touchée par l'homme : ce sont des synonymes dans ce contexte."
+    },
+    {
+      "num": 15,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Intacte » ne peut pas être pris au sens propre strict (aucune terre n'est littéralement intacte). Dans le contexte, il est utilisé au sens figuré pour désigner une terre préservée de l'action humaine — ce que l'article remet en cause."
+    },
+    {
+      "num": 16,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Les populations préhistoriques ont probablement contribué à l'extinction d'animaux de la mégafaune ». Tous les groupes autochtones n'ont donc pas maintenu la biodiversité — l'affirmation est en partie fausse."
+    },
+    {
+      "num": 17,
+      "correct": [
+        0
+      ],
+      "expl": "A. « L'humanité a autrefois joué un rôle dans la conservation, voire la création de ces foyers, dont l'Amazonie et le Congo ». Dans ces régions, l'action humaine a permis le maintien de la biodiversité."
+    },
+    {
+      "num": 18,
+      "correct": [
+        2
+      ],
+      "expl": "C. Une « nature pure » est, selon le concept critiqué dans l'article, une nature existant sans intervention humaine — « épargnée par la main de l'homme »."
+    },
+    {
+      "num": 19,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Fallacieux » signifie trompeur, mensonger. Le concept est fallacieux parce que la présence de l'homme ne s'oppose pas nécessairement à une nature préservée, comme le montre l'étude."
+    },
+    {
+      "num": 20,
+      "correct": [
+        1
+      ],
+      "expl": "B. Non, l'homme n'est pas inoffensif. L'article montre au contraire des « bouleversements récents » (agriculture intensive, urbanisation, déforestation) qui nuisent à la biodiversité. La dernière option (depuis 1950) est contraire à ce que dit le texte."
+    },
+    {
+      "num": 21,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Il y a dix mille ans, les terres vierges représentaient en réalité 27 % du globe. Aujourd'hui, ce chiffre est de 19 % » : il y a donc moins de terres vierges aujourd'hui qu'il y a 10 000 ans."
+    },
+    {
+      "num": 22,
+      "correct": [
+        0
+      ],
+      "expl": "A. « [Des] zones où la richesse en espèces végétales endémiques est exceptionnelle mais menacée » — c'est la définition explicite donnée dans le texte."
+    },
+    {
+      "num": 23,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le texte cite comme bouleversements : « agriculture intensive, l'urbanisation, les exploitations minières à grande échelle et la déforestation ». L'urbanisation (= villes, A) est cité. Les voitures (B) et la croissance démographique (C) ne sont pas explicitement mentionnés parmi les sources citées."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Autochtone » (du grec auto = soi-même + chthon = terre) signifie originaire du lieu où il vit. C'est un synonyme d'« indigène ». « Naturel » et « sauvage » ont des sens différents."
+    },
+    {
+      "num": 25,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Pluridisciplinaire » (pluri = plusieurs + disciplinaire = relatif aux disciplines) désigne une équipe regroupant plusieurs disciplines scientifiques (anthropologie, archéologie, écologie, etc.)."
+    },
+    {
+      "num": 26,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le concept est « colonial et raciste » parce qu'il justifiait la spoliation des terres indigènes en prétendant que ces peuples n'étaient pas capables de gérer intelligemment leurs terres — ce qui est démenti par l'étude."
+    },
+    {
+      "num": 27,
+      "correct": [
+        2
+      ],
+      "expl": "C. « La chose la plus importante que nous puissions faire, c'est de leur donner le pouvoir et les moyens de préserver leurs terres souveraines » — « leur » désigne les peuples indigènes. Il faut leur rendre leurs terres."
+    },
+    {
+      "num": 28,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Les peuples indigènes ont été de bien meilleurs gardiens de la nature que nous tous » : leur connaissance fine de leur territoire leur permet de préserver la biodiversité localement."
+    },
+    {
+      "num": 29,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. « Apporter de l'eau au moulin » est une expression qui signifie fournir des arguments en faveur de quelqu'un, soutenir une thèse. « Corroborer » (A) et « confirmer » (C) en sont les équivalents."
+    },
+    {
+      "num": 30,
+      "correct": [
+        1
+      ],
+      "expl": "B. La conclusion synthétise les deux idées clés de l'article : favoriser les gardiens traditionnels de la biodiversité (peuples indigènes qui connaissent bien leur territoire) et limiter les pratiques récentes destructrices (agriculture intensive, urbanisation, etc.). A est contraire à l'esprit du texte."
+    }
+  ]
+}

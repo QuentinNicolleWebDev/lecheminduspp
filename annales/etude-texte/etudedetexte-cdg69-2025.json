@@ -1,0 +1,240 @@
+{
+  "id": "etudedetexte-cdg69-2025",
+  "theme": "etude-texte",
+  "year": 2025,
+  "title": "CDG69 / SDMIS — Session 2025 (Pollens et allergies)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte-cdg69-2025-sujet.pdf",
+  "instructions": "30 questions. Durée : 1 heure. Barème : 1 point si toutes les réponses exactes, 0,5 si la moitié au moins (sans réponse inexacte), 0 si moins de la moitié (sans réponse inexacte), -0,5 dès qu'une réponse inexacte OU aucune réponse indiquée. Calculatrice non autorisée.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        0,
+        2,
+        4
+      ],
+      "expl": "A, C, E. « Les yeux larmoient, les gorges piquent, les nez coulent » : yeux qui pleurent (A), nez qui coule (C), gorge qui gratte (E). La fièvre (B) et les douleurs abdominales (D) ne sont pas des symptômes de la rhinite allergique."
+    },
+    {
+      "num": 2,
+      "correct": [
+        2,
+        3
+      ],
+      "expl": "C, D. « Précocement » signifie de manière prématurée, hâtivement. « Prématurément » (C) et « hâtivement » (D) sont des synonymes directs. « Tardivement » est l'antonyme ; « bientôt » n'est pas un synonyme adéquat."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. L'affirmation C est incorrecte : le texte dit « l'Anses a estimé qu'entre 1,15 et 3,5 millions de personnes étaient DÉJÀ allergiques » (en 2020), pas qu'elles le seront dans les prochaines décennies. Les autres affirmations sont exactes."
+    },
+    {
+      "num": 4,
+      "correct": [
+        3
+      ],
+      "expl": "D. « Les plantes dites 'anémophiles' libèrent de grandes quantités de pollen, ne comptant que sur le vent pour les transporter ». Du grec anemos (vent) + philos (qui aime) = qui utilise le vent pour la pollinisation."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. « La présence accrue du dioxyde de carbone (CO₂) dans l'atmosphère dope la production de pollens » ; « les concentrations actuelles de CO₂ ont fait grimper la production de pollen de 131 % ». Une forte présence de CO2 augmente la production."
+    },
+    {
+      "num": 6,
+      "correct": [
+        4
+      ],
+      "expl": "E. Raphaëlle Aubert est journaliste, auteure de l'article publié dans Le Monde le 28 mars 2024 (« Par Raphaëlle Aubert »). Elle n'est ni allergologue, ni membre de l'Anses, du RNSA ou de l'équipe de Iain Lake."
+    },
+    {
+      "num": 7,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Les concentrations actuelles de CO₂ ont fait grimper la production de pollen de 131 % par rapport à la période préindustrielle ». 320 % est la projection pour le XXIème siècle, pas le pourcentage actuel."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. « L'exposition prolongée à la protéine PR 10, présente dans les pollens, peut créer au bout d'un certain temps des réactions alimentaires pour tous les fruits » — c'est-à-dire des allergies alimentaires croisées."
+    },
+    {
+      "num": 9,
+      "correct": [
+        0,
+        4
+      ],
+      "expl": "A, E. Samuel Monnier recommande de « brosser régulièrement leurs cheveux » (A), « d'éviter de faire sécher leur linge en extérieur » (contraire de B), « aérer les pièces très tôt le matin ou tard le soir » (contraire de C) et « consulter les bulletins allergo-polliniques » (E)."
+    },
+    {
+      "num": 10,
+      "correct": [
+        0,
+        1,
+        4
+      ],
+      "expl": "A, B, E. L'ambroisie est « une espèce très envahissante introduite en Europe à la fin du XIXe siècle » (A, B). « La quantité d'allergènes dans les grains de pollen de bouleau et d'ambroisie augmentait avec la température » (E). C est faux : l'ambroisie est dans la vallée du Rhône, pas le Nord-Est. D n'est pas mentionné (la PR 10 est contenue dans les pollens)."
+    },
+    {
+      "num": 11,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le préfixe grec « photo- » signifie « lumière » (photographie, photon, photosynthèse = synthèse grâce à la lumière). Pas chaleur (« thermo- »), pas image."
+    },
+    {
+      "num": 12,
+      "correct": [
+        3
+      ],
+      "expl": "D. « Comme en 2023, les capteurs de l'association ont aussi détecté des grains de pollen de noisetier dès fin décembre ». L'article est de 2024 et évoque cette observation « comme en 2023 » (soit fin 2023)."
+    },
+    {
+      "num": 13,
+      "correct": [
+        0,
+        2,
+        3
+      ],
+      "expl": "A, C, D. « Les pollens les plus problématiques en France sont ceux des cupressacées [cyprès] (A), des graminées (C), des bétulacées [bouleaux] (D) et de l'ambroisie ». Les plantaginacées et papilionacées ne sont pas citées."
+    },
+    {
+      "num": 14,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'affirmation A n'est pas citée : le texte n'évoque pas de mutation génétique due aux UV. B (saison pollinique modifiée), C (pollution qui fragilise les pollens) et D (CO2 qui stimule la production) sont bien cités comme mécanismes d'aggravation."
+    },
+    {
+      "num": 15,
+      "correct": [
+        3
+      ],
+      "expl": "D. « La prévalence des pathologies allergiques respiratoires […] a pratiquement doublé ces vingt dernières années dans les pays industrialisés » = multiplié par environ 2 sur 20 ans dans les pays industrialisés (pas en voie de développement)."
+    },
+    {
+      "num": 16,
+      "correct": [
+        4
+      ],
+      "expl": "E. « Les pollens les plus problématiques en France sont ceux des cupressacées [famille des cyprès] dans le Sud-Est ». La vallée du Rhône concerne l'ambroisie."
+    },
+    {
+      "num": 17,
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "expl": "A, B, D. Le texte cite : l'altération des grains par les polluants urbains (A), l'allongement/avancement de la saison pollinique (B) et la migration des espèces vers de nouveaux territoires (D). Les canicules (C) et la diminution des variétés (E) ne sont pas les raisons citées."
+    },
+    {
+      "num": 18,
+      "correct": [
+        1,
+        3
+      ],
+      "expl": "B, D. « Les hivers de plus en plus doux pourraient à terme […] perturber le cycle végétal et retarder leur réveil au printemps » (B, D). A est partiellement incorrect car les hivers doux n'accélèrent pas directement la floraison (c'est la hausse générale des températures). C est faux (effet négatif potentiel)."
+    },
+    {
+      "num": 19,
+      "correct": [
+        0,
+        3
+      ],
+      "expl": "A, D. « La présence accrue de polluants chimiques dans l'air […] déform[e] ou endommage[…] la paroi de certains grains de pollen » (A) et « La pollution atmosphérique joue par ailleurs un rôle d'irritant sur les voies respiratoires, ce qui les fragilise et exacerbe les symptômes » (D)."
+    },
+    {
+      "num": 20,
+      "correct": [
+        1
+      ],
+      "expl": "B. La thèse globale de l'article combine : modification de la saison pollinique, augmentation de la quantité et du potentiel allergique des pollens, propagation d'espèces allergisantes. A, C et D contiennent des éléments faux (pas de réduction de pollens, pas de diminution de CO2)."
+    },
+    {
+      "num": 21,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Bouleau » (arbre) et « boulot » (travail, familier) se prononcent de façon identique mais s'écrivent différemment et ont des sens différents : ce sont des homophones."
+    },
+    {
+      "num": 22,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'infographie (Document 2) indique : « 2 % des adultes ont une allergie alimentaire ». 6,2 % concerne les enfants d'âge scolaire."
+    },
+    {
+      "num": 23,
+      "correct": [
+        2
+      ],
+      "expl": "C. L'infographie indique : « 1 personne sur 3 née après 1980 est allergique », soit un tiers de la population mondiale. La moitié est la projection pour 2050."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0,
+        3
+      ],
+      "expl": "A, D. L'infographie indique « Chaque année, l'asthme provoque près de 1 000 décès en France » (A) et « L'asthme sévère concerne environ 400 000 asthmatiques en France » (D). B est faux (1 sur 4 = allergie respiratoire, pas asthme spécifiquement). C est faux (80 % des asthmes chez l'enfant sont d'origine allergique, pas l'inverse)."
+    },
+    {
+      "num": 25,
+      "correct": [
+        1,
+        4
+      ],
+      "expl": "B, E. « Environ 30 % des réactions anaphylactiques sont causées par des aliments » (B). Les réactions anaphylactiques sont par définition des réactions allergiques aiguës/graves (E), pas bénignes (D)."
+    },
+    {
+      "num": 26,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. « 4 millions de personnes sont asthmatiques » (A) et « 7 à 10 % des enfants sont asthmatiques » (C). B est faux : c'est 1/3 (pas la moitié) des personnes avec rhinite allergique qui peuvent développer un asthme. D est faux (même raison)."
+    },
+    {
+      "num": 27,
+      "correct": [
+        2
+      ],
+      "expl": "C. L'infographie évoque les raisons suivantes chez les séniors non diagnostiqués : attribution de la fatigue à l'âge (A), négligence/résignation/fatalisme (D), et mentionne aussi qu'ils passent plus de temps à l'intérieur où la pollution aggrave les allergies (B est évoquée). En revanche, l'aggravation des autres pathologies courantes (C) n'est PAS mentionnée comme raison."
+    },
+    {
+      "num": 28,
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "expl": "A, B, D. L'infographie indique : « Le risque de développer une allergie s'accroît dans les familles d'allergiques » (A, B : génétique). « Une future maman exposée au stress a plus de risque de donner naissance à un bébé allergique » (D). L'exposition du père avant grossesse (C) n'est pas évoquée."
+    },
+    {
+      "num": 29,
+      "correct": [
+        0
+      ],
+      "expl": "A. Dans la phrase « la moitié de la population mondiale sera affectée par au moins une pathologie allergique », « affecter » signifie produire un effet sur quelqu'un (être touché par). Ce n'est ni « s'intéresser à », ni « attribuer », ni « adopter un comportement »."
+    },
+    {
+      "num": 30,
+      "correct": [
+        0,
+        2,
+        3
+      ],
+      "expl": "A, C, D. L'infographie indique : « L'errance thérapeutique est en moyenne de 7 ans en France avant de consulter un médecin » (A) et « L'allergie est la 4ème maladie dans le monde » (C). D est vrai : si 80 % des asthmes chez l'enfant sont d'origine allergique, alors 20 % ne le sont pas. B est faux (15 à 20 % souffrent de rhinite ET conjonctivite allergique, pas 7-10 %)."
+    }
+  ]
+}

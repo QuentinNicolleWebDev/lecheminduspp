@@ -1,0 +1,221 @@
+{
+  "id": "etudedetexte2-cdg35-2021",
+  "theme": "etude-texte",
+  "year": 2021,
+  "title": "CDG35 / SDIS 35 — Session 2021 — Sujet 2 (IA — G. Bronner)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte2-cdg35-2021-sujet.pdf",
+  "instructions": "29 questions. Durée : 1 heure. Barème : 1 point si toutes les réponses exactes sont sélectionnées, 0 sinon. Pénalité de -1 point en cas de mauvaise réponse ou de réponse incomplète.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. Il s'agit d'un extrait d'essai (Apocalypse cognitive, PUF, 2021) — un texte argumentatif et analytique, pas un article de journal ni un roman de science-fiction."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'auteur est Gérald Bronner, comme indiqué à la fin du texte : « Gérald Bronner, Apocalypse cognitive, PUF, 2021 ». Kasparov est un joueur d'échecs, Yann Lecun est un spécialiste cité dans le texte."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le texte date de 2021 (publication de l'essai), soit du XXIème siècle. Le XIXème siècle = 19ème siècle = années 1800."
+    },
+    {
+      "num": 4,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Yann Lecun rappelle que « les IA n'ont pour le moment pas plus de sens commun qu'un rat » (C : ne savent pas généraliser) et « ont besoin d'un nombre considérable d'exemples pour apprendre ; ce qui entraîne une dépense d'énergie sans commune mesure » (A). B est faux : elles dépassent l'Homme en rapidité."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. L'ATS (Applicant Tracking System) « détecte les mots-clés désirés selon le type de poste » et « n'est utilisé que pour un premier tri des CV ». Il trie les CV grâce à certains mots."
+    },
+    {
+      "num": 6,
+      "correct": [
+        1
+      ],
+      "expl": "B. « A priori » (locution latine) désigne une opinion préconçue, un préjugé. Le texte dit d'ailleurs que les IA peuvent nous libérer de « certains de nos a priori culturels »."
+    },
+    {
+      "num": 7,
+      "correct": [
+        1
+      ],
+      "expl": "B. « A priori » est en italique parce que c'est une expression latine. En typographie française, les mots et locutions latines (ou étrangères en général) sont mis en italique."
+    },
+    {
+      "num": 8,
+      "correct": [
+        2
+      ],
+      "expl": "C. L'auteur affirme que « les intelligences artificielles sont des prothèses pour l'humanité » qui vont permettre de « se libérer des tâches algorithmiques », donc de décharger l'Homme de tâches routinières. Il ne s'agit pas d'une libération totale du travail (B) ni d'un risque (A)."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. Cette expression signifie que ces tâches routinières étaient indignes, en-dessous des capacités du cerveau humain. Le cerveau est trop perfectionné pour se limiter à des calculs automatiques."
+    },
+    {
+      "num": 10,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. « Despotisme » signifie pouvoir absolu, arbitraire, exercé sans contrôle. « Arbitraire » et « tyrannie » en sont des synonymes. La démocratie (B) est l'antonyme."
+    },
+    {
+      "num": 11,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Dans le 3ème paragraphe, l'auteur montre que les machines introduisent plus de diversité (A) et précise qu'il faut « à condition que leur algorithme soit indexé sur des valeurs universalistes », donc qu'elles dépendent de leurs concepteurs (C). B n'est pas défendu."
+    },
+    {
+      "num": 12,
+      "correct": [
+        2
+      ],
+      "expl": "C. Dans ce texte, « externalisation » désigne le fait de confier une tâche (physique puis cognitive) à une machine au lieu de l'accomplir soi-même. Pas de lien avec la délocalisation (B) ni le remplacement d'un ouvrier (A) stricto sensu."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. L'auteur relativise la crainte : « Imaginer que Skynet va provoquer l'apocalypse relève de la pure science-fiction » et rappelle que « les IA n'ont pour le moment pas plus de sens commun qu'un rat ». On a donc tort de craindre."
+    },
+    {
+      "num": 14,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'avantage cité est que « les délais de réponse passent de quatre mois à quatre semaines ». C'est plus rapide. « Plus drôle » ou « moins fatiguant » ne sont pas mentionnés."
+    },
+    {
+      "num": 15,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Les universités représentées dans la phase de recrutement sont passées de 840 à 2600 ». 2600/840 ≈ 3,1, donc le nombre fait plus que tripler."
+    },
+    {
+      "num": 16,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « il reste à l'humanité l'exploration de l'inconnu dans tous les domaines : sciences, arts... » — c'est le domaine de la création (B) et de l'imagination (A). Pour les activités physiques, les machines dépassent l'Homme."
+    },
+    {
+      "num": 17,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le 2ème paragraphe évoque l'externalisation des activités cognitives, dont l'idée sous-jacente est de libérer le cerveau de tâches routinières (« libération progressive de notre temps de cerveau disponible » annoncée au 1er paragraphe). L'auteur y sous-entend que les machines prennent en charge des activités banales / automatisables."
+    },
+    {
+      "num": 18,
+      "correct": [
+        2
+      ],
+      "expl": "C. « cette disponibilité est irrésistiblement captée par les écrans ». Le temps libéré est consacré aux écrans."
+    },
+    {
+      "num": 19,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Ce temps de sommeil diminué correspond lui aussi à une augmentation de notre disponibilité mentale ». C'est sur le sommeil que le temps est pris (consultation du smartphone, insomnie)."
+    },
+    {
+      "num": 20,
+      "correct": [
+        0
+      ],
+      "expl": "A. « quelque chose qui relève en partie de l'addiction ». L'auteur compare cette attirance pour les écrans à la drogue (addiction)."
+    },
+    {
+      "num": 21,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Fantasme » désigne une idée illusoire, une imagination sans fondement. Son antonyme est « réalité ». Illusion (B) et rêve (C) sont des synonymes."
+    },
+    {
+      "num": 22,
+      "correct": [
+        1
+      ],
+      "expl": "B. IA signifie Intelligence Artificielle, comme défini explicitement dans le texte."
+    },
+    {
+      "num": 23,
+      "correct": [
+        1
+      ],
+      "expl": "B. L'idée principale est que les machines sont un atout pour l'Homme : elles libèrent du temps de cerveau, introduisent plus de diversité, nous affranchissent de biais. C'est une vision globalement optimiste."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « 490 machines à vapeur sont en service en Grande-Bretagne » (A : nombreuses) et « les machines vont peu à peu se montrer de remarquables compétitrices, dépassant rapidement les capacités humaines » (B : développement rapide)."
+    },
+    {
+      "num": 25,
+      "correct": [
+        2
+      ],
+      "expl": "C. Les activités cognitives sont les activités mentales, intellectuelles (du latin cognitio = connaissance). C'est opposé aux activités physiques."
+    },
+    {
+      "num": 26,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Rien moins que » est une locution complexe qui signifie ici « très », « tout à fait ». « Elle n'est rien moins que prévisible » = elle est tout à fait prévisible, très prévisible."
+    },
+    {
+      "num": 27,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. L'auteur présente l'algorithme comme « sévère mais juste » (A) et « moins porteur de stéréotypes » (B : plus neutre). C est l'opposé de ce que défend l'auteur."
+    },
+    {
+      "num": 28,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Temps de cerveau disponible » désigne le temps libéré du travail (automatisé) que le cerveau peut consacrer à autre chose. C'est la disponibilité mentale qu'on peut exploiter."
+    },
+    {
+      "num": 29,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « L'arrivée massive de ces prothèses cognitives va permettre à l'humanité de se libérer des tâches algorithmiques » (A) et cela permet « l'exploration de l'inconnu dans tous les domaines : sciences, arts » (B : imaginer, créer)."
+    }
+  ]
+}

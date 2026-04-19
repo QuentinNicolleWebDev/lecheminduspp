@@ -1,0 +1,204 @@
+{
+  "id": "etudedetexte2-cdg35-2023",
+  "theme": "etude-texte",
+  "year": 2023,
+  "title": "CDG35 / SDIS 35 — Session 2023 — Sujet 2 (Béton romain)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte2-cdg35-2023-sujet.pdf",
+  "instructions": "26 questions. Durée : 1 heure. Barème : 1 point si toutes les réponses exactes sont sélectionnées, 0 sinon. Pénalité de -0,5 point en cas de mauvaise réponse ou réponse incomplète. Absence de réponse = 0 point. Note ramenée sur 20.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le texte est un article de presse signé Nathaniel Herzberg, publié dans Le Monde du 18 janvier 2023. Ce n'est ni un essai, ni un roman, ni une publication historique."
+    },
+    {
+      "num": 2,
+      "correct": [
+        2
+      ],
+      "expl": "C. L'auteur est Nathaniel Herzberg (journaliste du Monde). Admir Masic dirige l'équipe du MIT à l'origine de la découverte, Marie Jackson est citée comme autre chercheuse."
+    },
+    {
+      "num": 3,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'article date du 18 janvier 2023. Le 6 janvier 2023 est la date de publication de l'article scientifique dans Science Advances, pas de l'article du Monde. 128 après J.-C. est la date du Panthéon."
+    },
+    {
+      "num": 4,
+      "correct": [
+        3
+      ],
+      "expl": "D. L'article porte principalement sur les sciences et techniques (découverte scientifique sur la composition du béton antique et applications modernes). L'archéologie et la géologie sont secondaires."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Nombre de ces merveilles ont été construites en béton » : le béton est une technique déjà maîtrisée dans l'Antiquité romaine. Il n'a pas été abandonné (on l'utilise toujours aujourd'hui)."
+    },
+    {
+      "num": 6,
+      "correct": [
+        1,
+        2
+      ],
+      "expl": "B, C. « Insubmersible » signifie littéralement « qui ne peut pas être submergé » (= couler, B) et par extension qui résiste à l'eau (de mer) (C). Dans le contexte des ports, les deux sens conviennent."
+    },
+    {
+      "num": 7,
+      "correct": [
+        3
+      ],
+      "expl": "D. « Laisser pantois » signifie laisser stupéfait, étonné au point d'en perdre ses moyens. L'origine vient de « pantois » (essoufflé, puis étonné), mais n'a pas de rapport avec le pantin."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. La « Botte » est une métaphore désignant l'Italie (dont la forme évoque une botte). Le sud de la Botte = le sud de l'Italie, zone sismique connue."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Les édifices ainsi construits pourraient tenir pendant des millénaires ». Le béton moderne (Portland) est garanti 100 ans ; le béton romain dure potentiellement plusieurs millénaires."
+    },
+    {
+      "num": 10,
+      "correct": [
+        2
+      ],
+      "expl": "C. « L'équipe d'Admir Masic, au Massachusetts Institute of Technology (MIT, Etats-Unis), accompagnée de chercheurs italiens et suisses ». C'est une coopération internationale (États-Unis + Italie + Suisse)."
+    },
+    {
+      "num": 11,
+      "correct": [
+        2,
+        3
+      ],
+      "expl": "C, D. L'enjeu est de comprendre l'auto-réparation pour la reproduire (D) et de limiter l'impact environnemental (C) puisque « l'industrie bétonnière est jugée responsable de 7 à 8 % des émissions de gaz à effet de serre »."
+    },
+    {
+      "num": 12,
+      "correct": [
+        0
+      ],
+      "expl": "A. « En remplaçant le sable […] par cette pierre éruptive pilée et en la mélangeant à des cendres volcaniques et à de la chaux, une réaction de cristallisation donnait naissance à un minerai nommé 'stratlingite' » — donc mélange de matières volcaniques et de chaux."
+    },
+    {
+      "num": 13,
+      "correct": [
+        0,
+        3
+      ],
+      "expl": "A, D. Les clastes sont « ces petits éclats blancs toujours présents dans le béton romain » qui « vont servir de source de calcium pour le processus d'autoréparation » (A). Leur formation nécessite de la chaux vive, pas inactivée (D). Ils ne provoquent pas les fissures (B faux), et ne sont pas créés par l'eau (C faux)."
+    },
+    {
+      "num": 14,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Ces inclusions de carbonate de calcium » et « c'est eux qui vont servir de source de calcium pour le processus d'autoréparation ». L'élément principal est le calcium."
+    },
+    {
+      "num": 15,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Utiliser de la chaux vive dans le mélange puis ajouter de l'eau provoque une réaction qui dégage une chaleur intense ». C'est cette forte chaleur qui la rend délicate à manier."
+    },
+    {
+      "num": 16,
+      "correct": [
+        1,
+        3
+      ],
+      "expl": "B, D. Le texte met en avant l'auto-réparation (D) et l'étanchéité (B) : « les fissures ont été intégralement comblées » et « n'a jamais retrouvé son étanchéité » a contrario. La résistance au vieillissement (A) n'est pas directement liée dans le texte à la chaux vive."
+    },
+    {
+      "num": 17,
+      "correct": [
+        2,
+        3
+      ],
+      "expl": "C, D. « Le Panthéon, à Rome, inauguré en 128 après J.-C., demeure même le plus grand dôme de béton jamais réalisé » (C) et « Quant aux aqueducs antiques, ils restent des pièces essentielles » (D). Les ponts (A) ne sont pas évoqués, le Colisée est cité mais pas dans ce contexte de longévité."
+    },
+    {
+      "num": 18,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Un « prototype » est un premier exemplaire (C) ou un modèle expérimental, proche du moulage (A). Ni des machines (B) ni des seaux (D)."
+    },
+    {
+      "num": 19,
+      "correct": [
+        1,
+        3
+      ],
+      "expl": "B, D. L'« étanchéité » est l'imperméabilité. Ses antonymes sont « perméabilité » (B) et « porosité » (D). « Imperméabilité » (A) est synonyme et « assèchement » (C) n'est pas un antonyme."
+    },
+    {
+      "num": 20,
+      "correct": [
+        3
+      ],
+      "expl": "D. Les expériences se concentrent sur la résistance à l'eau : « Ils les ont délibérément fissurés, puis ont fait couler de l'eau. En deux semaines, des fissures de 0,6 millimètre ont été intégralement comblées ». C'est l'eau (étanchéité) qui est testée."
+    },
+    {
+      "num": 21,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Les recherches visent à développer un béton durable (A) tout en luttant contre le réchauffement climatique (C) : « réduction de la facture énergétique et diminution des gaz à effet de serre ». Les tremblements de terre (B) sont mentionnés mais ne sont pas la motivation principale des recherches."
+    },
+    {
+      "num": 22,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Prophétique » et « miracle » appartiennent au champ lexical de la religion (prophétie, miracle). Pas de lien avec la cuisine, la science ou la poésie dans ce contexte."
+    },
+    {
+      "num": 23,
+      "correct": [
+        0,
+        1,
+        3
+      ],
+      "expl": "A, B, D. En qualifiant le ton de « mi-publicitaire », l'auteur sous-entend un enjeu commercial (A : « travaille à la commercialisation de ce béton modifié »). En le qualifiant de « mi-prophétique », il souligne une exagération (B) et prend une distance critique (D). Il ne pense donc pas qu'il s'agit d'une découverte exceptionnelle sans réserve (C)."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le physicien Pierre Lévitz énumère d'autres pistes de recherche (polymères à base d'aluminium, bétons plus légers, plus recyclables, etc.) pour montrer qu'il existe plusieurs voies pour réduire l'impact environnemental."
+    },
+    {
+      "num": 25,
+      "correct": [
+        0
+      ],
+      "expl": "A. La phrase ironique explique que les Romains obtenaient un meilleur résultat (plus résistant) en chauffant à 800°C, là où nous chauffons à 1450°C. Donc le béton antique est plus résistant malgré une température plus basse — autrement dit, le nôtre est moins résistant malgré une température plus haute."
+    },
+    {
+      "num": 26,
+      "correct": [
+        2,
+        3
+      ],
+      "expl": "C, D. « Dura betonex » détourne de façon humoristique la formule latine connue « Dura lex, sed lex » (la loi est dure, mais c'est la loi). En remplaçant « lex » par « betonex », l'auteur fait un jeu de mot en reprenant le début (« Dura ») d'une formule latine célèbre."
+    }
+  ]
+}

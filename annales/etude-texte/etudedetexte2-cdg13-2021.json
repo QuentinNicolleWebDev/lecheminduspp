@@ -1,0 +1,225 @@
+{
+  "id": "etudedetexte2-cdg13-2021",
+  "theme": "etude-texte",
+  "year": 2021,
+  "title": "CDG13 / SDIS 13 — Session 2021 — Sujet 2 (L'Arlésienne, Daudet)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte2-cdg13-2021-sujet.pdf",
+  "instructions": "30 questions (20 compréhension + 10 lexique) notées sur 20 points. Durée : 1 heure. Bonne réponse = barème indiqué. Mauvaise réponse ou absence de réponse = 0 point.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le narrateur ne se nomme jamais dans l'extrait. Il parle à la première personne mais reste anonyme. Alphonse (Daudet) est l'auteur mais pas nommé dans le texte, Jan est le personnage tragique."
+    },
+    {
+      "num": 2,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Le narrateur exprime de la curiosité (« Pourquoi cette maison m'avait-elle frappé ? ») et une émotion forte (« me serrait-il le cœur », « me faisait froid »). Pas de joie ni de peur explicites."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Il y avait trop de silence autour… Quand on passait, les chiens n'aboyaient pas, les pintades s'enfuyaient sans crier… À l'intérieur, pas une voix ! ». C'est le silence qui évoque l'inhabitation."
+    },
+    {
+      "num": 4,
+      "correct": [
+        1
+      ],
+      "expl": "B. « je vis, au fond de la cour, accoudé […] un grand vieux tout blanc ». Il s'agit du père (maître Estève), pas de Jan (mort) ni de l'Arlésienne."
+    },
+    {
+      "num": 5,
+      "correct": [
+        2
+      ],
+      "expl": "C. « je demandai au voiturier de monter à côté de lui, et c'est là-haut, dans le foin, que j'appris toute cette navrante histoire ». C'est le voiturier qui raconte l'histoire."
+    },
+    {
+      "num": 6,
+      "correct": [
+        0
+      ],
+      "expl": "A. La « mise en abyme » (ou mise en abîme) désigne un procédé par lequel une œuvre contient une autre œuvre du même type, ou une histoire enchâssée dans une autre."
+    },
+    {
+      "num": 7,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le « flash-back » (retour en arrière) désigne un procédé narratif qui fait remonter dans le passé. La prolepse est au contraire une projection dans le futur."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. Seule la phrase « Je mourrai si on ne me la donne pas » est rapportée directement au discours direct. Les autres phrases (A, C) ne figurent pas comme citation directe dans le texte."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le père est désigné comme « maître Estève » à plusieurs reprises, ainsi que « le maître » par les valets. C'est le terme majoritaire."
+    },
+    {
+      "num": 10,
+      "correct": [
+        0
+      ],
+      "expl": "A. On sait très peu de choses de l'Arlésienne : seulement qu'elle est « toute en velours et en dentelles », qu'elle « passait pour coquette » et que ses parents « n'étaient pas du pays ». Ce personnage reste mystérieux — d'où l'expression « attendre l'Arlésienne »."
+    },
+    {
+      "num": 11,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Maître, lui dit l'homme, vous allez marier votre enfant à une coquine, qui a été ma maîtresse pendant deux ans. » L'homme révèle être l'ancien amant de l'Arlésienne."
+    },
+    {
+      "num": 12,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Ce que j'avance, je le prouve : voici des lettres !… ». Les preuves sont des lettres. Pas d'acte de mariage ni de contrat de fiançailles."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Le père rentre, impassible ; il reprend sa place à table ». « Impassible » signifie sans émotion apparente. Pas de colère, de pleurs ni de violence."
+    },
+    {
+      "num": 14,
+      "correct": [
+        0
+      ],
+      "expl": "A. Jan est tantôt passif (« il passait des journées entières seul dans un coin, sans bouger ») tantôt hyperactif (« il se mettait à la terre avec rage et abattait à lui seul le travail de dix journaliers »). C'est un comportement contradictoire."
+    },
+    {
+      "num": 15,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Le soir venu, il prenait la route d'Arles et marchait devant lui jusqu'à ce qu'il vît monter dans le couchant les clochers grêles de la ville. Alors il revenait. » Il va jusqu'aux abords d'Arles."
+    },
+    {
+      "num": 16,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Eh bien ! Ecoute, Jan, si tu la veux tout de même, nous te la donnerons… ». La mère propose à Jan d'épouser malgré tout l'Arlésienne."
+    },
+    {
+      "num": 17,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Jan fit signe que non, et il sortit… À partir de ce jour, il changea sa façon de vivre, affectant d'être toujours gai, pour rassurer ses parents. » Jan fait semblant d'être gai."
+    },
+    {
+      "num": 18,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Le père disait : 'Il est guéri.' La mère, elle, avait toujours des craintes et plus que jamais surveillait son enfant… » Le père est rassuré (content) et la mère craintive."
+    },
+    {
+      "num": 19,
+      "correct": [
+        3
+      ],
+      "expl": "D. « il voulut faire danser sa mère ; la pauvre femme en pleurait de bonheur ». Elle pleure de bonheur parce que Jan la fait danser."
+    },
+    {
+      "num": 20,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Cadet a raconté depuis que toute la nuit il avait sangloté ». Jan a pleuré toute la nuit."
+    },
+    {
+      "num": 21,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le préfixe « in- » dans « inhabité » marque l'opposition, la négation : in-habité = qui n'est pas habité. Comme dans inconnu, incertain, etc."
+    },
+    {
+      "num": 22,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Des culottes en lambeaux » signifie des culottes déchirées, en morceaux. Le mot « lambeau » désigne un morceau arraché ou déchiré de tissu."
+    },
+    {
+      "num": 23,
+      "correct": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "expl": "A, B, C, D. Un « mas » est une ferme typique de Provence. Tous ces termes (maison, ferme, demeure, habitation) peuvent désigner un mas, chacun mettant l'accent sur un aspect différent."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Navrant » signifie qui cause du chagrin, triste, affligeant. Son antonyme est donc « heureuse ». Une histoire navrante est une histoire triste."
+    },
+    {
+      "num": 25,
+      "correct": [
+        0
+      ],
+      "expl": "A. « J'ai plus de chagrin que de soif » est une métaphore qui oppose une émotion (chagrin) et un besoin physique (soif) pour exprimer une détresse profonde."
+    },
+    {
+      "num": 26,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Avec rage » signifie ici « de manière excessive », avec une intensité extrême, en y mettant toute son énergie (et non pas calmement, avec inattention ou avec joie)."
+    },
+    {
+      "num": 27,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Au bal, au cabaret, dans les ferrades » est une énumération (trois éléments de même nature énumérés). Ce n'est ni une allitération, ni une hyperbole, ni une métaphore."
+    },
+    {
+      "num": 28,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Fier » signifie qui a le sentiment de sa dignité, parfois orgueilleux. Son antonyme est « modeste » (qui a de l'humilité, de la retenue)."
+    },
+    {
+      "num": 29,
+      "correct": [
+        1
+      ],
+      "expl": "B. Les « micocouliers » sont des arbres méditerranéens (Celtis australis). « une grande cour plantée de micocouliers » et « des lanternes de couleur plein les micocouliers » — il s'agit bien d'arbres."
+    },
+    {
+      "num": 30,
+      "correct": [
+        2
+      ],
+      "expl": "C. La farandole est une danse provençale. « Farandoler » signifie donc danser la farandole, plus largement danser en se tenant par la main en file."
+    }
+  ]
+}

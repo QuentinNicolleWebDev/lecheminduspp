@@ -1,0 +1,214 @@
+{
+  "id": "etudedetexte1-cdg35-2023",
+  "theme": "etude-texte",
+  "year": 2023,
+  "title": "CDG35 / SDIS 35 — Session 2023 — Sujet 1 (Alcool)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte1-cdg35-2023-sujet.pdf",
+  "instructions": "28 questions. Durée : 1 heure. Barème : 1 point si TOUTES les réponses exactes sont sélectionnées, 0 sinon. Pénalité de -0,5 point en cas de mauvaise réponse ou réponse incomplète. Absence de réponse = 0 point. Note ramenée sur 20.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. Le texte évoque explicitement les risques de court terme (répression de l'ivresse, prévention routière) et les risques de long terme (dépendance à l'alcool). C est faux : l'alcool présente bien des risques."
+    },
+    {
+      "num": 2,
+      "correct": [
+        2
+      ],
+      "expl": "C. La loi Évin de 1991 « vise à dissuader les consommations excessives ou inadaptées ». Elle n'interdit pas la consommation (A) et encore moins ne l'encourage (B)."
+    },
+    {
+      "num": 3,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le décret de 1996 (amendement buvette) autorise 10 dérogations annuelles par club à la vente d'alcool dans les enceintes sportives. La publicité était interdite par les ordonnances de 1960 mais a été assouplie."
+    },
+    {
+      "num": 4,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. La loi Évin interdit la publicité directe ou indirecte en faveur des boissons alcooliques, « exception faite pour la publicité dans la presse écrite et par radiodiffusion ». La télévision reste interdite."
+    },
+    {
+      "num": 5,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. Le texte cite explicitement « les mineurs et les femmes enceintes » comme populations les plus vulnérables. Les personnes âgées ne sont pas mentionnées."
+    },
+    {
+      "num": 6,
+      "correct": [
+        2
+      ],
+      "expl": "C. « La loi HPST [de 2009] interdit la vente et l'offre gratuite d'alcool aux mineurs de moins de 18 ans. Cette loi marque aussi […] la fin des opérations de distribution gratuite d'alcool »."
+    },
+    {
+      "num": 7,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le texte mentionne explicitement « un syndrome d'alcoolisation fœtale » avec retard de croissance et anomalies. Les complications générales de grossesse (A) et les dépressions (C) ne sont pas mentionnées."
+    },
+    {
+      "num": 8,
+      "correct": [
+        1
+      ],
+      "expl": "B. L'œnologie est la science du vin. Le texte distingue d'ailleurs « l'œnologie et la viticulture » (la viticulture étant la culture de la vigne), donc C est faux."
+    },
+    {
+      "num": 9,
+      "correct": [
+        1
+      ],
+      "expl": "B. « La circulaire du 8 août 1956 restreint la consommation de boissons alcooliques dans les cantines et internats scolaires » — donc avant 1956, il n'y avait pas de restriction légale. L'alcool n'a pas « toujours » été interdit."
+    },
+    {
+      "num": 10,
+      "correct": [
+        2
+      ],
+      "expl": "C. Les ordonnances de 1960 énoncent que « seule la consommation excessive d'alcool est considérée comme nocive ». L'objectif est la modération, pas l'interdiction totale ni l'encouragement."
+    },
+    {
+      "num": 11,
+      "correct": [
+        0
+      ],
+      "expl": "A. La modération des usages signifie avoir une consommation raisonnable, mesurée. Cela ne se limite pas à certains types d'alcool (B) ni à certaines circonstances (C)."
+    },
+    {
+      "num": 12,
+      "correct": [
+        2
+      ],
+      "expl": "C. En 1984-1986, la Cinq, TV6, Canal+ et TF1 (chaînes privées) obtiennent l'autorisation de diffuser des publicités pour alcools à moins de 9°, mais les chaînes publiques restent interdites. Donc on peut voir de la publicité seulement sur certaines chaînes."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1
+      ],
+      "expl": "B. L'expression « sous le poids de » signifie figurativement l'influence exercée. Les industriels alcooliers exercent une influence politique qui affaiblit la loi Évin."
+    },
+    {
+      "num": 14,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le décret du 8 août 1996, dit « amendement buvette », porte à 10 le nombre de dérogations annuelles à la loi Évin pour la vente d'alcool dans les enceintes sportives. C'est bien une dérogation à la loi Évin."
+    },
+    {
+      "num": 15,
+      "correct": [
+        0
+      ],
+      "expl": "A. « La loi n° 2004-806 du 9 août 2004 […] instaure une taxation sur les boissons alcooliques aromatisées, aussi appelés prémix ». Un prémix est donc une boisson alcoolique aromatisée."
+    },
+    {
+      "num": 16,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. L'article est informatif et retrace l'historique des politiques publiques de santé en matière d'alcool depuis 1873. Il n'encourage absolument pas la consommation (C)."
+    },
+    {
+      "num": 17,
+      "correct": [
+        1
+      ],
+      "expl": "B. La loi HPST de 2009 interdit la vente et l'offre gratuite d'alcool aux mineurs de moins de 18 ans. Les femmes enceintes sont visées par l'arrêté de 2006 (étiquetage)."
+    },
+    {
+      "num": 18,
+      "correct": [
+        0
+      ],
+      "expl": "A. « En dépit de » est une locution signifiant « malgré ». L'arrêté a été adopté malgré l'opposition parlementaire."
+    },
+    {
+      "num": 19,
+      "correct": [
+        2
+      ],
+      "expl": "C. La loi HPST de 2009 « autorise la publicité pour l'alcool sur Internet, à l'exception des sites destinés à la jeunesse, au sport et à l'activité physique ». Donc oui mais avec des restrictions."
+    },
+    {
+      "num": 20,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. Le texte évoque l'influence de l'industrie alcoolière (producteurs voulant faire de la publicité) et cite le député Philippe Martin qui souhaite « modérer les campagnes de prévention ». Les consommateurs ne sont pas mentionnés comme frein."
+    },
+    {
+      "num": 21,
+      "correct": [
+        0
+      ],
+      "expl": "A. La délibération de 2008 précise que « les reportages évoquant directement ou indirectement la production d'alcool » ne sont pas constitutifs de publicité indirecte. Ils sont donc autorisés."
+    },
+    {
+      "num": 22,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « Relever du patrimoine national » signifie que cette production fait partie de l'histoire et de l'identité du pays depuis longtemps et est considérée comme importante. L'État ne produit pas le vin (C faux)."
+    },
+    {
+      "num": 23,
+      "correct": [
+        0,
+        2
+      ],
+      "expl": "A, C. Les reportages sur la production (vigneron) sont autorisés, ainsi que l'information sur les dangers. La comparaison des marques relèverait de la publicité comparative, interdite par la loi Évin."
+    },
+    {
+      "num": 24,
+      "correct": [
+        0
+      ],
+      "expl": "A. L'article est une étude historique et factuelle qui présente l'évolution des politiques publiques sans jugement personnel explicite. Elle rapporte les positions des autres (associations, députés)."
+    },
+    {
+      "num": 25,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Préconiser » signifie recommander. Un message « préconisant l'absence de consommation » est un message qui recommande de ne pas consommer. Ce n'est pas une interdiction ni un ordre absolu."
+    },
+    {
+      "num": 26,
+      "correct": [
+        1
+      ],
+      "expl": "B. « La loi Théophile Roussel de 1873 » concerne la protection des mineurs. 1873 appartient au XIXème siècle."
+    },
+    {
+      "num": 27,
+      "correct": [
+        1
+      ],
+      "expl": "B. La loi HPST de 2009 « impose aux débits de boissons pratiquant des happy hours de proposer également des boissons non alcoolisées à prix réduits ». Elles ne sont pas interdites (A) ni créées en 2009 (C)."
+    },
+    {
+      "num": 28,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Discriminatoire » signifie qui établit une différence injuste, qui porte préjudice. Dans le texte, la réglementation française favorisait les produits nationaux au détriment des importés, ce qui est discriminatoire."
+    }
+  ]
+}

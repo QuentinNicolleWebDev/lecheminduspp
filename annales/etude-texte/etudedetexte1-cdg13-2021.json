@@ -1,0 +1,225 @@
+{
+  "id": "etudedetexte1-cdg13-2021",
+  "theme": "etude-texte",
+  "year": 2021,
+  "title": "CDG13 / SDIS 13 — Session 2021 — Sujet 1 (Giono — L'Homme qui plantait des arbres)",
+  "duration_min": 60,
+  "pdf_sujet": "annales/etude-texte/etudedetexte1-cdg13-2021-sujet.pdf",
+  "instructions": "30 questions (20 compréhension + 10 lexique) notées sur 20 points. Durée : 1 heure. Bonne réponse = barème indiqué. Mauvaise réponse ou absence de réponse = 0 point.",
+  "questions": [
+    {
+      "num": 1,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Je faisais une longue course à pied », « je me trouvais dans une désolation » : le narrateur parle à la première personne (je)."
+    },
+    {
+      "num": 2,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le narrateur est un personnage intérieur à l'histoire, distinct de l'auteur Jean Giono. Rien dans le texte ne permet d'affirmer qu'il s'agit de l'auteur lui-même — c'est un narrateur-personnage."
+    },
+    {
+      "num": 3,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Je n'avais plus d'eau depuis la veille et il me fallait en trouver ». Le narrateur manque d'eau très rapidement dans sa randonnée."
+    },
+    {
+      "num": 4,
+      "correct": [
+        1
+      ],
+      "expl": "B. Les toponymes (Durance, Sisteron, Mirabeau, Drôme, Die, Comtat Venaissin, Mont-Ventoux, Basses-Alpes, Vaucluse) donnent une impression de réel, ancrent le récit dans un espace géographique précis et connu."
+    },
+    {
+      "num": 5,
+      "correct": [
+        1
+      ],
+      "expl": "B. Les raisons de l'abandon ne sont pas explicitement données dans le texte. Le narrateur constate seulement la désolation et l'absence d'eau, sans expliquer l'historique."
+    },
+    {
+      "num": 6,
+      "correct": [
+        2
+      ],
+      "expl": "C. Par déduction, l'absence d'eau (fontaine à sec) est l'hypothèse la plus cohérente avec le texte : « Il y avait bien une fontaine, mais sèche ». Rien ne laisse deviner la guerre ni l'envie de voyager."
+    },
+    {
+      "num": 7,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le « flash-back » (retour en arrière) est le procédé qui fait remonter dans le passé. La prolepse est l'inverse (anticipation)."
+    },
+    {
+      "num": 8,
+      "correct": [
+        0
+      ],
+      "expl": "A. La nature est décrite de manière désolée : « désolation sans exemple », « landes nues et monotones », « terres sans abri », « partout la même sécheresse », « herbes ligneuses ». Pas luxuriante ni absente."
+    },
+    {
+      "num": 9,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Il me sembla apercevoir dans le lointain une petite silhouette noire, debout. Je la pris pour le tronc d'un arbre solitaire ». Le berger est confondu avec un tronc d'arbre."
+    },
+    {
+      "num": 10,
+      "correct": [
+        1,
+        2
+      ],
+      "expl": "B, C. L'eau est universellement symbole de vie (B) et d'espoir (C) — notamment dans un contexte de désolation et de soif. Elle n'est pas spécifiquement symbole d'amour ou de maladie."
+    },
+    {
+      "num": 11,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Il me fit boire à sa gourde ». La première action du berger est de donner à boire au narrateur. L'hospitalité vient ensuite (menée à la bergerie)."
+    },
+    {
+      "num": 12,
+      "correct": [
+        0
+      ],
+      "expl": "A. Donner à boire à un inconnu dans une région où l'eau est rare est un acte de générosité. Pas de signes spécifiques de joie ou de bonhomie dans cette action."
+    },
+    {
+      "num": 13,
+      "correct": [
+        1,
+        2
+      ],
+      "expl": "B, C. Le berger est méticuleux (« ménage en ordre », « vaisselle lavée », « parquet balayé », « fusil graissé ») et travailleur (« son travail personnel avait rapiécé la ruine »). Magnanime serait plus proche de généreux ; sincère n'est pas démontré ici."
+    },
+    {
+      "num": 14,
+      "correct": [
+        1
+      ],
+      "expl": "B. « il était aussi rasé de frais, que tous ses boutons étaient solidement cousus, que ses vêtements étaient reprisés avec le soin minutieux qui rend les reprises invisibles » — la description des vêtements confirme son caractère méticuleux."
+    },
+    {
+      "num": 15,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le texte dit des villageois : « exaspèrent leur égoïsme en vase clos ». Ils sont donc égoïstes, à l'opposé du berger généreux."
+    },
+    {
+      "num": 16,
+      "correct": [
+        2
+      ],
+      "expl": "C. « le village le plus proche était encore à plus d'une journée et demie de marche ». Donc à un jour et demi de marche."
+    },
+    {
+      "num": 17,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Ils sont habités par des bûcherons qui font du charbon de bois ». Les villageois sont bûcherons."
+    },
+    {
+      "num": 18,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le titre de l'œuvre (« L'Homme qui plantait des arbres ») donne la réponse : le berger sélectionne les glands pour les planter. C'est une déduction logique d'après le titre et le soin méticuleux apporté au tri."
+    },
+    {
+      "num": 19,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Ce repos ne m'était pas absolument obligatoire, mais j'étais intrigué et je voulais en savoir plus ». La vraie raison est la curiosité, pas l'épuisement."
+    },
+    {
+      "num": 20,
+      "correct": [
+        0
+      ],
+      "expl": "A. Le « caractère inoubliable » décrit en incipit correspond aux critères (« longues années », « dépouillée de tout égoïsme », « d'une générosité sans exemple », « laissé sur le monde des marques visibles ») qui s'appliquent au berger (planter des arbres = marques visibles)."
+    },
+    {
+      "num": 21,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Je traversais ce pays » : dans le contexte, « pays » désigne la région (zone géographique), pas la France au sens national."
+    },
+    {
+      "num": 22,
+      "correct": [
+        1
+      ],
+      "expl": "B. Le préfixe « in- » dans « insupportable » marque l'opposition, la négation : in-supportable = qui ne peut être supporté. Comme dans inhabité, incertain, etc."
+    },
+    {
+      "num": 23,
+      "correct": [
+        2
+      ],
+      "expl": "C. Le titre « L'Homme qui plantait des arbres » est une périphrase : il désigne le berger (Elzéard Bouffier) par une relative descriptive, sans le nommer directement. Ce n'est ni une métaphore ni une allégorie."
+    },
+    {
+      "num": 24,
+      "correct": [
+        1
+      ],
+      "expl": "B. Un « treuil » est un appareil de levage composé d'un cylindre autour duquel s'enroule un câble. Il sert ici à tirer l'eau du puits profond."
+    },
+    {
+      "num": 25,
+      "correct": [
+        1
+      ],
+      "expl": "B. « Insolite » signifie inhabituel, surprenant, étrange. Dans le texte, l'assurance du berger était insolite (inhabituelle) dans ce pays dépouillé."
+    },
+    {
+      "num": 26,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Rudesse » signifie dureté, âpreté. Son antonyme est « douceur ». « Force » et « violence » sont plutôt des synonymes."
+    },
+    {
+      "num": 27,
+      "correct": [
+        0
+      ],
+      "expl": "A. « Exaspérer » signifie irriter à l'extrême, porter à son paroxysme. Son synonyme est « irriter » (au sens fort). Pas « atténuer » ni « étouffer »."
+    },
+    {
+      "num": 28,
+      "correct": [
+        2
+      ],
+      "expl": "C. « Vices » et « vertus » sont des antonymes présents explicitement dans le 13ème paragraphe : « pour les vertus qui se combattent entre elles, pour les vices qui se combattent entre eux ». « Suicides/naissances » et « folies/raisons » ne figurent pas tels quels."
+    },
+    {
+      "num": 29,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « Ambition » signifie désir ardent de réussir, de gloire ou de pouvoir. « Désir » (A) et « volonté » (B) en sont des synonymes. « Égoïsme » est différent."
+    },
+    {
+      "num": 30,
+      "correct": [
+        0,
+        1
+      ],
+      "expl": "A, B. « Concurrence » désigne la rivalité entre personnes poursuivant un même but. « Émulation » (A, rivalité stimulante) et « compétition » (B) sont des synonymes. « Marchandage » (C) a un sens différent (négociation commerciale)."
+    }
+  ]
+}
