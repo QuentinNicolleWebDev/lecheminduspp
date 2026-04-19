@@ -3523,32 +3523,54 @@ function msPay(priceId) {
   function onCheckoutSuccess() {
     return refreshMemberAccess().then(function() { goTo('merci'); });
   }
-  ms.getCurrentMember().then(function(res) {
-    if (res && res.data && res.data.member) {
-      // Membre connecté → checkout direct
-      ms.purchasePlansWithCheckout({ priceId: priceId })
-        .then(function(result) { if (result && result.data) onCheckoutSuccess(); })
-        .catch(function(e) { showToast('Erreur paiement : ' + (e.message || '')); });
-    } else {
-      // Non connecté → inscription puis checkout
-      ms.openModal('signup').then(function(result) {
-        if (result && result.data && result.data.member) {
-          updateNavMember(result.data.member); // encore non payant à ce stade
-          ms.purchasePlansWithCheckout({ priceId: priceId })
-            .then(function() { onCheckoutSuccess(); })
-            .catch(function(e) { showToast('Erreur paiement : ' + (e.message || '')); });
-        }
-      }).catch(function(e) { console.error('msPay openModal error:', e); });
-    }
-  }).catch(function() {
+  // Lance le checkout Stripe pour un membre déjà connecté
+  function doCheckout() {
+    ms.purchasePlansWithCheckout({ priceId: priceId })
+      .then(function(result) { if (result && result.data) onCheckoutSuccess(); })
+      .catch(function(e) { showToast('Erreur paiement : ' + (e.message || '')); });
+  }
+
+  // Ouvre la modal de CONNEXION (pour les comptes déjà existants)
+  function openLoginThenCheckout() {
+    ms.openModal('login').then(function(result) {
+      if (result && result.data && result.data.member) {
+        updateNavMember(result.data.member);
+        doCheckout();
+      }
+    }).catch(function(e) { console.error('msPay openModal(login) error:', e); });
+  }
+
+  // Ouvre la modal d'INSCRIPTION, avec fallback automatique vers login
+  // si l'email est déjà utilisé (cas du paiement refusé + retour arrière).
+  function openSignupThenCheckout() {
     ms.openModal('signup').then(function(result) {
       if (result && result.data && result.data.member) {
         updateNavMember(result.data.member);
-        ms.purchasePlansWithCheckout({ priceId: priceId })
-          .then(function() { onCheckoutSuccess(); })
-          .catch(function(e) { showToast('Erreur paiement : ' + (e.message || '')); });
+        doCheckout();
       }
-    }).catch(function(e) { console.error('msPay fallback error:', e); });
+    }).catch(function(e) {
+      // Memberstack renvoie une erreur si l'email existe déjà
+      var msg = (e && (e.message || e.error || '')) + '';
+      var isDuplicateEmail = /already|exist|utilis|taken|registered/i.test(msg);
+      if (isDuplicateEmail) {
+        showToast('Un compte existe déjà avec cet email — connecte-toi pour continuer.');
+        setTimeout(openLoginThenCheckout, 300);
+      } else {
+        console.error('msPay openModal(signup) error:', e);
+      }
+    });
+  }
+
+  ms.getCurrentMember().then(function(res) {
+    if (res && res.data && res.data.member) {
+      // Membre connecté → checkout direct
+      doCheckout();
+    } else {
+      // Non connecté → on laisse le choix entre inscription et connexion
+      openSignupThenCheckout();
+    }
+  }).catch(function() {
+    openSignupThenCheckout();
   });
 }
 
