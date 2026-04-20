@@ -1399,6 +1399,34 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 
         </div>
 
+        <!-- BANDEAU MODE DÉMO (visible uniquement pour les non-payants) -->
+        <div id="qcm-demo-banner" style="display:none;background:#fff6e5;border:1px solid #f5c66b;border-left:3px solid #d68a1a;padding:16px 20px;margin-bottom:16px">
+          <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+            <div style="font-size:1.4rem;line-height:1;flex-shrink:0">🎁</div>
+            <div style="flex:1;min-width:220px">
+              <div style="font-size:.88rem;font-weight:700;color:#8B6914;margin-bottom:4px;letter-spacing:.3px">Mode démo — 10 questions par jour</div>
+              <div style="font-size:.85rem;color:var(--charcoal);line-height:1.55">
+                Tu testes la plateforme gratuitement. Tu peux t'entraîner sur <strong>10 questions aléatoires par jour</strong> parmi un échantillon de démonstration.
+                <span id="qcm-demo-remaining" style="display:inline-block;margin-top:4px;padding:2px 8px;background:#fff;border:1px solid #f5c66b;font-size:.78rem;font-weight:600;color:#8B6914">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BANDEAU MODE DÉMO (visible uniquement pour les non-payants) -->
+        <div id="qcm-demo-banner" style="display:none;background:#fff6e5;border:1px solid #f5c66b;border-left:3px solid #d68a1a;padding:16px 20px;margin-bottom:16px">
+          <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
+            <div style="font-size:1.4rem;line-height:1;flex-shrink:0">🎁</div>
+            <div style="flex:1;min-width:220px">
+              <div style="font-size:.88rem;font-weight:700;color:#8B6914;margin-bottom:4px;letter-spacing:.3px">Mode démo — 10 questions par jour</div>
+              <div style="font-size:.85rem;color:var(--charcoal);line-height:1.55;margin-bottom:6px">
+                Tu testes la plateforme gratuitement. Tu peux t'entraîner sur <strong>10 questions aléatoires par jour</strong>, tirées dans l'ensemble des QCM du concours.
+              </div>
+              <div><span id="qcm-demo-remaining" style="display:inline-block;padding:3px 10px;background:white;border:1px solid #f5c66b;font-size:.78rem;font-weight:700;color:#8B6914">—</span></div>
+            </div>
+          </div>
+        </div>
+
         <!-- BARRE DE LANCEMENT -->
         <div class="qcm-launch-bar">
           <div class="qcm-launch-summary" id="qcm-launch-summary">
@@ -2349,6 +2377,59 @@ var activeSession = [];  // questions de la session en cours
 var qIdx = 0, score = 0, answered = 0;
 var sessionStartTs = 0;
 
+// ---------- MODE DÉMO : limite 10 questions/jour ----------
+var DEMO_DAILY_LIMIT = 10;
+
+function demoTodayKey() {
+  var d = new Date();
+  var y = d.getFullYear();
+  var m = String(d.getMonth() + 1).padStart(2, '0');
+  var day = String(d.getDate()).padStart(2, '0');
+  return 'demo_qcm_used_' + y + '-' + m + '-' + day;
+}
+
+function demoUsedToday() {
+  try {
+    var n = parseInt(localStorage.getItem(demoTodayKey()) || '0', 10);
+    return isNaN(n) ? 0 : n;
+  } catch (e) { return 0; }
+}
+
+function demoRemainingToday() {
+  return Math.max(0, DEMO_DAILY_LIMIT - demoUsedToday());
+}
+
+function demoConsume(n) {
+  try {
+    var current = demoUsedToday();
+    localStorage.setItem(demoTodayKey(), String(current + n));
+  } catch (e) {}
+  refreshDemoBanner();
+}
+
+function refreshDemoBanner() {
+  var banner = document.getElementById('qcm-demo-banner');
+  var remainingEl = document.getElementById('qcm-demo-remaining');
+  if (!banner || !remainingEl) return;
+  // Afficher uniquement si pas payant
+  if (isPaidMember) {
+    banner.style.display = 'none';
+    return;
+  }
+  banner.style.display = '';
+  var remaining = demoRemainingToday();
+  var used = DEMO_DAILY_LIMIT - remaining;
+  if (remaining === 0) {
+    remainingEl.innerHTML = '⏰ Limite atteinte — reviens demain ou <a onclick="msPay(\'prc_acc-s-plateforme-de-pr-paration-candidat-54v0222\');return false" style="color:#8B6914;font-weight:700;cursor:pointer;text-decoration:underline">débloque l\'accès complet</a>';
+    remainingEl.style.background = '#f8d7da';
+    remainingEl.style.borderColor = '#d68a1a';
+  } else {
+    remainingEl.textContent = used + ' / ' + DEMO_DAILY_LIMIT + ' questions utilisées aujourd\'hui · ' + remaining + ' restante' + (remaining > 1 ? 's' : '');
+    remainingEl.style.background = 'white';
+    remainingEl.style.borderColor = '#f5c66b';
+  }
+}
+
 // ---------- MODE SWITCH ----------
 function switchQcmMode(mode) {
   qcmMode = mode;
@@ -2479,17 +2560,35 @@ function updateSummary() {
 
   if (!summary || !btn) return;
 
-  // Mode aléatoire → bouton toujours actif
+  // Plafond démo actif pour les non-payants
+  var remainingDemo = !isPaidMember ? demoRemainingToday() : null;
+  var demoExhausted = !isPaidMember && remainingDemo === 0;
+  var effectiveNb = !isPaidMember ? Math.min(randomNb, remainingDemo) : randomNb;
+
+  // Mode aléatoire → bouton toujours actif (sauf démo épuisée)
   if (qcmMode === 'random') {
-    summary.innerHTML = '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans tous les thèmes</span>';
-    btn.classList.remove('disabled');
-    btn.textContent = '🔀 Lancer la session →';
+    if (demoExhausted) {
+      summary.innerHTML = '<span class="dim">⏰ Limite démo atteinte — reviens demain ou débloque l\'accès complet.</span>';
+      btn.classList.add('disabled');
+    } else if (!isPaidMember) {
+      summary.innerHTML = '<strong>' + effectiveNb + ' question' + (effectiveNb > 1 ? 's' : '') + '</strong> <span class="dim">(démo · ' + remainingDemo + ' restante' + (remainingDemo > 1 ? 's' : '') + ' aujourd\'hui) — tirées aléatoirement dans tous les thèmes</span>';
+      btn.classList.remove('disabled');
+      btn.textContent = '🔀 Lancer la session démo →';
+    } else {
+      summary.innerHTML = '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans tous les thèmes</span>';
+      btn.classList.remove('disabled');
+      btn.textContent = '🔀 Lancer la session →';
+    }
     return;
   }
 
   // Mode par thème
   if (selected.length === 0) {
     summary.innerHTML = '<span class="dim">Sélectionne au moins un thème pour lancer ta session.</span>';
+    btn.classList.add('disabled');
+    btn.textContent = 'Lancer la session →';
+  } else if (demoExhausted) {
+    summary.innerHTML = '<span class="dim">⏰ Limite démo atteinte — reviens demain ou débloque l\'accès complet.</span>';
     btn.classList.add('disabled');
     btn.textContent = 'Lancer la session →';
   } else {
@@ -2501,16 +2600,32 @@ function updateSummary() {
     else if (doctrinesSub.length > 0) catNames.push('Doctrines (' + doctrinesSub.length + ')');
     if (selectedCats['divers']) catNames.push('Divers');
     if (selectedCats['textes']) catNames.push('Textes structurants');
-    var footer = currentMember
-      ? '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans&nbsp;:</span> ' + catNames.join(', ')
-      : '<strong>Session démo</strong> <span class="dim">— quelques questions sur&nbsp;:</span> ' + catNames.join(', ');
+    var footer;
+    if (!isPaidMember) {
+      footer = '<strong>' + effectiveNb + ' question' + (effectiveNb > 1 ? 's' : '') + '</strong> <span class="dim">(démo · ' + remainingDemo + ' restante' + (remainingDemo > 1 ? 's' : '') + ' aujourd\'hui) — tirées aléatoirement dans&nbsp;:</span> ' + catNames.join(', ');
+    } else {
+      footer = '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans&nbsp;:</span> ' + catNames.join(', ');
+    }
     summary.innerHTML = footer;
     btn.classList.remove('disabled');
-    btn.textContent = 'Lancer la session →';
+    btn.textContent = isPaidMember ? 'Lancer la session →' : 'Lancer la session démo →';
   }
 }
 
 function setQcmNb(btn, n) {
+  // Cap à 10 pour les non-payants (limite démo quotidienne)
+  if (!isPaidMember && n > DEMO_DAILY_LIMIT) {
+    showToast('En mode démo, tu peux traiter jusqu\'à ' + DEMO_DAILY_LIMIT + ' questions par jour. Débloque l\'accès complet pour aller plus loin.');
+    // Re-sélectionne le bouton 10
+    var btn10 = document.querySelector('.qcm-nb-btn[onclick*="setQcmNb(this,10)"]');
+    if (btn10) {
+      randomNb = 10;
+      document.querySelectorAll('.qcm-nb-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn10.classList.add('active');
+      updateSummary();
+    }
+    return;
+  }
   randomNb = n;
   document.querySelectorAll('.qcm-nb-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
@@ -2569,21 +2684,32 @@ function launchQcm() {
   var selected = cats.filter(function(c){ return selectedCats[c]; });
   if (selected.length === 0) return;
 
-  // Non payant (visiteur OU compte gratuit) : on montre uniquement
-  // les questions démo correspondant aux thèmes cochés
+  // Non payant (visiteur OU compte gratuit) : pioche dans les VRAIS JSON
+  // mais limité à 10 questions/jour
   if (!isPaidMember) {
-    var demoPool = DEMO_QUESTIONS.filter(function(q){ return selected.indexOf(q.cat) !== -1; });
-    if (demoPool.length === 0) {
-      // Aucune démo sur les thèmes sélectionnés → prompt d'achat
-      showToast('⚠️ Les thèmes sélectionnés sont réservés aux membres. Débloque la plateforme pour y accéder.');
-      openLockModal();
+    var remaining = demoRemainingToday();
+    if (remaining === 0) {
+      showDemoLimitReached();
       return;
     }
-    startSession(shuffle(demoPool), buildSessionTitle(selected) + ' (démo)');
+    var demoNb = Math.min(randomNb, remaining);
+    showLoadingScreen();
+    loadCats(selected).then(function(pool) {
+      if (pool.length === 0) {
+        document.getElementById('qcm-area').innerHTML = '<div class="question-card" style="text-align:center;padding:48px 24px"><div style="font-size:2rem;margin-bottom:12px">📭</div><div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:8px">Aucune question disponible</div><div style="font-size:.9rem;color:var(--gray);line-height:1.6">Les thèmes sélectionnés ne contiennent pas encore de QCM.</div><button class="btn btn-outline-red" style="margin-top:20px" onclick="stopSession()">← Retour</button></div>';
+        return;
+      }
+      pool = shuffle(pool).slice(0, Math.min(demoNb, pool.length));
+      demoConsume(pool.length);
+      startSession(pool, buildSessionTitle(selected) + ' · Démo');
+    }).catch(function(err) {
+      console.error('Erreur chargement QCM (démo) :', err);
+      document.getElementById('qcm-area').innerHTML = '<div class="question-card" style="text-align:center;padding:48px 24px"><div style="font-size:2rem;margin-bottom:12px">⚠️</div><div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:8px">Erreur de chargement</div><div style="font-size:.9rem;color:var(--gray);line-height:1.6">Impossible de charger les questions. Vérifie ta connexion et réessaie.</div><button class="btn btn-red" style="margin-top:20px" onclick="launchQcm()">Réessayer</button></div>';
+    });
     return;
   }
 
-  // Membre : chargement des vraies questions, puis troncature au nombre choisi
+  // Membre payant : chargement des vraies questions, puis troncature au nombre choisi
   showLoadingScreen();
   loadCats(selected).then(function(pool) {
     if (pool.length === 0) {
@@ -2600,14 +2726,29 @@ function launchQcm() {
 
 function launchRandomQcm() {
   // Non payant : pioche dans les démos uniquement
+  var allCats = ['statut','sis','divers','textes'].concat(DOCTRINES_SUBCATS);
+
+  // Non payant : pioche dans le pool COMPLET (tous thèmes) mais limité à 10 questions/jour
   if (!isPaidMember) {
-    var demoPool = shuffle(DEMO_QUESTIONS.slice()).slice(0, Math.min(randomNb, DEMO_QUESTIONS.length));
-    startSession(demoPool, '🔀 Entraînement aléatoire (démo)');
+    var remaining = demoRemainingToday();
+    if (remaining === 0) {
+      showDemoLimitReached();
+      return;
+    }
+    var demoNb = Math.min(randomNb, remaining);
+    showLoadingScreen();
+    loadCats(allCats).then(function(pool) {
+      pool = shuffle(pool).slice(0, Math.min(demoNb, pool.length));
+      demoConsume(pool.length);
+      startSession(pool, '🔀 Entraînement aléatoire · Démo — ' + pool.length + ' question' + (pool.length > 1 ? 's' : ''));
+    }).catch(function(err) {
+      console.error('Erreur chargement aléatoire (démo) :', err);
+      document.getElementById('qcm-area').innerHTML = '<div class="question-card" style="text-align:center"><div style="font-size:2rem;margin-bottom:12px">⚠️</div>Erreur de chargement. Réessaie dans un instant.<br><br><button class="btn btn-red" onclick="launchRandomQcm()">Réessayer</button></div>';
+    });
     return;
   }
 
   // Membre : charge TOUS les thèmes puis pioche
-  var allCats = ['statut','sis','divers','textes'].concat(DOCTRINES_SUBCATS);
   showLoadingScreen();
   loadCats(allCats).then(function(pool) {
     pool = shuffle(pool).slice(0, Math.min(randomNb, pool.length));
@@ -2849,6 +2990,31 @@ function initQcm() {
   // Appelé à chaque goTo('qcm') — ne reset pas une session en cours
   // Mais on rafraîchit la barre de lancement au cas où le statut membre aurait changé
   if (typeof updateSummary === 'function') updateSummary();
+  if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
+}
+
+// Affiché quand un non-payant atteint sa limite quotidienne de 10 questions
+function showDemoLimitReached() {
+  document.getElementById('qcm-launch-screen').style.display = 'none';
+  document.getElementById('qcm-session').style.display = 'none';
+  var resEl = document.getElementById('qcm-results-screen');
+  if (!resEl) return;
+  resEl.innerHTML = [
+    '<div class="qcm-results" style="text-align:center">',
+      '<div class="qcm-results-emoji" style="font-size:3rem;margin-bottom:12px">⏰</div>',
+      '<div class="qcm-results-title" style="font-family:\'Playfair Display\',serif;font-size:1.8rem;color:var(--charcoal);margin-bottom:10px">Tu as atteint la limite quotidienne</div>',
+      '<div style="font-size:1rem;color:var(--gray);line-height:1.75;max-width:520px;margin:0 auto 28px">',
+        'Tu as déjà répondu à tes <strong style="color:var(--charcoal)">10 questions démo aujourd\'hui</strong>. ',
+        'Reviens demain pour 10 nouvelles questions, ou débloque l\'accès complet pour t\'entraîner sans limite sur les <strong style="color:var(--charcoal)">700+ QCM</strong> du concours.',
+      '</div>',
+      '<div class="qcm-results-actions">',
+        '<button class="btn btn-outline-red" onclick="stopSession()">← Retour</button>',
+        '<button class="btn btn-red" onclick="msPay(\'prc_acc-s-plateforme-de-pr-paration-candidat-54v0222\')">Accès complet — 59€ →</button>',
+      '</div>',
+    '</div>'
+  ].join('');
+  resEl.style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderQ() {
@@ -3828,6 +3994,9 @@ function updateNavMember(member) {
     if (isPaidMember) {
       setTimeout(function(){ try { espMigrateLocalToSupabase(); } catch(e){} }, 1200);
     }
+    // Rafraîchit l'UI QCM selon le statut membre
+    if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
+    if (typeof updateSummary === 'function') updateSummary();
   } else {
     currentMember = null;
     isPaidMember  = false;
@@ -3839,6 +4008,9 @@ function updateNavMember(member) {
     if (spaceBtn) spaceBtn.style.display = 'none';
     if (espaceItem) espaceItem.style.display = 'none';
     if (mobileEspace) mobileEspace.style.display = 'none';
+    // Rafraîchit l'UI QCM (mode démo à nouveau actif)
+    if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
+    if (typeof updateSummary === 'function') updateSummary();
   }
 }
 
