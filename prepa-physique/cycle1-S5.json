@@ -24,21 +24,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "titre": "Force Haut du Corps - Renforcement bas du corps",
           "type": "muscu",
           "duree_min": 55,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 51.5,
-              "recup": "2 min"
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à atteindre la charge de travail)."
             },
             {
               "type": "exercice",
@@ -46,6 +38,14 @@
               "series": 4,
               "repetitions": 5,
               "intensite_pct": 67.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 51.5,
               "recup": "2 min"
             },
             {
@@ -68,19 +68,19 @@
             },
             {
               "type": "exercice",
-              "nom": "Prévention blessure CAP",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
               "recup": "30 s",
-              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+          "notes": "La séance démarre par les mouvements de force (développé militaire et tractions) pour les exécuter frais, quand la technique est la meilleure. Les pourcentages s'adaptent automatiquement à tes 1RM (ou nombre max de tractions)."
         },
         {
           "jour": "mercredi",
@@ -107,17 +107,34 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
-          "titre": "Musculation 2 — Bas du corps + tirage",
+          "titre": "Force bas du corps - Renforcement haut du corps",
           "type": "muscu",
           "duree_min": 60,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + montée progressive des charges sur chaque exercice de force (2-3 séries légères en front squat et SDT avant d'atteindre la charge de travail)."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 67.5,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 67.5,
+              "recup": "2 min"
             },
             {
               "type": "exercice",
@@ -139,36 +156,19 @@
             },
             {
               "type": "exercice",
-              "exercice": "front_squat",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 67.5,
-              "recup": "2 min",
-              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
-            },
-            {
-              "type": "exercice",
-              "exercice": "sdt",
-              "series": 4,
-              "repetitions": 5,
-              "intensite_pct": 67.5,
-              "recup": "2 min"
-            },
-            {
-              "type": "exercice",
-              "nom": "Circuit gainage dynamique",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
-              "recup": "1 min",
-              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+              "recup": "30 s",
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+          "notes": "La séance démarre par les mouvements de force (front squat et soulevé de terre) pour les exécuter frais, avant les mouvements de renforcement. Rotation complémentaire avec la muscu 1 : SDT en mouvement hanches dominant, gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
         },
         {
           "jour": "samedi",
@@ -188,7 +188,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     },
@@ -212,21 +212,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "titre": "Force Haut du Corps - Renforcement bas du corps",
           "type": "muscu",
           "duree_min": 55,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 62.0,
-              "recup": "2 min"
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à atteindre la charge de travail)."
             },
             {
               "type": "exercice",
@@ -234,6 +226,14 @@
               "series": 4,
               "repetitions": 5,
               "intensite_pct": 77.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 62.0,
               "recup": "2 min"
             },
             {
@@ -256,19 +256,19 @@
             },
             {
               "type": "exercice",
-              "nom": "Prévention blessure CAP",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
               "recup": "30 s",
-              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+          "notes": "La séance démarre par les mouvements de force (développé militaire et tractions) pour les exécuter frais, quand la technique est la meilleure. Les pourcentages s'adaptent automatiquement à tes 1RM (ou nombre max de tractions)."
         },
         {
           "jour": "mercredi",
@@ -305,17 +305,34 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
-          "titre": "Musculation 2 — Bas du corps + tirage",
+          "titre": "Force bas du corps - Renforcement haut du corps",
           "type": "muscu",
           "duree_min": 60,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + montée progressive des charges sur chaque exercice de force (2-3 séries légères en front squat et SDT avant d'atteindre la charge de travail)."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 77.5,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 75.0,
+              "recup": "2 min"
             },
             {
               "type": "exercice",
@@ -337,36 +354,19 @@
             },
             {
               "type": "exercice",
-              "exercice": "front_squat",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 77.5,
-              "recup": "2 min",
-              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
-            },
-            {
-              "type": "exercice",
-              "exercice": "sdt",
-              "series": 4,
-              "repetitions": 5,
-              "intensite_pct": 75.0,
-              "recup": "2 min"
-            },
-            {
-              "type": "exercice",
-              "nom": "Circuit gainage dynamique",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
-              "recup": "1 min",
-              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+              "recup": "30 s",
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+          "notes": "La séance démarre par les mouvements de force (front squat et soulevé de terre) pour les exécuter frais, avant les mouvements de renforcement. Rotation complémentaire avec la muscu 1 : SDT en mouvement hanches dominant, gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
         },
         {
           "jour": "samedi",
@@ -386,7 +386,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     },
@@ -410,21 +410,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "titre": "Force Haut du Corps - Renforcement bas du corps",
           "type": "muscu",
           "duree_min": 55,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 72.5,
-              "recup": "2 min"
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à atteindre la charge de travail)."
             },
             {
               "type": "exercice",
@@ -432,6 +424,14 @@
               "series": 4,
               "repetitions": 5,
               "intensite_pct": 83.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 72.5,
               "recup": "2 min"
             },
             {
@@ -454,19 +454,19 @@
             },
             {
               "type": "exercice",
-              "nom": "Prévention blessure CAP",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
               "recup": "30 s",
-              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+          "notes": "La séance démarre par les mouvements de force (développé militaire et tractions) pour les exécuter frais, quand la technique est la meilleure. Les pourcentages s'adaptent automatiquement à tes 1RM (ou nombre max de tractions)."
         },
         {
           "jour": "mercredi",
@@ -493,17 +493,34 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
-          "titre": "Musculation 2 — Bas du corps + tirage",
+          "titre": "Force bas du corps - Renforcement haut du corps",
           "type": "muscu",
           "duree_min": 60,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + montée progressive des charges sur chaque exercice de force (2-3 séries légères en front squat et SDT avant d'atteindre la charge de travail)."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 85.5,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 80.0,
+              "recup": "2 min"
             },
             {
               "type": "exercice",
@@ -525,36 +542,19 @@
             },
             {
               "type": "exercice",
-              "exercice": "front_squat",
-              "series": 4,
-              "repetitions": 4,
-              "intensite_pct": 85.5,
-              "recup": "2 min",
-              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
-            },
-            {
-              "type": "exercice",
-              "exercice": "sdt",
-              "series": 4,
-              "repetitions": 5,
-              "intensite_pct": 80.0,
-              "recup": "2 min"
-            },
-            {
-              "type": "exercice",
-              "nom": "Circuit gainage dynamique",
+              "nom": "Prévention blessure",
               "exercice": "autre",
-              "series": 3,
+              "series": 4,
               "repetitions": 1,
-              "recup": "1 min",
-              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+              "recup": "30 s",
+              "texte": "4 tours enchaînés, 1 min de travail par exercice / 30 s de repos entre chaque exercice :\n• Heel raises (montées sur pointes)\n• Hip bridge (pont fessier)\n• Arch hold (extension dorsale au sol)\n• Hollow hold (gainage creux)"
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+              "texte": "10 min de vélo en douceur."
             }
           ],
-          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+          "notes": "La séance démarre par les mouvements de force (front squat et soulevé de terre) pour les exécuter frais, avant les mouvements de renforcement. Rotation complémentaire avec la muscu 1 : SDT en mouvement hanches dominant, gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
         },
         {
           "jour": "samedi",
@@ -574,7 +574,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     }

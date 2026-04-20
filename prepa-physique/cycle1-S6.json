@@ -24,21 +24,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Décharge",
+          "titre": "Force Haut du Corps - Renforcement bas du corps — Décharge",
           "type": "muscu",
           "duree_min": 40,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min cardio léger + mobilité articulaire générale."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 3,
-              "repetitions": 3,
-              "intensite_pct": 42.5,
-              "recup": "2 min"
+              "texte": "10 min cardio léger + mobilité articulaire générale + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à la charge de travail)."
             },
             {
               "type": "exercice",
@@ -46,6 +38,14 @@
               "series": 3,
               "repetitions": 5,
               "intensite_pct": 55.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 42.5,
               "recup": "2 min"
             },
             {
@@ -68,7 +68,7 @@
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements."
+              "texte": "10 min de vélo en douceur."
             }
           ],
           "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
@@ -95,7 +95,7 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
@@ -168,7 +168,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     },
@@ -192,21 +192,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Décharge",
+          "titre": "Force Haut du Corps - Renforcement bas du corps — Décharge",
           "type": "muscu",
           "duree_min": 40,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min cardio léger + mobilité articulaire générale."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 3,
-              "repetitions": 3,
-              "intensite_pct": 51.0,
-              "recup": "2 min"
+              "texte": "10 min cardio léger + mobilité articulaire générale + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à la charge de travail)."
             },
             {
               "type": "exercice",
@@ -214,6 +206,14 @@
               "series": 3,
               "repetitions": 5,
               "intensite_pct": 64.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 51.0,
               "recup": "2 min"
             },
             {
@@ -236,7 +236,7 @@
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements."
+              "texte": "10 min de vélo en douceur."
             }
           ],
           "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
@@ -263,7 +263,7 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
@@ -336,7 +336,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     },
@@ -360,21 +360,13 @@
         },
         {
           "jour": "mardi",
-          "titre": "Musculation 1 — Décharge",
+          "titre": "Force Haut du Corps - Renforcement bas du corps — Décharge",
           "type": "muscu",
           "duree_min": 40,
           "blocs": [
             {
               "type": "echauffement",
-              "texte": "10 min cardio léger + mobilité articulaire générale."
-            },
-            {
-              "type": "exercice",
-              "exercice": "trac",
-              "series": 3,
-              "repetitions": 3,
-              "intensite_pct": 59.5,
-              "recup": "2 min"
+              "texte": "10 min cardio léger + mobilité articulaire générale + montée progressive des charges sur chaque exercice de force (2-3 séries légères jusqu'à la charge de travail)."
             },
             {
               "type": "exercice",
@@ -382,6 +374,14 @@
               "series": 3,
               "repetitions": 5,
               "intensite_pct": 68.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 59.5,
               "recup": "2 min"
             },
             {
@@ -404,7 +404,7 @@
             },
             {
               "type": "recup",
-              "texte": "8 min d'étirements."
+              "texte": "10 min de vélo en douceur."
             }
           ],
           "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
@@ -431,7 +431,7 @@
           "jour": "jeudi",
           "titre": "Repos actif — Natation optionnelle",
           "type": "repos",
-          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+          "note": "Jour de récupération. Séance de natation facile (30-45 min) recommandée SI tu ne te sens pas à l'aise avec les 50 m de natation du concours — cela te permet de te familiariser avec l'eau et de progresser techniquement sans impact articulaire. Si la natation n'est pas un point faible pour toi, privilégie du repos total, une marche tranquille ou de la mobilité."
         },
         {
           "jour": "vendredi",
@@ -504,7 +504,7 @@
           "jour": "dimanche",
           "titre": "Repos complet",
           "type": "repos",
-          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+          "note": "Journée de repos — c'est là que les adaptations se construisent, ne la saute pas. Alimentation soignée, hydratation, sommeil. Il est également recommandé d'effectuer des étirements et exercices de mobilité en douceur, surtout sur les zones tendues (ischio-jambiers, hanches, dorsaux, mollets selon tes ressentis de la semaine). 15 à 25 minutes suffisent — reste dans le confort, pas de tension forcée."
         }
       ]
     }
