@@ -177,50 +177,122 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(245,240,232,
 .offer-price-label{font-size:.8rem;color:var(--gray);margin-top:4px;margin-bottom:20px}
 .offer-price-note{font-size:.78rem;color:var(--gold);margin-top:8px;font-weight:500;margin-bottom:20px}
 
-/* ===== QCM SIDEBAR MODE TABS ===== */
-.qcm-mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px}
-.qcm-mode-tab{padding:12px 8px;font-size:.88rem;font-weight:600;border:1.5px solid var(--border);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--gray);transition:all .2s;letter-spacing:.2px}
-.qcm-mode-tab.active{background:var(--red);color:white;border-color:var(--red)}
-.qcm-sb-section{font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:14px}
-.qcm-select-all{padding:12px 16px;font-size:.92rem;color:var(--red);font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px dashed var(--red-pale2);background:var(--red-pale);margin-bottom:14px;transition:all .15s}
-.qcm-select-all:hover{background:var(--red-pale2)}
-.qcm-check-item{padding:12px 16px;font-size:.95rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid transparent;transition:all .15s;margin-bottom:5px;user-select:none}
-.qcm-check-item:hover{background:var(--cream);border-color:var(--border)}
+/* ===== QCM HORIZONTAL LAYOUT ===== */
+.qcm-page{background:var(--cream);min-height:calc(100vh - 68px);margin-top:68px;padding:40px 5% 80px}
+.qcm-setup{max-width:1100px;margin:0 auto}
+.qcm-setup-header{text-align:center;margin-bottom:40px}
+.qcm-setup-header .s-eyebrow{text-align:center}
+.qcm-setup-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.4rem);color:var(--charcoal);line-height:1.2;margin-bottom:10px}
+.qcm-setup-sub{font-size:.95rem;color:var(--gray);max-width:540px;margin:0 auto;line-height:1.65}
+
+/* Étape (Step 1 / 2) */
+.qcm-step{background:white;border:1px solid var(--border);padding:32px 36px;margin-bottom:22px}
+.qcm-step-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.qcm-step-num{width:32px;height:32px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;flex-shrink:0}
+.qcm-step-title{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--charcoal);line-height:1.2}
+.qcm-step-sub{font-size:.85rem;color:var(--gray);margin-top:2px}
+
+/* Boutons nombre de questions */
+.qcm-nb-row{display:flex;gap:10px;flex-wrap:wrap}
+.qcm-nb-btn{padding:14px 26px;border:1.5px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s;min-width:68px}
+.qcm-nb-btn:hover{border-color:var(--red);color:var(--red)}
+.qcm-nb-btn.active{background:var(--red);color:white;border-color:var(--red)}
+
+/* Mode selector horizontal (par thème / aléatoire) */
+.qcm-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.qcm-mode-card{padding:18px 20px;border:1.5px solid var(--border);background:white;cursor:pointer;transition:all .2s;text-align:left}
+.qcm-mode-card:hover{border-color:var(--red)}
+.qcm-mode-card.active{border-color:var(--red);background:var(--red-pale)}
+.qcm-mode-card-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--charcoal);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.qcm-mode-card-desc{font-size:.82rem;color:var(--gray);line-height:1.5}
+.qcm-mode-card.active .qcm-mode-card-title{color:var(--red)}
+
+/* Grille horizontale des thèmes (remplace l'ancienne sidebar) */
+.qcm-themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:16px}
+.qcm-select-all-row{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;padding:12px 16px;background:var(--red-pale);border:1px dashed var(--red-pale2)}
+.qcm-select-all-btn{background:none;border:none;color:var(--red);font-weight:600;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;display:flex;align-items:center;gap:8px;padding:0}
+.qcm-select-all-count{font-size:.78rem;color:var(--gray);font-weight:500}
+
+.qcm-check-item{padding:12px 14px;font-size:.9rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--border);background:white;transition:all .15s;user-select:none}
+.qcm-check-item:hover{background:var(--cream);border-color:var(--red-pale2)}
 .qcm-check-item.checked{background:var(--red-pale);border-color:var(--red-pale2);color:var(--charcoal)}
-.qcm-check-parent{font-weight:600;color:var(--charcoal)}
+.qcm-check-parent{font-weight:600;color:var(--charcoal);grid-column:1/-1}
 .qcm-checkbox{font-size:1.1rem;color:var(--gray-light);flex-shrink:0;line-height:1}
 .qcm-check-item.checked .qcm-checkbox{color:var(--red)}
 .qcm-check-label{flex:1;line-height:1.35}
-.qcm-subcheck-item{padding:10px 14px 10px 28px;font-size:.86rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid transparent;transition:all .15s;margin-bottom:3px;user-select:none}
-.qcm-subcheck-item:hover{background:var(--cream);border-color:var(--border)}
+.qcm-cat-count{background:var(--cream2);padding:3px 8px;font-size:.72rem;color:var(--gray-light);font-weight:600;flex-shrink:0}
+.qcm-check-item.checked .qcm-cat-count{background:var(--red-pale2);color:var(--red)}
+.qcm-subcat-arrow{font-size:.7rem;color:var(--gray-light);transition:transform .2s;display:inline-block;margin-left:6px}
+.qcm-check-parent.open .qcm-subcat-arrow{transform:rotate(90deg)}
+
+.qcm-subcats{display:none;grid-column:1/-1;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;padding:14px;background:var(--cream);border:1px solid var(--border);border-top:none;margin-top:-10px}
+.qcm-subcats.open{display:grid}
+.qcm-subcheck-item{padding:10px 12px;font-size:.82rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:8px;border:1px solid var(--border);background:white;transition:all .15s;user-select:none}
+.qcm-subcheck-item:hover{background:var(--cream2);border-color:var(--red-pale2)}
 .qcm-subcheck-item.checked{background:var(--red-pale);border-color:var(--red-pale2);color:var(--charcoal)}
 .qcm-subcheck-item.checked .qcm-checkbox{color:var(--red)}
-.qcm-launch-wrap{margin-top:20px;border-top:1px solid var(--border);padding-top:18px}
-.qcm-selection-summary{font-size:.86rem;color:var(--gray);margin-bottom:14px;line-height:1.55;min-height:40px}
-.qcm-nb-btn{padding:10px 16px;border:1.5px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;color:var(--gray);cursor:pointer;transition:all .2s}
-.qcm-nb-btn.active{background:var(--red);color:white;border-color:var(--red)}
-.qcm-layout{display:grid;grid-template-columns:420px 1fr;gap:0;min-height:calc(100vh - 68px);margin-top:68px}
-.qcm-sidebar{background:white;border-right:1px solid var(--border);padding:40px 32px;position:sticky;top:68px;height:calc(100vh - 68px);overflow-y:auto}
-.qcm-sb-title{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:28px;color:var(--charcoal);padding-bottom:16px;border-bottom:2px solid var(--red)}
-.qcm-cat{padding:12px 16px;font-size:.95rem;color:var(--gray);cursor:pointer;border:1px solid transparent;transition:all .2s;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
-.qcm-cat:hover{background:var(--cream);border-color:var(--border)}
-.qcm-cat.active{background:var(--red-pale);border-color:var(--red-pale2);color:var(--red);font-weight:600}
-.qcm-cat-count{background:var(--cream2);padding:3px 10px;font-size:.78rem;color:var(--gray-light);font-weight:600;flex-shrink:0}
-.qcm-cat.active .qcm-cat-count{background:var(--red-pale2);color:var(--red)}
-.qcm-cat-parent{font-weight:600;color:var(--charcoal)}
-.qcm-cat-parent.open{background:var(--cream);border-color:var(--border);color:var(--charcoal)}
-.qcm-subcat-arrow{font-size:.7rem;color:var(--gray-light);transition:transform .2s;display:inline-block}
-.qcm-cat-parent.open .qcm-subcat-arrow{transform:rotate(90deg)}
-.qcm-subcats{display:none;padding-left:0;margin-bottom:4px;border-left:2px solid var(--red-pale2);margin-left:8px}
-.qcm-subcats.open{display:block}
-.qcm-subcat{padding:8px 14px 8px 16px;font-size:.8rem;color:var(--gray);cursor:pointer;border:1px solid transparent;transition:all .15s;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;line-height:1.3}
-.qcm-subcat:hover{background:var(--cream);color:var(--charcoal)}
-.qcm-subcat.active{background:var(--red-pale);border-color:var(--red-pale2);color:var(--red);font-weight:600}
-.qcm-main{padding:40px 5%;background:var(--cream)}
-.qcm-header{margin-bottom:36px}
+.qcm-subcheck-item.checked .qcm-cat-count{background:var(--red-pale2);color:var(--red)}
+
+/* Barre d'action lancement */
+.qcm-launch-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 22px;background:var(--charcoal);color:white;margin-top:8px;position:sticky;bottom:0;z-index:5}
+.qcm-launch-summary{flex:1;min-width:220px;font-size:.88rem;line-height:1.5}
+.qcm-launch-summary strong{color:white}
+.qcm-launch-summary .dim{color:rgba(255,255,255,.6)}
+.qcm-launch-btn{padding:14px 28px;background:var(--red);color:white;border:none;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.qcm-launch-btn:hover{background:#a61d23}
+.qcm-launch-btn.disabled{opacity:.35;pointer-events:none;background:var(--gray)}
+
+/* Mode aléatoire : infobox */
+.qcm-random-info{background:var(--cream);border:1px solid var(--border);padding:20px 24px;display:flex;align-items:flex-start;gap:14px;line-height:1.6}
+.qcm-random-info-icon{font-size:1.5rem;flex-shrink:0}
+.qcm-random-info-text{font-size:.9rem;color:var(--gray)}
+.qcm-random-info-text strong{color:var(--charcoal)}
+
+/* SESSION QCM EN COURS */
+.qcm-session-wrap{max-width:900px;margin:0 auto}
+.qcm-header{margin-bottom:30px}
 .qcm-progress{background:var(--border-light);height:4px;margin-bottom:6px}
 .qcm-progress-bar{height:100%;background:var(--red);transition:width .4s}
 .qcm-prog-text{font-size:.78rem;color:var(--gray)}
+
+/* STATS DE FIN DE SESSION */
+.qcm-results{max-width:900px;margin:0 auto;background:white;border:1px solid var(--border);padding:40px 36px}
+.qcm-results-head{text-align:center;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.qcm-results-emoji{font-size:3rem;margin-bottom:12px}
+.qcm-results-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--charcoal);margin-bottom:6px}
+.qcm-results-score{font-size:1.1rem;color:var(--gray)}
+.qcm-results-score strong{color:var(--charcoal)}
+.qcm-results-score .pct{color:var(--red);font-weight:700}
+.qcm-results-bar{width:100%;max-width:420px;margin:18px auto 0;background:var(--border-light);height:6px}
+.qcm-results-bar>div{height:6px;background:var(--red)}
+
+.qcm-results-section{margin-bottom:28px}
+.qcm-results-section-title{font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:14px}
+
+.qcm-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:6px}
+.qcm-stat-card{padding:18px 20px;background:var(--cream);border:1px solid var(--border);text-align:center}
+.qcm-stat-card-val{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--red);line-height:1}
+.qcm-stat-card-lbl{font-size:.76rem;color:var(--gray);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-top:6px}
+
+.qcm-cat-bar-row{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid var(--border-light)}
+.qcm-cat-bar-row:last-child{border-bottom:none}
+.qcm-cat-bar-name{flex:0 0 42%;font-size:.88rem;color:var(--charcoal);font-weight:500}
+.qcm-cat-bar-track{flex:1;height:6px;background:var(--border-light);position:relative;min-width:80px}
+.qcm-cat-bar-fill{height:6px;background:var(--red);transition:width .6s}
+.qcm-cat-bar-fill.good{background:#2d7a3a}
+.qcm-cat-bar-fill.mid{background:#d68a1a}
+.qcm-cat-bar-score{flex:0 0 auto;font-size:.82rem;color:var(--gray);font-weight:600;min-width:60px;text-align:right}
+
+.qcm-level-pills{display:flex;gap:10px;flex-wrap:wrap}
+.qcm-level-pill{padding:10px 16px;border:1px solid var(--border);background:var(--cream);font-size:.82rem;display:flex;align-items:center;gap:10px}
+.qcm-level-pill-tag{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border:1px solid}
+.qcm-level-pill-val{color:var(--charcoal);font-weight:600}
+
+.qcm-wrong-list{display:flex;flex-direction:column;gap:8px}
+.qcm-wrong-item{padding:12px 14px;background:var(--cream);border-left:3px solid #B83232;font-size:.85rem;color:var(--charcoal);line-height:1.5}
+.qcm-wrong-item-cat{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:4px}
+
+.qcm-results-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .question-card{background:white;border:1px solid var(--border);padding:36px;margin-bottom:20px}
 .q-num{font-size:.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
 .q-text{font-size:1rem;font-weight:500;color:var(--charcoal);line-height:1.6;margin-bottom:24px}
@@ -782,8 +854,15 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
   .hero-right{display:none}
   .offer-grid{grid-template-columns:1fr}
   .story-grid{grid-template-columns:1fr}
-  .qcm-layout{grid-template-columns:1fr}
-  .qcm-sidebar{position:static;height:auto}
+  .qcm-page{padding:24px 4% 60px}
+  .qcm-step{padding:22px 20px}
+  .qcm-mode-switch{grid-template-columns:1fr}
+  .qcm-themes-grid{grid-template-columns:1fr}
+  .qcm-subcats.open{grid-template-columns:1fr}
+  .qcm-launch-bar{flex-direction:column;align-items:stretch}
+  .qcm-launch-btn{width:100%}
+  .qcm-results{padding:26px 20px}
+  .qcm-cat-bar-name{flex:0 0 50%;font-size:.82rem}
   .actu-featured{grid-template-columns:1fr}
   .actu-secondary-grid{grid-template-columns:1fr}
   .ch-hero{grid-template-columns:1fr;gap:40px}
@@ -1194,148 +1273,158 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 
 <!-- ============================= PAGE: QCM ============================= -->
 <div class="page" id="page-qcm">
-  <div style="margin-top:68px"></div>
-  <div class="qcm-layout" style="margin-top:0">
+  <div class="qcm-page">
 
-    <!-- SIDEBAR -->
-    <div class="qcm-sidebar">
+    <!-- ========== ÉCRAN DE CONFIGURATION ========== -->
+    <div id="qcm-launch-screen">
+      <div class="qcm-setup">
 
-      <!-- MODE SELECTOR -->
-      <div class="qcm-mode-tabs">
-        <button class="qcm-mode-tab active" id="tab-select" onclick="switchQcmMode('select')">🎯 Par thème</button>
-        <button class="qcm-mode-tab" id="tab-random" onclick="switchQcmMode('random')">🔀 Aléatoire</button>
-      </div>
-
-      <!-- MODE: PAR THÈME -->
-      <div id="qcm-panel-select">
-        <div class="qcm-sb-section">Sélectionne un ou plusieurs thèmes</div>
-
-        <!-- Tout sélectionner -->
-        <div class="qcm-select-all" onclick="toggleSelectAll()">
-          <span id="select-all-icon">☐</span> <span id="select-all-label">Tout sélectionner</span>
+        <!-- En-tête -->
+        <div class="qcm-setup-header">
+          <div class="s-eyebrow">Entraînement QCM</div>
+          <div class="qcm-setup-title">Configure ta <em style="color:var(--red)">session</em></div>
+          <div class="qcm-setup-sub">Choisis combien de questions tu veux traiter, puis sélectionne tes thèmes ou lance un mode aléatoire.</div>
         </div>
 
-        <!-- Catégories à cocher -->
-        <div class="qcm-check-item" onclick="toggleCat('statut')">
-          <span class="qcm-checkbox" id="chk-statut">☐</span>
-          <span class="qcm-check-label">Statut SPP &amp; Fonctionnaire</span>
-          <span class="qcm-cat-count" id="count-statut">105</span>
-        </div>
-        <div class="qcm-check-item" onclick="toggleCat('sis')">
-          <span class="qcm-checkbox" id="chk-sis">☐</span>
-          <span class="qcm-check-label">Organisation d'un SIS</span>
-          <span class="qcm-cat-count" id="count-sis">50</span>
-        </div>
-
-        <!-- Doctrines avec sous-cats -->
-        <div class="qcm-check-item qcm-check-parent" onclick="toggleDoctrinesPanel(event)">
-          <span class="qcm-checkbox" id="chk-doctrines">☐</span>
-          <span class="qcm-check-label">Doctrines Opérationnelles</span>
-          <span style="display:flex;align-items:center;gap:4px"><span class="qcm-cat-count" id="count-doctrines">534</span><span class="qcm-subcat-arrow" id="arrow-doctrines">▸</span></span>
-        </div>
-        <div class="qcm-subcats" id="doctrines-sub">
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-ventilation',event)"><span class="qcm-checkbox" id="chk-gto-ventilation">☐</span><span class="qcm-check-label">GTO Ventilation Opérationnelle</span><span class="qcm-cat-count" id="count-gto-ventilation">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvetage',event)"><span class="qcm-checkbox" id="chk-gto-sauvetage">☐</span><span class="qcm-check-label">GTO Sauvetage &amp; Mise en Sécurité</span><span class="qcm-cat-count" id="count-gto-sauvetage">49</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvegarde',event)"><span class="qcm-checkbox" id="chk-gto-sauvegarde">☐</span><span class="qcm-check-label">GTO Sauvegarde Opérationnelle</span><span class="qcm-cat-count" id="count-gto-sauvegarde">73</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-forets',event)"><span class="qcm-checkbox" id="chk-gto-forets">☐</span><span class="qcm-check-label">GTO Luttes Feux de Forêts &amp; EN</span><span class="qcm-cat-count" id="count-gto-forets">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-extinctions',event)"><span class="qcm-checkbox" id="chk-gto-extinctions">☐</span><span class="qcm-check-label">GTO Établissements &amp; Extinctions</span><span class="qcm-cat-count" id="count-gto-extinctions">73</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-vicie',event)"><span class="qcm-checkbox" id="chk-gto-vicie">☐</span><span class="qcm-check-label">GTO Engagement Milieu Vicié</span><span class="qcm-cat-count" id="count-gto-vicie">100</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ssuap',event)"><span class="qcm-checkbox" id="chk-gdo-ssuap">☐</span><span class="qcm-check-label">GDO SSUAP</span><span class="qcm-cat-count" id="count-gdo-ssuap">14</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-fumees',event)"><span class="qcm-checkbox" id="chk-gdo-fumees">☐</span><span class="qcm-check-label">GDO Toxicité des Fumées</span><span class="qcm-cat-count" id="count-gdo-fumees">11</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-elec',event)"><span class="qcm-checkbox" id="chk-gdo-elec">☐</span><span class="qcm-check-label">GDO Présence Électricité</span><span class="qcm-cat-count" id="count-gdo-elec">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-silos',event)"><span class="qcm-checkbox" id="chk-gdo-silos">☐</span><span class="qcm-check-label">GDO Intervention Silos</span><span class="qcm-cat-count" id="count-gdo-silos">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-gaz',event)"><span class="qcm-checkbox" id="chk-gdo-gaz">☐</span><span class="qcm-check-label">GDO Présence Gaz</span><span class="qcm-cat-count" id="count-gdo-gaz">12</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-agricole',event)"><span class="qcm-checkbox" id="chk-gdo-agricole">☐</span><span class="qcm-check-label">GDO Milieu Agricole</span><span class="qcm-cat-count" id="count-gdo-agricole">14</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-incendie',event)"><span class="qcm-checkbox" id="chk-gdo-incendie">☐</span><span class="qcm-check-label">GDO Incendie Structure</span><span class="qcm-cat-count" id="count-gdo-incendie">60</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ulm',event)"><span class="qcm-checkbox" id="chk-gdo-ulm">☐</span><span class="qcm-check-label">GDO Présence ULM</span><span class="qcm-cat-count" id="count-gdo-ulm">8</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-routier',event)"><span class="qcm-checkbox" id="chk-gdo-routier">☐</span><span class="qcm-check-label">GDO Milieu Routier</span><span class="qcm-cat-count" id="count-gdo-routier">62</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-foret',event)"><span class="qcm-checkbox" id="chk-gdo-foret">☐</span><span class="qcm-check-label">GDO Feux Forêt &amp; Espace Naturel</span><span class="qcm-cat-count" id="count-gdo-foret">10</span></div>
-          <div class="qcm-subcheck-item" onclick="toggleSubCat('pse',event)"><span class="qcm-checkbox" id="chk-pse">☐</span><span class="qcm-check-label">Secourisme PSE1 / PSE2</span><span class="qcm-cat-count" id="count-pse">0</span></div>
-        </div>
-
-        <div class="qcm-check-item" onclick="toggleCat('divers')">
-          <span class="qcm-checkbox" id="chk-divers">☐</span>
-          <span class="qcm-check-label">Divers</span>
-          <span class="qcm-cat-count" id="count-divers">18</span>
-        </div>
-        <div class="qcm-check-item" onclick="toggleCat('textes')">
-          <span class="qcm-checkbox" id="chk-textes">☐</span>
-          <span class="qcm-check-label">Textes structurants du concours</span>
-          <span class="qcm-cat-count" id="count-textes">29</span>
-        </div>
-
-        <!-- Résumé sélection + bouton lancer -->
-        <div class="qcm-launch-wrap">
-          <div class="qcm-selection-summary" id="qcm-selection-summary">Aucun thème sélectionné</div>
-          <button class="btn btn-red" id="qcm-launch-btn" style="width:100%;justify-content:center;display:flex;font-size:.85rem;padding:12px;opacity:.4;pointer-events:none" onclick="launchQcm()">
-            Lancer les QCM →
-          </button>
-        </div>
-      </div>
-
-      <!-- MODE: ALÉATOIRE -->
-      <div id="qcm-panel-random" style="display:none">
-        <div class="qcm-sb-section">Mode entraînement</div>
-        <div style="font-size:.83rem;color:var(--gray);line-height:1.6;margin-bottom:16px">Les questions piochent aléatoirement dans <strong style="color:var(--charcoal)">tous les thèmes</strong> du concours.</div>
-
-        <div style="margin-bottom:12px">
-          <div style="font-size:.75rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px">Nombre de questions</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="qcm-nb-btn active" onclick="setQcmNb(this,5)">5</button>
-            <button class="qcm-nb-btn" onclick="setQcmNb(this,10)">10</button>
+        <!-- ÉTAPE 1 : Nombre de questions -->
+        <div class="qcm-step">
+          <div class="qcm-step-head">
+            <div class="qcm-step-num">1</div>
+            <div>
+              <div class="qcm-step-title">Nombre de questions</div>
+              <div class="qcm-step-sub">Combien de questions veux-tu traiter&nbsp;?</div>
+            </div>
+          </div>
+          <div class="qcm-nb-row">
+            <button class="qcm-nb-btn" onclick="setQcmNb(this,5)">5</button>
+            <button class="qcm-nb-btn active" onclick="setQcmNb(this,10)">10</button>
             <button class="qcm-nb-btn" onclick="setQcmNb(this,20)">20</button>
             <button class="qcm-nb-btn" onclick="setQcmNb(this,30)">30</button>
+            <button class="qcm-nb-btn" onclick="setQcmNb(this,50)">50</button>
           </div>
         </div>
 
-        <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.85rem;padding:12px;margin-top:8px" onclick="launchRandomQcm()">
-          🔀 Lancer l'entraînement →
-        </button>
+        <!-- ÉTAPE 2 : Mode -->
+        <div class="qcm-step">
+          <div class="qcm-step-head">
+            <div class="qcm-step-num">2</div>
+            <div>
+              <div class="qcm-step-title">Mode d'entraînement</div>
+              <div class="qcm-step-sub">Cible des thèmes précis ou pioche au hasard pour simuler le concours.</div>
+            </div>
+          </div>
 
-        <div style="margin-top:16px;background:var(--cream2);border:1px solid var(--border);padding:12px;font-size:.8rem;color:var(--gray);line-height:1.55">
-          💡 Idéal pour simuler les conditions du concours et ne pas stagner dans un seul thème.
+          <div class="qcm-mode-switch">
+            <div class="qcm-mode-card active" id="tab-select" onclick="switchQcmMode('select')">
+              <div class="qcm-mode-card-title">🎯 Par thème</div>
+              <div class="qcm-mode-card-desc">Coche un ou plusieurs thèmes et cible tes points faibles.</div>
+            </div>
+            <div class="qcm-mode-card" id="tab-random" onclick="switchQcmMode('random')">
+              <div class="qcm-mode-card-title">🔀 Aléatoire</div>
+              <div class="qcm-mode-card-desc">Mix de tous les thèmes — pour simuler le concours.</div>
+            </div>
+          </div>
+
+          <!-- MODE PAR THÈME : grille horizontale -->
+          <div id="qcm-panel-select">
+            <div class="qcm-select-all-row">
+              <button class="qcm-select-all-btn" onclick="toggleSelectAll()">
+                <span id="select-all-icon">☐</span> <span id="select-all-label">Tout sélectionner</span>
+              </button>
+              <span class="qcm-select-all-count" id="select-all-count">0 thème sélectionné</span>
+            </div>
+
+            <div class="qcm-themes-grid">
+              <div class="qcm-check-item" onclick="toggleCat('statut')">
+                <span class="qcm-checkbox" id="chk-statut">☐</span>
+                <span class="qcm-check-label">Statut SPP &amp; Fonctionnaire</span>
+                <span class="qcm-cat-count" id="count-statut">105</span>
+              </div>
+              <div class="qcm-check-item" onclick="toggleCat('sis')">
+                <span class="qcm-checkbox" id="chk-sis">☐</span>
+                <span class="qcm-check-label">Organisation d'un SIS</span>
+                <span class="qcm-cat-count" id="count-sis">50</span>
+              </div>
+              <div class="qcm-check-item" onclick="toggleCat('divers')">
+                <span class="qcm-checkbox" id="chk-divers">☐</span>
+                <span class="qcm-check-label">Divers</span>
+                <span class="qcm-cat-count" id="count-divers">18</span>
+              </div>
+              <div class="qcm-check-item" onclick="toggleCat('textes')">
+                <span class="qcm-checkbox" id="chk-textes">☐</span>
+                <span class="qcm-check-label">Textes structurants du concours</span>
+                <span class="qcm-cat-count" id="count-textes">29</span>
+              </div>
+
+              <!-- Doctrines : item parent pleine largeur -->
+              <div class="qcm-check-item qcm-check-parent" onclick="toggleDoctrinesPanel(event)">
+                <span class="qcm-checkbox" id="chk-doctrines" onclick="event.stopPropagation();toggleCat('doctrines')" style="cursor:pointer">☐</span>
+                <span class="qcm-check-label">Doctrines Opérationnelles</span>
+                <span style="display:flex;align-items:center;gap:6px"><span class="qcm-cat-count" id="count-doctrines">534</span><span class="qcm-subcat-arrow" id="arrow-doctrines">▸</span></span>
+              </div>
+
+              <!-- Sous-catégories des doctrines -->
+              <div class="qcm-subcats" id="doctrines-sub">
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-ventilation',event)"><span class="qcm-checkbox" id="chk-gto-ventilation">☐</span><span class="qcm-check-label">GTO Ventilation Opérationnelle</span><span class="qcm-cat-count" id="count-gto-ventilation">12</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvetage',event)"><span class="qcm-checkbox" id="chk-gto-sauvetage">☐</span><span class="qcm-check-label">GTO Sauvetage &amp; Mise en Sécurité</span><span class="qcm-cat-count" id="count-gto-sauvetage">49</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvegarde',event)"><span class="qcm-checkbox" id="chk-gto-sauvegarde">☐</span><span class="qcm-check-label">GTO Sauvegarde Opérationnelle</span><span class="qcm-cat-count" id="count-gto-sauvegarde">73</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-forets',event)"><span class="qcm-checkbox" id="chk-gto-forets">☐</span><span class="qcm-check-label">GTO Luttes Feux de Forêts &amp; EN</span><span class="qcm-cat-count" id="count-gto-forets">12</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-extinctions',event)"><span class="qcm-checkbox" id="chk-gto-extinctions">☐</span><span class="qcm-check-label">GTO Établissements &amp; Extinctions</span><span class="qcm-cat-count" id="count-gto-extinctions">73</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-vicie',event)"><span class="qcm-checkbox" id="chk-gto-vicie">☐</span><span class="qcm-check-label">GTO Engagement Milieu Vicié</span><span class="qcm-cat-count" id="count-gto-vicie">100</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ssuap',event)"><span class="qcm-checkbox" id="chk-gdo-ssuap">☐</span><span class="qcm-check-label">GDO SSUAP</span><span class="qcm-cat-count" id="count-gdo-ssuap">14</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-fumees',event)"><span class="qcm-checkbox" id="chk-gdo-fumees">☐</span><span class="qcm-check-label">GDO Toxicité des Fumées</span><span class="qcm-cat-count" id="count-gdo-fumees">11</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-elec',event)"><span class="qcm-checkbox" id="chk-gdo-elec">☐</span><span class="qcm-check-label">GDO Présence Électricité</span><span class="qcm-cat-count" id="count-gdo-elec">12</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-silos',event)"><span class="qcm-checkbox" id="chk-gdo-silos">☐</span><span class="qcm-check-label">GDO Intervention Silos</span><span class="qcm-cat-count" id="count-gdo-silos">12</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-gaz',event)"><span class="qcm-checkbox" id="chk-gdo-gaz">☐</span><span class="qcm-check-label">GDO Présence Gaz</span><span class="qcm-cat-count" id="count-gdo-gaz">12</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-agricole',event)"><span class="qcm-checkbox" id="chk-gdo-agricole">☐</span><span class="qcm-check-label">GDO Milieu Agricole</span><span class="qcm-cat-count" id="count-gdo-agricole">14</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-incendie',event)"><span class="qcm-checkbox" id="chk-gdo-incendie">☐</span><span class="qcm-check-label">GDO Incendie Structure</span><span class="qcm-cat-count" id="count-gdo-incendie">60</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-ulm',event)"><span class="qcm-checkbox" id="chk-gdo-ulm">☐</span><span class="qcm-check-label">GDO Présence ULM</span><span class="qcm-cat-count" id="count-gdo-ulm">8</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-routier',event)"><span class="qcm-checkbox" id="chk-gdo-routier">☐</span><span class="qcm-check-label">GDO Milieu Routier</span><span class="qcm-cat-count" id="count-gdo-routier">62</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('gdo-foret',event)"><span class="qcm-checkbox" id="chk-gdo-foret">☐</span><span class="qcm-check-label">GDO Feux Forêt &amp; Espace Naturel</span><span class="qcm-cat-count" id="count-gdo-foret">10</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('pse',event)"><span class="qcm-checkbox" id="chk-pse">☐</span><span class="qcm-check-label">Secourisme PSE1 / PSE2</span><span class="qcm-cat-count" id="count-pse">0</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- MODE ALÉATOIRE : infobox -->
+          <div id="qcm-panel-random" style="display:none">
+            <div class="qcm-random-info">
+              <div class="qcm-random-info-icon">🔀</div>
+              <div class="qcm-random-info-text">
+                Les questions piochent aléatoirement dans <strong>tous les thèmes</strong> du concours.
+                Idéal pour simuler les conditions du concours et ne pas stagner dans un seul domaine.
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <!-- SCORE + CTA -->
-      <div style="border-top:1px solid var(--border);margin-top:28px;padding-top:22px">
-        <div style="font-size:.78rem;color:var(--gray-light);margin-bottom:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600">Ton score</div>
-        <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--red);line-height:1.1" id="score-display">0 / 0</div>
-        <div style="font-size:.88rem;color:var(--gray);margin-top:4px">questions répondues</div>
-      </div>
-      <div style="margin-top:22px;background:var(--red-pale);border:1px solid var(--red-pale2);padding:20px" id="qcm-unlock-cta">
-        <div style="font-size:.88rem;font-weight:600;color:var(--red);margin-bottom:8px">🔒 Accès complet</div>
-        <div style="font-size:.9rem;color:var(--gray);line-height:1.55;margin-bottom:14px">Débloquez les 700+ QCM pour 59€</div>
-        <button class="btn btn-red" style="width:100%;font-size:.88rem;padding:13px" onclick="goTo('formation')">Débloquer →</button>
-      </div>
-      <div style="margin-top:22px;background:#edf7ee;border:1px solid #c3e6c8;padding:20px;display:none" id="qcm-member-cta">
-        <div style="font-size:.88rem;font-weight:600;color:#1a5c25;margin-bottom:8px">✅ Accès complet activé</div>
-        <div style="font-size:.9rem;color:var(--gray);line-height:1.55">Tu as accès à tous les QCM.</div>
+        <!-- BARRE DE LANCEMENT -->
+        <div class="qcm-launch-bar">
+          <div class="qcm-launch-summary" id="qcm-launch-summary">
+            <span class="dim">Choisis un mode pour lancer ta session.</span>
+          </div>
+          <button class="qcm-launch-btn disabled" id="qcm-launch-btn" onclick="launchQcmSession()">
+            Lancer la session →
+          </button>
+        </div>
+
+        <!-- CTA NON-MEMBRE / MEMBRE -->
+        <div style="margin-top:22px;background:var(--red-pale);border:1px solid var(--red-pale2);padding:20px;text-align:center" id="qcm-unlock-cta">
+          <div style="font-size:.88rem;font-weight:600;color:var(--red);margin-bottom:8px">🔒 Accès complet</div>
+          <div style="font-size:.9rem;color:var(--gray);line-height:1.55;margin-bottom:14px">Débloque les 700+ QCM et toutes les statistiques détaillées pour 59€</div>
+          <button class="btn btn-red" style="font-size:.88rem;padding:12px 22px" onclick="goTo('formation')">Débloquer →</button>
+        </div>
+        <div style="margin-top:22px;background:#edf7ee;border:1px solid #c3e6c8;padding:18px 20px;display:none;text-align:center" id="qcm-member-cta">
+          <div style="font-size:.88rem;font-weight:600;color:#1a5c25">✅ Accès complet activé — Tu as accès à tous les QCM.</div>
+        </div>
+
       </div>
     </div>
 
-    <!-- MAIN QCM -->
-    <div class="qcm-main">
-      <div id="qcm-launch-screen">
-        <!-- Écran d'accueil avant lancement -->
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:40px 20px">
-          <div style="font-size:3rem;margin-bottom:20px">🎯</div>
-          <div class="s-eyebrow" style="text-align:center">Prêt à t'entraîner ?</div>
-          <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:12px;line-height:1.2">Choisis tes thèmes<br>ou lance un entraînement aléatoire</div>
-          <div style="font-size:.9rem;color:var(--gray);max-width:400px;line-height:1.7">Sélectionne les thèmes dans la colonne de gauche, puis clique sur <strong style="color:var(--charcoal)">Lancer les QCM</strong>.</div>
-          <div style="margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-            <div style="background:white;border:1px solid var(--border);padding:20px 24px;text-align:left;min-width:160px">
-              <div style="font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Par thème</div>
-              <div style="font-size:.85rem;color:var(--gray);line-height:1.55">Coche un ou plusieurs thèmes et cible tes points faibles.</div>
-            </div>
-            <div style="background:white;border:1px solid var(--border);padding:20px 24px;text-align:left;min-width:160px">
-              <div style="font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:6px">Aléatoire</div>
-              <div style="font-size:.85rem;color:var(--gray);line-height:1.55">Mix de tous les thèmes pour simuler le concours.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="qcm-session" style="display:none">
+    <!-- ========== SESSION EN COURS ========== -->
+    <div id="qcm-session" style="display:none">
+      <div class="qcm-session-wrap">
         <div class="qcm-header">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
             <div class="s-eyebrow" style="margin:0" id="qcm-cat-title">—</div>
@@ -1350,6 +1439,10 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
         <div id="qcm-area"></div>
       </div>
     </div>
+
+    <!-- ========== RÉSULTATS DE SESSION ========== -->
+    <div id="qcm-results-screen" style="display:none"></div>
+
   </div>
 </div>
 
@@ -2249,10 +2342,12 @@ var loadedQuestions = {};  // { 'statut': [...], 'gto-ssuap': [...] }
 
 var selectedCats = {};   // { 'statut': true, 'gto-ventilation': true, ... }
 var qcmMode = 'select';  // 'select' | 'random'
-var randomNb = 5;
+var randomNb = 10;
+var sessionAnswers = []; // { qIdx, correct, cat, catLabel, level, qText, userAnswer, correctAnswer }
 
 var activeSession = [];  // questions de la session en cours
 var qIdx = 0, score = 0, answered = 0;
+var sessionStartTs = 0;
 
 // ---------- MODE SWITCH ----------
 function switchQcmMode(mode) {
@@ -2261,6 +2356,7 @@ function switchQcmMode(mode) {
   document.getElementById('tab-random').classList.toggle('active', mode === 'random');
   document.getElementById('qcm-panel-select').style.display = mode === 'select' ? '' : 'none';
   document.getElementById('qcm-panel-random').style.display = mode === 'random' ? '' : 'none';
+  updateSummary();
 }
 
 // ---------- SÉLECTION THÈMES ----------
@@ -2274,6 +2370,15 @@ function toggleCat(cat) {
       selectedCats[sc] = selectedCats['doctrines'];
       updateCheckbox(sc);
     });
+    // Ouvrir le panneau si on vient de cocher
+    if (selectedCats['doctrines']) {
+      var sub = document.getElementById('doctrines-sub');
+      var parent = document.querySelector('.qcm-check-parent');
+      var arrow = document.getElementById('arrow-doctrines');
+      if (sub) sub.classList.add('open');
+      if (parent) parent.classList.add('open');
+      if (arrow) arrow.textContent = '▾';
+    }
   }
   updateSummary();
 }
@@ -2298,8 +2403,10 @@ function toggleSubCat(cat, evt) {
 function toggleDoctrinesPanel(evt) {
   var sub = document.getElementById('doctrines-sub');
   var arrow = document.getElementById('arrow-doctrines');
+  var parent = document.querySelector('.qcm-check-parent');
   var isOpen = sub.classList.contains('open');
   sub.classList.toggle('open', !isOpen);
+  if (parent) parent.classList.toggle('open', !isOpen);
   if (arrow) arrow.textContent = isOpen ? '▸' : '▾';
 }
 
@@ -2314,8 +2421,11 @@ function toggleSelectAll() {
   document.getElementById('select-all-label').textContent = newState ? 'Tout désélectionner' : 'Tout sélectionner';
   // Ouvrir les doctrines si on sélectionne tout
   if (newState) {
-    document.getElementById('doctrines-sub').classList.add('open');
+    var sub = document.getElementById('doctrines-sub');
+    var parent = document.querySelector('.qcm-check-parent');
     var arrow = document.getElementById('arrow-doctrines');
+    if (sub) sub.classList.add('open');
+    if (parent) parent.classList.add('open');
     if (arrow) arrow.textContent = '▾';
   }
   updateSummary();
@@ -2325,19 +2435,63 @@ function updateCheckbox(cat) {
   var el = document.getElementById('chk-' + cat);
   if (!el) return;
   el.textContent = selectedCats[cat] ? '☑' : '☐';
-  var item = el.closest('.qcm-check-item, .qcm-subcheck-item');
+  var item = el.closest('.qcm-check-item, .qcm-subcheck-item, .qcm-check-parent');
   if (item) item.classList.toggle('checked', !!selectedCats[cat]);
+  // Indicateur mi-coché sur le parent doctrines si des sous sont cochées
+  if (cat === 'doctrines' && el) {
+    var anyDoc = DOCTRINES_SUBCATS.some(function(sc){ return selectedCats[sc]; });
+    var allDoc = DOCTRINES_SUBCATS.every(function(sc){ return selectedCats[sc]; });
+    el.textContent = allDoc ? '☑' : (anyDoc ? '▪' : '☐');
+    if (item) item.classList.toggle('checked', anyDoc);
+  }
 }
 
 function updateSummary() {
   var cats = ['statut','sis','divers','textes'].concat(DOCTRINES_SUBCATS);
   var selected = cats.filter(function(c){ return selectedCats[c]; });
   var btn = document.getElementById('qcm-launch-btn');
-  var summary = document.getElementById('qcm-selection-summary');
+  var summary = document.getElementById('qcm-launch-summary');
+  var selAllCount = document.getElementById('select-all-count');
 
+  // Compteur "tout sélectionner"
+  if (selAllCount) {
+    selAllCount.textContent = selected.length === 0
+      ? 'Aucun thème sélectionné'
+      : selected.length + ' thème' + (selected.length > 1 ? 's' : '') + ' sélectionné' + (selected.length > 1 ? 's' : '');
+  }
+
+  // Icône + label du bouton "tout sélectionner"
+  var selAllIcon = document.getElementById('select-all-icon');
+  var selAllLabel = document.getElementById('select-all-label');
+  if (selAllIcon && selAllLabel) {
+    var allCount = cats.length;
+    if (selected.length === allCount) {
+      selAllIcon.textContent = '☑';
+      selAllLabel.textContent = 'Tout désélectionner';
+    } else if (selected.length === 0) {
+      selAllIcon.textContent = '☐';
+      selAllLabel.textContent = 'Tout sélectionner';
+    } else {
+      selAllIcon.textContent = '▪';
+      selAllLabel.textContent = 'Tout sélectionner';
+    }
+  }
+
+  if (!summary || !btn) return;
+
+  // Mode aléatoire → bouton toujours actif
+  if (qcmMode === 'random') {
+    summary.innerHTML = '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans tous les thèmes</span>';
+    btn.classList.remove('disabled');
+    btn.textContent = '🔀 Lancer la session →';
+    return;
+  }
+
+  // Mode par thème
   if (selected.length === 0) {
-    summary.innerHTML = '<span style="color:var(--gray-light)">Aucun thème sélectionné</span>';
-    btn.style.opacity = '.4'; btn.style.pointerEvents = 'none';
+    summary.innerHTML = '<span class="dim">Sélectionne au moins un thème pour lancer ta session.</span>';
+    btn.classList.add('disabled');
+    btn.textContent = 'Lancer la session →';
   } else {
     var catNames = [];
     if (selectedCats['statut']) catNames.push('Statut SPP');
@@ -2348,10 +2502,11 @@ function updateSummary() {
     if (selectedCats['divers']) catNames.push('Divers');
     if (selectedCats['textes']) catNames.push('Textes structurants');
     var footer = currentMember
-      ? selected.length + ' thème' + (selected.length > 1 ? 's' : '') + ' sélectionné' + (selected.length > 1 ? 's' : '')
-      : 'Session de démonstration — quelques questions';
-    summary.innerHTML = '<strong style="color:var(--charcoal)">' + catNames.join(', ') + '</strong><br><span style="color:var(--gray-light)">' + footer + '</span>';
-    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto';
+      ? '<strong>' + randomNb + ' questions</strong> <span class="dim">— tirées aléatoirement dans&nbsp;:</span> ' + catNames.join(', ')
+      : '<strong>Session démo</strong> <span class="dim">— quelques questions sur&nbsp;:</span> ' + catNames.join(', ');
+    summary.innerHTML = footer;
+    btn.classList.remove('disabled');
+    btn.textContent = 'Lancer la session →';
   }
 }
 
@@ -2359,6 +2514,7 @@ function setQcmNb(btn, n) {
   randomNb = n;
   document.querySelectorAll('.qcm-nb-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
+  updateSummary();
 }
 
 // ---------- CHARGEMENT JSON ----------
@@ -2399,6 +2555,15 @@ function loadCats(cats) {
 }
 
 // ---------- LANCEMENT SESSION ----------
+// Routeur selon le mode sélectionné
+function launchQcmSession() {
+  if (qcmMode === 'random') {
+    launchRandomQcm();
+  } else {
+    launchQcm();
+  }
+}
+
 function launchQcm() {
   var cats = ['statut','sis','divers','textes'].concat(DOCTRINES_SUBCATS);
   var selected = cats.filter(function(c){ return selectedCats[c]; });
@@ -2418,14 +2583,14 @@ function launchQcm() {
     return;
   }
 
-  // Membre : chargement des vraies questions
+  // Membre : chargement des vraies questions, puis troncature au nombre choisi
   showLoadingScreen();
   loadCats(selected).then(function(pool) {
     if (pool.length === 0) {
       document.getElementById('qcm-area').innerHTML = '<div class="question-card" style="text-align:center;padding:48px 24px"><div style="font-size:2rem;margin-bottom:12px">📭</div><div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:8px">Aucune question disponible</div><div style="font-size:.9rem;color:var(--gray);line-height:1.6">Les thèmes sélectionnés ne contiennent pas encore de QCM.</div><button class="btn btn-outline-red" style="margin-top:20px" onclick="stopSession()">← Retour</button></div>';
       return;
     }
-    pool = shuffle(pool);
+    pool = shuffle(pool).slice(0, Math.min(randomNb, pool.length));
     startSession(pool, buildSessionTitle(selected));
   }).catch(function(err) {
     console.error('Erreur chargement QCM :', err);
@@ -2487,8 +2652,12 @@ function shuffle(arr) {
 function startSession(pool, title) {
   activeSession = pool;
   qIdx = 0; score = 0; answered = 0;
+  sessionAnswers = [];
+  sessionStartTs = Date.now();
   document.getElementById('qcm-launch-screen').style.display = 'none';
   document.getElementById('qcm-session').style.display = '';
+  var resEl = document.getElementById('qcm-results-screen');
+  if (resEl) { resEl.style.display = 'none'; resEl.innerHTML = ''; }
   document.getElementById('qcm-cat-title').textContent = title;
   document.getElementById('q-total').textContent = pool.length;
   renderQ();
@@ -2498,11 +2667,188 @@ function startSession(pool, title) {
 function stopSession() {
   document.getElementById('qcm-launch-screen').style.display = '';
   document.getElementById('qcm-session').style.display = 'none';
+  var resEl = document.getElementById('qcm-results-screen');
+  if (resEl) { resEl.style.display = 'none'; resEl.innerHTML = ''; }
   document.getElementById('qcm-area').innerHTML = '';
+  // Rafraîchir le résumé au cas où
+  updateSummary();
+}
+
+// ---------- ÉCRAN DE FIN DE SESSION (stats détaillées) ----------
+function showSessionResults() {
+  var total = activeSession.length;
+  var pct = total > 0 ? Math.round(score / total * 100) : 0;
+  var emoji = pct >= 80 ? '🏅' : pct >= 60 ? '👍' : '📚';
+  var wrong = total - score;
+  var elapsed = sessionStartTs ? Math.round((Date.now() - sessionStartTs) / 1000) : 0;
+  var mins = Math.floor(elapsed / 60);
+  var secs = elapsed % 60;
+  var timeLbl = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+  // Masque la session en cours, prépare la zone résultats
+  document.getElementById('qcm-session').style.display = 'none';
+  document.getElementById('qcm-prog') && (document.getElementById('qcm-prog').style.width = '100%');
+  var resEl = document.getElementById('qcm-results-screen');
+  if (!resEl) return;
+
+  // Si non-payant : écran simplifié avec CTA débloquage
+  if (!isPaidMember) {
+    var ctaLogin = currentMember
+      ? ''
+      : '<div style="font-size:.82rem;color:var(--gray);margin-top:14px">Déjà un compte&nbsp;? <button onclick="goTo(\'connexion\')" style="background:none;border:none;color:var(--red);font-family:\'DM Sans\',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:underline">Se connecter →</button></div>';
+    resEl.innerHTML = [
+      '<div class="qcm-results">',
+        '<div class="qcm-results-head">',
+          '<div class="qcm-results-emoji">' + emoji + '</div>',
+          '<div class="qcm-results-title">Session terminée</div>',
+          '<div class="qcm-results-score">Score&nbsp;: <strong>' + score + ' / ' + total + '</strong> — <span class="pct">' + pct + '%</span></div>',
+          '<div class="qcm-results-bar"><div style="width:' + pct + '%"></div></div>',
+        '</div>',
+        '<div style="text-align:center;font-size:.95rem;color:var(--gray);line-height:1.75;max-width:500px;margin:0 auto 28px">',
+          'Tu viens de compléter une session de démonstration.<br>Accède aux <strong style="color:var(--charcoal)">700+ QCM complets</strong> et à tes <strong style="color:var(--charcoal)">statistiques détaillées</strong> pour progresser jusqu\'au jour J.',
+        '</div>',
+        '<div class="qcm-results-actions">',
+          '<button class="btn btn-outline-red" onclick="stopSession()">← Retour</button>',
+          '<button class="btn btn-red" onclick="msPay(\'prc_acc-s-plateforme-de-pr-paration-candidat-54v0222\')">Accès complet — 59€ →</button>',
+        '</div>',
+        ctaLogin,
+      '</div>'
+    ].join('');
+    resEl.style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // ============ MEMBRE PAYANT : STATS DÉTAILLÉES ============
+
+  // 1. Répartition par catégorie
+  var perCat = {};
+  sessionAnswers.forEach(function(a){
+    var key = a.cat || 'inconnu';
+    if (!perCat[key]) perCat[key] = { total: 0, ok: 0, label: a.catLabel || CAT_LABELS[key] || key };
+    perCat[key].total++;
+    if (a.correct) perCat[key].ok++;
+  });
+  var catRows = Object.keys(perCat).map(function(k){
+    var p = perCat[k];
+    return { cat: k, label: p.label, total: p.total, ok: p.ok, pct: Math.round(p.ok / p.total * 100) };
+  }).sort(function(a, b){ return a.pct - b.pct; }); // Du plus faible au plus fort
+
+  var catBarsHtml = '';
+  if (catRows.length > 0) {
+    catBarsHtml = '<div class="qcm-results-section">' +
+      '<div class="qcm-results-section-title">📊 Répartition par thème</div>' +
+      catRows.map(function(r){
+        var cls = r.pct >= 75 ? 'good' : (r.pct >= 50 ? 'mid' : '');
+        return '<div class="qcm-cat-bar-row">' +
+          '<div class="qcm-cat-bar-name">' + escapeHtml(r.label) + '</div>' +
+          '<div class="qcm-cat-bar-track"><div class="qcm-cat-bar-fill ' + cls + '" style="width:' + r.pct + '%"></div></div>' +
+          '<div class="qcm-cat-bar-score">' + r.ok + '/' + r.total + ' · ' + r.pct + '%</div>' +
+          '</div>';
+      }).join('') +
+      '</div>';
+  }
+
+  // 2. Répartition par niveau de difficulté
+  var perLevel = { 'TF': { ok: 0, total: 0 }, 'F': { ok: 0, total: 0 }, 'M': { ok: 0, total: 0 }, 'D': { ok: 0, total: 0 } };
+  sessionAnswers.forEach(function(a){
+    if (a.level && perLevel[a.level]) {
+      perLevel[a.level].total++;
+      if (a.correct) perLevel[a.level].ok++;
+    }
+  });
+  var levelLabels = { 'TF': 'Très facile', 'F': 'Facile', 'M': 'Moyen', 'D': 'Difficile' };
+  var levelColors = { 'TF': '#2d7a3a', 'F': '#8B6914', 'M': '#B83232', 'D': '#8B2020' };
+  var levelPills = '';
+  Object.keys(perLevel).forEach(function(lv){
+    var d = perLevel[lv];
+    if (d.total === 0) return;
+    var lpct = Math.round(d.ok / d.total * 100);
+    levelPills += '<div class="qcm-level-pill">' +
+      '<span class="qcm-level-pill-tag" style="color:' + levelColors[lv] + ';border-color:' + levelColors[lv] + '">' + levelLabels[lv] + '</span>' +
+      '<span class="qcm-level-pill-val">' + d.ok + '/' + d.total + ' · ' + lpct + '%</span>' +
+      '</div>';
+  });
+  var levelHtml = levelPills
+    ? '<div class="qcm-results-section"><div class="qcm-results-section-title">🎯 Par niveau de difficulté</div><div class="qcm-level-pills">' + levelPills + '</div></div>'
+    : '';
+
+  // 3. Questions ratées
+  var wrongAnswers = sessionAnswers.filter(function(a){ return !a.correct; });
+  var wrongHtml = '';
+  if (wrongAnswers.length > 0) {
+    wrongHtml = '<div class="qcm-results-section">' +
+      '<div class="qcm-results-section-title">❌ Questions à revoir (' + wrongAnswers.length + ')</div>' +
+      '<div class="qcm-wrong-list">' +
+      wrongAnswers.map(function(a){
+        var catLbl = a.catLabel || (a.cat ? (CAT_LABELS[a.cat] || a.cat) : 'Thème inconnu');
+        var qText = a.qText.length > 180 ? a.qText.slice(0, 180) + '…' : a.qText;
+        return '<div class="qcm-wrong-item">' +
+          '<div class="qcm-wrong-item-cat">' + escapeHtml(catLbl) + '</div>' +
+          escapeHtml(qText) +
+          '</div>';
+      }).join('') +
+      '</div>' +
+      '</div>';
+  }
+
+  // 4. HTML final
+  resEl.innerHTML = [
+    '<div class="qcm-results">',
+      '<div class="qcm-results-head">',
+        '<div class="qcm-results-emoji">' + emoji + '</div>',
+        '<div class="qcm-results-title">Session terminée</div>',
+        '<div class="qcm-results-score">Score&nbsp;: <strong>' + score + ' / ' + total + '</strong> — <span class="pct">' + pct + '%</span></div>',
+        '<div class="qcm-results-bar"><div style="width:' + pct + '%"></div></div>',
+      '</div>',
+
+      // Vue d'ensemble en cards
+      '<div class="qcm-results-section">',
+        '<div class="qcm-results-section-title">Vue d\'ensemble</div>',
+        '<div class="qcm-stat-grid">',
+          '<div class="qcm-stat-card"><div class="qcm-stat-card-val" style="color:#2d7a3a">' + score + '</div><div class="qcm-stat-card-lbl">Bonnes réponses</div></div>',
+          '<div class="qcm-stat-card"><div class="qcm-stat-card-val" style="color:#B83232">' + wrong + '</div><div class="qcm-stat-card-lbl">Erreurs</div></div>',
+          '<div class="qcm-stat-card"><div class="qcm-stat-card-val">' + pct + '%</div><div class="qcm-stat-card-lbl">Réussite</div></div>',
+          '<div class="qcm-stat-card"><div class="qcm-stat-card-val" style="font-size:1.4rem;line-height:1.3">' + timeLbl + '</div><div class="qcm-stat-card-lbl">Durée</div></div>',
+        '</div>',
+      '</div>',
+
+      catBarsHtml,
+      levelHtml,
+      wrongHtml,
+
+      // Actions
+      '<div class="qcm-results-actions">',
+        '<button class="btn btn-outline-red" onclick="stopSession()">← Nouvelle session</button>',
+        '<button class="btn btn-outline-red" onclick="goTo(\'espace\')">📊 Mon espace candidat</button>',
+        '<button class="btn btn-red" onclick="relaunchSameSession()">Relancer →</button>',
+      '</div>',
+
+    '</div>'
+  ].join('');
+  resEl.style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Relance une session avec les mêmes paramètres
+function relaunchSameSession() {
+  document.getElementById('qcm-results-screen').style.display = 'none';
+  document.getElementById('qcm-results-screen').innerHTML = '';
+  launchQcmSession();
+}
+
+// Utilitaire d'échappement HTML pour sécuriser l'affichage des textes de questions
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/[&<>"']/g, function(c){
+    return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+  });
 }
 
 function initQcm() {
   // Appelé à chaque goTo('qcm') — ne reset pas une session en cours
+  // Mais on rafraîchit la barre de lancement au cas où le statut membre aurait changé
+  if (typeof updateSummary === 'function') updateSummary();
 }
 
 function renderQ() {
@@ -2510,41 +2856,17 @@ function renderQ() {
   if (!area) return;
 
   if (qIdx >= activeSession.length) {
-    // Fin de session
-    var pct = activeSession.length > 0 ? Math.round(score / activeSession.length * 100) : 0;
-    var emoji = pct >= 80 ? '🏅' : pct >= 60 ? '👍' : '📚';
-    if (!isPaidMember) {
-      // Adapte le CTA selon que l'utilisateur a déjà un compte ou non
-      var ctaLogin = currentMember
-        ? '' // déjà connecté → ne pas proposer la connexion
-        : '<div style="font-size:.82rem;color:var(--gray)">Déjà un compte ? <button onclick="goTo(\'connexion\')" style="background:none;border:none;color:var(--red);font-family:\'DM Sans\',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:underline">Se connecter →</button></div>';
-      area.innerHTML = [
-        '<div style="background:white;border:1px solid var(--border);padding:48px 36px;text-align:center">',
-          '<div style="font-size:2.8rem;margin-bottom:16px">' + emoji + '</div>',
-          '<div style="font-family:\'Playfair Display\',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:8px">Session terminée</div>',
-          '<div style="font-size:1rem;color:var(--gray);margin-bottom:4px">Score : <strong style="color:var(--charcoal)">' + score + ' / ' + activeSession.length + '</strong> — <strong style="color:var(--red)">' + pct + '%</strong></div>',
-          '<div style="width:100%;background:var(--border-light);height:6px;margin:16px 0 28px"><div style="height:6px;background:var(--red);width:' + pct + '%"></div></div>',
-          '<div style="font-size:.9rem;color:var(--gray);line-height:1.75;margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto">',
-            'Tu viens de compléter une session de démonstration.<br>Accède aux <strong style="color:var(--charcoal)">700+ QCM complets</strong> pour progresser jusqu\'au jour J.',
-          '</div>',
-          '<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">',
-            '<button class="btn btn-outline-red" onclick="stopSession()">Changer les thèmes</button>',
-            '<button class="btn btn-red" onclick="msPay(\'prc_acc-s-plateforme-de-pr-paration-candidat-54v0222\')">Accès complet — 59€ →</button>',
-          '</div>',
-          ctaLogin,
-        '</div>'
-      ].join('');
-    } else {
-      // Enregistre la session dans les statistiques
+    // Fin de session → on affiche l'écran de résultats détaillé
+    // Enregistrement dans les stats globales (uniquement pour les payants)
+    if (isPaidMember) {
       var sessCats = [];
       activeSession.forEach(function(q){
         if (q.cat && sessCats.indexOf(q.cat) === -1) sessCats.push(q.cat);
       });
       var sessTitle = document.getElementById('qcm-cat-title');
       espTrackSession(sessTitle ? sessTitle.textContent : 'Session QCM', sessCats, score, activeSession.length);
-      area.innerHTML = '<div class="question-card" style="text-align:center"><div style="font-size:2.8rem;margin-bottom:16px">' + emoji + '</div><div style="font-family:\'Playfair Display\',serif;font-size:1.4rem;color:var(--charcoal);margin-bottom:8px">Score : ' + score + ' / ' + activeSession.length + ' (' + pct + '%)</div><div style="width:100%;background:var(--border-light);height:5px;margin:12px 0 20px"><div style="height:5px;background:var(--red);width:' + pct + '%"></div></div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn btn-outline-red" onclick="stopSession()">Changer les thèmes</button><button class="btn btn-outline-red" onclick="goTo(\'espace\')">📊 Voir mes stats</button><button class="btn btn-red" onclick="launchQcm()">Relancer →</button></div></div>';
     }
-    document.getElementById('qcm-prog').style.width = '100%';
+    showSessionResults();
     return;
   }
 
@@ -2645,6 +2967,16 @@ function submitMultiAnswer() {
   answered++;
   if (isCorrect) score++;
 
+  // Collecte pour stats de fin de session
+  sessionAnswers.push({
+    qIdx: qIdx,
+    correct: isCorrect,
+    cat: q.cat || null,
+    catLabel: q.catLabel || null,
+    level: q.level || null,
+    qText: q.q || ''
+  });
+
   // Affichage du résultat
   var choices = document.querySelectorAll('.q-choice');
   choices.forEach(function(c, i) {
@@ -2689,6 +3021,15 @@ function answerSingle(idx) {
       choices[ci].classList.add('reveal-correct');
     });
   }
+  // Collecte pour stats de fin de session
+  sessionAnswers.push({
+    qIdx: qIdx,
+    correct: isCorrect,
+    cat: q.cat || null,
+    catLabel: q.catLabel || null,
+    level: q.level || null,
+    qText: q.q || ''
+  });
   // Tracking statistiques espace candidat
   if (q.cat) espTrackAnswer(q.cat, isCorrect, q.level);
   showExplAndNext(q, isCorrect);
@@ -3230,10 +3571,14 @@ function reviseWeakestCategory() {
   // Si c'est une sous-cat doctrine, ouvre le panneau et synchronise le parent
   if (DOCTRINES_SUBCATS.indexOf(cat) !== -1) {
     var sub = document.getElementById('doctrines-sub');
+    var parent = document.querySelector('.qcm-check-parent');
     if (sub) sub.classList.add('open');
+    if (parent) parent.classList.add('open');
     var arrow = document.getElementById('arrow-doctrines');
     if (arrow) arrow.textContent = '▾';
   }
+  // Force le mode par thème (au cas où le dernier mode utilisé était "aléatoire")
+  if (typeof switchQcmMode === 'function') switchQcmMode('select');
   updateSummary();
   goTo('qcm');
   setTimeout(function(){ launchQcm(); }, 200);
