@@ -4066,17 +4066,8 @@ function _renderEspaceWith(data) {
   // --- Priorité de révision (catégorie la plus faible parmi celles vues) ---
   renderEspPriority(data);
 
-  // --- Coachings à venir (affiché en haut si présents — information temporelle) ---
-  renderEspBookings();
-
   // --- Performances par catégorie ---
   renderEspCats(data);
-
-  // --- Historique annales (mode concours) ---
-  renderEspExams(data);
-
-  // --- Historique préparation physique ---
-  renderEspPrepa();
 
   // --- Documents récents ---
   renderEspDocs(data);
@@ -5033,19 +5024,6 @@ function submitExam(forced) {
     details.push({ num: qNum, status: status, userAnswer: userAnswer, correctAnswer: correctAnswer, expl: q.expl || '' });
   });
 
-  // Tracking pour l'espace candidat
-  espTrackExam({
-    id: currentAnnale.id || '',
-    title: currentAnnale.title || 'Annale',
-    theme: currentAnnale.theme || null,
-    isDemo: !!currentAnnale.is_demo || /-demo$/.test(currentAnnale.id || ''),
-    nCorrect: nCorrect,
-    nWrong: nWrong,
-    nSkipped: nSkipped,
-    nTotal: nb,
-    pct: nb > 0 ? Math.round(nCorrect / nb * 100) : 0
-  });
-
   // Affichage de la correction
   showCorrection(nCorrect, nWrong, nSkipped, nb, details);
 }
@@ -5682,26 +5660,13 @@ function togglePrepaDone(jour) {
   var semId = prepaData.semaine + '_' + activeLevel;
   var done = getPrepaDone(semId);
   var idx = done.indexOf(jour);
-  var isValidating = (idx === -1);
-  if (isValidating) {
+  if (idx === -1) {
     done.push(jour);
     showToast('✓ Séance du ' + jour + ' validée — bravo !');
   } else {
     done.splice(idx, 1);
   }
   setPrepaDone(semId, done);
-  // Cumul côté espace candidat : on marque aujourd'hui comme jour actif
-  // pour que la séance prépa alimente le streak (comme les QCM)
-  if (isValidating && typeof currentMember !== 'undefined' && currentMember && typeof espLoadLocal === 'function') {
-    try {
-      var espData = espLoadLocal();
-      var today = espTodayKey();
-      if (espData.activeDays.indexOf(today) === -1) {
-        espData.activeDays.push(today);
-        espSaveLocal(espData);
-      }
-    } catch(e) {}
-  }
   paintPrepa();
   // Ré-ouvrir le jour qu'on vient de toggler pour l'UX
   setTimeout(function(){
@@ -5909,19 +5874,6 @@ window.calSubmitBooking = function() {
   localStorage.setItem('booking_email', email);
   localStorage.setItem('booking_date', dateLabel);
   localStorage.setItem('booking_time', slot.time);
-
-  // Persistance longue durée pour l'espace candidat
-  if (typeof espAddBooking === 'function') {
-    var bookingTs = new Date(calState.selectedDate + 'T' + slot.time + ':00').getTime();
-    espAddBooking({
-      name: name,
-      email: email,
-      dateLabel: dateLabel,
-      dateKey: calState.selectedDate,
-      time: slot.time,
-      timestamp: bookingTs
-    });
-  }
 
   // Envoi email AVANT redirection Stripe (sessionStorage perdu après redirection)
   var doRedirect = function() {
