@@ -2210,6 +2210,42 @@ if(window.location.search.indexOf('success') !== -1) {
         <!-- Rempli dynamiquement -->
       </div>
 
+      <!-- COACHINGS À VENIR -->
+      <div id="esp-bookings-wrap" style="display:none;margin-bottom:32px">
+        <div style="margin-bottom:8px">
+          <div class="esp-eyebrow">📅 Coaching</div>
+          <div class="esp-section-title">Mes rendez-vous à venir</div>
+          <div class="esp-section-sub">Tes séances de coaching individuel réservées. Tu recevras un lien visio par email 24h avant.</div>
+        </div>
+        <div id="esp-bookings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
+          <!-- Rempli dynamiquement -->
+        </div>
+      </div>
+
+      <!-- HISTORIQUE ANNALES -->
+      <div id="esp-exams-wrap" style="display:none;margin-bottom:32px">
+        <div style="margin-bottom:8px">
+          <div class="esp-eyebrow">📝 Mode concours</div>
+          <div class="esp-section-title">Historique des annales passées</div>
+          <div class="esp-section-sub">Tes derniers examens blancs et leurs scores. Les annales démo sont signalées.</div>
+        </div>
+        <div id="esp-exams" style="display:grid;gap:10px">
+          <!-- Rempli dynamiquement -->
+        </div>
+      </div>
+
+      <!-- HISTORIQUE PRÉPA PHYSIQUE -->
+      <div id="esp-prepa-wrap" style="display:none;margin-bottom:32px">
+        <div style="margin-bottom:8px">
+          <div class="esp-eyebrow">💪 Préparation physique</div>
+          <div class="esp-section-title">Mes séances validées</div>
+          <div class="esp-section-sub">Nombre de séances cochées comme faites, par semaine d'entraînement.</div>
+        </div>
+        <div id="esp-prepa" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">
+          <!-- Rempli dynamiquement -->
+        </div>
+      </div>
+
       <!-- DOCUMENTS RÉCENTS -->
       <div style="margin-bottom:8px">
         <div class="esp-eyebrow">📚 Reprendre où tu t'étais arrêté</div>
@@ -3611,6 +3647,108 @@ function espTrackDoc(id, name, type, cat) {
   }
 }
 
+// Tracking d'une annale terminée (mode concours)
+function espTrackExam(info) {
+  if (!currentMember) return;
+  var data = espLoadLocal();
+  if (!data.exams) data.exams = [];
+  data.exams.unshift({
+    date: Date.now(),
+    id: info.id || '',
+    title: info.title || 'Annale',
+    theme: info.theme || null,
+    isDemo: !!info.isDemo,
+    nCorrect: info.nCorrect || 0,
+    nWrong: info.nWrong || 0,
+    nSkipped: info.nSkipped || 0,
+    nTotal: info.nTotal || 0,
+    pct: info.pct || 0
+  });
+  if (data.exams.length > 50) data.exams = data.exams.slice(0, 50);
+  var today = espTodayKey();
+  if (data.activeDays.indexOf(today) === -1) data.activeDays.push(today);
+  espSaveLocal(data);
+  // Supabase : on réutilise la table qcm_sessions avec un préfixe de titre
+  // (évite la création d'une nouvelle table pour une première version)
+  if (window.supabaseClient) {
+    window.supabaseClient.from('qcm_sessions').insert({
+      member_id: espMemberId(),
+      member_email: espMemberEmail(),
+      title: '[ANNALE] ' + (info.title || 'Annale'),
+      categories: info.theme ? [info.theme] : [],
+      score: info.nCorrect || 0,
+      total: info.nTotal || 0,
+      pct: info.pct || 0
+    }).then(function(res){
+      if (res && res.error) console.warn('Supabase insert exam :', res.error.message);
+    });
+  }
+}
+
+// Lecture de toutes les séances prépa physique cochées (toutes semaines confondues)
+// Retourne : [{ semaine, niveau, jours: [...], nb: X }, ...]
+function espGetPrepaDone() {
+  try {
+    var raw = localStorage.getItem('prepa_done_v1');
+    if (!raw) return [];
+    var obj = JSON.parse(raw);
+    var rows = [];
+    Object.keys(obj).forEach(function(key) {
+      // Clé : "semaine-id_niveau" (ex: "cycle1-S1_confirme")
+      var parts = key.split('_');
+      var niveau = parts.length > 1 ? parts[parts.length - 1] : null;
+      var semaine = parts.length > 1 ? parts.slice(0, -1).join('_') : key;
+      var jours = obj[key] || [];
+      if (jours.length > 0) {
+        rows.push({ semaine: semaine, niveau: niveau, jours: jours, nb: jours.length });
+      }
+    });
+    // Tri : les semaines avec le plus d'activité récente d'abord (approximation : ordre alpha)
+    rows.sort(function(a,b){ return (b.semaine || '').localeCompare(a.semaine || ''); });
+    return rows;
+  } catch(e) { return []; }
+}
+
+// Lecture des coachings réservés (à venir)
+// Stockage en parallèle des clés éphémères booking_* pour conserver l'historique
+function espGetUpcomingBookings() {
+  try {
+    var raw = localStorage.getItem('booking_history_v1');
+    if (!raw) return [];
+    var arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    // On filtre les bookings passés (date + time < now)
+    var now = Date.now();
+    return arr.filter(function(b) {
+      if (!b.timestamp) return false;
+      // 90 min tolerance après l'heure pour garder affiché pendant la séance
+      return b.timestamp + 90*60*1000 > now;
+    }).sort(function(a,b){ return a.timestamp - b.timestamp; });
+  } catch(e) { return []; }
+}
+
+// Ajoute un booking à l'historique persistant (appelé depuis calSubmitBooking)
+function espAddBooking(info) {
+  try {
+    var raw = localStorage.getItem('booking_history_v1');
+    var arr = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(arr)) arr = [];
+    arr.push({
+      name: info.name,
+      email: info.email,
+      dateLabel: info.dateLabel,
+      dateKey: info.dateKey,
+      time: info.time,
+      timestamp: info.timestamp,
+      addedAt: Date.now()
+    });
+    // Nettoyage : on retire les très vieux bookings (> 90 jours passés)
+    var cutoff = Date.now() - 90*24*60*60*1000;
+    arr = arr.filter(function(b) { return (b.timestamp || 0) > cutoff; });
+    localStorage.setItem('booking_history_v1', JSON.stringify(arr));
+  } catch(e) {}
+}
+
 // ---------- AGRÉGATION POUR L'AFFICHAGE ----------
 // Récupère toutes les données depuis Supabase et reconstruit la structure
 // {perCat, sessions, docs, activeDays}. Fallback local si indisponible.
@@ -3928,8 +4066,17 @@ function _renderEspaceWith(data) {
   // --- Priorité de révision (catégorie la plus faible parmi celles vues) ---
   renderEspPriority(data);
 
+  // --- Coachings à venir (affiché en haut si présents — information temporelle) ---
+  renderEspBookings();
+
   // --- Performances par catégorie ---
   renderEspCats(data);
+
+  // --- Historique annales (mode concours) ---
+  renderEspExams(data);
+
+  // --- Historique préparation physique ---
+  renderEspPrepa();
 
   // --- Documents récents ---
   renderEspDocs(data);
@@ -4101,6 +4248,133 @@ function renderEspSessions(data) {
       '</div>';
   });
   container.innerHTML = html;
+}
+
+// ---------- COACHINGS À VENIR ----------
+function renderEspBookings() {
+  var wrap = document.getElementById('esp-bookings-wrap');
+  var container = document.getElementById('esp-bookings');
+  if (!wrap || !container) return;
+  var bookings = espGetUpcomingBookings();
+  if (bookings.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  var html = '';
+  bookings.forEach(function(b) {
+    var daysUntil = Math.round((b.timestamp - Date.now()) / (24*60*60*1000));
+    var countdown;
+    if (daysUntil < 0) {
+      countdown = '<span style="color:var(--red);font-weight:700">En cours</span>';
+    } else if (daysUntil === 0) {
+      countdown = '<span style="color:var(--red);font-weight:700">🔔 Aujourd\'hui</span>';
+    } else if (daysUntil === 1) {
+      countdown = '<span style="color:#B83232;font-weight:700">Demain</span>';
+    } else if (daysUntil <= 7) {
+      countdown = '<span style="color:#8B6914;font-weight:600">Dans ' + daysUntil + ' jours</span>';
+    } else {
+      countdown = '<span style="color:var(--gray)">Dans ' + daysUntil + ' jours</span>';
+    }
+    html +=
+      '<div style="background:white;border:1px solid var(--border);border-left:4px solid var(--red);padding:18px 20px">' +
+        '<div style="font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:8px">Séance coaching</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:1.1rem;color:var(--charcoal);line-height:1.3;margin-bottom:4px">' + espEscapeHtml(b.dateLabel || '') + '</div>' +
+        '<div style="font-size:.9rem;color:var(--charcoal);margin-bottom:10px">⏱ ' + espEscapeHtml(b.time || '') + ' (durée 60-90 min)</div>' +
+        '<div style="font-size:.82rem;margin-bottom:12px">' + countdown + '</div>' +
+        '<div style="font-size:.78rem;color:var(--gray);line-height:1.5;padding-top:10px;border-top:1px solid var(--border-light)">' +
+          'Tu recevras un lien visio par email environ 24 h avant la séance. En cas d\'empêchement, contacte Quentin au plus tôt.' +
+        '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// ---------- HISTORIQUE ANNALES (MODE CONCOURS) ----------
+function renderEspExams(data) {
+  var wrap = document.getElementById('esp-exams-wrap');
+  var container = document.getElementById('esp-exams');
+  if (!wrap || !container) return;
+  var exams = data.exams || [];
+  if (exams.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  var themeLabels = {
+    'etude-texte': 'Étude de texte',
+    'maths': 'Mathématiques',
+    'equipier': 'Équipier SPV'
+  };
+  var html = '';
+  exams.slice(0, 10).forEach(function(e) {
+    var cls = e.pct < 50 ? 'low' : (e.pct < 70 ? 'mid' : 'high');
+    var themeLabel = e.theme ? (themeLabels[e.theme] || e.theme) : '—';
+    var demoBadge = e.isDemo
+      ? '<span style="font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8B6914;border:1px solid #f5c66b;background:#fff6e5;padding:2px 7px;margin-left:8px">Démo</span>'
+      : '';
+    html +=
+      '<div class="esp-sess-item">' +
+        '<div class="esp-sess-date">' + espFormatDate(e.date) + '</div>' +
+        '<div class="esp-sess-title">' + espEscapeHtml(e.title) + demoBadge + '<div style="font-size:.72rem;color:var(--gray);font-weight:400;margin-top:2px">' + themeLabel + ' · ' + e.nCorrect + ' bonnes · ' + e.nWrong + ' erreurs · ' + e.nSkipped + ' sans réponse</div></div>' +
+        '<div class="esp-sess-score">' + e.nCorrect + '/' + e.nTotal + '</div>' +
+        '<div class="esp-sess-pct ' + cls + '">' + e.pct + '%</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// ---------- HISTORIQUE PRÉPA PHYSIQUE ----------
+function renderEspPrepa() {
+  var wrap = document.getElementById('esp-prepa-wrap');
+  var container = document.getElementById('esp-prepa');
+  if (!wrap || !container) return;
+  var rows = espGetPrepaDone();
+  if (rows.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  var niveauLabels = {
+    'debutant': '🟢 Débutant',
+    'confirme': '🟠 Confirmé',
+    'avance': '🔴 Avancé'
+  };
+  var totalSeances = rows.reduce(function(s, r){ return s + r.nb; }, 0);
+  var html = '';
+  // Petit résumé en tête
+  html +=
+    '<div style="grid-column:1/-1;background:var(--cream2);padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:4px">' +
+      '<div style="font-size:1.4rem">💪</div>' +
+      '<div style="font-size:.92rem;color:var(--charcoal)">Tu as validé <strong>' + totalSeances + ' séance' + (totalSeances > 1 ? 's' : '') + '</strong> sur <strong>' + rows.length + ' semaine' + (rows.length > 1 ? 's' : '') + '</strong> d\'entraînement.</div>' +
+    '</div>';
+  rows.forEach(function(r) {
+    var lvl = r.niveau && niveauLabels[r.niveau] ? niveauLabels[r.niveau] : '';
+    var jourList = r.jours.slice().sort(function(a,b){
+      var order = {'lundi':1,'mardi':2,'mercredi':3,'jeudi':4,'vendredi':5,'samedi':6,'dimanche':7};
+      return (order[a] || 99) - (order[b] || 99);
+    }).map(function(j){ return j.charAt(0).toUpperCase() + j.slice(1); }).join(' · ');
+    // Titre semaine : on transforme "cycle1-S1" en "Cycle 1 — Semaine 1"
+    var semLabel = r.semaine;
+    var m = /cycle(\d+)-S(\d+)/.exec(r.semaine);
+    if (m) semLabel = 'Cycle ' + m[1] + ' — Semaine ' + m[2];
+    html +=
+      '<div style="background:white;border:1px solid var(--border);padding:16px 18px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px">' +
+          '<div style="font-family:\'Playfair Display\',serif;font-size:1rem;color:var(--charcoal);line-height:1.25">' + espEscapeHtml(semLabel) + '</div>' +
+          '<div style="font-size:1.4rem;font-family:\'Playfair Display\',serif;color:var(--red);font-weight:700;line-height:1">' + r.nb + '</div>' +
+        '</div>' +
+        (lvl ? '<div style="font-size:.72rem;color:var(--gray);margin-bottom:8px">' + lvl + '</div>' : '') +
+        '<div style="font-size:.8rem;color:var(--gray);line-height:1.5">' + jourList + '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// Helper HTML escape pour l'espace (évite d'introduire du HTML via dateLabel/title utilisateur)
+function espEscapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function resetEspaceStats() {
@@ -4759,6 +5033,19 @@ function submitExam(forced) {
     details.push({ num: qNum, status: status, userAnswer: userAnswer, correctAnswer: correctAnswer, expl: q.expl || '' });
   });
 
+  // Tracking pour l'espace candidat
+  espTrackExam({
+    id: currentAnnale.id || '',
+    title: currentAnnale.title || 'Annale',
+    theme: currentAnnale.theme || null,
+    isDemo: !!currentAnnale.is_demo || /-demo$/.test(currentAnnale.id || ''),
+    nCorrect: nCorrect,
+    nWrong: nWrong,
+    nSkipped: nSkipped,
+    nTotal: nb,
+    pct: nb > 0 ? Math.round(nCorrect / nb * 100) : 0
+  });
+
   // Affichage de la correction
   showCorrection(nCorrect, nWrong, nSkipped, nb, details);
 }
@@ -5395,13 +5682,26 @@ function togglePrepaDone(jour) {
   var semId = prepaData.semaine + '_' + activeLevel;
   var done = getPrepaDone(semId);
   var idx = done.indexOf(jour);
-  if (idx === -1) {
+  var isValidating = (idx === -1);
+  if (isValidating) {
     done.push(jour);
     showToast('✓ Séance du ' + jour + ' validée — bravo !');
   } else {
     done.splice(idx, 1);
   }
   setPrepaDone(semId, done);
+  // Cumul côté espace candidat : on marque aujourd'hui comme jour actif
+  // pour que la séance prépa alimente le streak (comme les QCM)
+  if (isValidating && typeof currentMember !== 'undefined' && currentMember && typeof espLoadLocal === 'function') {
+    try {
+      var espData = espLoadLocal();
+      var today = espTodayKey();
+      if (espData.activeDays.indexOf(today) === -1) {
+        espData.activeDays.push(today);
+        espSaveLocal(espData);
+      }
+    } catch(e) {}
+  }
   paintPrepa();
   // Ré-ouvrir le jour qu'on vient de toggler pour l'UX
   setTimeout(function(){
@@ -5609,6 +5909,19 @@ window.calSubmitBooking = function() {
   localStorage.setItem('booking_email', email);
   localStorage.setItem('booking_date', dateLabel);
   localStorage.setItem('booking_time', slot.time);
+
+  // Persistance longue durée pour l'espace candidat
+  if (typeof espAddBooking === 'function') {
+    var bookingTs = new Date(calState.selectedDate + 'T' + slot.time + ':00').getTime();
+    espAddBooking({
+      name: name,
+      email: email,
+      dateLabel: dateLabel,
+      dateKey: calState.selectedDate,
+      time: slot.time,
+      timestamp: bookingTs
+    });
+  }
 
   // Envoi email AVANT redirection Stripe (sessionStorage perdu après redirection)
   var doRedirect = function() {
