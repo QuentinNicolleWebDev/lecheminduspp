@@ -1,0 +1,582 @@
+{
+  "semaine": "cycle1-S4",
+  "semaine_label": "Semaine 4/6 — Nominal (volume +)",
+  "titre": "Semaine 4/6 — Nominal (volume +)",
+  "intro": "Même intensité que la semaine précédente, mais avec un léger volume en plus (VMA, sortie longue). Le corps est maintenant habitué au format, on peut pousser le volume sans augmenter les charges.",
+  "niveaux": {
+    "debutant": {
+      "titre": "Semaine 4/6 — Nominal (volume +) — 🟢 Débutant",
+      "intro": "Même intensité que la semaine précédente, mais avec un léger volume en plus (VMA, sortie longue). Le corps est maintenant habitué au format, on peut pousser le volume sans augmenter les charges. Niveau 🟢 Débutant (VMA < 13 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 30,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 30,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "type": "muscu",
+          "duree_min": 55,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 50.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 65.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "Charge modérée, focus technique et amplitude complète."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "16 kg (H) / 12 kg (F) — focus technique. Travail technique : poussée des hanches, pas un balancement des bras."
+            },
+            {
+              "type": "exercice",
+              "nom": "Prévention blessure CAP",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "30 s",
+              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+            }
+          ],
+          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "Fartlek — Jeu d'allures",
+          "type": "course",
+          "duree_min": 48,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min footing très lent + 5 min de gammes (montées de genoux, talons-fesses, foulées bondissantes) + 3 accélérations courtes de 15 s."
+            },
+            {
+              "type": "circuit",
+              "texte": "9 × (30 s effort / 1 min facile). Effort ressenti 85-90 % VMA — tu es essoufflé mais tu peux encore dire une phrase courte. La phase facile est du footing actif, pas de la marche."
+            },
+            {
+              "type": "recup",
+              "texte": "10 min footing très lent de retour au calme."
+            }
+          ],
+          "notes": "Séance d'initiation au travail d'intensité. L'objectif est d'apprendre à doser deux allures, pas de performer. Finis la dernière répétition à la même allure que la première — sinon tu es parti trop vite."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Musculation 2 — Bas du corps + tirage",
+          "type": "muscu",
+          "duree_min": 60,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+            },
+            {
+              "type": "exercice",
+              "nom": "Gorilla row (2 KB)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "2 × 16 kg (H) / 2 × 12 kg (F) — charge modérée. Buste penché à 45°, dos gainé, tirage à la hanche en alternance."
+            },
+            {
+              "type": "exercice",
+              "nom": "Pompes",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 15,
+              "recup": "1'30\"",
+              "texte": "Au sol, mains écart épaules. Pompes inclinées sur banc si 15 reps impossibles."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 65.0,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 65.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Circuit gainage dynamique",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "1 min",
+              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+            }
+          ],
+          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2",
+          "type": "course",
+          "duree_min": 60,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 60,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    },
+    "confirme": {
+      "titre": "Semaine 4/6 — Nominal (volume +) — 🟠 Confirmé",
+      "intro": "Même intensité que la semaine précédente, mais avec un léger volume en plus (VMA, sortie longue). Le corps est maintenant habitué au format, on peut pousser le volume sans augmenter les charges. Niveau 🟠 Confirmé (VMA 13-16 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 45,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 45,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "type": "muscu",
+          "duree_min": 55,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 60.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 75.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "Charge modérée, focus technique et amplitude complète."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "20-24 kg (H) / 16 kg (F). Travail technique : poussée des hanches, pas un balancement des bras."
+            },
+            {
+              "type": "exercice",
+              "nom": "Prévention blessure CAP",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "30 s",
+              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+            }
+          ],
+          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "VMA — Bloc seuil + rappels VMA",
+          "type": "course",
+          "duree_min": 53,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "15 min footing allure progressive + 3 min de gammes + 3 accélérations de 20 s."
+            },
+            {
+              "type": "course_tempo",
+              "duree_min": 2,
+              "intensite_pct": 87,
+              "texte": "6 × bloc suivant, enchaînés : 2 min seuil + 30 s VMA, récup 1 min footing lent entre chaque bloc."
+            },
+            {
+              "type": "serie",
+              "repetitions": 6,
+              "distance_m": 600,
+              "intensite_pct": 87,
+              "recup": "1 min footing lent",
+              "texte": "Format à appliquer pour chaque bloc : 2 min à 87% VMA → 30 s à 95% VMA → 1 min footing lent."
+            },
+            {
+              "type": "recup",
+              "texte": "10 min footing lent + étirements mollets et ischio-jambiers."
+            }
+          ],
+          "notes": "Séance à double sollicitation : le bloc seuil (allure soutenue tenable) développe la capacité aérobie, les 30 secondes VMA qui suivent poussent la puissance. Respecte les allures affichées, ne pars pas trop vite sur les premières répétitions."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Musculation 2 — Bas du corps + tirage",
+          "type": "muscu",
+          "duree_min": 60,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+            },
+            {
+              "type": "exercice",
+              "nom": "Gorilla row (2 KB)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "2 × 20-24 kg (H) / 2 × 16 kg (F). Buste penché à 45°, dos gainé, tirage à la hanche en alternance."
+            },
+            {
+              "type": "exercice",
+              "nom": "Pompes",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 15,
+              "recup": "1'30\"",
+              "texte": "Au sol, mains écart épaules. Lest 5-10 kg si 15 reps faciles."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 75.0,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 72.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Circuit gainage dynamique",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "1 min",
+              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+            }
+          ],
+          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2",
+          "type": "course",
+          "duree_min": 80,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 80,
+              "intensite_pct": 68
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    },
+    "avance": {
+      "titre": "Semaine 4/6 — Nominal (volume +) — 🔴 Avancé",
+      "intro": "Même intensité que la semaine précédente, mais avec un léger volume en plus (VMA, sortie longue). Le corps est maintenant habitué au format, on peut pousser le volume sans augmenter les charges. Niveau 🔴 Avancé (VMA > 16 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 45,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 45,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Haut du corps + explosivité",
+          "type": "muscu",
+          "duree_min": 55,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur ou vélo à intensité modérée + mobilité articulaire (épaules, hanches, colonne) + 1 série légère sur chaque exercice principal."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 70.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 80.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "Charge modérée, focus technique et amplitude complète."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 16,
+              "recup": "1'30\"",
+              "texte": "24-32 kg (H) / 20-24 kg (F). Travail technique : poussée des hanches, pas un balancement des bras."
+            },
+            {
+              "type": "exercice",
+              "nom": "Prévention blessure CAP",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "30 s",
+              "texte": "3 tours : 12 hip thrust · 10 calf raise · 8 rotations externes épaules (élastique) · 30 s planche latérale par côté."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure, grand dorsal, pectoraux, hanches."
+            }
+          ],
+          "notes": "Les pourcentages affichés pour les tractions et le développé militaire s'adaptent automatiquement à ton 1RM (ou nombre max de tractions). Technique irréprochable à chaque répétition."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "VMA — Pyramide d'allures",
+          "type": "course",
+          "duree_min": 55,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "20 min footing progressif + 5 min de gammes + 4-6 accélérations progressives de 30 s."
+            },
+            {
+              "type": "circuit",
+              "texte": "Pyramide à enchaîner sans récup longue, 1 min facile entre chaque bloc :\n• 5 min à 80 % VMA\n• 4 min à 85 %\n• 3 min à 90 %\n• 2 min à 95 %\n• 1 min à 100 % (point haut)\n• 2 min à 95 %\n• 3 min à 90 %\n• 4 min à 85 %"
+            },
+            {
+              "type": "recup",
+              "texte": "10 min footing très lent + étirements complets."
+            }
+          ],
+          "notes": "Séance exigeante qui sollicite toutes les zones aérobies dans une même sortie. Sur la minute à 100 % VMA, tu dois tenir l'allure juste, pas accélérer. Si tu t'effondres sur ce bloc, c'est que tu es parti trop vite sur la montée. Fréquence max : 1 fois toutes les 10-14 jours."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Musculation 2 — Bas du corps + tirage",
+          "type": "muscu",
+          "duree_min": 60,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min rameur à intensité modérée + mobilité hanches, chevilles, colonne dorsale + 2 séries légères en front squat et SDT."
+            },
+            {
+              "type": "exercice",
+              "nom": "Gorilla row (2 KB)",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "2 × 24-32 kg (H) / 2 × 20-24 kg (F). Buste penché à 45°, dos gainé, tirage à la hanche en alternance."
+            },
+            {
+              "type": "exercice",
+              "nom": "Pompes",
+              "exercice": "autre",
+              "series": 4,
+              "repetitions": 15,
+              "recup": "1'30\"",
+              "texte": "Pompes lestées 10-20 kg, ou pompes déclinées si pas de lest."
+            },
+            {
+              "type": "exercice",
+              "exercice": "front_squat",
+              "series": 4,
+              "repetitions": 4,
+              "intensite_pct": 82.5,
+              "recup": "2 min",
+              "texte": "Front squat (barre devant). Si tu ne connais que ton 1RM back squat, utilise 72 % de cette valeur comme estimation."
+            },
+            {
+              "type": "exercice",
+              "exercice": "sdt",
+              "series": 4,
+              "repetitions": 5,
+              "intensite_pct": 77.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Circuit gainage dynamique",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 1,
+              "recup": "1 min",
+              "texte": "3 tours enchaînés : 45 s planche · 12 dead bug · 30 s hollow hold · 12 superman."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements : chaîne postérieure complète, psoas, grand fessier, quadriceps."
+            }
+          ],
+          "notes": "Rotation avec la muscu 1 : SDT en mouvement hanches dominant (complément au front squat qui est genou dominant), gorilla row en tirage. Les pourcentages s'adaptent à tes 1RM réels."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2",
+          "type": "course",
+          "duree_min": 100,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 100,
+              "intensite_pct": 68
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    }
+  }
+}

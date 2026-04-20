@@ -1654,6 +1654,9 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
         </button>
       </div>
 
+      <!-- Badge niveau détecté -->
+      <div id="prepa-level-badge" style="background:var(--cream2);border:1px solid var(--border);padding:10px 16px;margin-bottom:16px;font-size:.88rem;color:var(--charcoal);display:none"></div>
+
       <!-- Stats de la semaine -->
       <div class="prepa-stats-bar">
         <div class="prepa-stat"><div class="prepa-stat-val" id="prepa-stat-done">0</div><div class="prepa-stat-lbl">Séances faites</div></div>
@@ -1680,6 +1683,17 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 
     <form onsubmit="savePrepaProfile(event)">
       <div class="prepa-form-section">
+        <div class="prepa-form-section-title">👤 Données personnelles</div>
+        <div class="prepa-form-grid">
+          <div class="prepa-field">
+            <label for="prof-poids">Poids de corps (kg)</label>
+            <input type="number" id="prof-poids" step="0.5" min="40" max="150" placeholder="Ex : 75">
+            <div class="hint">Sert à calculer le ratio force/poids pour déterminer ton niveau</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prepa-form-section">
         <div class="prepa-form-section-title">🏃 Course à pied</div>
         <div class="prepa-form-grid">
           <div class="prepa-field">
@@ -1696,23 +1710,41 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
       </div>
 
       <div class="prepa-form-section">
-        <div class="prepa-form-section-title">💪 Musculation — 1 RM (en kg)</div>
+        <div class="prepa-form-section-title">💪 Musculation — Mouvements de référence (1 RM en kg)</div>
         <div class="prepa-form-grid">
           <div class="prepa-field">
-            <label for="prof-devc">Développé couché</label>
-            <input type="number" id="prof-devc" step="2.5" min="20" max="300" placeholder="Ex : 80">
-          </div>
-          <div class="prepa-field">
-            <label for="prof-squat">Squat</label>
-            <input type="number" id="prof-squat" step="2.5" min="20" max="400" placeholder="Ex : 100">
+            <label for="prof-front-squat">Front squat</label>
+            <input type="number" id="prof-front-squat" step="2.5" min="20" max="300" placeholder="Ex : 80">
+            <div class="hint">≈ 72 % du 1RM back squat si tu ne le connais pas</div>
           </div>
           <div class="prepa-field">
             <label for="prof-sdt">Soulevé de terre</label>
             <input type="number" id="prof-sdt" step="2.5" min="20" max="400" placeholder="Ex : 120">
           </div>
           <div class="prepa-field">
+            <label for="prof-devm">Développé militaire</label>
+            <input type="number" id="prof-devm" step="2.5" min="10" max="200" placeholder="Ex : 50">
+            <div class="hint">Développé debout à la barre</div>
+          </div>
+          <div class="prepa-field">
             <label for="prof-trac">Tractions strictes (nb max)</label>
             <input type="number" id="prof-trac" step="1" min="0" max="80" placeholder="Ex : 12">
+          </div>
+        </div>
+      </div>
+
+      <div class="prepa-form-section">
+        <div class="prepa-form-section-title">💪 Autres (facultatif)</div>
+        <div class="prepa-form-grid">
+          <div class="prepa-field">
+            <label for="prof-squat">Back squat (1RM)</label>
+            <input type="number" id="prof-squat" step="2.5" min="20" max="400" placeholder="Ex : 110">
+            <div class="hint">Optionnel — sert à estimer ton front squat si non renseigné</div>
+          </div>
+          <div class="prepa-field">
+            <label for="prof-devc">Développé couché (1RM)</label>
+            <input type="number" id="prof-devc" step="2.5" min="20" max="300" placeholder="Ex : 80">
+            <div class="hint">Optionnel</div>
           </div>
         </div>
       </div>
@@ -4808,9 +4840,10 @@ goTo = function(id) {
 // - Les séances cochées comme "faites" sont stockées par semaine en localStorage
 // ================================================================
 
-var PREPA_PROFILE_KEY = 'prepa_profile_v1';
-var PREPA_DONE_KEY    = 'prepa_done_v1';  // { "semaine-id": ["lundi", "mercredi"] }
-var PREPA_URL         = 'prepa-physique/semaine-en-cours.json';
+var PREPA_PROFILE_KEY  = 'prepa_profile_v1';
+var PREPA_DONE_KEY     = 'prepa_done_v1';       // { "semaine-id": ["lundi", "mercredi"] }
+var PREPA_FORCED_LEVEL = 'prepa_forced_level_v1'; // 'debutant' | 'confirme' | 'avance' | null
+var PREPA_URL          = 'prepa-physique/semaine-en-cours.json';
 var prepaData = null;
 
 // ---------- PROFIL CANDIDAT ----------
@@ -4825,22 +4858,28 @@ function getPrepaProfile() {
 function savePrepaProfile(event) {
   if (event) event.preventDefault();
   var profile = {
-    vma:   parseFloat(document.getElementById('prof-vma').value) || null,
-    t3000: (document.getElementById('prof-3000').value || '').trim() || null,
-    devc:  parseFloat(document.getElementById('prof-devc').value) || null,
-    squat: parseFloat(document.getElementById('prof-squat').value) || null,
-    sdt:   parseFloat(document.getElementById('prof-sdt').value) || null,
-    trac:  parseInt(document.getElementById('prof-trac').value, 10) || null,
-    updatedAt: new Date().toISOString()
+    poids:       parseFloat(document.getElementById('prof-poids').value) || null,
+    vma:         parseFloat(document.getElementById('prof-vma').value) || null,
+    t3000:       (document.getElementById('prof-3000').value || '').trim() || null,
+    front_squat: parseFloat(document.getElementById('prof-front-squat').value) || null,
+    sdt:         parseFloat(document.getElementById('prof-sdt').value) || null,
+    devm:        parseFloat(document.getElementById('prof-devm').value) || null,
+    trac:        parseInt(document.getElementById('prof-trac').value, 10) || null,
+    squat:       parseFloat(document.getElementById('prof-squat').value) || null,
+    devc:        parseFloat(document.getElementById('prof-devc').value) || null,
+    updatedAt:   new Date().toISOString()
   };
   // Si VMA absente mais t3000 renseigné, on l'estime : VMA ≈ distance(km) / temps(h)
-  // Pour 3000m : VMA ≈ 3 / (mm:ss → heures). Approximation fiable à ±0,3 km/h.
   if (!profile.vma && profile.t3000) {
     var parts = profile.t3000.split(':');
     if (parts.length === 2) {
       var totalSec = parseInt(parts[0],10)*60 + parseInt(parts[1],10);
       if (totalSec > 0) profile.vma = Math.round((3 / (totalSec/3600)) * 10) / 10;
     }
+  }
+  // Si front squat non renseigné mais back squat OUI : estimation à 72% du back squat
+  if (!profile.front_squat && profile.squat) {
+    profile.front_squat = Math.round(profile.squat * 0.72 / 2.5) * 2.5;
   }
   try {
     localStorage.setItem(PREPA_PROFILE_KEY, JSON.stringify(profile));
@@ -4855,12 +4894,15 @@ function savePrepaProfile(event) {
 
 function openPrepaProfile() {
   var p = getPrepaProfile() || {};
-  document.getElementById('prof-vma').value   = p.vma || '';
-  document.getElementById('prof-3000').value  = p.t3000 || '';
-  document.getElementById('prof-devc').value  = p.devc || '';
-  document.getElementById('prof-squat').value = p.squat || '';
-  document.getElementById('prof-sdt').value   = p.sdt || '';
-  document.getElementById('prof-trac').value  = p.trac != null ? p.trac : '';
+  document.getElementById('prof-poids').value       = p.poids || '';
+  document.getElementById('prof-vma').value         = p.vma || '';
+  document.getElementById('prof-3000').value        = p.t3000 || '';
+  document.getElementById('prof-front-squat').value = p.front_squat || '';
+  document.getElementById('prof-sdt').value         = p.sdt || '';
+  document.getElementById('prof-devm').value        = p.devm || '';
+  document.getElementById('prof-trac').value        = p.trac != null ? p.trac : '';
+  document.getElementById('prof-squat').value       = p.squat || '';
+  document.getElementById('prof-devc').value        = p.devc || '';
   document.getElementById('prepa-profile-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -4872,10 +4914,135 @@ function closePrepaProfile() {
 
 function isPrepaProfileComplete(p) {
   if (!p) return false;
-  // Un profil est "complet" si au moins VMA + 2 1RM de muscu sont renseignés
+  // Un profil est "complet" si VMA + poids + au moins 2 1RM de muscu sont renseignés
   var hasCourse = p.vma && p.vma > 0;
-  var muscuCount = [p.devc, p.squat, p.sdt, p.trac].filter(function(v){ return v && v > 0; }).length;
-  return hasCourse && muscuCount >= 2;
+  var hasPoids  = p.poids && p.poids > 0;
+  var muscuCount = [p.front_squat, p.sdt, p.devm, p.trac].filter(function(v){ return v && v > 0; }).length;
+  return hasCourse && hasPoids && muscuCount >= 2;
+}
+
+// ---------- DÉTECTION DU NIVEAU ----------
+// Retourne : { level: 'debutant'|'confirme'|'avance', score: 0-100, details: {...} }
+function detectPrepaLevel(p) {
+  if (!p || !p.vma) {
+    return { level: 'confirme', score: 50, details: {}, incomplete: true };
+  }
+  var details = {};
+  var total = 0;
+  var maxTotal = 0;
+
+  // VMA : 30 points
+  var vmaScore = 0;
+  if (p.vma < 13)        vmaScore = 15;  // débutant
+  else if (p.vma <= 16)  vmaScore = 20 + Math.round(((p.vma - 13) / 3) * 10); // confirmé 20-30
+  else                   vmaScore = 25 + Math.min(5, Math.round((p.vma - 16) * 2.5)); // avancé, plafonné à 30
+  details.vma = vmaScore;
+  total += vmaScore;
+  maxTotal += 30;
+
+  // Les critères muscu utilisent le ratio force/poids de corps quand poids dispo
+  var poids = p.poids || 75; // fallback raisonnable si poids absent (signalé comme incomplete)
+
+  // Front squat : 18 pts. Ratio: <1× débutant, 1-1,3× confirmé, >1,3× avancé
+  if (p.front_squat) {
+    var fsRatio = p.front_squat / poids;
+    var fsScore;
+    if (fsRatio < 1)          fsScore = Math.round(fsRatio * 9); // 0-9 (débutant)
+    else if (fsRatio < 1.3)   fsScore = 10 + Math.round((fsRatio - 1) / 0.3 * 5); // 10-15 (confirmé)
+    else                      fsScore = 15 + Math.min(3, Math.round((fsRatio - 1.3) * 5)); // 15-18 (avancé)
+    details.front_squat = fsScore;
+    total += fsScore;
+    maxTotal += 18;
+  }
+
+  // Soulevé de terre : 18 pts. Ratio: <1,3× débutant, 1,3-1,7× confirmé, >1,7× avancé
+  if (p.sdt) {
+    var sdtRatio = p.sdt / poids;
+    var sdtScore;
+    if (sdtRatio < 1.3)       sdtScore = Math.round((sdtRatio / 1.3) * 9);
+    else if (sdtRatio < 1.7)  sdtScore = 10 + Math.round((sdtRatio - 1.3) / 0.4 * 5);
+    else                      sdtScore = 15 + Math.min(3, Math.round((sdtRatio - 1.7) * 4));
+    details.sdt = sdtScore;
+    total += sdtScore;
+    maxTotal += 18;
+  }
+
+  // Développé militaire : 17 pts. Ratio: <0,6× débutant, 0,6-0,8× confirmé, >0,8× avancé
+  if (p.devm) {
+    var dmRatio = p.devm / poids;
+    var dmScore;
+    if (dmRatio < 0.6)        dmScore = Math.round((dmRatio / 0.6) * 9);
+    else if (dmRatio < 0.8)   dmScore = 10 + Math.round((dmRatio - 0.6) / 0.2 * 4);
+    else                      dmScore = 14 + Math.min(3, Math.round((dmRatio - 0.8) * 10));
+    details.devm = dmScore;
+    total += dmScore;
+    maxTotal += 17;
+  }
+
+  // Tractions : 17 pts. <6 débutant, 6-12 confirmé, >12 avancé
+  if (p.trac != null) {
+    var tracScore;
+    if (p.trac < 6)           tracScore = Math.round((p.trac / 6) * 9);
+    else if (p.trac <= 12)    tracScore = 10 + Math.round(((p.trac - 6) / 6) * 5);
+    else                      tracScore = 15 + Math.min(2, Math.round((p.trac - 12) / 3));
+    details.trac = tracScore;
+    total += tracScore;
+    maxTotal += 17;
+  }
+
+  // Score normalisé sur 100
+  var score = maxTotal > 0 ? Math.round((total / maxTotal) * 100) : 50;
+
+  var level;
+  if (score < 40)      level = 'debutant';
+  else if (score < 70) level = 'confirme';
+  else                 level = 'avance';
+
+  return { level: level, score: score, details: details, incomplete: false };
+}
+
+// Gestion du niveau forcé par le candidat
+function getPrepaForcedLevel() {
+  try {
+    var v = localStorage.getItem(PREPA_FORCED_LEVEL);
+    if (v === 'debutant' || v === 'confirme' || v === 'avance') return v;
+    return null;
+  } catch(e) { return null; }
+}
+
+function setPrepaForcedLevel(lvl) {
+  try {
+    if (lvl) localStorage.setItem(PREPA_FORCED_LEVEL, lvl);
+    else     localStorage.removeItem(PREPA_FORCED_LEVEL);
+  } catch(e) {}
+}
+
+// Retourne le niveau effectivement utilisé (forcé si présent, détecté sinon)
+function getActivePrepaLevel(p) {
+  var forced = getPrepaForcedLevel();
+  if (forced) return forced;
+  return detectPrepaLevel(p).level;
+}
+
+function promptForcePrepaLevel() {
+  var p = getPrepaProfile();
+  var auto = detectPrepaLevel(p).level;
+  var labels = { debutant: '🟢 Débutant', confirme: '🟠 Confirmé', avance: '🔴 Avancé' };
+  var txt = 'Niveau détecté automatiquement : ' + labels[auto] + '\n\n' +
+    'Quel niveau veux-tu suivre ?\n' +
+    '1 — 🟢 Débutant (VMA < 13 · force modérée)\n' +
+    '2 — 🟠 Confirmé (VMA 13-16 · force intermédiaire)\n' +
+    '3 — 🔴 Avancé (VMA > 16 · force élevée)\n' +
+    '0 — Revenir à la détection automatique\n\n' +
+    'Tape 1, 2, 3 ou 0 :';
+  var rep = prompt(txt);
+  if (rep === null) return;
+  var map = { '1': 'debutant', '2': 'confirme', '3': 'avance', '0': null };
+  if (rep in map) {
+    setPrepaForcedLevel(map[rep]);
+    showToast(map[rep] ? '✓ Niveau ' + labels[map[rep]] + ' sélectionné' : '✓ Détection automatique réactivée');
+    renderPrepa();
+  }
 }
 
 // ---------- CALCULS ALLURES ET CHARGES ----------
@@ -4975,8 +5142,10 @@ function renderBloc(bloc, profile) {
     typeClass = 'serie';
     typeLabel = 'Exercice';
     var exerciceLabels = {
+      'front_squat': 'Front squat',
+      'devm': 'Développé militaire',
       'devc': 'Développé couché',
-      'squat': 'Squat',
+      'squat': 'Back squat',
       'sdt': 'Soulevé de terre',
       'trac': 'Tractions',
       'autre': bloc.nom || 'Exercice'
@@ -5087,12 +5256,50 @@ function paintPrepa() {
   document.getElementById('prepa-week-title').textContent = prepaData.titre || 'Semaine d\'entraînement';
   document.getElementById('prepa-week-intro').textContent = prepaData.intro || '';
 
+  // Détection / gestion du niveau
+  // Structure JSON supportée :
+  //  - Ancienne (plate) : { seances: [...] }
+  //  - Nouvelle (multi-niveaux) : { niveaux: { debutant: {...}, confirme: {...}, avance: {...} } }
+  //    Chaque variante peut contenir : { titre, intro, seances }
+  var activeLevel = getActivePrepaLevel(profile);
+  var forced = getPrepaForcedLevel();
+  var autoDetect = detectPrepaLevel(profile);
+  var levelLabels = { debutant: '🟢 Débutant', confirme: '🟠 Confirmé', avance: '🔴 Avancé' };
+  var badge = document.getElementById('prepa-level-badge');
+  if (badge) {
+    if (profileComplete) {
+      var badgeText = 'Niveau : ' + levelLabels[activeLevel];
+      if (forced && forced !== autoDetect.level) {
+        badgeText += ' (choisi manuellement)';
+      } else if (!forced && !autoDetect.incomplete) {
+        badgeText += ' (détecté automatiquement)';
+      }
+      badge.innerHTML = badgeText + ' &middot; <a href="#" onclick="event.preventDefault();promptForcePrepaLevel()" style="color:var(--red);text-decoration:underline">Changer de niveau</a>';
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  // Récupération des séances selon le niveau actif
+  var seances = [];
+  var variante = null;
+  if (prepaData.niveaux && prepaData.niveaux[activeLevel]) {
+    variante = prepaData.niveaux[activeLevel];
+    seances = variante.seances || [];
+    // Le titre/intro de la variante peut surcharger ceux de la semaine
+    if (variante.titre) document.getElementById('prepa-week-title').textContent = variante.titre;
+    if (variante.intro) document.getElementById('prepa-week-intro').textContent = variante.intro;
+  } else {
+    // Fallback : ancienne structure plate
+    seances = prepaData.seances || [];
+  }
+
   // Calcul stats
-  var seances = prepaData.seances || [];
   var total = seances.filter(function(s){ return s.type !== 'repos'; }).length;
   var nbCourse = seances.filter(function(s){ return s.type === 'course'; }).length;
   var nbMuscu  = seances.filter(function(s){ return s.type === 'muscu' || s.type === 'circuit'; }).length;
-  var doneJours = getPrepaDone(prepaData.semaine);
+  var doneJours = getPrepaDone(prepaData.semaine + '_' + activeLevel);
   var nbDone = doneJours.length;
 
   document.getElementById('prepa-stat-done').textContent  = nbDone;
@@ -5183,7 +5390,9 @@ function setPrepaDone(semaineId, arr) {
 
 function togglePrepaDone(jour) {
   if (!prepaData) return;
-  var semId = prepaData.semaine;
+  var profile = getPrepaProfile();
+  var activeLevel = getActivePrepaLevel(profile);
+  var semId = prepaData.semaine + '_' + activeLevel;
   var done = getPrepaDone(semId);
   var idx = done.indexOf(jour);
   if (idx === -1) {

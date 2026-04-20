@@ -1,0 +1,512 @@
+{
+  "semaine": "cycle1-S6",
+  "semaine_label": "Semaine 6/6 — Décharge + test 1RM",
+  "titre": "Semaine 6/6 — Décharge + test 1RM",
+  "intro": "Semaine de décharge — volume et charges réduits pour que le corps récupère. À la fin de cette semaine, teste tes nouveaux 1RM sur les 4 mouvements principaux (front squat, SDT, développé militaire, tractions max). Ce seront tes références pour le prochain cycle.",
+  "niveaux": {
+    "debutant": {
+      "titre": "Semaine 6/6 — Décharge + test 1RM — 🟢 Débutant",
+      "intro": "Semaine de décharge — volume et charges réduits pour que le corps récupère. À la fin de cette semaine, teste tes nouveaux 1RM sur les 4 mouvements principaux (front squat, SDT, développé militaire, tractions max). Ce seront tes références pour le prochain cycle. Niveau 🟢 Débutant (VMA < 13 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 25,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 25,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Décharge",
+          "type": "muscu",
+          "duree_min": 40,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min cardio léger + mobilité articulaire générale."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 42.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 3,
+              "repetitions": 5,
+              "intensite_pct": 55.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "Charge légère — semaine de décharge."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "16 kg (H) / 12 kg (F) — focus technique — volume réduit."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements."
+            }
+          ],
+          "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "Footing + lignes droites",
+          "type": "course",
+          "duree_min": 30,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 25,
+              "intensite_pct": 70
+            },
+            {
+              "type": "circuit",
+              "texte": "Finir par 4-6 lignes droites de 80 m en accélération progressive (pas à fond), récup marchée entre chaque."
+            }
+          ],
+          "notes": "Séance de décharge : on maintient la vivacité musculaire sans solliciter le système anaérobie. Les lignes droites entretiennent la foulée sans fatigue."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Test 1RM — Mouvements de référence",
+          "type": "muscu",
+          "duree_min": 90,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "15 min : 10 min cardio progressif (rameur ou vélo) + mobilité articulaire complète + 2 séries légères sur le premier mouvement testé."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Front squat",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Protocole : 10 reps à 40 % estimé → 5 reps à 60 % → 3 reps à 80 % → 1 rep à 90 % → 1 rep à 95 % → tentative 100 %. Récup 2-4 min entre charges. Arrête dès que la technique se dégrade."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Soulevé de terre",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Attendre 10 min après le front squat. Même protocole progressif. Attention particulière à la posture lombaire."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Développé militaire",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Même protocole. Debout, barre devant le buste, prise légèrement plus large que les épaules. Pas de dos cambré."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test Max tractions strictes",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "—",
+              "texte": "Après 5 min de récup : 1 série à l'échec au poids du corps, en forme stricte (amplitude complète, pas de balancement). Nombre atteint = nouveau max."
+            },
+            {
+              "type": "recup",
+              "texte": "15 min de retour au calme : marche, étirements complets, hydratation abondante. Note tes nouveaux 1RM et mets-les à jour dans ton profil."
+            }
+          ],
+          "notes": "Tests pour quantifier les progrès du cycle et calibrer le prochain. Important : un seul essai à 100 % par mouvement. Si tu rates, on reste sur le dernier réussi. Reporter le test si fatigue importante ou sommeil insuffisant la veille."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2 (décharge)",
+          "type": "course",
+          "duree_min": 35,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 35,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    },
+    "confirme": {
+      "titre": "Semaine 6/6 — Décharge + test 1RM — 🟠 Confirmé",
+      "intro": "Semaine de décharge — volume et charges réduits pour que le corps récupère. À la fin de cette semaine, teste tes nouveaux 1RM sur les 4 mouvements principaux (front squat, SDT, développé militaire, tractions max). Ce seront tes références pour le prochain cycle. Niveau 🟠 Confirmé (VMA 13-16 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 30,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 30,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Décharge",
+          "type": "muscu",
+          "duree_min": 40,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min cardio léger + mobilité articulaire générale."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 51.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 3,
+              "repetitions": 5,
+              "intensite_pct": 64.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "Charge légère — semaine de décharge."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "20-24 kg (H) / 16 kg (F) — volume réduit."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements."
+            }
+          ],
+          "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "Footing + lignes droites",
+          "type": "course",
+          "duree_min": 35,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 30,
+              "intensite_pct": 70
+            },
+            {
+              "type": "circuit",
+              "texte": "Finir par 4-6 lignes droites de 80 m en accélération progressive (pas à fond), récup marchée entre chaque."
+            }
+          ],
+          "notes": "Séance de décharge : on maintient la vivacité musculaire sans solliciter le système anaérobie. Les lignes droites entretiennent la foulée sans fatigue."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Test 1RM — Mouvements de référence",
+          "type": "muscu",
+          "duree_min": 90,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "15 min : 10 min cardio progressif (rameur ou vélo) + mobilité articulaire complète + 2 séries légères sur le premier mouvement testé."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Front squat",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Protocole : 10 reps à 40 % estimé → 5 reps à 60 % → 3 reps à 80 % → 1 rep à 90 % → 1 rep à 95 % → tentative 100 %. Récup 2-4 min entre charges. Arrête dès que la technique se dégrade."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Soulevé de terre",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Attendre 10 min après le front squat. Même protocole progressif. Attention particulière à la posture lombaire."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Développé militaire",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Même protocole. Debout, barre devant le buste, prise légèrement plus large que les épaules. Pas de dos cambré."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test Max tractions strictes",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "—",
+              "texte": "Après 5 min de récup : 1 série à l'échec au poids du corps, en forme stricte (amplitude complète, pas de balancement). Nombre atteint = nouveau max."
+            },
+            {
+              "type": "recup",
+              "texte": "15 min de retour au calme : marche, étirements complets, hydratation abondante. Note tes nouveaux 1RM et mets-les à jour dans ton profil."
+            }
+          ],
+          "notes": "Tests pour quantifier les progrès du cycle et calibrer le prochain. Important : un seul essai à 100 % par mouvement. Si tu rates, on reste sur le dernier réussi. Reporter le test si fatigue importante ou sommeil insuffisant la veille."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2 (décharge)",
+          "type": "course",
+          "duree_min": 55,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 55,
+              "intensite_pct": 68
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    },
+    "avance": {
+      "titre": "Semaine 6/6 — Décharge + test 1RM — 🔴 Avancé",
+      "intro": "Semaine de décharge — volume et charges réduits pour que le corps récupère. À la fin de cette semaine, teste tes nouveaux 1RM sur les 4 mouvements principaux (front squat, SDT, développé militaire, tractions max). Ce seront tes références pour le prochain cycle. Niveau 🔴 Avancé (VMA > 16 km/h).",
+      "seances": [
+        {
+          "jour": "lundi",
+          "titre": "Footing court — Zone 2",
+          "type": "course",
+          "duree_min": 30,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 30,
+              "intensite_pct": 70
+            }
+          ],
+          "notes": "Footing actif en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans être essoufflé. Cette séance entretient le capital aérobie sans interférer avec les séances qualité."
+        },
+        {
+          "jour": "mardi",
+          "titre": "Musculation 1 — Décharge",
+          "type": "muscu",
+          "duree_min": 40,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "10 min cardio léger + mobilité articulaire générale."
+            },
+            {
+              "type": "exercice",
+              "exercice": "trac",
+              "series": 3,
+              "repetitions": 3,
+              "intensite_pct": 59.5,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "exercice": "devm",
+              "series": 3,
+              "repetitions": 5,
+              "intensite_pct": 68.0,
+              "recup": "2 min"
+            },
+            {
+              "type": "exercice",
+              "nom": "Fentes kettlebell (8 reps/jambe)",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "Charge légère — semaine de décharge."
+            },
+            {
+              "type": "exercice",
+              "nom": "Kettlebell Swing",
+              "exercice": "autre",
+              "series": 3,
+              "repetitions": 12,
+              "recup": "1'30\"",
+              "texte": "24-32 kg (H) / 20-24 kg (F) — volume réduit."
+            },
+            {
+              "type": "recup",
+              "texte": "8 min d'étirements."
+            }
+          ],
+          "notes": "Semaine de décharge : volume divisé par ~30 %, charges à 85 % du nominal. L'objectif est la récupération active, pas la performance. Prépare ton corps pour les tests 1RM de vendredi."
+        },
+        {
+          "jour": "mercredi",
+          "titre": "Footing + lignes droites",
+          "type": "course",
+          "duree_min": 35,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 30,
+              "intensite_pct": 70
+            },
+            {
+              "type": "circuit",
+              "texte": "Finir par 4-6 lignes droites de 80 m en accélération progressive (pas à fond), récup marchée entre chaque."
+            }
+          ],
+          "notes": "Séance de décharge : on maintient la vivacité musculaire sans solliciter le système anaérobie. Les lignes droites entretiennent la foulée sans fatigue."
+        },
+        {
+          "jour": "jeudi",
+          "titre": "Repos actif — Natation optionnelle",
+          "type": "repos",
+          "note": "Jour de récupération. Si tu souhaites bouger, une séance de natation facile (30-45 min) est idéale — bénéfice cardio sans impact articulaire. Sinon : marche tranquille, mobilité, repos total."
+        },
+        {
+          "jour": "vendredi",
+          "titre": "Test 1RM — Mouvements de référence",
+          "type": "muscu",
+          "duree_min": 90,
+          "blocs": [
+            {
+              "type": "echauffement",
+              "texte": "15 min : 10 min cardio progressif (rameur ou vélo) + mobilité articulaire complète + 2 séries légères sur le premier mouvement testé."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Front squat",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Protocole : 10 reps à 40 % estimé → 5 reps à 60 % → 3 reps à 80 % → 1 rep à 90 % → 1 rep à 95 % → tentative 100 %. Récup 2-4 min entre charges. Arrête dès que la technique se dégrade."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Soulevé de terre",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Attendre 10 min après le front squat. Même protocole progressif. Attention particulière à la posture lombaire."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test 1RM Développé militaire",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "5 min",
+              "texte": "Même protocole. Debout, barre devant le buste, prise légèrement plus large que les épaules. Pas de dos cambré."
+            },
+            {
+              "type": "exercice",
+              "nom": "Test Max tractions strictes",
+              "exercice": "autre",
+              "series": 1,
+              "repetitions": 1,
+              "recup": "—",
+              "texte": "Après 5 min de récup : 1 série à l'échec au poids du corps, en forme stricte (amplitude complète, pas de balancement). Nombre atteint = nouveau max."
+            },
+            {
+              "type": "recup",
+              "texte": "15 min de retour au calme : marche, étirements complets, hydratation abondante. Note tes nouveaux 1RM et mets-les à jour dans ton profil."
+            }
+          ],
+          "notes": "Tests pour quantifier les progrès du cycle et calibrer le prochain. Important : un seul essai à 100 % par mouvement. Si tu rates, on reste sur le dernier réussi. Reporter le test si fatigue importante ou sommeil insuffisant la veille."
+        },
+        {
+          "jour": "samedi",
+          "titre": "Sortie longue — Zone 2 (décharge)",
+          "type": "course",
+          "duree_min": 75,
+          "blocs": [
+            {
+              "type": "footing",
+              "duree_min": 75,
+              "intensite_pct": 68
+            }
+          ],
+          "notes": "Sortie longue en endurance fondamentale. Tu dois pouvoir tenir une conversation complète sans essoufflement — c'est la clé. Cette séance construit ton moteur aérobie sur le long terme. Possibilité de remplacer par une sortie vélo à intensité équivalente (+50 % de durée)."
+        },
+        {
+          "jour": "dimanche",
+          "titre": "Repos complet",
+          "type": "repos",
+          "note": "Journée de repos total. C'est là que les adaptations se construisent — ne la saute pas. Alimentation soignée, hydratation, sommeil. Marche légère 20-30 min possible, rien de structuré."
+        }
+      ]
+    }
+  }
+}
