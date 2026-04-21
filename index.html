@@ -2685,12 +2685,12 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 <div class="page" id="page-coaching">
   <div class="ch-hero">
     <div>
-      <div class="ch-hero-label">Coaching individuel &middot; Visioconf&eacute;rence &middot; 60&ndash;90 min</div>
+      <div class="ch-hero-label">Séance de coaching en visio &middot; 60&ndash;90 min</div>
       <h1 class="ch-hero-h1">Tu n&apos;as pas besoin<br>d&apos;un prof.<br><em>Tu as besoin d&apos;un fil rouge.</em></h1>
       <div class="ch-hero-bar"></div>
       <p class="ch-hero-lead">Je suis pass&eacute; par l&agrave; il y a peu. Je sais exactement ce que tu ressens face au concours SPP. Ces s&eacute;ances ne sont pas des cours magistraux. C&apos;est un espace pour <strong>faire le point, reprendre le cap, et avancer avec pr&eacute;cision.</strong></p>
       <div class="hero-ctas">
-        <button class="btn btn-red" onclick="document.getElementById('booking-section').scrollIntoView({behavior:'smooth'})">R&eacute;server une s&eacute;ance &mdash; 79&euro; &rarr;</button>
+        <button class="btn btn-red" onclick="coachingStartPayment()">Réserver une séance — 120€ →</button>
         <button class="btn btn-outline-white" onclick="goTo('formation')">Voir les plans d&apos;actions</button>
       </div>
     </div>
@@ -2738,7 +2738,7 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
     <div class="ch-format-grid">
       <div>
         <div class="s-eyebrow">Le format</div>
-        <h3 class="ch-format-title">Visioconf&eacute;rence &middot; 60 &agrave; 90 min &middot; 79&euro;</h3>
+        <h3 class="ch-format-title">Séance de coaching en visio &middot; 60 &agrave; 90 min &middot; 120&euro;</h3>
         <p class="ch-format-lead">Pas de programme fig&eacute;. Chaque s&eacute;ance est construite autour de <strong>ta situation du moment</strong>.</p>
         <div class="ch-steps">
           <div class="ch-step"><div class="ch-step-num">01</div><div><div class="ch-step-title">Diagnostic ouvert</div><div class="ch-step-text">On commence par toi — o&ugrave; tu en es, ce qui te bloque, ce que tu esp&egrave;res de la s&eacute;ance.</div></div></div>
@@ -2757,9 +2757,26 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
   <div class="section" id="booking-section">
     <div class="s-eyebrow">R&eacute;servation</div>
     <div class="s-title">Choisis ton <em>cr&eacute;neau</em></div>
-    <p style="font-size:.95rem;color:var(--gray);line-height:1.7;margin-bottom:40px;max-width:560px">S&eacute;lectionne une date disponible, indique l&rsquo;heure qui te convient &mdash; je te confirme le cr&eacute;neau par email sous 24h et tu paies &agrave; ce moment-l&agrave;.</p>
+    <!-- Texte pour utilisateurs PAS encore payés (avant paiement) -->
+    <p id="booking-intro-prepay" style="font-size:.95rem;color:var(--gray);line-height:1.7;margin-bottom:40px;max-width:560px">Paiement s&eacute;curis&eacute; via Stripe, puis choisis ton cr&eacute;neau. Je te confirme par email sous 24h.</p>
+    <!-- Texte pour utilisateurs QUI VIENNENT DE PAYER (post-paiement) -->
+    <p id="booking-intro-postpay" style="display:none;font-size:.95rem;color:var(--charcoal);line-height:1.7;margin-bottom:40px;max-width:560px;padding:14px 18px;background:var(--cream2);border-left:3px solid var(--red)">
+      <strong>✓ Paiement bien reçu — merci !</strong><br>
+      <span style="color:var(--gray)">Choisis maintenant le créneau qui te convient le mieux ci-dessous. Je te confirme ton rendez-vous par email sous 24h.</span>
+    </p>
 
-    <div class="cal-layout">
+    <!-- Bloc pré-paiement : bouton pour payer d'abord -->
+    <div id="booking-prepay-block" style="margin-bottom:32px">
+      <div style="background:white;border:1px solid var(--border);padding:28px 32px;text-align:center;max-width:560px">
+        <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:8px">Une séance individuelle <em style="color:var(--red)">— 120€</em></div>
+        <div style="font-size:.88rem;color:var(--gray);line-height:1.6;margin-bottom:22px">Séance de coaching en visio de 60 à 90 min, adaptée à ton niveau et ton calendrier. Tu paies d'abord, puis tu choisis ton créneau dans le calendrier ci-dessous.</div>
+        <button class="btn btn-red" style="font-size:.95rem;padding:14px 28px" onclick="coachingStartPayment()">Payer ma séance — 120€ →</button>
+        <div style="font-size:.75rem;color:var(--gray-light);margin-top:12px">Paiement sécurisé via Stripe · Annulation possible 48h avant</div>
+      </div>
+    </div>
+
+    <!-- Bloc post-paiement : le calendrier (affiché automatiquement après retour Stripe) -->
+    <div class="cal-layout" id="booking-calendar-block" style="display:none">
       <!-- ETAPE 1 : CALENDRIER -->
       <div class="cal-main">
         <div class="cal-steps">
@@ -2810,16 +2827,16 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
           </div>
           <div class="form-group"><div class="form-label">Contexte (facultatif)</div><textarea class="form-textarea" id="book-context" placeholder="SDIS vis&eacute;, tentatives pr&eacute;c&eacute;dentes, points bloquants..."></textarea></div>
           <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.95rem;padding:16px" onclick="calSubmitBooking()">
-            <span id="book-btn-text">Envoyer ma demande &mdash; 79&euro; &rarr;</span>
+            <span id="book-btn-text">Confirmer mon créneau →</span>
           </button>
-          <p style="font-size:.75rem;color:var(--gray-light);margin-top:10px;text-align:center">Paiement s&eacute;curis&eacute; via Stripe &middot; Annulation possible 48h avant</p>
+          <p style="font-size:.75rem;color:var(--gray-light);margin-top:10px;text-align:center">✓ Paiement déjà effectué · Je te confirme par email sous 24h</p>
         </div>
       </div>
 
       <!-- SIDEBAR -->
       <div class="booking-info">
         <div class="bi-price">79 &euro;</div>
-        <div class="bi-price-label">la s&eacute;ance &middot; Visioconf&eacute;rence &middot; 60&ndash;90 min</div>
+        <div class="bi-price-label">Séance de coaching en visio &middot; 60&ndash;90 min</div>
         <div style="font-size:.82rem;font-weight:600;color:var(--charcoal);margin-bottom:12px">Ce qui est inclus :</div>
         <ul class="bi-includes">
           <li>Analyse de ton profil candidat en amont</li>
@@ -6016,6 +6033,10 @@ function goTo(id) {
   if (id === 'demo-espace') { renderDemoEspace(); }
   if (id === 'candidats') { if (typeof renderCandidatesList === 'function') renderCandidatesList(); }
   if (id === 'profil') { if (typeof renderProfile === 'function') renderProfile(); }
+  if (id === 'coaching') {
+    // Si paiement récent détecté (< 2h), afficher directement le calendrier
+    if (typeof coachingCheckPrepaidStatus === 'function') coachingCheckPrepaidStatus();
+  }
   if (id === 'bienvenue') {
     // Afficher le pseudo dans le titre de la page Bienvenue
     var bEl = document.getElementById('bienvenue-pseudo');
@@ -6034,55 +6055,64 @@ function closeMobileNav() { document.getElementById('mobileNav').classList.remov
 // RETOUR STRIPE — détection ?success
 // ============================================================
 // Quand Stripe Checkout redirige vers successUrl, l'URL contient ?success=1&kind=...
-// On lit ce kind pour afficher la bonne page merci (abonnement ou coaching).
+// - Pour un abonnement : on affiche la page Merci d'onboarding
+// - Pour un coaching : on redirige vers la page Coaching en mode calendrier
 (function(){
   if(!window.location.search.includes('success')) return;
 
   // Lecture du paramètre kind passé dans l'URL par msPay()
   var params = new URLSearchParams(window.location.search);
   var kind = params.get('kind') || 'subscription'; // défaut : abonnement
-  window._stripeReturnKind = kind; // stocké pour renderMerciPage
-
-  // Affichage immédiat de la page merci
-  goTo('merci');
-  if (typeof renderMerciPage === 'function') renderMerciPage();
+  window._stripeReturnKind = kind;
 
   // Nettoie l'URL pour ne pas conserver ?success dans la barre d'adresse
-  // (sinon un F5 relancerait la page merci indéfiniment)
   try {
-    var cleanUrl = window.location.origin + window.location.pathname + '#merci';
+    var cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, '', cleanUrl);
   } catch(e) {}
 
-  // Re-fetch du membre pour que planConnections soit à jour.
-  // On fait plusieurs tentatives espacées car le webhook Stripe→Memberstack
-  // peut prendre 1 à 5 secondes pour propager le nouveau plan (uniquement pour les abonnements).
-  if (kind === 'subscription') {
-    var attempts = 0;
-    var maxAttempts = 6;
-    function refreshAndRender() {
-      attempts++;
-      try {
-        if (typeof refreshMemberAccess === 'function') {
-          refreshMemberAccess().then(function(){
-            // Si on a bien détecté un tier actif, on arrête et on affiche proprement
-            if (typeof memberTier !== 'undefined' && memberTier) {
-              if (typeof renderMerciPage === 'function') renderMerciPage();
-            } else if (attempts < maxAttempts) {
-              // Plan pas encore propagé côté Memberstack → on retente
-              setTimeout(refreshAndRender, 2000);
-            } else {
-              // Abandon : on affiche quand même le rendu actuel
-              if (typeof renderMerciPage === 'function') renderMerciPage();
-            }
-          });
-        }
-      } catch(e) {
-        console.warn('[stripe-return] refreshMemberAccess failed', e);
-      }
-    }
-    setTimeout(refreshAndRender, 1500);
+  if (kind === 'coaching') {
+    // Mémoriser le paiement coaching (utilisé par coachingShowCalendar)
+    try {
+      localStorage.setItem('coaching_paid', '1');
+      localStorage.setItem('coaching_paid_at', String(Date.now()));
+    } catch(e) {}
+    // Rediriger vers la page Coaching, où le calendrier s'affichera automatiquement
+    goTo('coaching');
+    // Petit délai pour s'assurer que le DOM est prêt puis afficher le calendrier
+    setTimeout(function(){
+      if (typeof coachingShowCalendar === 'function') coachingShowCalendar();
+    }, 400);
+    return;
   }
+
+  // Cas abonnement : page Merci d'onboarding
+  goTo('merci');
+  if (typeof renderMerciPage === 'function') renderMerciPage();
+
+  // Re-fetch du membre pour que planConnections soit à jour (retries).
+  // Le webhook Stripe→Memberstack peut prendre 1 à 5 secondes.
+  var attempts = 0;
+  var maxAttempts = 6;
+  function refreshAndRender() {
+    attempts++;
+    try {
+      if (typeof refreshMemberAccess === 'function') {
+        refreshMemberAccess().then(function(){
+          if (typeof memberTier !== 'undefined' && memberTier) {
+            if (typeof renderMerciPage === 'function') renderMerciPage();
+          } else if (attempts < maxAttempts) {
+            setTimeout(refreshAndRender, 2000);
+          } else {
+            if (typeof renderMerciPage === 'function') renderMerciPage();
+          }
+        });
+      }
+    } catch(e) {
+      console.warn('[stripe-return] refreshMemberAccess failed', e);
+    }
+  }
+  setTimeout(refreshAndRender, 1500);
 })();
 
 // Détecte le type de paiement et affiche le bloc adapté :
@@ -9989,6 +10019,74 @@ function checkAccessGate(page) {
   }
 }
 
+// ============================================================
+// COACHING : paiement d'abord, calendrier ensuite
+// ============================================================
+// Lance le paiement Stripe pour une séance de coaching (120€).
+// Le client est redirigé vers Stripe → paye → retour sur le site.
+// Le handler de retour détecte kind=coaching et affiche le calendrier.
+function coachingStartPayment() {
+  msPay('prc_s-ance-coaching-unit--724n0an3', 'coaching');
+}
+
+// Affiche le calendrier de réservation (après paiement réussi)
+// et masque le bloc "payer d'abord".
+function coachingShowCalendar() {
+  var prepayBlock = document.getElementById('booking-prepay-block');
+  var calendarBlock = document.getElementById('booking-calendar-block');
+  var introPre = document.getElementById('booking-intro-prepay');
+  var introPost = document.getElementById('booking-intro-postpay');
+  if (prepayBlock) prepayBlock.style.display = 'none';
+  if (calendarBlock) calendarBlock.style.display = '';
+  if (introPre) introPre.style.display = 'none';
+  if (introPost) introPost.style.display = 'block';
+
+  // Marquer le paiement comme effectué (utile pour le flow + persistance)
+  try {
+    localStorage.setItem('coaching_paid', '1');
+    localStorage.setItem('coaching_paid_at', String(Date.now()));
+  } catch(e) {}
+
+  // Pré-remplir les coordonnées si le membre est connecté
+  coachingPrefillFromMember();
+
+  // Scroll jusqu'au calendrier après un court délai pour que le rendu soit prêt
+  setTimeout(function(){
+    var section = document.getElementById('booking-section');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  }, 300);
+}
+
+// Pré-remplit le nom et l'email du formulaire avec les données du membre connecté
+function coachingPrefillFromMember() {
+  if (!currentMember) return;
+  var nameInput = document.getElementById('book-name');
+  var emailInput = document.getElementById('book-email');
+  if (emailInput && !emailInput.value) {
+    var email = (currentMember.auth && currentMember.auth.email) || currentMember.email || '';
+    if (email) emailInput.value = email;
+  }
+  if (nameInput && !nameInput.value) {
+    // Utilise le pseudo si dispo, sinon la partie avant @ de l'email
+    var pseudo = (currentMember._profile && currentMember._profile.pseudo) || '';
+    if (pseudo) nameInput.value = pseudo;
+  }
+}
+
+// À l'arrivée sur la page coaching, vérifier si le membre a déjà payé récemment
+// (dans les 2 dernières heures) pour re-afficher le calendrier directement.
+// Utile si l'utilisateur recharge la page après paiement ou navigue ailleurs et revient.
+function coachingCheckPrepaidStatus() {
+  try {
+    var paid = localStorage.getItem('coaching_paid');
+    var paidAt = parseInt(localStorage.getItem('coaching_paid_at') || '0', 10);
+    var twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
+    if (paid === '1' && paidAt > twoHoursAgo) {
+      coachingShowCalendar();
+    }
+  } catch(e) {}
+}
+
 // PAIEMENT via Memberstack V2
 // priceId : prc_... — identifiant du prix Memberstack
 // kind    : 'subscription' (défaut) ou 'coaching' — détermine quelle page Merci afficher au retour
@@ -11619,7 +11717,7 @@ function buildRecap() {
   var dateLabel = dt.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   dateLabel = dateLabel.charAt(0).toUpperCase()+dateLabel.slice(1);
   var timeLabel = calState.selectedSlot; // heure saisie par le client
-  document.getElementById('cal-recap').innerHTML = '<strong>📅 '+dateLabel+' à '+timeLabel+'</strong>Visioconférence · 60–90 min · 120€<br><span style="font-size:.75rem;color:var(--gray-light)">⚠️ Horaire souhaité — confirmation par email sous 24h</span>';
+  document.getElementById('cal-recap').innerHTML = '<strong>📅 '+dateLabel+' à '+timeLabel+'</strong>Séance de coaching en visio · 60–90 min · 120€<br><span style="font-size:.75rem;color:var(--gray-light)">⚠️ Horaire souhaité — confirmation par email sous 24h</span>';
 }
 
 window.calGoStep = function(n) {
@@ -11639,17 +11737,14 @@ window.calSubmitBooking = function() {
   if(!calState.selectedDate || calState.selectedSlot===null){ alert('Aucun créneau sélectionné.'); return; }
 
   var btn = document.getElementById('book-btn-text');
-  btn.textContent = 'Redirection vers le paiement…';
+  btn.textContent = 'Envoi en cours…';
 
   var dt = new Date(calState.selectedDate+'T12:00:00');
   var dateLabel = dt.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   dateLabel = dateLabel.charAt(0).toUpperCase()+dateLabel.slice(1);
   var slot = { time: calState.selectedSlot }; // heure saisie par le client
 
-  // Construire le lien Google Agenda
-  var gcalLink = buildGoogleCalLink(calState.selectedDate, slot.time, name);
-
-  // Sauvegarder en localStorage (survit à la redirection Stripe contrairement à sessionStorage)
+  // Sauvegarder en localStorage pour affichage sur la page merci
   localStorage.setItem('booking_name', name);
   localStorage.setItem('booking_email', email);
   localStorage.setItem('booking_date', dateLabel);
@@ -11670,12 +11765,18 @@ window.calSubmitBooking = function() {
     }
   } catch(err) { console.warn('espAddBooking error:', err); }
 
-  // Envoi email AVANT redirection Stripe (sessionStorage perdu après redirection)
-  var doRedirect = function() {
-    var stripeUrl = 'https://buy.stripe.com/test_5kQ3cxcsA80Z7YD41LbMQ00'
-      +'?prefilled_email='+encodeURIComponent(email)
-      +'&client_reference_id='+encodeURIComponent(calState.selectedDate+'_'+slot.time+'_'+name.replace(/ /g,'_'));
-    window.location.href = stripeUrl;
+  // Nettoyer la flag "paiement récent" : la séance est maintenant réservée,
+  // si le client revient sur la page Coaching, il devra repayer pour une autre.
+  try {
+    localStorage.removeItem('coaching_paid');
+    localStorage.removeItem('coaching_paid_at');
+  } catch(e) {}
+
+  // Finaliser : envoyer l'email de demande + afficher la page merci en mode coaching
+  var goToMerci = function() {
+    window._stripeReturnKind = 'coaching'; // force le rendu coaching
+    goTo('merci');
+    if (typeof renderMerciPage === 'function') renderMerciPage();
   };
 
   if(typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY') {
@@ -11685,9 +11786,9 @@ window.calSubmitBooking = function() {
       date_demande:     dateLabel,
       horaire_souhaite: slot.time,
       reply_to:         'quentin@lecheminduspp.fr'
-    }).then(function(){ doRedirect(); }).catch(function(){ doRedirect(); });
+    }).then(function(){ goToMerci(); }, function(){ goToMerci(); });
   } else {
-    doRedirect();
+    goToMerci();
   }
 };
 
