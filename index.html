@@ -6504,6 +6504,10 @@ function updateNavMember(member) {
     isPaidMember  = false;
     document.body.classList.remove('is-member');
     document.body.classList.remove('is-logged');
+    // Fait réapparaître le bandeau ebook dès que l'utilisateur se déconnecte
+    if (typeof window.syncEbookBannerVisibility === 'function') {
+      window.syncEbookBannerVisibility();
+    }
     loginBtn.style.display  = 'inline-flex';
     logoutBtn.style.display = 'none';
     nameEl.style.display    = 'none';
@@ -8083,18 +8087,17 @@ var EBOOK_DOWNLOAD_LINK = 'https://lecheminduspp.fr/ebook-gratuit.pdf';
   function syncEbookBannerVisibility() {
     var banner = document.getElementById('ebook-banner-home');
     if (!banner) return;
-    banner.style.display = shouldSkipPopupForever() ? 'none' : '';
+    // Règle : le bandeau reste visible tant que la personne n'est PAS connectée.
+    // Dès qu'elle se connecte (payant ou pas), le bandeau disparaît.
+    var isLoggedIn = (typeof currentMember !== 'undefined' && currentMember !== null)
+                     || document.body.classList.contains('is-logged');
+    banner.style.display = isLoggedIn ? 'none' : '';
   }
 
   window.openPopup = function() {
-    // Même depuis le bandeau ou un autre bouton, on respecte le "jamais plus" si déjà reçu/payé
-    if (shouldSkipPopupForever()) {
-      if (typeof showToast === 'function') {
-        showToast('Tu as déjà reçu l\'ebook !');
-      }
-      syncEbookBannerVisibility();
-      return;
-    }
+    // Le bandeau reste cliquable même après réception — permet de renvoyer
+    // l'email si la personne ne l'a pas trouvé ou veut une autre adresse.
+    // Seul l'affichage automatique est bloqué après réception (voir setTimeout plus bas).
     var formArea = document.getElementById('popup-form-area');
     var success  = document.getElementById('popup-success');
     if (formArea) formArea.style.display = '';
