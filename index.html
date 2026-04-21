@@ -105,6 +105,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(245,240,232,
 
 /* ===== UTILITAIRE : masquer les CTAs d'inscription aux membres connectés ===== */
 body.is-logged .hide-when-logged{display:none !important}
+
+/* ===== CTA d'onboarding sur page-merci ===== */
+.merci-cta{background:white;border:1px solid var(--border);padding:22px 18px;cursor:pointer;transition:all .2s;font-family:inherit;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.merci-cta:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:0 6px 22px rgba(0,0,0,.08)}
+.merci-cta-icon{font-size:2rem;line-height:1}
+.merci-cta-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--charcoal);line-height:1.2}
+.merci-cta-sub{font-size:.76rem;color:var(--gray);line-height:1.4}
 .nav-right{display:flex;align-items:center;gap:10px}
 .nav-ebook{padding:8px 18px;border:1.5px solid var(--red);color:var(--red);font-size:.8rem;font-weight:600;letter-spacing:.5px;background:none;transition:all .2s}
 .nav-ebook:hover{background:var(--red);color:white}
@@ -3649,70 +3656,152 @@ if(window.location.search.indexOf('success') !== -1) {
 <!-- ============================= PAGE: MERCI ============================= -->
 <div class="page" id="page-merci">
   <div style="margin-top:68px;min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;background:var(--cream);padding:60px 5%">
-    <div style="max-width:560px;width:100%;text-align:center">
+    <div style="max-width:720px;width:100%;text-align:center">
 
-      <!-- Icône -->
-      <div style="width:72px;height:72px;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:popIn .5s cubic-bezier(.22,1,.36,1)">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <!-- ===== MODE ABONNEMENT (Plateforme / Pack / Premium) ===== -->
+      <div id="merci-subscription" style="display:none">
+
+        <!-- Icône check -->
+        <div style="width:72px;height:72px;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:popIn .5s cubic-bezier(.22,1,.36,1)">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+
+        <!-- Titre personnalisé -->
+        <div class="s-eyebrow" style="text-align:center">Bienvenue dans l'aventure</div>
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--charcoal);line-height:1.15;margin-bottom:12px">
+          Merci <em id="merci-sub-pseudo" style="color:var(--red)">candidat</em><br>et bravo pour ton engagement
+        </div>
+        <div style="width:40px;height:2px;background:var(--red);margin:0 auto 28px"></div>
+
+        <!-- Plan souscrit + message -->
+        <div id="merci-sub-planbox" style="background:white;border:1px solid var(--border);border-left:3px solid var(--red);padding:18px 24px;margin-bottom:32px;display:inline-block;text-align:left;min-width:280px">
+          <div style="font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:4px">Ton abonnement</div>
+          <div id="merci-sub-planname" style="font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--charcoal);font-weight:700">Pack Complet</div>
+        </div>
+
+        <p style="font-size:1rem;color:var(--gray);line-height:1.85;margin-bottom:16px;max-width:560px;margin-left:auto;margin-right:auto">
+          Tu viens de prendre la décision qui fait la différence entre ceux qui rêvent du concours et ceux qui l'obtiennent.<br>
+          <strong style="color:var(--charcoal)">Un email de confirmation vient de t'être envoyé</strong> avec le récapitulatif de ton abonnement.
+        </p>
+
+        <!-- Citation motivante -->
+        <div style="background:var(--cream2);padding:22px 28px;margin:32px 0;border-left:3px solid var(--red);text-align:left">
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--charcoal);line-height:1.5;margin-bottom:8px">
+            « La réussite, c'est la régularité. Un QCM par jour vaut mieux que 100 en une soirée. »
+          </div>
+          <div style="font-size:.78rem;color:var(--gray);font-weight:600">— Quentin, SPP</div>
+        </div>
+
+        <!-- CTAs d'action -->
+        <div style="margin-top:40px;margin-bottom:24px">
+          <div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:20px">Par où commencer ?</div>
+
+          <!-- Grille 5 CTAs -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:32px">
+            <button class="merci-cta" onclick="goTo('qcm')">
+              <div class="merci-cta-icon">🎯</div>
+              <div class="merci-cta-title">Mes premiers QCM</div>
+              <div class="merci-cta-sub">Démarre par le plus motivant</div>
+            </button>
+            <button class="merci-cta" onclick="goTo('concours')">
+              <div class="merci-cta-icon">⏱️</div>
+              <div class="merci-cta-title">Mode concours</div>
+              <div class="merci-cta-sub">Teste-toi en conditions réelles</div>
+            </button>
+            <button class="merci-cta" onclick="goTo('prepa')">
+              <div class="merci-cta-icon">💪</div>
+              <div class="merci-cta-title">Préparation physique</div>
+              <div class="merci-cta-sub">Prépare aussi ton corps</div>
+            </button>
+            <button class="merci-cta" onclick="goTo('biblio')">
+              <div class="merci-cta-icon">📚</div>
+              <div class="merci-cta-title">Bibliothèque</div>
+              <div class="merci-cta-sub">Les textes officiels et GNR</div>
+            </button>
+            <button class="merci-cta" onclick="goTo('actu')">
+              <div class="merci-cta-icon">📰</div>
+              <div class="merci-cta-title">Actualités</div>
+              <div class="merci-cta-sub">Reste à jour sur le métier</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bouton espace candidat -->
+        <button class="btn btn-red" style="width:100%;max-width:360px;justify-content:center;display:flex;font-size:.95rem;padding:15px" onclick="goTo('espace')">
+          📊 Accéder à mon espace candidat
+        </button>
+
+        <!-- Signature -->
+        <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);font-size:.88rem;color:var(--gray);line-height:1.7">
+          <em>« Bienvenue à bord. Tu n'es plus seul sur ce chemin. »</em><br>
+          <strong style="color:var(--charcoal);font-style:normal">— Quentin, Le Chemin du SPP</strong>
+        </div>
+
       </div>
 
-      <!-- Titre -->
-      <div class="s-eyebrow" style="text-align:center">Demande re&ccedil;ue</div>
-      <div style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--charcoal);line-height:1.15;margin-bottom:12px">
-        Ta s&eacute;ance est<br><em style="color:var(--red)">en cours de confirmation</em>
-      </div>
-      <div style="width:40px;height:2px;background:var(--red);margin:0 auto 28px"></div>
+      <!-- ===== MODE COACHING (séance visio) ===== -->
+      <div id="merci-coaching" style="display:none">
 
-      <!-- Message principal -->
-      <p style="font-size:1rem;color:var(--gray);line-height:1.85;margin-bottom:28px">
-        Ton paiement a bien &eacute;t&eacute; re&ccedil;u.<br>
-        <strong style="color:var(--charcoal)">Un email vient de t&rsquo;&ecirc;tre envoy&eacute;</strong> avec le r&eacute;capitulatif de ta demande.<br><br>
-        Je reviens vers toi <strong style="color:var(--charcoal)">sous 24h</strong> pour accepter ta demande et te confirmer l&rsquo;horaire exact de ton rendez-vous.
-      </p>
+        <!-- Icône -->
+        <div style="width:72px;height:72px;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:popIn .5s cubic-bezier(.22,1,.36,1)">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
 
-      <!-- Récap réservation (rempli dynamiquement) -->
-      <div id="merci-booking-detail" style="background:white;border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px;text-align:left;margin-bottom:32px;font-size:.9rem;line-height:1.8;color:var(--charcoal);display:none"></div>
+        <!-- Titre -->
+        <div class="s-eyebrow" style="text-align:center">Demande reçue</div>
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--charcoal);line-height:1.15;margin-bottom:12px">
+          Ta séance est<br><em style="color:var(--red)">en cours de confirmation</em>
+        </div>
+        <div style="width:40px;height:2px;background:var(--red);margin:0 auto 28px"></div>
 
-      <!-- Étapes -->
-      <div style="background:white;border:1px solid var(--border);padding:28px 32px;margin-bottom:32px;text-align:left">
-        <div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:18px">Ce qui se passe maintenant</div>
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">1</div>
-            <div>
-              <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">V&eacute;rifie ta bo&icirc;te mail</div>
-              <div style="font-size:.8rem;color:var(--gray);line-height:1.55">Tu as re&ccedil;u un email de confirmation avec le r&eacute;capitulatif de ta demande. V&eacute;rifie tes spams si tu ne le vois pas.</div>
+        <p style="font-size:1rem;color:var(--gray);line-height:1.85;margin-bottom:28px">
+          Ton paiement a bien été reçu.<br>
+          <strong style="color:var(--charcoal)">Un email vient de t'être envoyé</strong> avec le récapitulatif de ta demande.<br><br>
+          Je reviens vers toi <strong style="color:var(--charcoal)">sous 24h</strong> pour accepter ta demande et te confirmer l'horaire exact de ton rendez-vous.
+        </p>
+
+        <!-- Récap réservation (rempli dynamiquement) -->
+        <div id="merci-booking-detail" style="background:white;border:1px solid var(--border);border-left:3px solid var(--red);padding:16px 20px;text-align:left;margin-bottom:32px;font-size:.9rem;line-height:1.8;color:var(--charcoal);display:none"></div>
+
+        <!-- Étapes -->
+        <div style="background:white;border:1px solid var(--border);padding:28px 32px;margin-bottom:32px;text-align:left">
+          <div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:18px">Ce qui se passe maintenant</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">1</div>
+              <div>
+                <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">Vérifie ta boîte mail</div>
+                <div style="font-size:.8rem;color:var(--gray);line-height:1.55">Tu as reçu un email de confirmation avec le récapitulatif de ta demande. Vérifie tes spams si tu ne le vois pas.</div>
+              </div>
             </div>
-          </div>
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">2</div>
-            <div>
-              <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">Je reviens vers toi sous 24h</div>
-              <div style="font-size:.8rem;color:var(--gray);line-height:1.55">J&rsquo;accepte ta demande et je te confirme l&rsquo;horaire exact par email ou WhatsApp.</div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">2</div>
+              <div>
+                <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">Je reviens vers toi sous 24h</div>
+                <div style="font-size:.8rem;color:var(--gray);line-height:1.55">J'accepte ta demande et je te confirme l'horaire exact par email ou WhatsApp.</div>
+              </div>
             </div>
-          </div>
-          <div style="display:flex;gap:14px;align-items:flex-start">
-            <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">3</div>
-            <div>
-              <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">Ta s&eacute;ance</div>
-              <div style="font-size:.8rem;color:var(--gray);line-height:1.55">Tu re&ccedil;ois le lien visio avant la s&eacute;ance &mdash; dur&eacute;e : 60&ndash;90 min.</div>
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <div style="width:26px;height:26px;background:var(--red);color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.85rem;font-weight:700;flex-shrink:0">3</div>
+              <div>
+                <div style="font-size:.88rem;font-weight:600;color:var(--charcoal);margin-bottom:2px">Ta séance</div>
+                <div style="font-size:.8rem;color:var(--gray);line-height:1.55">Tu reçois le lien visio avant la séance — durée : 60–90 min.</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Bouton retour + countdown -->
-      <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.95rem;padding:15px" onclick="goTo('home')">
-        Retour &agrave; l&rsquo;accueil &rarr;
-      </button>
-      <div style="margin-top:14px;font-size:.8rem;color:var(--gray-light)">
-        Redirection automatique dans <strong id="merci-countdown" style="color:var(--charcoal)">10</strong>s
-      </div>
+        <!-- Bouton retour -->
+        <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.95rem;padding:15px" onclick="goTo('home')">
+          Retour à l'accueil →
+        </button>
 
-      <!-- Signature -->
-      <div style="margin-top:40px;padding-top:28px;border-top:1px solid var(--border);font-size:.85rem;color:var(--gray);line-height:1.7">
-        <em>&laquo;&nbsp;Tu as fait le bon choix. &Agrave; tr&egrave;s vite.&nbsp;&raquo;</em><br>
-        <strong style="color:var(--charcoal)">— Quentin, Le Chemin du SPP</strong>
+        <!-- Signature -->
+        <div style="margin-top:40px;padding-top:28px;border-top:1px solid var(--border);font-size:.85rem;color:var(--gray);line-height:1.7">
+          <em>« Tu as fait le bon choix. À très vite. »</em><br>
+          <strong style="color:var(--charcoal)">— Quentin, Le Chemin du SPP</strong>
+        </div>
+
       </div>
 
     </div>
@@ -5835,37 +5924,85 @@ function closeMobileNav() { document.getElementById('mobileNav').classList.remov
   // Retour d'un paiement Stripe : on re-fetch le membre pour que
   // planConnections reflète bien le nouvel achat et que isPaidMember
   // passe à true (après un petit délai pour laisser le webhook arriver).
+  // On rafraîchit le rendu de la page merci après le re-fetch.
   setTimeout(function(){
-    try { if (typeof refreshMemberAccess === 'function') refreshMemberAccess(); } catch(e){}
+    try {
+      if (typeof refreshMemberAccess === 'function') {
+        refreshMemberAccess().then(function(){
+          if (typeof renderMerciPage === 'function') renderMerciPage();
+        });
+      }
+    } catch(e){}
   }, 2500);
 
-  var name  = localStorage.getItem('booking_name');
-  var email = localStorage.getItem('booking_email');
-  var date  = localStorage.getItem('booking_date');
-  var time  = localStorage.getItem('booking_time');
+  // Rendu initial en attendant le refresh
+  if (typeof renderMerciPage === 'function') renderMerciPage();
+})();
 
-  if(name && date) {
-    var detail = document.getElementById('merci-booking-detail');
-    if(detail) {
-      detail.style.display = 'block';
-      detail.innerHTML = '📅 <strong>'+date+'</strong> &nbsp;·&nbsp; 🕐 <strong>'+time+'</strong><br>'
-        +'<span style="font-size:.82rem;color:var(--gray)">Demande pour '+name+(email?' &mdash; confirmation envoy&eacute;e &agrave; '+email:'')+'</span>';
-    }
-    localStorage.removeItem('booking_name');
-    localStorage.removeItem('booking_email');
-    localStorage.removeItem('booking_date');
-    localStorage.removeItem('booking_time');
+// Détecte le type de paiement et affiche le bloc adapté :
+// - Coaching (séance visio) → bloc "sous 24h"
+// - Abonnement (Plateforme/Pack/Premium) → bloc onboarding avec CTAs
+function renderMerciPage() {
+  var subBlock = document.getElementById('merci-subscription');
+  var coachBlock = document.getElementById('merci-coaching');
+  if (!subBlock || !coachBlock) return;
+
+  // Détection : si le dernier plan acheté (ou le tier actuel) est un abonnement,
+  // on affiche le bloc onboarding. Sinon on affiche le bloc coaching (par défaut).
+  var isSubscription = false;
+  var planLabel = 'Plateforme';
+  var tier = (typeof memberTier !== 'undefined' && memberTier) || null;
+
+  // Si c'est une séance coaching (détectée par les données booking en localStorage),
+  // on reste sur le mode coaching
+  var hasBooking = localStorage.getItem('booking_name') || localStorage.getItem('booking_date');
+
+  if (!hasBooking && tier) {
+    // Membre avec tier actif et pas de réservation en cours → c'est un abonnement
+    isSubscription = true;
+    if (tier === '2a') planLabel = 'Plateforme';
+    else if (tier === '2b') planLabel = 'Pack Complet';
+    else if (tier === '3')  planLabel = 'Accompagnement Premium';
   }
 
-  var countdown = 10;
-  var countEl = document.getElementById('merci-countdown');
-  if(countEl) countEl.textContent = countdown;
-  var timer = setInterval(function(){
-    countdown--;
-    if(countEl) countEl.textContent = countdown;
-    if(countdown <= 0){ clearInterval(timer); goTo('home'); }
-  }, 1000);
-})();
+  if (isSubscription) {
+    // Mode abonnement
+    subBlock.style.display = 'block';
+    coachBlock.style.display = 'none';
+
+    // Personnalisation : pseudo + plan
+    var pseudoEl = document.getElementById('merci-sub-pseudo');
+    if (pseudoEl) {
+      var pseudo = (currentMember && currentMember._profile && currentMember._profile.pseudo) || 'candidat';
+      pseudoEl.textContent = pseudo;
+    }
+    var planEl = document.getElementById('merci-sub-planname');
+    if (planEl) planEl.textContent = planLabel;
+  } else {
+    // Mode coaching (par défaut si pas d'abonnement détecté)
+    subBlock.style.display = 'none';
+    coachBlock.style.display = 'block';
+
+    // Rendu du détail de réservation (ancien code)
+    var name  = localStorage.getItem('booking_name');
+    var email = localStorage.getItem('booking_email');
+    var date  = localStorage.getItem('booking_date');
+    var time  = localStorage.getItem('booking_time');
+
+    if (name && date) {
+      var detail = document.getElementById('merci-booking-detail');
+      if (detail) {
+        detail.style.display = 'block';
+        detail.innerHTML = '📅 <strong>'+date+'</strong> &nbsp;·&nbsp; 🕐 <strong>'+time+'</strong><br>'
+          +'<span style="font-size:.82rem;color:var(--gray)">Demande pour '+name+(email?' &mdash; confirmation envoyée à '+email:'')+'</span>';
+      }
+      localStorage.removeItem('booking_name');
+      localStorage.removeItem('booking_email');
+      localStorage.removeItem('booking_date');
+      localStorage.removeItem('booking_time');
+    }
+  }
+}
 
 // ============================================================
 // COUNTDOWN
@@ -9716,7 +9853,10 @@ function msPay(priceId) {
   // soit à jour et que isPaidMember passe à true avant la redirection merci.
   function onCheckoutSuccess() {
     _msPayInProgress = false;
-    return refreshMemberAccess().then(function() { goTo('merci'); });
+    return refreshMemberAccess().then(function() {
+      goTo('merci');
+      if (typeof renderMerciPage === 'function') renderMerciPage();
+    });
   }
   function launchCheckout() {
     ms.purchasePlansWithCheckout({ priceId: priceId }).then(
