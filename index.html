@@ -2316,6 +2316,9 @@ if(window.location.search.indexOf('success') !== -1) {
         <div class="esp-ctx-msg-text" id="esp-ctx-msg-text"></div>
       </div>
 
+      <!-- Ancre invisible utilisée pour calculer la position cible du scroll
+           (car la barre nav elle-même est sticky et son rect.top n'est donc pas fiable) -->
+      <div id="esp-car-anchor" style="height:0;width:0;overflow:hidden" aria-hidden="true"></div>
       <!-- NAVIGATION CARROUSEL STICKY (remplace les onglets) -->
       <div class="esp-car-nav" id="esp-car-nav">
         <div class="esp-car-labels" id="esp-car-labels">
@@ -4538,14 +4541,18 @@ function espCarGoTo(index) {
   // Scroll systématique vers la barre de navigation du carrousel.
   // Objectif : à chaque changement de slide, la barre d'onglets soit collée juste
   // sous le header du site (à sa position sticky = 60px desktop / 58px mobile).
-  // On calcule la position absolue cible via getBoundingClientRect + pageYOffset,
-  // ce qui est fiable même quand la barre est déjà en mode sticky.
-  var nav = document.getElementById('esp-car-nav');
-  if (nav) {
+  //
+  // IMPORTANT : on ne peut pas utiliser getBoundingClientRect sur la barre nav
+  // elle-même, car quand elle est en mode sticky, son rect.top reflète sa
+  // position sticky (60px) et pas sa position réelle dans le flux. On utilise
+  // donc une ancre invisible (#esp-car-anchor) placée juste avant, dont la
+  // position n'est jamais altérée par le sticky.
+  var anchor = document.getElementById('esp-car-anchor');
+  if (anchor) {
     var stickyOffset = (window.innerWidth <= 900) ? 58 : 60;
-    var navRect = nav.getBoundingClientRect();
+    var anchorRect = anchor.getBoundingClientRect();
     // Position absolue où la barre nav commence dans le document
-    var navAbsoluteTop = window.pageYOffset + navRect.top;
+    var navAbsoluteTop = window.pageYOffset + anchorRect.top;
     // On ajuste pour que la barre soit pile à sa position sticky (et pas dessous)
     var target = navAbsoluteTop - stickyOffset;
     window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
