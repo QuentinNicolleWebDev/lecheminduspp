@@ -727,7 +727,7 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 .esp-streak-lbl{font-size:.72rem;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
 
 /* Stats overview */
-.esp-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.esp-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:36px}
 .esp-stat{background:white;border:1px solid var(--border);padding:22px 20px;position:relative;overflow:hidden}
 .esp-stat::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red)}
 .esp-stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--charcoal);line-height:1;margin-bottom:6px}
@@ -2438,6 +2438,11 @@ if(window.location.search.indexOf('success') !== -1) {
           <div class="esp-stat-num" id="esp-st-docs">0</div>
           <div class="esp-stat-lbl">Documents lus</div>
           <div class="esp-stat-sub" id="esp-st-docs-sub">—</div>
+        </div>
+        <div class="esp-stat">
+          <div class="esp-stat-num" id="esp-st-prepa">0</div>
+          <div class="esp-stat-lbl">Séances prépa physique</div>
+          <div class="esp-stat-sub" id="esp-st-prepa-sub">—</div>
         </div>
       </div>
 
@@ -5775,6 +5780,27 @@ function _renderEspaceWith(data) {
   document.getElementById('esp-st-docs-sub').textContent = nbDocs === 0
     ? 'aucune lecture enregistrée'
     : 'dernière : ' + espTimeAgo(data.docs[0].lastRead);
+
+  // --- Séances de préparation physique réalisées ---
+  // On somme tous les jours cochés (nb) sur toutes les semaines.
+  // espGetPrepaDone() lit localStorage 'prepa_done_v1' et retourne un tableau
+  // { semaine, niveau, jours, nb } par semaine active.
+  var prepaRows = (typeof espGetPrepaDone === 'function') ? espGetPrepaDone() : [];
+  var nbPrepa = 0;
+  var nbSemaines = prepaRows.length;
+  prepaRows.forEach(function(r){ nbPrepa += (r.nb || 0); });
+  var prepaEl = document.getElementById('esp-st-prepa');
+  var prepaSubEl = document.getElementById('esp-st-prepa-sub');
+  if (prepaEl) prepaEl.textContent = nbPrepa;
+  if (prepaSubEl) {
+    if (nbPrepa === 0) {
+      prepaSubEl.textContent = 'commence ta prépa physique';
+    } else if (nbSemaines === 1) {
+      prepaSubEl.textContent = 'sur 1 semaine';
+    } else {
+      prepaSubEl.textContent = 'sur ' + nbSemaines + ' semaines';
+    }
+  }
 
   // --- Priorité de révision (catégorie la plus faible parmi celles vues) ---
   renderEspPriority(data);
