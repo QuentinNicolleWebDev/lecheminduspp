@@ -5197,23 +5197,24 @@ function renderShareCanvas() {
   }
 
   // === ③ KICKER + PHRASE D'ACCROCHE ÉMOTIONNELLE ===
+  // Placé SOUS le logo (qui occupe Y 60 → 320), avec de l'air
   ctx.fillStyle = '#CC2229';
   ctx.font = '700 32px "DM Sans", Arial, sans-serif';
   ctx.textAlign = 'center';
   // Simule le letter-spacing en espaçant les lettres du kicker
   var kickerSpaced = tagline.kicker.split('').join(' ');
-  ctx.fillText(kickerSpaced, W/2, 290);
+  ctx.fillText(kickerSpaced, W/2, 370);
 
   // Phrase d'accroche (Playfair, italique pour l'émotion)
-  drawCenter(tagline.tag, 400, 78, '#1C1C1C', '900', 'italic "Playfair Display", Georgia, serif');
+  drawCenter(tagline.tag, 460, 78, '#1C1C1C', '900', 'italic "Playfair Display", Georgia, serif');
 
   // Trait rouge décoratif sous l'accroche
   ctx.fillStyle = '#CC2229';
-  ctx.fillRect(W/2 - 80, 440, 160, 4);
+  ctx.fillRect(W/2 - 80, 500, 160, 4);
 
   // === ④ 4 GRANDES STATS EN 2×2 ===
-  var gridTop = 540;
-  var gridRowHeight = 230;
+  var gridTop = 590;
+  var gridRowHeight = 210;
   var col1X = W/4;
   var col2X = W * 3/4;
 
@@ -5233,7 +5234,7 @@ function renderShareCanvas() {
   drawStat(col2X, gridTop + gridRowHeight + 90, (s.score > 0 ? s.score + '%' : '—'), 'SCORE GLOBAL');
 
   // === ⑤ BARRE DE PROGRESSION VISUELLE (score global) ===
-  var barY = gridTop + 2*gridRowHeight + 70;
+  var barY = gridTop + 2*gridRowHeight + 60;
   var barX = 120;
   var barW = W - 240;
   var barH = 18;
@@ -5258,9 +5259,9 @@ function renderShareCanvas() {
   ctx.fillStyle = barColor;
   ctx.fillRect(barX, barY, fillW, barH);
 
-  // === ⑥ MINI-RADAR (5 axes) si données dispo ===
+  // === ⑥ MINI-RADAR (5 axes) — agrandi et placé plus bas ===
   var radarY = barY + 90;
-  var radarR = 130;  // rayon du mini-radar
+  var radarR = 185;  // rayon agrandi (était 130) pour meilleure visibilité sans déborder
   var radarCx = W/2;
   var radarCy = radarY + radarR;
 
@@ -5400,7 +5401,7 @@ function drawMiniRadar(ctx, cx, cy, R, scores) {
   ctx.fill();
   ctx.stroke();
 
-  // Points aux sommets
+  // Points aux sommets (plus visibles sur le radar agrandi)
   axes.forEach(function(a, i){
     if (scores[a] == null) return;
     var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
@@ -5409,21 +5410,21 @@ function drawMiniRadar(ctx, cx, cy, R, scores) {
     var y = cy + r * Math.sin(angle);
     ctx.fillStyle = '#CC2229';
     ctx.beginPath();
-    ctx.arc(x, y, 6, 0, Math.PI * 2);
+    ctx.arc(x, y, 10, 0, Math.PI * 2);
     ctx.fill();
     ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.stroke();
   });
 
-  // Labels autour du radar
+  // Labels autour du radar (plus grands pour accompagner le radar agrandi)
   ctx.fillStyle = '#1C1C1C';
-  ctx.font = '600 22px "DM Sans", Arial, sans-serif';
+  ctx.font = '600 28px "DM Sans", Arial, sans-serif';
   axes.forEach(function(a, i){
     var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var labelR = R + 32;
+    var labelR = R + 38;
     var x = cx + labelR * Math.cos(angle);
-    var y = cy + labelR * Math.sin(angle) + 7;
+    var y = cy + labelR * Math.sin(angle) + 9;
     // Alignement selon position horizontale
     if (x < cx - 10) ctx.textAlign = 'right';
     else if (x > cx + 10) ctx.textAlign = 'left';
