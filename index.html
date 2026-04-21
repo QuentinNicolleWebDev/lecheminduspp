@@ -196,8 +196,6 @@ body.is-logged .hide-when-logged{display:none !important}
 .merci-cta-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--charcoal);line-height:1.2}
 .merci-cta-sub{font-size:.76rem;color:var(--gray);line-height:1.4}
 .nav-right{display:flex;align-items:center;gap:10px}
-.nav-ebook{padding:8px 18px;border:1.5px solid var(--red);color:var(--red);font-size:.8rem;font-weight:600;letter-spacing:.5px;background:none;transition:all .2s}
-.nav-ebook:hover{background:var(--red);color:white}
 .nav-cta{padding:9px 20px;background:var(--red);color:white;font-size:.8rem;font-weight:600;letter-spacing:.5px;border:none;transition:background .2s}
 .nav-cta:hover{background:var(--red-dark)}
 .nav-mobile-btn{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
@@ -234,21 +232,6 @@ body.is-logged .hide-when-logged{display:none !important}
 .cd-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:10px 16px;text-align:center;min-width:70px}
 .cd-num{font-family:'Playfair Display',serif;font-size:1.8rem;line-height:1;color:white}
 .cd-unit{font-size:.65rem;color:var(--cream4);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
-
-/* ===== BANDEAU EBOOK GRATUIT (page d'accueil uniquement) ===== */
-.ebook-banner{background:var(--red-pale);border-top:1px solid var(--red-pale2);border-bottom:1px solid var(--red-pale2);padding:14px 5%;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;cursor:pointer;transition:background .18s}
-.ebook-banner:hover{background:var(--red-pale2)}
-.ebook-banner-badge{background:var(--red);color:white;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px}
-.ebook-banner-text{font-size:.92rem;color:var(--charcoal);line-height:1.4}
-.ebook-banner-text strong{color:var(--red-dark);font-weight:700}
-.ebook-banner-cta{font-size:.82rem;font-weight:700;color:var(--red);letter-spacing:.5px}
-.ebook-banner-cta::after{content:' →';transition:transform .18s;display:inline-block}
-.ebook-banner:hover .ebook-banner-cta::after{transform:translateX(4px)}
-@media(max-width:700px){
-  .ebook-banner{padding:12px 5%;gap:10px}
-  .ebook-banner-text{font-size:.82rem;text-align:center}
-  .ebook-banner-badge{font-size:.62rem;padding:3px 8px}
-}
 
 /* ===== HERO ===== */
 .hero{min-height:calc(100vh - 68px);margin-top:68px;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:60px 5%;gap:40px;background:var(--cream);position:relative;overflow:hidden}
@@ -504,6 +487,13 @@ body.is-member .biblio-overlay::before{content:'Ouvrir le document';font-size:.8
 .biblio-overlay{position:absolute;inset:0;background:rgba(245,240,232,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
 .biblio-card:hover .biblio-overlay{opacity:1}
 .biblio-overlay p{font-size:.8rem;color:var(--gray);margin-bottom:12px;text-align:center;padding:0 16px}
+
+/* Carte ebook "cadeau de bienvenue" — style distinctif accent rouge */
+.biblio-card.biblio-gift{background:linear-gradient(135deg,#FFF8F6 0%,#FFFFFF 100%);border:2px solid var(--red);padding-top:24px}
+.biblio-card.biblio-gift::before{content:'🎁 Cadeau de bienvenue';position:absolute;top:-10px;left:20px;background:var(--red);color:white;font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;line-height:1.3;white-space:nowrap}
+.biblio-card.biblio-gift .biblio-type-tag{color:var(--red-dark)}
+.biblio-card.biblio-gift .biblio-name{color:var(--charcoal);font-weight:700}
+.biblio-card.biblio-gift .biblio-lock{color:var(--red);font-size:1rem}
 
 /* ===== ANNALES THEMATIQUES ===== */
 .annales-theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
@@ -1184,41 +1174,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .lock-modal-text{font-size:.88rem;color:var(--gray);line-height:1.7;margin-bottom:28px}
 .lock-modal-close{position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--gray-light)}
 
-/* ===== POPUP EBOOK (unique) ===== */
-#popup-overlay{position:fixed;inset:0;z-index:9999;background:rgba(28,18,12,0.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s ease}
-#popup-overlay.visible{opacity:1;pointer-events:all}
-#popup-box{background:var(--cream);max-width:540px;width:100%;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.28);transform:translateY(28px) scale(0.97);transition:transform .4s cubic-bezier(.22,1,.36,1);overflow:hidden}
-#popup-overlay.visible #popup-box{transform:translateY(0) scale(1)}
-#popup-close{position:absolute;top:16px;right:18px;background:none;border:none;cursor:pointer;font-size:1.35rem;color:rgba(245,240,232,0.7);line-height:1;transition:color .2s;z-index:2}
-#popup-close:hover{color:white}
-.popup-top{background:var(--dark);padding:36px 40px 32px;position:relative;overflow:hidden}
-.popup-top::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(184,50,50,0.07) 18px,rgba(184,50,50,0.07) 19px)}
-.popup-badge{display:inline-flex;align-items:center;gap:7px;background:var(--red);color:white;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;margin-bottom:16px}
-.popup-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,1.85rem);font-weight:900;color:var(--cream);line-height:1.15;margin-bottom:10px;position:relative}
-.popup-title em{color:#C84040;font-style:italic}
-.popup-subtitle{font-size:.88rem;color:rgba(245,240,232,0.65);line-height:1.6;position:relative}
-.popup-body{padding:32px 40px 36px}
-.popup-promise{display:flex;gap:10px;align-items:flex-start;background:var(--red-pale);border-left:3px solid var(--red);padding:12px 16px;margin-bottom:24px}
-.popup-promise-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
-.popup-promise-text{font-size:.85rem;color:var(--charcoal);line-height:1.55}
-.popup-promise-text strong{color:var(--red-dark)}
-#popup-form{display:flex;flex-direction:column;gap:12px}
-.popup-field{display:flex;flex-direction:column;gap:5px}
-.popup-label{font-size:.78rem;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--gray)}
-.popup-input{padding:11px 14px;border:1.5px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--charcoal);outline:none;transition:border-color .2s}
-.popup-input:focus{border-color:var(--red)}
-.popup-submit{margin-top:4px;padding:14px 20px;background:var(--red);color:white;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:700;letter-spacing:.5px;border:none;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
-.popup-submit:hover{background:var(--red-dark)}
-.popup-submit:disabled{background:var(--gray-light);cursor:not-allowed}
-.popup-skip{text-align:center;margin-top:14px;font-size:.8rem;color:var(--gray-light)}
-.popup-skip button{background:none;border:none;cursor:pointer;color:var(--gray);text-decoration:underline;font-size:.8rem;font-family:'DM Sans',sans-serif}
-.popup-skip button:hover{color:var(--charcoal)}
-#popup-success{display:none;flex-direction:column;align-items:center;text-align:center;padding:48px 40px;gap:12px}
-#popup-success.show{display:flex}
-.popup-success-icon{font-size:3rem}
-.popup-success-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--charcoal)}
-.popup-success-text{font-size:.9rem;color:var(--gray);line-height:1.6;max-width:340px}
-
 /* ===== PAGE MERCI ===== */
 @keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
 
@@ -1575,47 +1530,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 </head>
 <body>
 
-<!-- ===== POPUP EBOOK ===== -->
-<div id="popup-overlay" role="dialog" aria-modal="true" aria-label="Recevoir l'ebook gratuit">
-  <div id="popup-box">
-    <button id="popup-close" aria-label="Fermer">&#x2715;</button>
-    <div class="popup-top">
-      <div class="popup-badge">&#127873; Offert &mdash; T&eacute;l&eacute;chargement gratuit</div>
-      <div class="popup-title">Les <em>5 erreurs</em> qui &eacute;liminent<br>les bons candidats</div>
-      <div class="popup-subtitle">Concours de Caporal Sapeur-Pompier Professionnel &middot; Guide PDF complet</div>
-    </div>
-    <div class="popup-body">
-      <div id="popup-form-area">
-        <div class="popup-promise">
-          <span class="popup-promise-icon">&#128236;</span>
-          <div class="popup-promise-text">Renseigne ton pr&eacute;nom et ton email &mdash; <strong>tu re&ccedil;ois le guide directement dans ta bo&icirc;te mail</strong>, sans spam ni engagement.</div>
-        </div>
-        <form id="popup-form" novalidate>
-          <div class="popup-field">
-            <label class="popup-label" for="popup-name">Ton pr&eacute;nom</label>
-            <input class="popup-input" type="text" id="popup-name" placeholder="ex : Antoine" required autocomplete="given-name">
-          </div>
-          <div class="popup-field">
-            <label class="popup-label" for="popup-email">Ton adresse email</label>
-            <input class="popup-input" type="email" id="popup-email" placeholder="ex : antoine@gmail.com" required autocomplete="email">
-          </div>
-          <button class="popup-submit" type="submit" id="popup-submit-btn">
-            <span id="popup-btn-text">Recevoir le guide gratuit &rarr;</span>
-          </button>
-        </form>
-        <div class="popup-skip">
-          <button id="popup-skip-btn">Non merci, je pr&eacute;f&egrave;re continuer sans le guide</button>
-        </div>
-      </div>
-      <div id="popup-success">
-        <div class="popup-success-icon">&#9989;</div>
-        <div class="popup-success-title">C'est envoy&eacute; !</div>
-        <div class="popup-success-text">V&eacute;rifie ta bo&icirc;te mail (et tes spams si n&eacute;cessaire). Le guide PDF t'attend.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
@@ -1774,12 +1688,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 
 <!-- ============================= PAGE: HOME ============================= -->
 <div class="page active" id="page-home">
-  <!-- Bandeau ebook gratuit (page d'accueil uniquement, masqué si déjà reçu ou payé) -->
-  <div class="ebook-banner" id="ebook-banner-home" onclick="openPopup()">
-    <span class="ebook-banner-badge">Gratuit</span>
-    <span class="ebook-banner-text">Reçois mon <strong>ebook gratuit</strong> de préparation au concours SPP</span>
-    <span class="ebook-banner-cta">Le recevoir</span>
-  </div>
   <div class="hero" style="margin-top:0">
     <div class="hero-left">
       <div class="hero-tag"><span>🔥 Préparation complète au concours SPP</span></div>
@@ -2018,6 +1926,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
       <div class="discover-card-center">
         Pas encore prêt à t'engager ? Crée un compte gratuit et teste la plateforme avec une sélection représentative de contenu avant de choisir ta formule.
         <ul class="discover-card-features">
+          <li><strong>🎁 Guide PDF ~50 pages</strong></li>
           <li>30 QCM offerts</li>
           <li>1 annale démo</li>
           <li>Bibliothèque partielle</li>
@@ -2623,6 +2532,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <button class="biblio-cat-btn" onclick="filterBiblio(this,'phy')">Physique</button>
       </div>
       <div class="biblio-grid" id="biblio-grid">
+        <div class="biblio-card biblio-gift" data-cat="cadeau" onclick="openDoc('ebook-v2','Les 5 erreurs qui éliminent les bons candidats','Guide offert','ebook_V2_pdf.pdf')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Guide offert</div><div class="biblio-name">Les 5 erreurs qui éliminent les bons candidats</div><div class="biblio-meta">PDF · ~50 pages · Offert à l'inscription</div><div class="biblio-overlay"><p>Accès inscrits (gratuit)</p><span class="btn btn-red" style="font-size:.8rem;padding:8px 16px">Consulter →</span></div></div>
         <div class="biblio-card" data-cat="regl" onclick="openDoc('loi-96-369','Loi n°96-369 du 3 mai 1996 — SDIS','Réglementation','docs/loi-96-369.pdf')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Réglementation</div><div class="biblio-name">Loi n°96-369 du 3 mai 1996 — SDIS</div><div class="biblio-meta">PDF · Texte intégral</div><div class="biblio-overlay"><p>Accès membres</p><span class="btn btn-red" style="font-size:.8rem;padding:8px 16px">Consulter →</span></div></div>
         <div class="biblio-card" data-cat="fiche" onclick="openDoc('fiche-sdis-orga','Organisation des SDIS en France','Fiche synthèse','docs/fiche-sdis-orga.pdf')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Fiche synthèse</div><div class="biblio-name">Organisation des SDIS en France</div><div class="biblio-meta">PDF · 4 pages · Essentiel</div><div class="biblio-overlay"><p>Accès membres</p><span class="btn btn-red" style="font-size:.8rem;padding:8px 16px">Consulter →</span></div></div>
         <div class="biblio-card" data-cat="statut" onclick="openDoc('statut-fp','Statut de la Fonction Publique — Synthèse','Statut FP','docs/statut-fp.pdf')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Statut FP</div><div class="biblio-name">Statut de la Fonction Publique — Synthèse</div><div class="biblio-meta">PDF · 8 pages</div><div class="biblio-overlay"><p>Accès membres</p><span class="btn btn-red" style="font-size:.8rem;padding:8px 16px">Consulter →</span></div></div>
@@ -3731,6 +3641,7 @@ if(window.location.search.indexOf('success') !== -1) {
       <div class="discover-card-center">
         Tu accèdes dès maintenant à une sélection représentative. Idéal pour prendre tes marques avant de t'engager.
         <ul class="discover-card-features">
+          <li><strong>🎁 Guide PDF ~50 pages</strong></li>
           <li>30 QCM offerts</li>
           <li>1 annale démo</li>
           <li>Bibliothèque partielle</li>
@@ -10009,10 +9920,6 @@ function updateNavMember(member) {
     // 'is-logged' = simplement connecté (avec ou sans paiement)
     document.body.classList.add('is-logged');
     document.body.classList.toggle('is-member', isPaidMember);
-    // Masque le bandeau ebook sur la home si l'utilisateur est un membre payant
-    if (typeof window.syncEbookBannerVisibility === 'function') {
-      window.syncEbookBannerVisibility();
-    }
     loginBtn.style.display  = 'none';
     logoutBtn.style.display = 'inline-flex';
     // Masquer le CTA "Commencer gratuitement" dès qu'on est connecté
@@ -10074,10 +9981,6 @@ function updateNavMember(member) {
     memberTier    = null;
     document.body.classList.remove('is-member');
     document.body.classList.remove('is-logged');
-    // Fait réapparaître le bandeau ebook dès que l'utilisateur se déconnecte
-    if (typeof window.syncEbookBannerVisibility === 'function') {
-      window.syncEbookBannerVisibility();
-    }
     loginBtn.style.display  = 'inline-flex';
     logoutBtn.style.display = 'none';
     nameEl.style.display    = 'none';
@@ -10478,7 +10381,7 @@ document.getElementById('lock-modal-login-btn').addEventListener('click', functi
   goTo('connexion');
 });
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeLockModal(); closePopup(); }
+  if (e.key === 'Escape') { closeLockModal(); }
 });
 
 // ============================================================
@@ -11960,130 +11863,21 @@ document.addEventListener('DOMContentLoaded', function(){
 })();
 </script>
 
-<!-- ===== EMAILJS + POPUP ===== -->
+<!-- ===== EMAILJS (utilisé pour l'envoi email coaching) ===== -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ================================================================
-// CONFIGURATION EMAILJS — À REMPLIR
+// CONFIGURATION EMAILJS (utilisée pour les demandes de créneau coaching)
 // 1. https://www.emailjs.com → Service ID, Template ID, Public Key
-// 2. Variables template : {{from_name}}, {{to_email}}, {{ebook_link}}
+// 2. Variables template coaching : {{to_name}}, {{to_email}}, {{date_demande}}, {{horaire_souhaite}}
 // ================================================================
 var EMAILJS_PUBLIC_KEY  = 'mDZkvx92qmPiWvuI6';
 var EMAILJS_SERVICE_ID  = 'service_nc3ud1i';
 var EMAILJS_TEMPLATE_ID = 'template_a1suwqk';
-var EBOOK_DOWNLOAD_LINK = 'https://lecheminduspp.fr/ebook-gratuit.pdf';
 // ================================================================
 
 (function() {
   try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch(e) {}
-
-  // Deux clés persistantes (localStorage — survit aux sessions) :
-  // - spp_ebook_received : true = l'utilisateur a déjà reçu l'ebook → plus jamais de popup
-  // - spp_popup_dismissed_date : date ISO du dernier dismiss → pas de popup sur la même journée
-  var KEY_RECEIVED = 'spp_ebook_received';
-  var KEY_DISMISSED = 'spp_popup_dismissed_date';
-
-  // Un utilisateur ne doit JAMAIS voir le popup si :
-  //  1. Il a déjà reçu l'ebook (formulaire soumis avec succès)
-  //  2. Il est membre payant (a acheté un produit du site)
-  function shouldSkipPopupForever() {
-    if (localStorage.getItem(KEY_RECEIVED) === '1') return true;
-    if (typeof isPaidMember !== 'undefined' && isPaidMember === true) return true;
-    return false;
-  }
-
-  // Masque aussi le bandeau ebook sur la page d'accueil si l'utilisateur n'a plus à le voir
-  function syncEbookBannerVisibility() {
-    var banner = document.getElementById('ebook-banner-home');
-    if (!banner) return;
-    // Règle : le bandeau reste visible tant que la personne n'est PAS connectée.
-    // Dès qu'elle se connecte (payant ou pas), le bandeau disparaît.
-    var isLoggedIn = (typeof currentMember !== 'undefined' && currentMember !== null)
-                     || document.body.classList.contains('is-logged');
-    banner.style.display = isLoggedIn ? 'none' : '';
-  }
-
-  window.openPopup = function() {
-    // Le bandeau reste cliquable même après réception — permet de renvoyer
-    // l'email si la personne ne l'a pas trouvé ou veut une autre adresse.
-    // Seul l'affichage automatique est bloqué après réception (voir setTimeout plus bas).
-    var formArea = document.getElementById('popup-form-area');
-    var success  = document.getElementById('popup-success');
-    if (formArea) formArea.style.display = '';
-    if (success)  success.classList.remove('show');
-    var btn = document.getElementById('popup-submit-btn');
-    var txt = document.getElementById('popup-btn-text');
-    if (btn) btn.disabled = false;
-    if (txt) txt.textContent = 'Recevoir le guide gratuit →';
-    document.getElementById('popup-overlay').classList.add('visible');
-  };
-
-  window.closePopup = function() {
-    document.getElementById('popup-overlay').classList.remove('visible');
-    // On enregistre juste la date du dismiss (pas pour toujours — il peut rouvrir le popup
-    // depuis le bandeau plus tard s'il change d'avis)
-    localStorage.setItem(KEY_DISMISSED, new Date().toISOString().slice(0, 10));
-  };
-
-  // Boutons popup liés proprement — pas d'attributs inline
-  document.getElementById('popup-close').addEventListener('click', closePopup);
-  document.getElementById('popup-skip-btn').addEventListener('click', closePopup);
-  document.getElementById('popup-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closePopup();
-  });
-
-  document.getElementById('popup-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var name  = document.getElementById('popup-name').value.trim();
-    var email = document.getElementById('popup-email').value.trim();
-    if (!name || !email) return;
-
-    var btn = document.getElementById('popup-submit-btn');
-    var txt = document.getElementById('popup-btn-text');
-    btn.disabled = true;
-    txt.textContent = 'Envoi en cours…';
-
-    function onSuccess() {
-      document.getElementById('popup-form-area').style.display = 'none';
-      document.getElementById('popup-success').classList.add('show');
-      // Marqueur persistant : cet utilisateur ne reverra plus jamais le popup ebook
-      localStorage.setItem(KEY_RECEIVED, '1');
-      syncEbookBannerVisibility();
-    }
-    function onError() {
-      btn.disabled = false;
-      txt.textContent = 'Recevoir le guide gratuit →';
-      alert('Une erreur est survenue. Veuillez réessayer.');
-    }
-
-    if (EMAILJS_PUBLIC_KEY === 'VOTRE_PUBLIC_KEY') {
-      // Mode démo si EmailJS non configuré
-      setTimeout(onSuccess, 1200);
-      return;
-    }
-
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name:  name,
-      to_email:   email,
-      ebook_link: EBOOK_DOWNLOAD_LINK,
-      reply_to:   email
-    }).then(onSuccess).catch(onError);
-  });
-
-  // Auto-ouverture : on attend 3s puis on vérifie si on doit afficher le popup.
-  // - Jamais si : ebook déjà reçu OU membre payant
-  // - Jamais non plus si l'utilisateur a déjà fermé le popup aujourd'hui
-  setTimeout(function() {
-    syncEbookBannerVisibility();
-    if (shouldSkipPopupForever()) return;
-    var todayDismissed = localStorage.getItem(KEY_DISMISSED) === new Date().toISOString().slice(0, 10);
-    if (todayDismissed) return;
-    window.openPopup();
-  }, 3000);
-
-  // Re-sync la visibilité du bandeau à chaque changement de page (au cas où isPaidMember
-  // change suite à un paiement dans la session courante)
-  window.syncEbookBannerVisibility = syncEbookBannerVisibility;
 })();
 </script>
 </body>
