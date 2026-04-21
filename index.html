@@ -4293,7 +4293,9 @@ function submitPseudo() {
         window.supabaseClient.rpc('update_birthdate', {
           p_memberstack_id: memberstackId,
           p_birthdate: birthInput.value
-        }).catch(function(e){ console.warn('[pseudo] birthdate save failed', e); });
+        }).then(function(res){
+          if (res && res.error) console.warn('[pseudo] birthdate save failed', res.error);
+        }, function(e){ console.warn('[pseudo] birthdate save exception', e); });
       }
       closePseudoModal();
       showToast('🎉 Bienvenue ' + pseudo + ' !');
@@ -4540,8 +4542,7 @@ function awardBadge(badgeId, metadata) {
       // Popup avec animation + son
       showBadgePopup(badgeId);
       return true;
-    })
-    .catch(function(e){
+    }, function(e){
       console.warn('[badges] award_badge exception', e);
       earnedBadgeIds.delete(badgeId);
       return false;
@@ -5163,7 +5164,7 @@ function setShowcaseBadge(badgeId) {
     showToast('★ Badge vitrine mis à jour');
     closeBadgeDetail();
     renderBadgesCollection();
-  }).catch(function(e){
+  }, function(e){
     console.warn('[badges] setShowcase error', e);
     showToast('⚠️ Erreur réseau');
   });
@@ -5708,7 +5709,7 @@ function saveBirthdate() {
     }
     if (currentMember._profile) currentMember._profile.birthdate = val;
     showToast(val ? '✓ Date enregistrée' : '✓ Date supprimée');
-  }).catch(function(){ showToast('⚠️ Erreur réseau'); });
+  }, function(){ showToast('⚠️ Erreur réseau'); });
 }
 
 // Changer son pseudo (ouvre la modale pseudo en mode modification)
