@@ -791,11 +791,22 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 .esp-locked-text{font-size:.92rem;color:var(--gray);line-height:1.7;margin-bottom:28px}
 
 /* ===== Carrousel de sections ===== */
-.esp-carousel{position:relative;margin:0 0 24px;overflow:hidden}
+.esp-carousel{position:relative;margin:0 0 24px;overflow:visible}
 .esp-carousel-viewport{overflow:hidden;position:relative}
 .esp-carousel-track{display:flex;transition:transform .35s cubic-bezier(.22,1,.36,1);will-change:transform}
 .esp-carousel-slide{flex:0 0 100%;min-width:100%;padding:0 2px}
 .esp-carousel-slide.is-inactive{pointer-events:none}
+
+/* ===== Flèches latérales flottantes (grandes, visibles) ===== */
+.esp-car-side{position:absolute;top:50%;transform:translateY(-50%);z-index:30;width:54px;height:54px;background:white;border:2px solid var(--red);color:var(--red);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,.14);transition:all .2s;font-family:inherit}
+.esp-car-side:hover:not(:disabled){background:var(--red);color:white;transform:translateY(-50%) scale(1.08)}
+.esp-car-side:disabled{opacity:0;pointer-events:none;transform:translateY(-50%) scale(.85)}
+.esp-car-side svg{width:26px;height:26px;display:block}
+.esp-car-side.left{left:-18px}
+.esp-car-side.right{right:-18px}
+/* Animation d'attention au chargement (pulsation 3 fois pour signaler que c'est cliquable) */
+@keyframes carArrowPulse{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.14)}50%{box-shadow:0 0 0 12px rgba(204,34,41,0.18),0 4px 14px rgba(0,0,0,.14)}}
+.esp-car-side.pulse{animation:carArrowPulse 1.4s ease-in-out 3}
 
 /* Barre de navigation sticky du carrousel */
 .esp-car-nav{position:sticky;top:60px;z-index:50;background:var(--cream);border-bottom:1px solid var(--border);margin:0 -5% 20px;padding:14px 5%;display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -874,6 +885,10 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
   .esp-car-label{padding:6px 10px;font-size:.72rem}
   .esp-car-arrow{width:32px;height:32px}
   .esp-swipe-hint{display:block}
+  .esp-car-side{width:44px;height:44px}
+  .esp-car-side svg{width:22px;height:22px}
+  .esp-car-side.left{left:-8px}
+  .esp-car-side.right{right:-8px}
 }
 
 /* ===== VIEWER PDF PROTÉGÉ ===== */
@@ -2312,6 +2327,13 @@ if(window.location.search.indexOf('success') !== -1) {
 
       <!-- CARROUSEL : une seule section visible à la fois, swipeable -->
       <div class="esp-carousel" id="esp-carousel">
+        <!-- Flèches latérales flottantes (très visibles) -->
+        <button class="esp-car-side left pulse" id="esp-car-side-prev" onclick="espCarPrev()" aria-label="Précédent" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="esp-car-side right pulse" id="esp-car-side-next" onclick="espCarNext()" aria-label="Suivant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
         <div class="esp-carousel-viewport" id="esp-car-viewport">
           <div class="esp-carousel-track" id="esp-car-track">
 
@@ -2356,17 +2378,7 @@ if(window.location.search.indexOf('success') !== -1) {
       <div class="esp-carousel-slide" data-slide-index="1">
       <div class="esp-tab-section" id="esp-sec-radar">
 
-      <!-- PRIORITÉ DE RÉVISION (en tête du slide radar) -->
-      <div class="esp-priority" id="esp-priority" style="display:none;margin-bottom:28px">
-        <div style="flex:1;min-width:240px">
-          <div class="esp-priority-lbl">⚠️ À travailler en priorité</div>
-          <div class="esp-priority-cat" id="esp-priority-cat">—</div>
-          <div class="esp-priority-desc" id="esp-priority-desc">—</div>
-        </div>
-        <button class="esp-priority-btn" onclick="reviseWeakestCategory()">Réviser ce thème →</button>
-      </div>
-
-      <div id="esp-radar-wrap" style="margin-bottom:36px">
+      <div id="esp-radar-wrap" style="margin-bottom:28px">
         <div style="margin-bottom:8px">
           <div class="esp-eyebrow">🕸️ Ta semaine</div>
           <div class="esp-section-title">Vue radar hebdomadaire</div>
@@ -2392,6 +2404,16 @@ if(window.location.search.indexOf('success') !== -1) {
           <div style="font-size:.88rem;color:var(--gray);line-height:1.65;max-width:480px;margin:0 auto 18px">Lance quelques sessions QCM dans la semaine pour voir apparaître ton radar de progression. Il se mettra à jour automatiquement.</div>
           <button class="btn btn-red" onclick="goTo('qcm')">Démarrer un QCM →</button>
         </div>
+      </div>
+
+      <!-- PRIORITÉ DE RÉVISION (sous le radar dans le slide Radar) -->
+      <div class="esp-priority" id="esp-priority" style="display:none">
+        <div style="flex:1;min-width:240px">
+          <div class="esp-priority-lbl">⚠️ À travailler en priorité</div>
+          <div class="esp-priority-cat" id="esp-priority-cat">—</div>
+          <div class="esp-priority-desc" id="esp-priority-desc">—</div>
+        </div>
+        <button class="esp-priority-btn" onclick="reviseWeakestCategory()">Réviser ce thème →</button>
       </div>
       </div><!-- /esp-sec-radar -->
       </div><!-- /slide 1 -->
@@ -4491,11 +4513,16 @@ function espCarGoTo(index) {
   // MAJ compteur
   var counter = document.getElementById('esp-car-current');
   if (counter) counter.textContent = (index + 1);
-  // MAJ flèches (enabled/disabled)
+  // MAJ flèches (enabled/disabled) — barre du haut
   var prev = document.getElementById('esp-car-prev');
   var next = document.getElementById('esp-car-next');
   if (prev) prev.disabled = (index === 0);
   if (next) next.disabled = (index === ESP_CAR_TOTAL - 1);
+  // MAJ flèches latérales flottantes (idem)
+  var sidePrev = document.getElementById('esp-car-side-prev');
+  var sideNext = document.getElementById('esp-car-side-next');
+  if (sidePrev) { sidePrev.disabled = (index === 0); sidePrev.classList.remove('pulse'); }
+  if (sideNext) { sideNext.disabled = (index === ESP_CAR_TOTAL - 1); sideNext.classList.remove('pulse'); }
 
   // Désactive les slides inactifs (accessibilité : pas de tab sur contenus cachés)
   document.querySelectorAll('.esp-carousel-slide').forEach(function(s, i){
@@ -4873,6 +4900,10 @@ function espToggleEvolutionSerie(key) {
 // ================================================================
 var _espShareStats = null; // stocke les stats au moment de l'ouverture du modal
 
+// Image du logo préchargée (réutilisée à chaque génération)
+var _espShareLogoImg = null;
+var _espShareLogoLoaded = false;
+
 function openShareModal() {
   // Récupère les stats actuellement affichées
   espFetchStats(function(data){
@@ -4904,8 +4935,32 @@ function openShareModal() {
       docs: nbDocs,
       radarScores: radarScores
     };
-    renderShareCanvas();
+
+    // Ouvre le modal d'abord (UX immédiat même pendant le chargement du logo)
     document.getElementById('esp-share-overlay').classList.add('visible');
+
+    // Charge le logo si pas encore fait, puis dessine
+    if (_espShareLogoLoaded) {
+      renderShareCanvas();
+    } else if (_espShareLogoImg) {
+      // Chargement déjà en cours — on retentera après load
+      renderShareCanvas(); // dessine sans logo en attendant
+    } else {
+      _espShareLogoImg = new Image();
+      _espShareLogoImg.crossOrigin = 'anonymous'; // pour éviter les erreurs canvas tainted
+      _espShareLogoImg.onload = function(){
+        _espShareLogoLoaded = true;
+        renderShareCanvas(); // redessine avec le logo
+      };
+      _espShareLogoImg.onerror = function(){
+        console.warn('Logo non chargé — on continue sans.');
+        _espShareLogoImg = null;
+        renderShareCanvas(); // dessine sans logo
+      };
+      _espShareLogoImg.src = 'logo.png';
+      // Dessine immédiatement sans logo pour éviter un délai visible
+      renderShareCanvas();
+    }
   });
 }
 
@@ -4952,9 +5007,24 @@ function renderShareCanvas() {
   ctx.fillStyle = '#1C1C1C';
   ctx.fillRect(14, 0, W - 28, 24);
 
-  // === ② LOGO SPP STYLISÉ (casque + flamme, en haut centré) ===
-  // On dessine un logo vectoriel minimaliste : bouclier rouge avec une flamme centrale
-  drawShieldLogo(ctx, W/2, 160, 100); // cx, cy, taille
+  // === ② LOGO DU SITE (logo.png) en haut centré ===
+  // Si le logo est chargé, on l'utilise. Sinon, fallback sur le bouclier vectoriel.
+  if (_espShareLogoImg && _espShareLogoLoaded) {
+    var logoMaxW = 260;   // largeur max du logo sur l'image
+    var logoMaxH = 260;   // hauteur max
+    var iw = _espShareLogoImg.naturalWidth || _espShareLogoImg.width;
+    var ih = _espShareLogoImg.naturalHeight || _espShareLogoImg.height;
+    if (iw > 0 && ih > 0) {
+      var ratio = Math.min(logoMaxW / iw, logoMaxH / ih);
+      var drawW = iw * ratio;
+      var drawH = ih * ratio;
+      ctx.drawImage(_espShareLogoImg, W/2 - drawW/2, 60, drawW, drawH);
+    } else {
+      drawShieldLogo(ctx, W/2, 160, 100);
+    }
+  } else {
+    drawShieldLogo(ctx, W/2, 160, 100);
+  }
 
   // === ③ KICKER + PHRASE D'ACCROCHE ÉMOTIONNELLE ===
   ctx.fillStyle = '#CC2229';
