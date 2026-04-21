@@ -729,6 +729,7 @@ footer{background:var(--dark);color:var(--cream);padding:60px 5% 32px}
 /* Stats overview */
 .esp-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:36px}
 .esp-stat{background:white;border:1px solid var(--border);padding:22px 20px;position:relative;overflow:hidden}
+.esp-stat-ico{position:absolute;top:14px;right:16px;font-size:1.4rem;line-height:1;opacity:.55}
 .esp-stat::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--red)}
 .esp-stat-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--charcoal);line-height:1;margin-bottom:6px}
 .esp-stat-lbl{font-size:.72rem;color:var(--gray);letter-spacing:1.2px;text-transform:uppercase;font-weight:600}
@@ -2420,26 +2421,31 @@ if(window.location.search.indexOf('success') !== -1) {
       <div class="esp-tab-section" id="esp-sec-overview">
       <div class="esp-stats">
         <div class="esp-stat">
+          <span class="esp-stat-ico" aria-hidden="true">🎯</span>
           <div class="esp-stat-num" id="esp-st-sessions">0</div>
           <div class="esp-stat-lbl">Sessions QCM</div>
           <div class="esp-stat-sub" id="esp-st-sessions-sub">—</div>
         </div>
         <div class="esp-stat">
+          <span class="esp-stat-ico" aria-hidden="true">📝</span>
           <div class="esp-stat-num" id="esp-st-questions">0</div>
           <div class="esp-stat-lbl">Questions traitées</div>
           <div class="esp-stat-sub" id="esp-st-questions-sub">sur 700+ disponibles</div>
         </div>
         <div class="esp-stat">
+          <span class="esp-stat-ico" aria-hidden="true">📊</span>
           <div class="esp-stat-num" id="esp-st-score">—</div>
           <div class="esp-stat-lbl">Score global</div>
           <div class="esp-stat-sub" id="esp-st-score-sub">toutes catégories confondues</div>
         </div>
         <div class="esp-stat">
+          <span class="esp-stat-ico" aria-hidden="true">📚</span>
           <div class="esp-stat-num" id="esp-st-docs">0</div>
           <div class="esp-stat-lbl">Documents lus</div>
           <div class="esp-stat-sub" id="esp-st-docs-sub">—</div>
         </div>
         <div class="esp-stat">
+          <span class="esp-stat-ico" aria-hidden="true">💪</span>
           <div class="esp-stat-num" id="esp-st-prepa">0</div>
           <div class="esp-stat-lbl">Séances prépa physique</div>
           <div class="esp-stat-sub" id="esp-st-prepa-sub">—</div>
