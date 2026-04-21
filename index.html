@@ -3428,8 +3428,8 @@ if(window.location.search.indexOf('success') !== -1) {
             <div class="prof-stat-lbl">badges obtenus</div>
           </div>
           <div class="prof-stat">
-            <div class="prof-stat-num" id="prof-stat-total">40</div>
-            <div class="prof-stat-lbl">badges au total</div>
+            <div class="prof-stat-num" id="prof-stat-streak">—</div>
+            <div class="prof-stat-lbl" id="prof-stat-streak-lbl">jours d'activité</div>
           </div>
           <div class="prof-stat">
             <div class="prof-stat-num" id="prof-stat-since">—</div>
@@ -5022,7 +5022,31 @@ function updateStreak() {
   if (data.had_break && data.current >= 7 && !earnedBadgeIds.has('reg_inebranlable')) {
     awardBadge('reg_inebranlable', { streak: data.current });
   }
+
+  // Sync côté Supabase pour que la streak soit lisible sur le profil public
+  // (non bloquant, en arrière-plan, ne doit jamais planter le flow local)
+  syncStreakToSupabase();
+
   return data;
+}
+
+// Appelle la RPC update_streak() de Supabase pour persister current_streak et longest_streak
+// dans la table profiles. Lecture et écriture : seule la ligne de l'utilisateur connecté
+// est affectée (SECURITY DEFINER + auth.uid() côté DB).
+function syncStreakToSupabase() {
+  if (!window.supabaseClient) return;
+  try {
+    window.supabaseClient.rpc('update_streak').then(
+      function(res) {
+        if (res && res.error) {
+          console.warn('[streak] update_streak RPC error:', res.error.message);
+        }
+      },
+      function(err) { console.warn('[streak] update_streak RPC failed:', err); }
+    );
+  } catch(e) {
+    console.warn('[streak] syncStreakToSupabase threw:', e);
+  }
 }
 
 // ============================================================
@@ -5650,7 +5674,7 @@ function renderProfile() {
   // 1. Charger le profil par pseudo_lower
   window.supabaseClient
     .from('profiles')
-    .select('memberstack_id, pseudo, showcase_badge_id, created_at, is_banned')
+    .select('memberstack_id, pseudo, showcase_badge_id, created_at, is_banned, current_streak, longest_streak, last_activity_date')
     .eq('pseudo_lower', pseudo.toLowerCase())
     .maybeSingle()
     .then(function(res) {
@@ -5705,7 +5729,36 @@ function renderProfileContent(profile, earnedBadges) {
 
   // Stats
   document.getElementById('prof-stat-count').textContent = ownedSet.size;
-  document.getElementById('prof-stat-total').textContent = Object.keys(BADGES_DEFINITIONS).length;
+
+  // Streak : on la lit depuis le profil Supabase. Si last_activity_date < hier,
+  // on considère que la streak est cassée et on affiche 0.
+  // (La streak sera officiellement remise à 1 dès que la personne redevient active.)
+  var streakVal = 0;
+  try {
+    var lastActivity = profile.last_activity_date; // format 'YYYY-MM-DD'
+    var rawStreak = profile.current_streak || 0;
+    if (lastActivity) {
+      var today = new Date();
+      var y = today.getFullYear(), m = today.getMonth(), d = today.getDate();
+      var todayDate = new Date(y, m, d);
+      var yesterdayDate = new Date(y, m, d - 1);
+      var lastParts = lastActivity.split('-');
+      var lastDate = new Date(parseInt(lastParts[0],10), parseInt(lastParts[1],10)-1, parseInt(lastParts[2],10));
+      // Streak valide uniquement si activité = aujourd'hui ou hier
+      if (lastDate.getTime() === todayDate.getTime() || lastDate.getTime() === yesterdayDate.getTime()) {
+        streakVal = rawStreak;
+      }
+    }
+  } catch(e) { streakVal = 0; }
+
+  var streakEl = document.getElementById('prof-stat-streak');
+  var streakLblEl = document.getElementById('prof-stat-streak-lbl');
+  if (streakEl) streakEl.textContent = streakVal > 0 ? streakVal : '—';
+  if (streakLblEl) {
+    // Singulier / pluriel
+    streakLblEl.textContent = streakVal > 1 ? 'jours d\'affilée' : 'jour d\'activité';
+  }
+
   var since = new Date(profile.created_at);
   document.getElementById('prof-stat-since').textContent = since.toLocaleDateString('fr-FR', { month:'short', year:'numeric' });
 
