@@ -10,6 +10,81 @@
 // Cette variable globale doit être définie AVANT le chargement du script Memberstack
 // pour que le client initialise la session avec cette durée.
 window.ms_session_duration_days = 365;
+
+// ===== Traductions FR des modales Memberstack =====
+// Ces libellés remplacent les textes anglais par défaut des modales pré-construites
+// Memberstack (Create an account, Sign up, Already have an account, etc.)
+window.memberstackTranslations = {
+  // Composants email / mot de passe
+  email_address: "Adresse email",
+  email_error_message: "Adresse email invalide, réessaie.",
+  password: "Mot de passe",
+  password_error_message: "Le mot de passe doit contenir au moins 8 caractères.",
+  forgot_password: "Mot de passe oublié ?",
+
+  // Modale de connexion
+  login_to_your_account: "Connexion à ton compte",
+  login_email_placeholder: "ton@email.com",
+  login_password_placeholder: "Ton mot de passe",
+  login: "Se connecter",
+  login_with_email: "Continuer avec email",
+  login_with_password: "Continuer avec mot de passe",
+  dont_have_an_account: "Pas encore de compte ?",
+  continue_with: "Continuer avec",
+  or: "ou",
+
+  // Modale d'inscription
+  create_an_account: "Créer un compte",
+  already_have_an_account: "Déjà un compte ?",
+  continue_with_email: "Continuer avec email",
+  signup_with_password: "Continuer avec mot de passe",
+  signup_button: "S'inscrire",
+  signup_email_placeholder: "ton@email.com",
+  signup_password_placeholder: "Choisis un mot de passe",
+
+  // Modale de réinitialisation du mot de passe
+  reset_your_password: "Réinitialiser ton mot de passe",
+  reset_instructions: "Nous allons t'envoyer un code à 6 chiffres pour réinitialiser ton mot de passe.",
+  reset_email_placeholder: "ton@email.com",
+  reset: "Envoyer le code",
+  reset_already_have_code: "J'ai déjà un code",
+
+  // Modale de saisie du token
+  reset_enter_code: "Saisis ton code à 6 chiffres",
+  reset_password_placeholder: "Nouveau mot de passe",
+  reset_confirm_reset: "Valider",
+
+  // Modale de connexion sans mot de passe
+  passwordless_token_heading: "Bienvenue !",
+  login_passwordless_instructions: "Vérifie ton email pour trouver le code de vérification.",
+  login_verification_code: "Code de vérification",
+  login_verify_email: "Vérifier",
+
+  // Modale Stripe Test (uniquement en mode test)
+  test_card_title: "Carte de test",
+  test_card_subtitle: "En mode test uniquement — les membres ne verront pas cette fenêtre.",
+  test_card_copy_button: "Copier le numéro",
+  test_card_copied_button: "Copié !",
+  test_successful_payments: "Paiements réussis",
+  test_declined_payments: "Paiements refusés",
+  test_card_visa: "Visa (fonctionne)",
+  test_card_mastercard: "MasterCard (fonctionne)",
+  test_card_amex: "American Express (fonctionne)",
+  test_card_generic_decline: "Carte refusée",
+  test_card_insufficient_funds: "Fonds insuffisants",
+  test_card_instructions: "Colle le numéro sur l'écran suivant. Utilise n'importe quelle date d'expiration et CVC à 3 chiffres.",
+  test_card_continue: "Continuer vers le paiement →",
+  test_card_alternatives: "voir plus de cartes de test",
+
+  // Messages de succès
+  success_title: "C'est fait !",
+  password_reset_success: "Ton mot de passe a été réinitialisé. Tu peux maintenant te connecter avec tes nouveaux identifiants.",
+
+  // Boutons communs
+  save_button: "Enregistrer",
+  cancel_button: "Annuler",
+  close_button: "Fermer"
+};
 </script>
 <script src="https://static.memberstack.com/scripts/v2/memberstack.js" data-memberstack-app="app_cmnwwalte000o0sv26iasaw3s" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
