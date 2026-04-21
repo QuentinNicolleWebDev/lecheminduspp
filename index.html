@@ -5156,129 +5156,154 @@ function renderShareCanvas() {
 
   var FONT = '"DM Sans", Arial, sans-serif';
 
-  // Palette "immersive métier"
-  var COL_BG = '#1A1410';       // fond sombre, terre cuite profonde
-  var COL_RED = '#CC2229';      // rouge SPP (accent identité)
-  var COL_AMBER = '#E8A82A';    // doré/flamme (accent chaleur)
-  var COL_TEXT = '#FFFFFF';     // titre principal
-  var COL_MUTED = '#999999';    // labels secondaires
+  // Palette style "split magazine"
+  var COL_BG = '#F5F0E8';
+  var COL_TEXT = '#1C1C1C';
+  var COL_MUTED = '#6B6560';
+  var COL_RED = '#CC2229';
+  var COL_BORDER = '#d6cdb5';
 
-  // === FOND sombre + halos colorés pour donner de la profondeur ===
+  // === FOND crème ===
   ctx.fillStyle = COL_BG;
   ctx.fillRect(0, 0, W, H);
 
-  // Halos lumineux (simulent des lueurs de caserne la nuit)
-  var grd1 = ctx.createRadialGradient(-100, -100, 0, -100, -100, 600);
-  grd1.addColorStop(0, 'rgba(204, 34, 41, 0.28)');
-  grd1.addColorStop(1, 'rgba(204, 34, 41, 0)');
-  ctx.fillStyle = grd1;
-  ctx.fillRect(0, 0, W, H);
+  // === BANDE ROUGE VERTICALE À GAUCHE ===
+  var redBandW = 160;
+  ctx.fillStyle = COL_RED;
+  ctx.fillRect(0, 0, redBandW, H);
 
-  var grd2 = ctx.createRadialGradient(W + 100, H + 100, 0, W + 100, H + 100, 560);
-  grd2.addColorStop(0, 'rgba(232, 168, 42, 0.18)');
-  grd2.addColorStop(1, 'rgba(232, 168, 42, 0)');
-  ctx.fillStyle = grd2;
-  ctx.fillRect(0, 0, W, H);
+  // Texte rotaté sur la bande rouge (nom du site + concours)
+  ctx.save();
+  ctx.translate(80, H / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '700 22px ' + FONT;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  // Letter-spacing simulé en espaçant les caractères
+  var bandText = 'LE CHEMIN DU SPP  ·  CONCOURS CAPORAL SPP';
+  // DM Sans n'a pas de letter-spacing natif sur canvas, on simule
+  var spacedText = bandText.split('').join('\u200A\u200A'); // hair spaces
+  ctx.fillText(bandText, 0, 0);
+  ctx.restore();
 
-  // Cadre rouge en pointillés (style cinématique)
-  ctx.strokeStyle = COL_RED;
-  ctx.lineWidth = 4;
-  ctx.setLineDash([16, 8]);
-  ctx.strokeRect(12, 12, W - 24, H - 24);
-  ctx.setLineDash([]);
+  // Zone "contenu" : commence après la bande rouge avec une petite marge
+  var contentX = redBandW + 60;   // début de la zone de contenu : x=220
+  var contentR = W - 80;           // fin de la zone : x=1000
+  var contentW = contentR - contentX;
 
-  // === 1. LOGO avec halo doré ===
-  var logoAreaTop = 70;
-  var logoMaxH = 260;
-  var logoMaxW = 420;
+  // === 1. LOGO (petit, en haut à gauche de la zone de contenu) ===
+  var logoSize = 140;  // diamètre max du logo
+  var logoY = 80;
   if (_espShareLogoImg && _espShareLogoLoaded) {
     var iw = _espShareLogoImg.naturalWidth || _espShareLogoImg.width;
     var ih = _espShareLogoImg.naturalHeight || _espShareLogoImg.height;
     if (iw > 0 && ih > 0) {
-      var ratio = Math.min(logoMaxW / iw, logoMaxH / ih);
+      var ratio = Math.min(logoSize / iw, logoSize / ih);
       var drawW = iw * ratio;
       var drawH = ih * ratio;
-      var logoX = W/2 - drawW/2;
-      var logoY = logoAreaTop + (logoMaxH - drawH) / 2;
-
-      // Halo doré derrière le logo
-      var halo = ctx.createRadialGradient(
-        W/2, logoY + drawH/2, 0,
-        W/2, logoY + drawH/2, drawW * 0.75
-      );
-      halo.addColorStop(0, 'rgba(232, 168, 42, 0.25)');
-      halo.addColorStop(1, 'rgba(232, 168, 42, 0)');
-      ctx.fillStyle = halo;
-      ctx.fillRect(0, logoY - 50, W, drawH + 100);
-
-      ctx.drawImage(_espShareLogoImg, logoX, logoY, drawW, drawH);
+      ctx.drawImage(_espShareLogoImg, contentX, logoY, drawW, drawH);
     }
   }
 
-  // === 2. EYEBROW + TITRE ===
-  ctx.textAlign = 'center';
+  // === 2. TITRE à droite du logo ===
+  // Eyebrow
+  ctx.fillStyle = COL_MUTED;
+  ctx.font = '400 italic 28px ' + FONT;
+  ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
+  ctx.fillText('Je me prépare pour devenir', contentX + logoSize + 30, logoY + 40);
 
-  // Eyebrow en doré : "MON OBJECTIF"
-  ctx.fillStyle = COL_AMBER;
-  ctx.font = '700 italic 30px ' + FONT;
-  ctx.fillText('Mon objectif', W/2, 405);
-
-  // Titre principal : "Sapeur-Pompier" + "Professionnel"
+  // Titre grand — "Sapeur-Pompier"
   ctx.fillStyle = COL_TEXT;
-  ctx.font = '900 60px ' + FONT;
-  ctx.fillText('Sapeur-Pompier', W/2, 478);
-  ctx.fillText('Professionnel', W/2, 548);
+  ctx.font = '900 50px ' + FONT;
+  ctx.fillText('Sapeur-Pompier', contentX + logoSize + 30, logoY + 95);
 
-  // Séparateur doré
-  ctx.fillStyle = COL_AMBER;
-  ctx.fillRect(W/2 - 60, 578, 120, 4);
+  // "Professionnel." en rouge
+  ctx.fillStyle = COL_RED;
+  ctx.fillText('Professionnel.', contentX + logoSize + 30, logoY + 150);
 
-  // === 3. GRILLE 2×2 DES STATS ===
-  var col1X = W * 0.28;
-  var col2X = W * 0.72;
-  var row1Y = 680;
-  var row2Y = 820;
+  // === 3. LIGNE SÉPARATRICE ===
+  ctx.strokeStyle = COL_TEXT;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(contentX, 330);
+  ctx.lineTo(contentR, 330);
+  ctx.stroke();
 
-  function drawStat(x, y, bigValue, label) {
-    // Chiffre en doré
-    ctx.fillStyle = COL_AMBER;
+  // === 4. STATS SUR UNE SEULE LIGNE ===
+  var statsY = 430;
+  var statLabelY = 475;
+
+  // 4 stats équidistantes entre contentX et contentR
+  var statPositions = [
+    contentX + contentW * 0.12,
+    contentX + contentW * 0.37,
+    contentX + contentW * 0.62,
+    contentX + contentW * 0.87
+  ];
+
+  function drawStat(x, y, bigValue, label, isScore) {
+    ctx.fillStyle = isScore ? COL_RED : COL_TEXT;
     ctx.font = '900 82px ' + FONT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText(bigValue, x, y);
-    // Label gris
+
     ctx.fillStyle = COL_MUTED;
-    ctx.font = '600 20px ' + FONT;
-    ctx.fillText(label, x, y + 40);
+    ctx.font = '600 18px ' + FONT;
+    ctx.fillText(label, x, y + 45);
   }
 
-  drawStat(col1X, row1Y, String(s.streak), s.streak > 1 ? 'JOURS ACTIFS' : 'JOUR ACTIF');
-  drawStat(col2X, row1Y, String(s.sessions), s.sessions > 1 ? 'SESSIONS QCM' : 'SESSION QCM');
-  drawStat(col1X, row2Y, String(s.questions), 'QUESTIONS');
+  drawStat(statPositions[0], statsY, String(s.streak), s.streak > 1 ? 'JOURS ACTIFS' : 'JOUR ACTIF', false);
+  drawStat(statPositions[1], statsY, String(s.sessions), s.sessions > 1 ? 'SESSIONS' : 'SESSION', false);
+  drawStat(statPositions[2], statsY, String(s.questions), 'QUESTIONS', false);
   var scoreText = s.score > 0 ? (s.score + '%') : '—';
-  drawStat(col2X, row2Y, scoreText, 'SCORE GLOBAL');
+  drawStat(statPositions[3], statsY, scoreText, 'SCORE', true);
 
-  // === 4. RADAR avec accents dorés ===
-  var radarR = 170;
-  var radarCx = W / 2;
-  var radarCy = 1080;
+  // === 5. LIGNE SÉPARATRICE INFÉRIEURE ===
+  ctx.strokeStyle = COL_TEXT;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(contentX, 550);
+  ctx.lineTo(contentR, 550);
+  ctx.stroke();
+
+  // === 6. LIBELLÉ "MES COMPÉTENCES" ===
+  ctx.fillStyle = COL_RED;
+  ctx.font = '700 20px ' + FONT;
+  ctx.textAlign = 'left';
+  ctx.fillText('MES COMPÉTENCES PAR DOMAINE', contentX, 605);
+
+  // === 7. RADAR — centré dans la zone de contenu ===
+  var radarR = 200;
+  var radarCx = contentX + contentW / 2;
+  var radarCy = 900;
   _espDrawShareRadar(ctx, radarCx, radarCy, radarR, s.radarScores);
 
-  // === 5. LIEN DU SITE en bas — en rouge SPP ===
-  var siteY = 1305;
+  // === 8. LIGNE SÉPARATRICE BAS ===
+  ctx.strokeStyle = COL_RED;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(contentX, 1230);
+  ctx.lineTo(contentR, 1230);
+  ctx.stroke();
+
+  // === 9. LIEN DU SITE + CTA ===
   ctx.fillStyle = COL_RED;
-  ctx.font = '900 54px ' + FONT;
-  ctx.textAlign = 'center';
+  ctx.font = '900 46px ' + FONT;
+  ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
-  ctx.fillText('lecheminduspp.fr', W/2, siteY);
-  // Soulignement doré
-  var textW = ctx.measureText('lecheminduspp.fr').width;
-  ctx.fillStyle = COL_AMBER;
-  ctx.fillRect(W/2 - textW/2, siteY + 13, textW, 3);
+  ctx.fillText('lecheminduspp.fr', contentX, 1295);
+
+  // Petit CTA à droite
+  ctx.fillStyle = COL_MUTED;
+  ctx.font = '700 18px ' + FONT;
+  ctx.textAlign = 'right';
+  ctx.fillText('→ M\'Y RENDRE', contentR, 1295);
 }
 
-// Radar pour style "immersif" : grille grise foncée, polygone doré
+// Radar pour style split magazine : grille claire, polygone rouge transparent
 function _espDrawShareRadar(ctx, cx, cy, R, scores) {
   var FONT = '"DM Sans", Arial, sans-serif';
   var axes = ['statut', 'sis', 'doctrines', 'secourisme', 'textes'];
@@ -5288,13 +5313,8 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
   };
   var n = axes.length;
 
-  var COL_GRID = '#4A3E36';       // gris foncé chaud pour la grille
-  var COL_POLY_FILL = 'rgba(232, 168, 42, 0.25)';  // doré transparent
-  var COL_POLY_STROKE = '#E8A82A';  // doré plein
-  var COL_LABEL = '#E8E3D8';      // crème clair pour les labels
-
-  // Grille : 4 cercles concentriques en gris foncé
-  ctx.strokeStyle = COL_GRID;
+  // Grille : 4 cercles concentriques
+  ctx.strokeStyle = '#d6cdb5';
   ctx.lineWidth = 1.5;
   [0.25, 0.5, 0.75, 1].forEach(function(frac){
     ctx.beginPath();
@@ -5314,9 +5334,9 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
   // Polygone des scores si dispo
   var hasScores = scores && typeof scores === 'object' && axes.some(function(a){ return scores[a] != null; });
   if (hasScores) {
-    ctx.fillStyle = COL_POLY_FILL;
-    ctx.strokeStyle = COL_POLY_STROKE;
-    ctx.lineWidth = 3.5;
+    ctx.fillStyle = 'rgba(204, 34, 41, 0.25)';
+    ctx.strokeStyle = '#CC2229';
+    ctx.lineWidth = 4;
     ctx.lineJoin = 'round';
     ctx.beginPath();
     axes.forEach(function(a, i){
@@ -5331,30 +5351,30 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
     ctx.fill();
     ctx.stroke();
 
-    // Points dorés aux sommets (avec bordure sombre pour contraste)
+    // Points rouges aux sommets
     axes.forEach(function(a, i){
       if (scores[a] == null) return;
       var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
       var r = (scores[a] / 100) * R;
       var x = cx + r * Math.cos(angle);
       var y = cy + r * Math.sin(angle);
-      ctx.fillStyle = COL_POLY_STROKE;
+      ctx.fillStyle = '#CC2229';
       ctx.beginPath();
       ctx.arc(x, y, 10, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = '#1A1410';
+      ctx.strokeStyle = 'white';
       ctx.lineWidth = 3;
       ctx.stroke();
     });
   }
 
-  // Labels autour du radar (crème clair sur fond sombre)
-  ctx.fillStyle = COL_LABEL;
+  // Labels autour du radar
+  ctx.fillStyle = '#1C1C1C';
   ctx.font = '600 26px ' + FONT;
   ctx.textBaseline = 'middle';
   axes.forEach(function(a, i){
     var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var labelR = R + 38;
+    var labelR = R + 42;
     var x = cx + labelR * Math.cos(angle);
     var y = cy + labelR * Math.sin(angle);
     if (x < cx - 10) ctx.textAlign = 'right';
