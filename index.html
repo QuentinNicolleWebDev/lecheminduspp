@@ -4283,6 +4283,8 @@ function submitPseudo() {
         closePseudoModal();
         showToast('✓ Pseudo mis à jour : ' + pseudo);
         if (typeof renderInfosTab === 'function') renderInfosTab();
+        // Met à jour le nom affiché en nav
+        if (typeof updateNavMemberName === 'function') updateNavMemberName();
         window._pseudoModalMode = null;
         // Restaurer le champ birthdate pour un éventuel nouvel utilisateur
         var birthInput = document.getElementById('pseudo-birthdate');
@@ -4291,6 +4293,10 @@ function submitPseudo() {
       }
       // Cas création : sync Memberstack + badges + toast bienvenue
       syncPseudoToMemberstack(pseudo);
+      // Attacher le pseudo au profil local immédiatement pour que l'UI se mette à jour
+      if (!currentMember._profile) currentMember._profile = {};
+      currentMember._profile.pseudo = pseudo;
+      if (typeof updateNavMemberName === 'function') updateNavMemberName();
       var birthInput = document.getElementById('pseudo-birthdate');
       if (birthInput && birthInput.value && window.supabaseClient) {
         window.supabaseClient.rpc('update_birthdate', {
@@ -4381,6 +4387,8 @@ function ensurePseudoForMember(member) {
     } else {
       // Profil existant → on stocke localement pour y accéder ailleurs
       currentMember._profile = profile;
+      // Rafraîchir l'affichage du nom en nav (pseudo + badge vitrine)
+      if (typeof updateNavMemberName === 'function') updateNavMemberName();
       // Chargement des badges + évaluation "login" (pour attribuer les badges de statut)
       if (typeof loadEarnedBadges === 'function') {
         loadEarnedBadges().then(function() {
@@ -4544,6 +4552,12 @@ function awardBadge(badgeId, metadata) {
       }
       // Popup avec animation + son
       showBadgePopup(badgeId);
+      // Si c'est le 1er badge du membre, le backend l'a auto-défini comme vitrine.
+      // On met à jour _profile.showcase_badge_id localement puis on rafraîchit la nav.
+      if (currentMember && currentMember._profile && !currentMember._profile.showcase_badge_id) {
+        currentMember._profile.showcase_badge_id = badgeId;
+        if (typeof updateNavMemberName === 'function') updateNavMemberName();
+      }
       return true;
     }, function(e){
       console.warn('[badges] award_badge exception', e);
@@ -5167,6 +5181,8 @@ function setShowcaseBadge(badgeId) {
     showToast('★ Badge vitrine mis à jour');
     closeBadgeDetail();
     renderBadgesCollection();
+    // Met à jour l'affichage du nom en nav (l'emoji change)
+    if (typeof updateNavMemberName === 'function') updateNavMemberName();
   }, function(e){
     console.warn('[badges] setShowcase error', e);
     showToast('⚠️ Erreur réseau');
@@ -9569,11 +9585,14 @@ function updateNavMember(member) {
     if (spaceBtn)    spaceBtn.style.display    = isPaidMember ? 'inline-flex' : 'none';
     if (espaceItem)  espaceItem.style.display  = isPaidMember ? 'block' : 'none';
     if (mobileEspace) mobileEspace.style.display = isPaidMember ? 'block' : 'none';
+    // Affichage du nom dans la nav : on commence par l'email (fallback),
+    // puis dès que le profil Supabase est chargé, on passe à "[badge] pseudo"
     var email = (member.auth && member.auth.email) || member.email || '';
     if (email) {
       nameEl.textContent = '👤 ' + email.split('@')[0];
       nameEl.style.display = 'inline';
     }
+    updateNavMemberName();
     checkAccessGate('qcm');
     // Migration localStorage → Supabase en arrière-plan (payants uniquement)
     if (isPaidMember) {
@@ -9634,6 +9653,31 @@ function updateNavMember(member) {
     // Rafraîchit l'UI QCM (mode démo à nouveau actif)
     if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
     if (typeof updateSummary === 'function') updateSummary();
+  }
+}
+
+// Met à jour le nom affiché dans la nav : badge vitrine + pseudo.
+// Appelé quand le profil Supabase est chargé (pseudo, showcase_badge_id).
+// Fallback : affiche l'email split si pas de profil encore en cache.
+function updateNavMemberName() {
+  var nameEl = document.getElementById('nav-member-name');
+  if (!nameEl || !currentMember) return;
+  var profile = currentMember._profile;
+  if (profile && profile.pseudo) {
+    var icon = '👤';
+    if (profile.showcase_badge_id && typeof BADGES_DEFINITIONS !== 'undefined') {
+      var def = BADGES_DEFINITIONS[profile.showcase_badge_id];
+      if (def && def.icon) icon = def.icon;
+    }
+    nameEl.textContent = icon + ' ' + profile.pseudo;
+    nameEl.style.display = 'inline';
+    return;
+  }
+  // Fallback si profil pas encore chargé : on garde l'email split
+  var email = (currentMember.auth && currentMember.auth.email) || currentMember.email || '';
+  if (email) {
+    nameEl.textContent = '👤 ' + email.split('@')[0];
+    nameEl.style.display = 'inline';
   }
 }
 
