@@ -4471,8 +4471,9 @@ function ensurePseudoForMember(member) {
   if (!memberstackId) return;
   getProfileForMember(memberstackId).then(function(profile) {
     if (!profile) {
-      // Pas de profil → modale bloquante
-      openPseudoModal();
+      // Pas de profil → on attend que la modale Memberstack disparaisse du DOM
+      // avant d'ouvrir notre modale pseudo, pour éviter tout chevauchement visuel.
+      waitForMemberstackModalClosedThen(openPseudoModal);
     } else {
       // Profil existant → on stocke localement pour y accéder ailleurs
       currentMember._profile = profile;
@@ -4486,6 +4487,47 @@ function ensurePseudoForMember(member) {
       }
     }
   });
+}
+
+// Attend que la modale Memberstack (signup/login) disparaisse du DOM,
+// puis appelle le callback. Utile pour enchaîner proprement après un signup
+// sans chevauchement visuel.
+function waitForMemberstackModalClosedThen(callback) {
+  // Fonction qui teste si la modale Memberstack est présente dans le DOM
+  function isMemberstackModalOpen() {
+    // Memberstack utilise plusieurs conteneurs selon la version :
+    // #ms-modal-root, [data-ms-modal], et des classes internes
+    return !!(
+      document.querySelector('#ms-modal-root > *') ||
+      document.querySelector('[data-ms-modal="true"]') ||
+      document.querySelector('.ms-modal-overlay') ||
+      document.querySelector('[class*="memberstack-modal"]') ||
+      document.querySelector('[id*="memberstack"][style*="display: block"]')
+    );
+  }
+
+  // Si la modale n'est déjà plus là, on appelle directement (avec un petit délai
+  // de confort pour laisser l'animation de fermeture Memberstack se finir).
+  if (!isMemberstackModalOpen()) {
+    setTimeout(callback, 200);
+    return;
+  }
+
+  // Sinon on poll toutes les 150ms jusqu'à disparition
+  var startTime = Date.now();
+  var maxWait = 8000; // 8s max de sécurité
+  var interval = setInterval(function() {
+    if (!isMemberstackModalOpen()) {
+      clearInterval(interval);
+      // Petit délai pour laisser la transition CSS de fermeture se terminer
+      setTimeout(callback, 250);
+    } else if (Date.now() - startTime > maxWait) {
+      // Sécurité : si la modale reste détectée trop longtemps, on ouvre quand même
+      clearInterval(interval);
+      console.warn('[pseudo] Memberstack modal detection timeout, opening pseudo modal anyway');
+      callback();
+    }
+  }, 150);
 }
 
 // Listeners initialisés au chargement
