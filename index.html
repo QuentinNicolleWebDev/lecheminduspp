@@ -4535,12 +4535,22 @@ function espCarGoTo(index) {
     s.setAttribute('aria-hidden', i !== index ? 'true' : 'false');
   });
 
-  // Scroll systématique vers le haut du carrousel à chaque changement de slide
-  // (pour que l'utilisateur voie bien le début du nouveau contenu)
+  // Scroll intelligent : on repositionne en haut du carrousel SEULEMENT si
+  // l'utilisateur a scrollé sous le haut de la barre nav sticky. Sinon on
+  // ne touche pas au scroll (évite de remonter inutilement l'arrivée sur la page).
   var nav = document.getElementById('esp-car-nav');
   if (nav) {
-    var navTop = nav.offsetTop - 20;
-    window.scrollTo({ top: Math.max(0, navTop), behavior: 'smooth' });
+    var navRect = nav.getBoundingClientRect();
+    // Si la barre nav est déjà bien visible en haut de l'écran, on ne bouge pas
+    // (tolérance : 10px sous le haut du viewport max pour considérer "déjà en place")
+    if (navRect.top < -10) {
+      // L'utilisateur est descendu en dessous de la nav → on remonte jusqu'à elle
+      // pour qu'il voie le début du nouveau slide. On calcule la position absolue
+      // en tenant compte du scroll actuel + la distance au top.
+      var target = window.pageYOffset + navRect.top - 10;
+      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+    }
+    // Sinon : on ne scrolle pas, l'utilisateur reste à sa position actuelle.
   }
 
   // Masque le hint swipe après la première interaction
