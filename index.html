@@ -627,6 +627,9 @@ body.is-member .biblio-overlay::before{content:'Ouvrir le document';font-size:.8
 .prepa-form-section{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border-light)}
 .prepa-form-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .prepa-form-section-title{font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+/* Encart pédagogique expliquant le 1RM au début de la section Musculation */
+.prepa-1rm-info{background:var(--cream2);border-left:3px solid var(--red);padding:12px 16px;margin-bottom:18px;font-size:.82rem;color:var(--charcoal);line-height:1.55}
+.prepa-1rm-info strong{color:var(--red-dark);font-weight:700}
 .prepa-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .prepa-field label{display:block;font-size:.78rem;color:var(--charcoal);font-weight:600;margin-bottom:5px}
 .prepa-field input{width:100%;padding:10px 12px;border:1px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--charcoal);box-sizing:border-box}
@@ -2463,6 +2466,9 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 
       <div class="prepa-form-section">
         <div class="prepa-form-section-title">💪 Musculation — Mouvements de référence (1 RM en kg)</div>
+        <div class="prepa-1rm-info">
+          <strong>C'est quoi un 1RM ?</strong> C'est ta <strong>charge maximum</strong> que tu peux soulever <strong>sur une seule répétition propre</strong>, sans triche technique. Si tu ne connais pas tes 1RM précis, utilise une estimation en te basant sur une charge que tu peux faire en 3 à 5 répétitions (ta 1RM se situe ~10 à 15 % au-dessus).
+        </div>
         <div class="prepa-form-grid">
           <div class="prepa-field">
             <label for="prof-front-squat">Front squat</label>
