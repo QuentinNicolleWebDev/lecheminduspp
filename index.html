@@ -6031,29 +6031,58 @@ function toggleMobileNav() { document.getElementById('mobileNav').classList.togg
 function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
 
 // ============================================================
-// RETOUR STRIPE — détection ?success=1
+// RETOUR STRIPE — détection ?success
 // ============================================================
+// Quand Stripe Checkout redirige vers successUrl, l'URL contient ?success=1&kind=...
+// On lit ce kind pour afficher la bonne page merci (abonnement ou coaching).
 (function(){
   if(!window.location.search.includes('success')) return;
 
+  // Lecture du paramètre kind passé dans l'URL par msPay()
+  var params = new URLSearchParams(window.location.search);
+  var kind = params.get('kind') || 'subscription'; // défaut : abonnement
+  window._stripeReturnKind = kind; // stocké pour renderMerciPage
+
+  // Affichage immédiat de la page merci
   goTo('merci');
-
-  // Retour d'un paiement Stripe : on re-fetch le membre pour que
-  // planConnections reflète bien le nouvel achat et que isPaidMember
-  // passe à true (après un petit délai pour laisser le webhook arriver).
-  // On rafraîchit le rendu de la page merci après le re-fetch.
-  setTimeout(function(){
-    try {
-      if (typeof refreshMemberAccess === 'function') {
-        refreshMemberAccess().then(function(){
-          if (typeof renderMerciPage === 'function') renderMerciPage();
-        });
-      }
-    } catch(e){}
-  }, 2500);
-
-  // Rendu initial en attendant le refresh
   if (typeof renderMerciPage === 'function') renderMerciPage();
+
+  // Nettoie l'URL pour ne pas conserver ?success dans la barre d'adresse
+  // (sinon un F5 relancerait la page merci indéfiniment)
+  try {
+    var cleanUrl = window.location.origin + window.location.pathname + '#merci';
+    window.history.replaceState({}, '', cleanUrl);
+  } catch(e) {}
+
+  // Re-fetch du membre pour que planConnections soit à jour.
+  // On fait plusieurs tentatives espacées car le webhook Stripe→Memberstack
+  // peut prendre 1 à 5 secondes pour propager le nouveau plan (uniquement pour les abonnements).
+  if (kind === 'subscription') {
+    var attempts = 0;
+    var maxAttempts = 6;
+    function refreshAndRender() {
+      attempts++;
+      try {
+        if (typeof refreshMemberAccess === 'function') {
+          refreshMemberAccess().then(function(){
+            // Si on a bien détecté un tier actif, on arrête et on affiche proprement
+            if (typeof memberTier !== 'undefined' && memberTier) {
+              if (typeof renderMerciPage === 'function') renderMerciPage();
+            } else if (attempts < maxAttempts) {
+              // Plan pas encore propagé côté Memberstack → on retente
+              setTimeout(refreshAndRender, 2000);
+            } else {
+              // Abandon : on affiche quand même le rendu actuel
+              if (typeof renderMerciPage === 'function') renderMerciPage();
+            }
+          });
+        }
+      } catch(e) {
+        console.warn('[stripe-return] refreshMemberAccess failed', e);
+      }
+    }
+    setTimeout(refreshAndRender, 1500);
+  }
 })();
 
 // Détecte le type de paiement et affiche le bloc adapté :
@@ -6064,23 +6093,35 @@ function renderMerciPage() {
   var coachBlock = document.getElementById('merci-coaching');
   if (!subBlock || !coachBlock) return;
 
-  // Détection : si le dernier plan acheté (ou le tier actuel) est un abonnement,
-  // on affiche le bloc onboarding. Sinon on affiche le bloc coaching (par défaut).
-  var isSubscription = false;
-  var planLabel = 'Plateforme';
+  // Détection du mode de rendu, par ordre de priorité :
+  // 1. Paramètre kind explicite passé dans l'URL de retour Stripe (le plus fiable)
+  // 2. Présence de données booking en localStorage (coaching en cours)
+  // 3. Tier actif du membre (abonnement)
+  // 4. Fallback sur mode abonnement si connecté, sinon coaching
+  var returnKind = window._stripeReturnKind; // 'subscription', 'coaching', ou undefined
+  var hasBooking = localStorage.getItem('booking_name') || localStorage.getItem('booking_date');
   var tier = (typeof memberTier !== 'undefined' && memberTier) || null;
 
-  // Si c'est une séance coaching (détectée par les données booking en localStorage),
-  // on reste sur le mode coaching
-  var hasBooking = localStorage.getItem('booking_name') || localStorage.getItem('booking_date');
-
-  if (!hasBooking && tier) {
-    // Membre avec tier actif et pas de réservation en cours → c'est un abonnement
+  var isSubscription;
+  if (returnKind === 'coaching') {
+    isSubscription = false;
+  } else if (returnKind === 'subscription') {
     isSubscription = true;
-    if (tier === '2a') planLabel = 'Plateforme';
-    else if (tier === '2b') planLabel = 'Pack Complet';
-    else if (tier === '3')  planLabel = 'Accompagnement Premium';
+  } else if (hasBooking) {
+    isSubscription = false;
+  } else if (tier) {
+    isSubscription = true;
+  } else {
+    // Cas rare : pas de kind, pas de booking, pas de tier → on part sur abonnement par défaut
+    // (c'est le scénario "webhook pas encore arrivé après checkout")
+    isSubscription = true;
   }
+
+  // Label du plan à afficher (pour le mode abonnement)
+  var planLabel = 'Plateforme';
+  if (tier === '2a') planLabel = 'Plateforme';
+  else if (tier === '2b') planLabel = 'Pack Complet';
+  else if (tier === '3')  planLabel = 'Accompagnement Premium';
 
   if (isSubscription) {
     // Mode abonnement
@@ -9949,8 +9990,10 @@ function checkAccessGate(page) {
 }
 
 // PAIEMENT via Memberstack V2
+// priceId : prc_... — identifiant du prix Memberstack
+// kind    : 'subscription' (défaut) ou 'coaching' — détermine quelle page Merci afficher au retour
 var _msPayInProgress = false;
-function msPay(priceId) {
+function msPay(priceId, kind) {
   // Verrou : empêche le spam si l'utilisateur re-clique pendant que le checkout se lance
   if (_msPayInProgress) {
     showToast('Requête en cours, patiente un instant…');
@@ -9959,12 +10002,15 @@ function msPay(priceId) {
   var ms = getMemberstack();
   if (!ms) {
     showToast('Chargement en cours, réessaie dans 2 secondes.');
-    setTimeout(function() { msPay(priceId); }, 1500);
+    setTimeout(function() { msPay(priceId, kind); }, 1500);
     return;
   }
   _msPayInProgress = true;
   // Reset du verrou après 10s maximum dans tous les cas, pour ne pas bloquer
   setTimeout(function(){ _msPayInProgress = false; }, 10000);
+
+  // Par défaut c'est un abonnement — seuls les CTAs coaching passent explicitement 'coaching'
+  var purchaseKind = (kind === 'coaching') ? 'coaching' : 'subscription';
 
   // Helper : après paiement réussi, on re-fetch le membre pour que planConnections
   // soit à jour et que isPaidMember passe à true avant la redirection merci.
@@ -9976,8 +10022,19 @@ function msPay(priceId) {
     });
   }
   function launchCheckout() {
-    ms.purchasePlansWithCheckout({ priceId: priceId }).then(
+    // successUrl : où Stripe redirige après paiement réussi. Le paramètre ?success
+    // est détecté au chargement par le handler en bas du fichier qui ouvre la page merci.
+    // On passe aussi kind= pour que la page merci s'affiche dans le bon mode.
+    // cancelUrl  : où Stripe redirige si l'utilisateur annule.
+    var base = window.location.origin + window.location.pathname;
+    ms.purchasePlansWithCheckout({
+      priceId: priceId,
+      successUrl: base + '?success=1&kind=' + encodeURIComponent(purchaseKind),
+      cancelUrl: base
+    }).then(
       function(result) {
+        // Cette branche n'est généralement pas atteinte car Stripe fait une vraie redirection.
+        // Elle sert juste de fallback au cas où Memberstack utiliserait un mode inline.
         if (result && result.data) {
           onCheckoutSuccess();
         } else {
