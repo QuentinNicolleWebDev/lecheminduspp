@@ -6129,21 +6129,42 @@ function closeMobileNav() {
 // ============================================================
 // RETOUR STRIPE — détection ?success
 // ============================================================
-// Quand Stripe Checkout redirige vers successUrl, l'URL contient ?success=1&kind=...
-// - Pour un abonnement : on affiche la page Merci d'onboarding
-// - Pour un coaching : on redirige vers la page Coaching en mode calendrier
+// Quand Stripe Checkout redirige vers successUrl, l'URL contient ?success=1&kind=...&token=...
+// On vérifie que le token correspond au dernier checkout lancé (via sessionStorage),
+// sinon c'est un accès frauduleux ou un retour d'historique navigateur → on ignore.
 (function(){
   if(!window.location.search.includes('success')) return;
 
-  // Lecture du paramètre kind passé dans l'URL par msPay()
   var params = new URLSearchParams(window.location.search);
-  var kind = params.get('kind') || 'subscription'; // défaut : abonnement
+  var urlToken = params.get('token');
+  var kind = params.get('kind') || 'subscription';
+
+  // SÉCURITÉ 1 : vérifier le token de checkout
+  // Le token a été généré et stocké dans sessionStorage au moment du clic "Payer"
+  // S'il ne correspond pas, c'est que l'utilisateur a fait "retour" après avoir
+  // relancé un nouveau checkout, OU qu'il tente d'accéder à la page Merci frauduleusement.
+  var expectedToken = sessionStorage.getItem('stripe_checkout_token');
+  if (!urlToken || !expectedToken || urlToken !== expectedToken) {
+    console.warn('[stripe-return] token mismatch, ignoring ?success');
+    // Nettoie l'URL et ne fait rien
+    try {
+      var cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, '', cleanUrl);
+    } catch(e) {}
+    return;
+  }
+
+  // SÉCURITÉ 2 : marquer le token comme "consommé" pour qu'un retour navigateur
+  // ne redéclenche pas la page Merci
+  sessionStorage.removeItem('stripe_checkout_token');
+  sessionStorage.setItem('stripe_checkout_consumed_at', String(Date.now()));
+
   window._stripeReturnKind = kind;
 
-  // Nettoie l'URL pour ne pas conserver ?success dans la barre d'adresse
+  // Nettoie l'URL pour propreté
   try {
-    var cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, '', cleanUrl);
+    var cleanUrl2 = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, '', cleanUrl2);
   } catch(e) {}
 
   if (kind === 'coaching') {
@@ -6154,7 +6175,6 @@ function closeMobileNav() {
     } catch(e) {}
     // Rediriger vers la page Coaching, où le calendrier s'affichera automatiquement
     goTo('coaching');
-    // Petit délai pour s'assurer que le DOM est prêt puis afficher le calendrier
     setTimeout(function(){
       if (typeof coachingShowCalendar === 'function') coachingShowCalendar();
     }, 400);
@@ -10215,6 +10235,16 @@ function msPay(priceId, kind) {
     });
   }
   function launchCheckout() {
+    // Génération d'un token unique pour ce checkout. Il sera :
+    // 1. Stocké dans sessionStorage (effacé à la fermeture de l'onglet)
+    // 2. Passé dans le successUrl
+    // 3. Vérifié au retour : si le token ne correspond pas, la page Merci n'est pas affichée.
+    // Ça empêche qu'un retour-en-arrière depuis Stripe (sans avoir payé) déclenche la page Merci.
+    var checkoutToken = 'tk_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+    try {
+      sessionStorage.setItem('stripe_checkout_token', checkoutToken);
+    } catch(e) { console.warn('[msPay] sessionStorage unavailable', e); }
+
     // successUrl : où Stripe redirige après paiement réussi. Le paramètre ?success
     // est détecté au chargement par le handler en bas du fichier qui ouvre la page merci.
     // On passe aussi kind= pour que la page merci s'affiche dans le bon mode.
@@ -10222,7 +10252,7 @@ function msPay(priceId, kind) {
     var base = window.location.origin + window.location.pathname;
     ms.purchasePlansWithCheckout({
       priceId: priceId,
-      successUrl: base + '?success=1&kind=' + encodeURIComponent(purchaseKind),
+      successUrl: base + '?success=1&kind=' + encodeURIComponent(purchaseKind) + '&token=' + encodeURIComponent(checkoutToken),
       cancelUrl: base
     }).then(
       function(result) {
