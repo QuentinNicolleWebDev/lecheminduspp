@@ -2616,7 +2616,7 @@ if(window.location.search.indexOf('success') !== -1) {
     <button class="esp-share-close" onclick="closeShareModal()" style="color:var(--charcoal);top:8px;right:12px">×</button>
     <div class="esp-share-title">Partage ta progression</div>
     <div class="esp-share-sub">Partage directement sur ton réseau préféré ou télécharge l'image pour la publier où tu veux.</div>
-    <canvas id="esp-share-canvas" width="1080" height="1920"></canvas>
+    <canvas id="esp-share-canvas" width="1000" height="1000"></canvas>
 
     <!-- Bouton "Partage tes progrès" — principal sur mobile (ouvre le partage natif du téléphone) -->
     <button id="esp-share-native-btn" onclick="shareNative()">
@@ -5068,7 +5068,7 @@ function _espZoomKeyHandler(e) {
 // ================================================================
 var _espShareStats = null; // stocke les stats au moment de l'ouverture du modal
 
-// Image du logo préchargée (réutilisée à chaque génération)
+// Image du template de fond préchargée (réutilisée à chaque génération)
 var _espShareLogoImg = null;
 var _espShareLogoLoaded = false;
 
@@ -5104,32 +5104,30 @@ function openShareModal() {
       radarScores: radarScores
     };
 
-    // Ouvre le modal d'abord (UX immédiat même pendant le chargement du logo)
+    // Ouvre le modal d'abord (UX immédiat)
     document.getElementById('esp-share-overlay').classList.add('visible');
     // Active le bouton de partage natif s'il est supporté (mobile moderne)
     _espCheckNativeShareSupport();
 
-    // Charge le logo si pas encore fait, puis dessine
+    // Charge le template de fond si pas encore fait, puis dessine
     if (_espShareLogoLoaded) {
       renderShareCanvas();
     } else if (_espShareLogoImg) {
-      // Chargement déjà en cours — on retentera après load
-      renderShareCanvas(); // dessine sans logo en attendant
+      renderShareCanvas(); // dessine pendant le chargement
     } else {
       _espShareLogoImg = new Image();
-      _espShareLogoImg.crossOrigin = 'anonymous'; // pour éviter les erreurs canvas tainted
+      _espShareLogoImg.crossOrigin = 'anonymous';
       _espShareLogoImg.onload = function(){
         _espShareLogoLoaded = true;
-        renderShareCanvas(); // redessine avec le logo
+        renderShareCanvas(); // redessine avec le fond
       };
       _espShareLogoImg.onerror = function(){
-        console.warn('Logo non chargé — on continue sans.');
+        console.warn('Template pic-share.png non chargé — fallback sur fond uni.');
         _espShareLogoImg = null;
-        renderShareCanvas(); // dessine sans logo
+        renderShareCanvas();
       };
-      _espShareLogoImg.src = 'logo.png';
-      // Dessine immédiatement sans logo pour éviter un délai visible
-      renderShareCanvas();
+      _espShareLogoImg.src = 'pic-share.png';
+      renderShareCanvas(); // dessine pendant le chargement
     }
   });
 }
@@ -5138,297 +5136,148 @@ function closeShareModal() {
   document.getElementById('esp-share-overlay').classList.remove('visible');
 }
 
+
+// ================================================================
+// GÉNÉRATION DE L'IMAGE DE PARTAGE
+// ================================================================
+// Utilise le template PNG "pic-share.png" comme fond statique.
+// Dessine PAR-DESSUS uniquement les chiffres dynamiques et les points du radar.
+//
+// Coordonnées dans le template original (500×500) :
+//   - Stat "Jours actifs"  : centre x=180, y=170 (grands chiffres rouges)
+//   - Stat "Sessions QCM"  : centre x=321, y=170
+//   - Stat "Questions"     : centre x=180, y=223
+//   - Stat "Score global"  : centre x=318, y=223
+//   - Centre du radar      : x=248, y=339
+//   - Rayon à 100%         : R=65 pixels
+//
+// Le canvas fait 1000×1000 (2× la résolution du template pour la qualité).
+// Toutes les coordonnées sont donc multipliées par SCALE=2.
 function renderShareCanvas() {
   var canvas = document.getElementById('esp-share-canvas');
   if (!canvas || !_espShareStats) return;
+  if (!_espShareLogoImg || !_espShareLogoLoaded) return;
+
   var ctx = canvas.getContext('2d');
-  var W = canvas.width, H = canvas.height;  // 1080 x 1920 (format story)
+  var W = canvas.width, H = canvas.height;  // 1000 x 1000
   var s = _espShareStats;
+  var SCALE = 2; // 1000/500
 
-  // Phrase d'accroche fixe (plus de variation — cohérence de marque)
-  var tagline = {
-    kicker: 'EN PRÉPARATION',
-    tag: 'Je me prépare pour devenir\nSapeur-Pompier Professionnel'
-  };
+  // === 1. DESSINE LE TEMPLATE COMME FOND ===
+  ctx.clearRect(0, 0, W, H);
+  ctx.drawImage(_espShareLogoImg, 0, 0, W, H);
 
-  // Helper centrage de texte
-  function drawCenter(text, y, size, color, weight, font) {
-    ctx.fillStyle = color || '#1C1C1C';
-    ctx.font = (weight || '400') + ' ' + size + 'px ' + (font || '"DM Sans", Arial, sans-serif');
-    ctx.textAlign = 'center';
-    ctx.fillText(text, W/2, y);
-  }
-
-  // === ① FOND : crème uniforme, parfaitement lisse ===
+  // === 2. MASQUE les valeurs par défaut du template (2, 3, 27, 56%) ===
+  // On recouvre avec des rectangles couleur crème pour effacer les chiffres existants
   ctx.fillStyle = '#F5F0E8';
-  ctx.fillRect(0, 0, W, H);
+  // Rangée 1 - Jours actifs
+  ctx.fillRect((180 - 40) * SCALE, (170 - 22) * SCALE, 80 * SCALE, 44 * SCALE);
+  // Rangée 1 - Sessions QCM
+  ctx.fillRect((321 - 40) * SCALE, (170 - 22) * SCALE, 80 * SCALE, 44 * SCALE);
+  // Rangée 2 - Questions
+  ctx.fillRect((180 - 40) * SCALE, (223 - 22) * SCALE, 80 * SCALE, 44 * SCALE);
+  // Rangée 2 - Score global
+  ctx.fillRect((318 - 40) * SCALE, (223 - 22) * SCALE, 80 * SCALE, 44 * SCALE);
 
-  // Bande rouge verticale à gauche + à droite (cadre subtil, identité forte)
-  ctx.fillStyle = '#CC2229';
-  ctx.fillRect(0, 0, 14, H);
-  ctx.fillRect(W - 14, 0, 14, H);
-
-  // === ② LOGO DU SITE (logo.png) en haut centré ===
-  // Si le logo est chargé, on l'utilise. Sinon, fallback sur le bouclier vectoriel.
-  if (_espShareLogoImg && _espShareLogoLoaded) {
-    var logoMaxW = 260;   // largeur max du logo sur l'image
-    var logoMaxH = 260;   // hauteur max
-    var iw = _espShareLogoImg.naturalWidth || _espShareLogoImg.width;
-    var ih = _espShareLogoImg.naturalHeight || _espShareLogoImg.height;
-    if (iw > 0 && ih > 0) {
-      var ratio = Math.min(logoMaxW / iw, logoMaxH / ih);
-      var drawW = iw * ratio;
-      var drawH = ih * ratio;
-      ctx.drawImage(_espShareLogoImg, W/2 - drawW/2, 60, drawW, drawH);
-    } else {
-      drawShieldLogo(ctx, W/2, 160, 100);
-    }
-  } else {
-    drawShieldLogo(ctx, W/2, 160, 100);
-  }
-
-  // === ③ KICKER + PHRASE D'ACCROCHE ÉMOTIONNELLE ===
-  // Placé SOUS le logo (qui occupe Y 60 → 320), avec de l'air
-  ctx.fillStyle = '#CC2229';
-  ctx.font = '700 32px "DM Sans", Arial, sans-serif';
-  ctx.textAlign = 'center';
-  // Simule le letter-spacing en espaçant les lettres du kicker
-  var kickerSpaced = tagline.kicker.split('').join(' ');
-  ctx.fillText(kickerSpaced, W/2, 355);
-
-  // Phrase d'accroche (Playfair, italique pour l'émotion) — affichée sur 2 lignes
-  // On sépare par \n et on dessine chaque ligne centrée
-  var tagLines = tagline.tag.split('\n');
-  var tagStartY = 430;
-  var tagLineHeight = 70;
-  tagLines.forEach(function(line, i){
-    drawCenter(line, tagStartY + i * tagLineHeight, 56, '#1C1C1C', '900', 'italic "Playfair Display", Georgia, serif');
-  });
-
-  // Trait rouge décoratif sous l'accroche (position ajustée selon nb de lignes)
-  var underY = tagStartY + tagLines.length * tagLineHeight + 15;
-  ctx.fillStyle = '#CC2229';
-  ctx.fillRect(W/2 - 80, underY, 160, 4);
-
-  // === ④ 4 GRANDES STATS EN 2×2 ===
-  var gridTop = underY + 55;
-  var gridRowHeight = 210;
-  var col1X = W/4;
-  var col2X = W * 3/4;
-
-  function drawStat(x, y, bigText, label) {
-    ctx.fillStyle = '#CC2229';
-    ctx.font = '900 110px "Playfair Display", Georgia, serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(bigText, x, y);
-    ctx.fillStyle = '#6B6560';
-    ctx.font = '600 26px "DM Sans", Arial, sans-serif';
-    ctx.fillText(label, x, y + 58);
-  }
-
-  drawStat(col1X, gridTop + 90, s.streak + '', s.streak > 1 ? 'JOURS ACTIFS' : 'JOUR ACTIF');
-  drawStat(col2X, gridTop + 90, s.sessions + '', s.sessions > 1 ? 'SESSIONS QCM' : 'SESSION QCM');
-  drawStat(col1X, gridTop + gridRowHeight + 90, s.questions + '', 'QUESTIONS');
-  drawStat(col2X, gridTop + gridRowHeight + 90, (s.score > 0 ? s.score + '%' : '—'), 'SCORE GLOBAL');
-
-  // === ⑤ BARRE DE PROGRESSION VISUELLE (score global) ===
-  var barY = gridTop + 2*gridRowHeight + 60;
-  var barX = 120;
-  var barW = W - 240;
-  var barH = 18;
-  // Label au-dessus de la barre
-  ctx.fillStyle = '#6B6560';
-  ctx.font = '600 22px "DM Sans", Arial, sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('MON NIVEAU GLOBAL', barX, barY - 20);
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#1C1C1C';
-  ctx.font = '700 26px "DM Sans", Arial, sans-serif';
-  ctx.fillText((s.score > 0 ? s.score + '%' : '—'), barX + barW, barY - 18);
-  // Fond de la barre
-  ctx.fillStyle = 'rgba(28,28,28,0.08)';
-  ctx.fillRect(barX, barY, barW, barH);
-  // Remplissage coloré selon le score
-  var barColor = '#CC2229';
-  if (s.score >= 85) barColor = '#2F7D3A';
-  else if (s.score >= 70) barColor = '#5DA862';
-  else if (s.score >= 50) barColor = '#E89005';
-  var fillW = Math.max(8, (s.score/100) * barW);
-  ctx.fillStyle = barColor;
-  ctx.fillRect(barX, barY, fillW, barH);
-
-  // === ⑥ MINI-RADAR (5 axes) — dimensionné pour s'harmoniser avec l'accroche 2 lignes ===
-  var radarY = barY + 90;
-  var radarR = 150;  // rayon équilibré, laisse de la place aux labels et à la zone branding
-  var radarCx = W/2;
-  var radarCy = radarY + radarR;
-
-  if (s.radarScores && typeof s.radarScores === 'object') {
-    drawMiniRadar(ctx, radarCx, radarCy, radarR, s.radarScores);
-  } else {
-    // Fallback : une ligne de texte pour combler l'espace si pas de données
-    ctx.fillStyle = '#a8a196';
-    ctx.font = '400 26px "DM Sans", Arial, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Mon suivi détaillé par thème', W/2, radarY + 40);
-  }
-
-  // === ⑦ ZONE BASSE : BRANDING FORT ===
-  // Séparateur
-  ctx.fillStyle = 'rgba(28,28,28,0.1)';
-  ctx.fillRect(W/4, H - 310, W/2, 1);
-
-  // Tagline avant le site
-  drawCenter('Ma plateforme de préparation au concours', H - 230, 32, '#6B6560', '400', '"DM Sans", Arial, sans-serif');
-  drawCenter('Caporal Sapeur-Pompier Professionnel', H - 190, 32, '#6B6560', '400', '"DM Sans", Arial, sans-serif');
-
-  // NOM DU SITE (très visible, gros, rouge) — c'est la partie "pub gratuite"
-  drawCenter('lecheminduspp.fr', H - 110, 78, '#CC2229', '900', '"DM Sans", Arial, sans-serif');
-
-  // Soulignement épais sous le site pour le faire ressortir
-  ctx.fillStyle = '#CC2229';
-  ctx.fillRect(W/2 - 280, H - 90, 560, 4);
-
-  // Fond uniforme conservé jusqu'en bas — pas de bande interruptive
-}
-
-// === HELPER : Logo SPP stylé (bouclier + flamme) ===
-function drawShieldLogo(ctx, cx, cy, size) {
-  // Bouclier rouge
-  ctx.fillStyle = '#CC2229';
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - size * 0.9);
-  ctx.bezierCurveTo(cx + size * 0.85, cy - size * 0.85, cx + size * 0.85, cy - size * 0.3, cx + size * 0.7, cy + size * 0.2);
-  ctx.bezierCurveTo(cx + size * 0.45, cy + size * 0.75, cx, cy + size * 0.95, cx, cy + size * 0.95);
-  ctx.bezierCurveTo(cx, cy + size * 0.95, cx - size * 0.45, cy + size * 0.75, cx - size * 0.7, cy + size * 0.2);
-  ctx.bezierCurveTo(cx - size * 0.85, cy - size * 0.3, cx - size * 0.85, cy - size * 0.85, cx, cy - size * 0.9);
-  ctx.closePath();
-  ctx.fill();
-
-  // Bordure cream à l'intérieur (effet double)
-  ctx.strokeStyle = '#F5F0E8';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - size * 0.75);
-  ctx.bezierCurveTo(cx + size * 0.7, cy - size * 0.7, cx + size * 0.7, cy - size * 0.2, cx + size * 0.58, cy + size * 0.2);
-  ctx.bezierCurveTo(cx + size * 0.37, cy + size * 0.62, cx, cy + size * 0.78, cx, cy + size * 0.78);
-  ctx.bezierCurveTo(cx, cy + size * 0.78, cx - size * 0.37, cy + size * 0.62, cx - size * 0.58, cy + size * 0.2);
-  ctx.bezierCurveTo(cx - size * 0.7, cy - size * 0.2, cx - size * 0.7, cy - size * 0.7, cx, cy - size * 0.75);
-  ctx.closePath();
-  ctx.stroke();
-
-  // Flamme blanche au centre (stylisée)
-  ctx.fillStyle = '#F5F0E8';
-  ctx.beginPath();
-  // Base de la flamme
-  ctx.moveTo(cx, cy + size * 0.35);
-  // Côté droit qui monte en ondulant
-  ctx.bezierCurveTo(cx + size * 0.28, cy + size * 0.15, cx + size * 0.2, cy - size * 0.05, cx + size * 0.12, cy - size * 0.25);
-  ctx.bezierCurveTo(cx + size * 0.08, cy - size * 0.35, cx + size * 0.18, cy - size * 0.4, cx + size * 0.1, cy - size * 0.5);
-  // Pointe
-  ctx.bezierCurveTo(cx + size * 0.05, cy - size * 0.55, cx, cy - size * 0.45, cx, cy - size * 0.35);
-  ctx.bezierCurveTo(cx - size * 0.05, cy - size * 0.45, cx - size * 0.1, cy - size * 0.55, cx - size * 0.1, cy - size * 0.5);
-  // Côté gauche en redescendant
-  ctx.bezierCurveTo(cx - size * 0.18, cy - size * 0.4, cx - size * 0.08, cy - size * 0.35, cx - size * 0.12, cy - size * 0.25);
-  ctx.bezierCurveTo(cx - size * 0.2, cy - size * 0.05, cx - size * 0.28, cy + size * 0.15, cx, cy + size * 0.35);
-  ctx.closePath();
-  ctx.fill();
-
-  // Petite flamme intérieure rouge (détail)
-  ctx.fillStyle = '#CC2229';
-  ctx.beginPath();
-  ctx.moveTo(cx, cy + size * 0.25);
-  ctx.bezierCurveTo(cx + size * 0.12, cy + size * 0.1, cx + size * 0.1, cy - size * 0.1, cx + size * 0.05, cy - size * 0.25);
-  ctx.bezierCurveTo(cx + size * 0.02, cy - size * 0.32, cx, cy - size * 0.2, cx, cy - size * 0.15);
-  ctx.bezierCurveTo(cx, cy - size * 0.2, cx - size * 0.02, cy - size * 0.32, cx - size * 0.05, cy - size * 0.25);
-  ctx.bezierCurveTo(cx - size * 0.1, cy - size * 0.1, cx - size * 0.12, cy + size * 0.1, cx, cy + size * 0.25);
-  ctx.closePath();
-  ctx.fill();
-}
-
-// === HELPER : Mini-radar sur l'image de partage ===
-function drawMiniRadar(ctx, cx, cy, R, scores) {
+  // === 3. MASQUE le polygone et les points du radar existants ===
+  var rCx = 248 * SCALE;
+  var rCy = 339 * SCALE;
+  var rR = 65 * SCALE;
   var axes = ['statut', 'sis', 'doctrines', 'secourisme', 'textes'];
-  var labels = {
-    statut: 'Statut', sis: 'SIS', doctrines: 'Doctrines',
-    secourisme: 'Secourisme', textes: 'Textes'
-  };
-  var n = axes.length;
 
-  // Vérifie qu'on a au moins un score
-  var hasData = axes.some(function(a){ return scores[a] != null; });
-  if (!hasData) return;
+  // Scores originaux du template (mesurés sur l'image de référence)
+  var originalScores = { statut: 32, sis: 100, doctrines: 52, secourisme: 55, textes: 100 };
+  _espDrawRadarPolygon(ctx, rCx, rCy, rR, originalScores, '#F5F0E8', null, false);
 
-  // Anneaux de graduation (25, 50, 75, 100%)
-  [25, 50, 75, 100].forEach(function(pct){
-    var r = (pct/100) * R;
-    ctx.strokeStyle = pct === 100 ? 'rgba(28,28,28,0.3)' : 'rgba(28,28,28,0.12)';
-    ctx.lineWidth = pct === 100 ? 1.5 : 1;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.stroke();
-  });
-
-  // Axes radiaux
-  ctx.strokeStyle = 'rgba(28,28,28,0.15)';
-  ctx.lineWidth = 1;
+  // Masque les anciens points rouges (petits ronds aux sommets)
   axes.forEach(function(a, i){
-    var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
+    var angle = -Math.PI/2 + (i * 2 * Math.PI / axes.length);
+    var r = (originalScores[a] / 100) * rR;
+    var x = rCx + r * Math.cos(angle);
+    var y = rCy + r * Math.sin(angle);
+    ctx.fillStyle = '#F5F0E8';
     ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + R * Math.cos(angle), cy + R * Math.sin(angle));
+    ctx.arc(x, y, 8 * SCALE, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // === 4. RE-DESSINE la grille du radar (cercles + axes) ===
+  ctx.strokeStyle = '#d6cdb5';
+  ctx.lineWidth = 1 * SCALE;
+  [0.25, 0.5, 0.75, 1].forEach(function(frac){
+    ctx.beginPath();
+    ctx.arc(rCx, rCy, rR * frac, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+  axes.forEach(function(a, i){
+    var angle = -Math.PI/2 + (i * 2 * Math.PI / axes.length);
+    ctx.beginPath();
+    ctx.moveTo(rCx, rCy);
+    ctx.lineTo(rCx + rR * Math.cos(angle), rCy + rR * Math.sin(angle));
     ctx.stroke();
   });
 
-  // Polygone des scores (rouge transparent + contour rouge plein)
-  ctx.fillStyle = 'rgba(204, 34, 41, 0.22)';
-  ctx.strokeStyle = '#CC2229';
-  ctx.lineWidth = 2.5;
+  // === 5. ÉCRIT les nouveaux chiffres ===
+  ctx.fillStyle = '#CC2229';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = '900 ' + (32 * SCALE) + 'px "Playfair Display", Georgia, serif';
+
+  ctx.fillText(String(s.streak), 180 * SCALE, 170 * SCALE);
+  ctx.fillText(String(s.sessions), 321 * SCALE, 170 * SCALE);
+  ctx.fillText(String(s.questions), 180 * SCALE, 223 * SCALE);
+  var scoreText = s.score > 0 ? (s.score + '%') : '—';
+  ctx.fillText(scoreText, 318 * SCALE, 223 * SCALE);
+
+  // === 6. DESSINE le nouveau radar avec les vrais scores ===
+  if (s.radarScores && typeof s.radarScores === 'object') {
+    var safeScores = {};
+    axes.forEach(function(a){
+      safeScores[a] = (s.radarScores[a] != null) ? s.radarScores[a] : 0;
+    });
+    _espDrawRadarPolygon(ctx, rCx, rCy, rR, safeScores, 'rgba(204, 34, 41, 0.22)', '#CC2229', true);
+    axes.forEach(function(a, i){
+      if (s.radarScores[a] == null) return;
+      var angle = -Math.PI/2 + (i * 2 * Math.PI / axes.length);
+      var r = (s.radarScores[a] / 100) * rR;
+      var x = rCx + r * Math.cos(angle);
+      var y = rCy + r * Math.sin(angle);
+      ctx.fillStyle = '#CC2229';
+      ctx.beginPath();
+      ctx.arc(x, y, 5 * SCALE, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 1.5 * SCALE;
+      ctx.stroke();
+    });
+  }
+
+  ctx.textBaseline = 'alphabetic';
+}
+
+// Helper : dessine un polygone de radar (masquage ou affichage)
+function _espDrawRadarPolygon(ctx, cx, cy, R, scores, fillColor, strokeColor, doStroke) {
+  var axes = ['statut', 'sis', 'doctrines', 'secourisme', 'textes'];
+  ctx.fillStyle = fillColor;
+  if (strokeColor) {
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth = 4; // 2.2 * SCALE=2 ≈ 4
+    ctx.lineJoin = 'round';
+  }
   ctx.beginPath();
   axes.forEach(function(a, i){
-    var score = scores[a] != null ? scores[a] : 0;
-    var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var r = (score/100) * R;
+    var angle = -Math.PI/2 + (i * 2 * Math.PI / axes.length);
+    var val = scores[a] != null ? scores[a] : 0;
+    var r = (val / 100) * R;
     var x = cx + r * Math.cos(angle);
     var y = cy + r * Math.sin(angle);
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
   });
   ctx.closePath();
   ctx.fill();
-  ctx.stroke();
-
-  // Points aux sommets
-  axes.forEach(function(a, i){
-    if (scores[a] == null) return;
-    var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var r = (scores[a]/100) * R;
-    var x = cx + r * Math.cos(angle);
-    var y = cy + r * Math.sin(angle);
-    ctx.fillStyle = '#CC2229';
-    ctx.beginPath();
-    ctx.arc(x, y, 8, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2.5;
-    ctx.stroke();
-  });
-
-  // Labels autour du radar
-  ctx.fillStyle = '#1C1C1C';
-  ctx.font = '600 26px "DM Sans", Arial, sans-serif';
-  axes.forEach(function(a, i){
-    var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var labelR = R + 35;
-    var x = cx + labelR * Math.cos(angle);
-    var y = cy + labelR * Math.sin(angle) + 8;
-    // Alignement selon position horizontale
-    if (x < cx - 10) ctx.textAlign = 'right';
-    else if (x > cx + 10) ctx.textAlign = 'left';
-    else ctx.textAlign = 'center';
-    ctx.fillText(labels[a], x, y);
-  });
-  ctx.textAlign = 'center'; // reset
+  if (doStroke && strokeColor) ctx.stroke();
 }
+
 
 function downloadShareImage() {
   var canvas = document.getElementById('esp-share-canvas');
