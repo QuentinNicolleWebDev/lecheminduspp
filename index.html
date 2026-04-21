@@ -5154,95 +5154,116 @@ function renderShareCanvas() {
   var W = canvas.width, H = canvas.height;  // 1080 x 1350
   var s = _espShareStats;
 
-  // === FOND crème uniforme avec cadre rouge subtil ===
+  // Police unique pour toute l'image : DM Sans (simple, moderne, lisible).
+  // On varie les graisses (400, 600, 700, 900) pour la hiérarchie visuelle.
+  var FONT = '"DM Sans", Arial, sans-serif';
+
+  // === FOND crème uniforme + cadre rouge ===
   ctx.fillStyle = '#F5F0E8';
   ctx.fillRect(0, 0, W, H);
-  // Cadre rouge extérieur
   ctx.strokeStyle = '#CC2229';
   ctx.lineWidth = 8;
   ctx.strokeRect(4, 4, W - 8, H - 8);
 
-  // === 1. LOGO en haut (centré) ===
-  var logoY = 50;
-  var logoH = 200;
+  // ┌──────────────────────────────────────────────────────────────┐
+  // │ LAYOUT VERTICAL (1080×1350)                                  │
+  // │  60  → 340 : Logo (hauteur max 280)                           │
+  // │  390 → 475 : Titre 2 lignes                                   │
+  // │  540       : Trait rouge décoratif                            │
+  // │  590 → 850 : Grille 2×2 des stats                             │
+  // │  870 → 1260 : Radar (R=170, espace pour labels)               │
+  // │  1295      : Lien du site en bas                              │
+  // └──────────────────────────────────────────────────────────────┘
+
+  // === 1. LOGO ===
+  var logoAreaTop = 60;
+  var logoMaxH = 280;     // agrandi (était 200)
+  var logoMaxW = 440;     // largeur max plus généreuse
   if (_espShareLogoImg && _espShareLogoLoaded) {
     var iw = _espShareLogoImg.naturalWidth || _espShareLogoImg.width;
     var ih = _espShareLogoImg.naturalHeight || _espShareLogoImg.height;
     if (iw > 0 && ih > 0) {
-      var ratio = logoH / ih;
+      var ratio = Math.min(logoMaxW / iw, logoMaxH / ih);
       var drawW = iw * ratio;
-      if (drawW > 320) { drawW = 320; ratio = drawW / iw; }
       var drawH = ih * ratio;
-      ctx.drawImage(_espShareLogoImg, W/2 - drawW/2, logoY, drawW, drawH);
+      // Centre horizontalement, et verticalement dans la zone 60→340
+      ctx.drawImage(
+        _espShareLogoImg,
+        W/2 - drawW/2,
+        logoAreaTop + (logoMaxH - drawH) / 2,
+        drawW, drawH
+      );
     }
   }
 
-  // === 2. TITRE sous le logo ===
-  // "Je me prépare pour devenir"   (italique, plus léger)
-  // "Sapeur-Pompier Professionnel"  (bold, plus gros)
-  var titleY1 = logoY + logoH + 70;
-  var titleY2 = titleY1 + 58;
-
+  // === 2. TITRE (2 lignes, DM Sans) ===
   ctx.fillStyle = '#1C1C1C';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
 
-  ctx.font = 'italic 400 36px "Playfair Display", Georgia, serif';
-  ctx.fillText('Je me prépare pour devenir', W/2, titleY1);
+  // Ligne 1 : léger, italique
+  ctx.font = '400 italic 38px ' + FONT;
+  ctx.fillText('Je me prépare pour devenir', W/2, 415);
 
-  ctx.font = '900 52px "Playfair Display", Georgia, serif';
-  ctx.fillText('Sapeur-Pompier Professionnel', W/2, titleY2);
+  // Ligne 2 : bold, plus grand
+  ctx.font = '700 54px ' + FONT;
+  ctx.fillText('Sapeur-Pompier Professionnel', W/2, 478);
 
-  // Petit trait rouge décoratif sous le titre
-  var accentY = titleY2 + 22;
+  // Trait rouge décoratif
   ctx.fillStyle = '#CC2229';
-  ctx.fillRect(W/2 - 50, accentY, 100, 4);
+  ctx.fillRect(W/2 - 50, 510, 100, 4);
 
-  // === 3. VUE D'ENSEMBLE : grille 2×2 des 4 stats ===
-  // Position : sous le titre, centrée horizontalement
-  var gridTop = accentY + 60;
+  // === 3. GRILLE 2×2 DES STATS ===
+  // Zone : Y 590 → 850 (260px pour 2 rangées)
   var col1X = W * 0.28;
   var col2X = W * 0.72;
-  var rowH = 150;
+  var row1Y = 660;   // milieu rangée 1
+  var row2Y = 800;   // milieu rangée 2
 
   function drawStat(x, y, bigValue, label) {
-    // Chiffre (gros, rouge, Playfair)
+    // Grand chiffre rouge (baseline alignée)
     ctx.fillStyle = '#CC2229';
-    ctx.font = '900 84px "Playfair Display", Georgia, serif';
+    ctx.font = '900 82px ' + FONT;
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
     ctx.fillText(bigValue, x, y);
-    // Label (petit, gris, DM Sans, uppercase)
+    // Label gris uppercase
     ctx.fillStyle = '#6B6560';
-    ctx.font = '600 22px "DM Sans", Arial, sans-serif';
-    ctx.fillText(label, x, y + 40);
+    ctx.font = '600 22px ' + FONT;
+    ctx.fillText(label, x, y + 42);
   }
 
-  drawStat(col1X, gridTop + 50, String(s.streak), s.streak > 1 ? 'JOURS ACTIFS' : 'JOUR ACTIF');
-  drawStat(col2X, gridTop + 50, String(s.sessions), s.sessions > 1 ? 'SESSIONS QCM' : 'SESSION QCM');
-  drawStat(col1X, gridTop + 50 + rowH, String(s.questions), 'QUESTIONS');
+  drawStat(col1X, row1Y, String(s.streak), s.streak > 1 ? 'JOURS ACTIFS' : 'JOUR ACTIF');
+  drawStat(col2X, row1Y, String(s.sessions), s.sessions > 1 ? 'SESSIONS QCM' : 'SESSION QCM');
+  drawStat(col1X, row2Y, String(s.questions), 'QUESTIONS');
   var scoreText = s.score > 0 ? (s.score + '%') : '—';
-  drawStat(col2X, gridTop + 50 + rowH, scoreText, 'SCORE GLOBAL');
+  drawStat(col2X, row2Y, scoreText, 'SCORE GLOBAL');
 
-  // === 4. RADAR (5 domaines) ===
-  var radarR = 130;           // rayon du radar
+  // === 4. RADAR AGRANDI ===
+  // Rayon 170 (était 130) = +30% de surface
+  // Centre positionné pour que labels externes tiennent dans la zone 870→1260
+  // Labels à R+38 du centre, donc il faut au moins R+38+taille_label ≈ 230px de marge verticale autour du centre
+  var radarR = 170;
   var radarCx = W / 2;
-  var radarCy = gridTop + 2 * rowH + 20 + radarR + 50;
-
+  var radarCy = 1060;  // centre : laisse 190 de marge au-dessus et 200 en-dessous
   _espDrawShareRadar(ctx, radarCx, radarCy, radarR, s.radarScores);
 
-  // === 5. LIEN DU SITE en bas (gros, rouge) ===
-  var siteY = H - 85;
+  // === 5. LIEN DU SITE (en bas) ===
+  // Position : Y 1305 (centre du texte) = 1350 - 45 de marge bas
+  var siteY = 1305;
   ctx.fillStyle = '#CC2229';
-  ctx.font = '900 54px "DM Sans", Arial, sans-serif';
+  ctx.font = '900 56px ' + FONT;
   ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
   ctx.fillText('lecheminduspp.fr', W/2, siteY);
   // Soulignement épais
   var textW = ctx.measureText('lecheminduspp.fr').width;
   ctx.fillRect(W/2 - textW/2, siteY + 12, textW, 4);
 }
 
-// Dessine le radar à 5 axes avec les labels (Statut, SIS, Doctrines, Secourisme, Textes)
+// Dessine le radar à 5 axes (Statut, SIS, Doctrines, Secourisme, Textes)
 function _espDrawShareRadar(ctx, cx, cy, R, scores) {
+  var FONT = '"DM Sans", Arial, sans-serif';
   var axes = ['statut', 'sis', 'doctrines', 'secourisme', 'textes'];
   var labels = {
     statut: 'Statut', sis: 'SIS', doctrines: 'Doctrines',
@@ -5268,13 +5289,12 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
     ctx.stroke();
   });
 
-  // Polygone des scores (si disponibles)
+  // Polygone des scores si dispo
   var hasScores = scores && typeof scores === 'object' && axes.some(function(a){ return scores[a] != null; });
   if (hasScores) {
-    // Polygone rose transparent
     ctx.fillStyle = 'rgba(204, 34, 41, 0.22)';
     ctx.strokeStyle = '#CC2229';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 3.5;
     ctx.lineJoin = 'round';
     ctx.beginPath();
     axes.forEach(function(a, i){
@@ -5289,7 +5309,7 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
     ctx.fill();
     ctx.stroke();
 
-    // Points aux sommets (seulement pour les axes avec données réelles)
+    // Points aux sommets (seulement pour axes avec données)
     axes.forEach(function(a, i){
       if (scores[a] == null) return;
       var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
@@ -5298,21 +5318,21 @@ function _espDrawShareRadar(ctx, cx, cy, R, scores) {
       var y = cy + r * Math.sin(angle);
       ctx.fillStyle = '#CC2229';
       ctx.beginPath();
-      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = 'white';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 3;
       ctx.stroke();
     });
   }
 
   // Labels autour du radar
   ctx.fillStyle = '#1C1C1C';
-  ctx.font = '600 22px "DM Sans", Arial, sans-serif';
+  ctx.font = '600 26px ' + FONT;
   ctx.textBaseline = 'middle';
   axes.forEach(function(a, i){
     var angle = -Math.PI/2 + (i * 2 * Math.PI / n);
-    var labelR = R + 28;
+    var labelR = R + 38;
     var x = cx + labelR * Math.cos(angle);
     var y = cy + labelR * Math.sin(angle);
     if (x < cx - 10) ctx.textAlign = 'right';
