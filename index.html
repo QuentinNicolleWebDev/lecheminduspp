@@ -4535,22 +4535,20 @@ function espCarGoTo(index) {
     s.setAttribute('aria-hidden', i !== index ? 'true' : 'false');
   });
 
-  // Scroll intelligent : on repositionne en haut du carrousel SEULEMENT si
-  // l'utilisateur a scrollé sous le haut de la barre nav sticky. Sinon on
-  // ne touche pas au scroll (évite de remonter inutilement l'arrivée sur la page).
+  // Scroll systématique vers la barre de navigation du carrousel.
+  // Objectif : à chaque changement de slide, la barre d'onglets soit collée juste
+  // sous le header du site (à sa position sticky = 60px desktop / 58px mobile).
+  // On calcule la position absolue cible via getBoundingClientRect + pageYOffset,
+  // ce qui est fiable même quand la barre est déjà en mode sticky.
   var nav = document.getElementById('esp-car-nav');
   if (nav) {
+    var stickyOffset = (window.innerWidth <= 900) ? 58 : 60;
     var navRect = nav.getBoundingClientRect();
-    // Si la barre nav est déjà bien visible en haut de l'écran, on ne bouge pas
-    // (tolérance : 10px sous le haut du viewport max pour considérer "déjà en place")
-    if (navRect.top < -10) {
-      // L'utilisateur est descendu en dessous de la nav → on remonte jusqu'à elle
-      // pour qu'il voie le début du nouveau slide. On calcule la position absolue
-      // en tenant compte du scroll actuel + la distance au top.
-      var target = window.pageYOffset + navRect.top - 10;
-      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
-    }
-    // Sinon : on ne scrolle pas, l'utilisateur reste à sa position actuelle.
+    // Position absolue où la barre nav commence dans le document
+    var navAbsoluteTop = window.pageYOffset + navRect.top;
+    // On ajuste pour que la barre soit pile à sa position sticky (et pas dessous)
+    var target = navAbsoluteTop - stickyOffset;
+    window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
   }
 
   // Masque le hint swipe après la première interaction
