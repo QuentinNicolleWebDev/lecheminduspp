@@ -573,6 +573,17 @@ body.is-member .biblio-overlay::before{content:'Ouvrir le document';font-size:.8
 .biblio-sources-header:hover{background:#FAF6EF}
 .biblio-sources-title{font-size:.68rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--charcoal);flex:1}
 .biblio-sources-count{font-size:.66rem;color:var(--gray-light);font-weight:600;letter-spacing:.5px}
+/* Badge "Accès gratuit" dans le header des sections sources */
+.biblio-sources-free-tag{display:inline-flex;align-items:center;gap:4px;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2d6a4f;background:#e8f3ec;padding:3px 8px;border-radius:3px;white-space:nowrap}
+/* Bandeau explicatif à l'intérieur du menu sources, contextualisé selon le statut */
+.biblio-sources-notice{font-size:.76rem;color:var(--charcoal);background:#F4F1E9;border-left:3px solid #2d6a4f;padding:10px 14px;margin-bottom:12px;line-height:1.45}
+.biblio-sources-notice strong{color:#2d6a4f;font-weight:700}
+/* Les visiteurs non inscrits voient le CTA d'inscription, les inscrits gratuits voient le message "tu y as accès" */
+.biblio-sources-notice .if-anon{display:block}
+.biblio-sources-notice .if-free{display:none}
+body.is-free-member .biblio-sources-notice .if-anon{display:none}
+body.is-free-member .biblio-sources-notice .if-free{display:block}
+body.is-member:not(.is-free-member) .biblio-sources-notice{display:none}
 .biblio-sources-chevron{font-size:.8rem;color:var(--gray);transition:transform .2s}
 .biblio-sources-section.open .biblio-sources-chevron{transform:rotate(180deg)}
 .biblio-sources-body{max-height:0;overflow:hidden;transition:max-height .25s ease;padding:0 18px}
@@ -2743,10 +2754,15 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <div class="biblio-sources-section" data-cat="culture" data-sub="sis">
               <div class="biblio-sources-header" onclick="toggleBiblioSources(this)">
                 <div class="biblio-sources-title">📚 Textes sources — Organisation SIS</div>
+                <span class="biblio-sources-free-tag">✅ Accès gratuit</span>
                 <span class="biblio-sources-count">6 textes</span>
                 <span class="biblio-sources-chevron">▾</span>
               </div>
               <div class="biblio-sources-body">
+              <div class="biblio-sources-notice">
+                <span class="if-anon"><strong>💡 Inscription gratuite :</strong> ces 6 textes officiels sont accessibles dès que tu crées un compte (gratuit et sans engagement).</span>
+                <span class="if-free"><strong>✅ Accès gratuit :</strong> tous les textes sources de cette section sont inclus dans ton compte gratuit — consulte-les librement.</span>
+              </div>
               <div class="biblio-sources-sub">Lire les textes officiels en complément de la fiche de synthèse.</div>
               <div class="biblio-sources-grid">
                 <div class="biblio-source-card biblio-card" data-access="free" onclick="openDoc('src-loi-96-369','Loi n°96-369 du 3 mai 1996','Source','docs/culture-admin/organisation-sis/sources/loi-96-369.pdf','free')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Loi</div><div class="biblio-name">Loi n°96-369 du 3 mai 1996</div><div class="biblio-meta">Départementalisation des SIS</div><div class="biblio-overlay"><p>Inscription gratuite</p></div></div>
@@ -2766,10 +2782,15 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <div class="biblio-sources-section" data-cat="culture" data-sub="spp">
               <div class="biblio-sources-header" onclick="toggleBiblioSources(this)">
                 <div class="biblio-sources-title">📚 Textes sources — Statut SPP</div>
+                <span class="biblio-sources-free-tag">✅ Accès gratuit</span>
                 <span class="biblio-sources-count">11 textes</span>
                 <span class="biblio-sources-chevron">▾</span>
               </div>
               <div class="biblio-sources-body">
+              <div class="biblio-sources-notice">
+                <span class="if-anon"><strong>💡 Inscription gratuite :</strong> ces 11 textes officiels sont accessibles dès que tu crées un compte (gratuit et sans engagement).</span>
+                <span class="if-free"><strong>✅ Accès gratuit :</strong> tous les textes sources de cette section sont inclus dans ton compte gratuit — consulte-les librement.</span>
+              </div>
               <div class="biblio-sources-sub">Lire les textes officiels en complément de la fiche de synthèse.</div>
               <div class="biblio-sources-grid">
                 <div class="biblio-source-card biblio-card" data-access="free" onclick="openDoc('src-loi-83-634','Loi n°83-634 du 13 juillet 1983','Source','docs/culture-admin/statut-spp/sources/loi-83-634-droits-obligations.pdf','free')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Loi</div><div class="biblio-name">Loi n°83-634 (Le Pors)</div><div class="biblio-meta">Droits et obligations des fonctionnaires</div><div class="biblio-overlay"><p>Inscription gratuite</p></div></div>
@@ -2804,10 +2825,15 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <div class="biblio-sources-section" data-cat="concours">
               <div class="biblio-sources-header" onclick="toggleBiblioSources(this)">
                 <div class="biblio-sources-title">📚 Textes sources — Concours</div>
+                <span class="biblio-sources-free-tag">✅ Accès gratuit</span>
                 <span class="biblio-sources-count">4 textes</span>
                 <span class="biblio-sources-chevron">▾</span>
               </div>
               <div class="biblio-sources-body">
+              <div class="biblio-sources-notice">
+                <span class="if-anon"><strong>💡 Inscription gratuite :</strong> ces 4 textes officiels sont accessibles dès que tu crées un compte (gratuit et sans engagement).</span>
+                <span class="if-free"><strong>✅ Accès gratuit :</strong> tous les textes sources de cette section sont inclus dans ton compte gratuit — consulte-les librement.</span>
+              </div>
               <div class="biblio-sources-sub">Lire les textes officiels en complément de la fiche de synthèse.</div>
               <div class="biblio-sources-grid">
                 <div class="biblio-source-card biblio-card" data-access="free" onclick="openDoc('cc-decret-2012-520','Décret n°2012-520 — Statut sapeurs et caporaux','Source','docs/concours/sources/decret-2012-520-statut-sapeurs-caporaux.pdf','free')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Décret</div><div class="biblio-name">Décret n°2012-520</div><div class="biblio-meta">Statut sapeurs et caporaux SPP</div><div class="biblio-overlay"><p>Inscription gratuite</p></div></div>
@@ -2836,10 +2862,15 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <div class="biblio-sources-section" data-cat="divers">
               <div class="biblio-sources-header" onclick="toggleBiblioSources(this)">
                 <div class="biblio-sources-title">📚 Textes sources — Divers</div>
+                <span class="biblio-sources-free-tag">✅ Accès gratuit</span>
                 <span class="biblio-sources-count">2 textes</span>
                 <span class="biblio-sources-chevron">▾</span>
               </div>
               <div class="biblio-sources-body">
+              <div class="biblio-sources-notice">
+                <span class="if-anon"><strong>💡 Inscription gratuite :</strong> ces 2 textes officiels sont accessibles dès que tu crées un compte (gratuit et sans engagement).</span>
+                <span class="if-free"><strong>✅ Accès gratuit :</strong> tous les textes sources de cette section sont inclus dans ton compte gratuit — consulte-les librement.</span>
+              </div>
               <div class="biblio-sources-sub">Lire les textes officiels en complément des fiches de synthèse.</div>
               <div class="biblio-sources-grid">
                 <div class="biblio-source-card biblio-card" data-access="free" onclick="openDoc('div-pcs-2005','Décret n°2005-1156 — Plan Communal de Sauvegarde','Source','docs/divers/sources/decret-2005-1156-pcs.pdf','free')"><div class="biblio-lock">🔒</div><div class="biblio-type-tag">Décret</div><div class="biblio-name">Décret n°2005-1156</div><div class="biblio-meta">Plan communal de sauvegarde</div><div class="biblio-overlay"><p>Inscription gratuite</p></div></div>
