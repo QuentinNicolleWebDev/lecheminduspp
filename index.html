@@ -330,6 +330,8 @@ body.is-logged .hide-when-logged{display:none !important}
 .compare-table td.compare-feature{text-align:left;color:var(--charcoal);font-weight:500}
 .compare-table td.yes{color:var(--red);font-weight:700}
 .compare-table td.no{color:var(--border)}
+/* Les ✓ du tableau comparatif — plus visibles */
+.compare-check{font-size:1.5rem;line-height:1;display:inline-block;color:var(--red);font-weight:700}
 .compare-table tr.compare-price td{background:var(--cream);font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--charcoal);padding:16px 10px}
 .compare-table .compare-highlight{background:rgba(184,50,50,0.04)}
 
@@ -2146,32 +2148,32 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <td class="yes">Complet</td>
           </tr>
           <tr>
-            <td class="compare-feature">Programmes physiques</td>
+            <td class="compare-feature">Programmes physiques personnalisés</td>
             <td class="no">—</td>
             <td class="no">—</td>
-            <td class="compare-highlight yes">3 + audio Luc Léger</td>
-            <td class="yes">Personnalisé</td>
+            <td class="compare-highlight yes"><span class="compare-check">✓</span></td>
+            <td class="yes"><span class="compare-check">✓</span></td>
           </tr>
           <tr>
             <td class="compare-feature">Coaching visio mensuel</td>
             <td class="no">—</td>
             <td class="no">—</td>
             <td class="compare-highlight no">—</td>
-            <td class="yes">✓</td>
+            <td class="yes"><span class="compare-check">✓</span></td>
           </tr>
           <tr>
-            <td class="compare-feature">WhatsApp direct</td>
+            <td class="compare-feature">Contact direct par WhatsApp</td>
             <td class="no">—</td>
             <td class="no">—</td>
             <td class="compare-highlight no">—</td>
-            <td class="yes">✓</td>
+            <td class="yes"><span class="compare-check">✓</span></td>
           </tr>
           <tr>
-            <td class="compare-feature">Oral blanc &amp; corrections écrites</td>
+            <td class="compare-feature">Oraux Blancs &amp; Corrections Écrites</td>
             <td class="no">—</td>
             <td class="no">—</td>
             <td class="compare-highlight no">—</td>
-            <td class="yes">✓</td>
+            <td class="yes"><span class="compare-check">✓</span></td>
           </tr>
           <tr class="compare-price">
             <td class="compare-feature">Prix</td>
