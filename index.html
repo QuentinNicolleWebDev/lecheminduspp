@@ -563,6 +563,42 @@ body.is-member .biblio-overlay::before{content:'Ouvrir le document';font-size:.8
 
 /* Badge "NOUVEAU" (en haut à droite de la carte, distinct du lock) */
 .biblio-new-badge{position:absolute;top:0;right:0;font-size:.54rem;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;background:#2d6a4f;color:white;padding:3px 8px;border-bottom-left-radius:2px;z-index:2}
+
+/* ===== STATUTS DE LECTURE (fiches + doctrines) =====
+   3 états : non ouvert / déjà ouvert / marqué vu */
+/* Pastille de statut en bas à gauche de la carte */
+.biblio-read-status{position:absolute;bottom:8px;left:10px;font-size:.58rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;line-height:1.4;display:inline-flex;align-items:center;gap:3px;border-radius:2px;pointer-events:none;z-index:2}
+.biblio-read-status.unread{background:#fff4e0;color:#a3681b;border:1px solid #e8c88a}
+.biblio-read-status.opened{background:#eaf1fa;color:#2f5aa8;border:1px solid #b8cbe7}
+.biblio-read-status.seen{background:#e8f3ec;color:#2d6a4f;border:1px solid #a8d4b9}
+/* Quand la carte est "vue", on la met en retrait visuellement (opacité légère sur l'icône, pas le texte) */
+.biblio-card.is-seen{background:#FBFAF6}
+.biblio-card.is-seen .biblio-type-tag{opacity:.7}
+
+/* Case à cocher "Vu" en bas-droit de la carte.
+   Cliquable sans déclencher l'ouverture du doc (stopPropagation). */
+.biblio-seen-check{position:absolute;bottom:6px;right:8px;display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;color:var(--gray);background:white;border:1px solid var(--border);padding:4px 8px;border-radius:2px;cursor:pointer;user-select:none;transition:all .15s;z-index:3}
+.biblio-seen-check:hover{border-color:#2d6a4f;color:#2d6a4f}
+.biblio-seen-check.is-active{background:#e8f3ec;border-color:#2d6a4f;color:#2d6a4f}
+.biblio-seen-check-box{width:12px;height:12px;border:1.5px solid currentColor;border-radius:2px;display:inline-block;position:relative;flex-shrink:0}
+.biblio-seen-check.is-active .biblio-seen-check-box{background:#2d6a4f;border-color:#2d6a4f}
+.biblio-seen-check.is-active .biblio-seen-check-box::after{content:'';position:absolute;top:1px;left:3px;width:4px;height:7px;border-right:2px solid white;border-bottom:2px solid white;transform:rotate(45deg)}
+/* Cache case et badges si l'utilisateur n'est pas connecté (feature réservée aux membres) */
+body:not(.is-member) .biblio-read-status,
+body:not(.is-member) .biblio-seen-check{display:none}
+/* Cadeau de bienvenue exclu (pas de statut de lecture là-dessus) */
+.biblio-card.biblio-gift .biblio-read-status,
+.biblio-card.biblio-gift .biblio-seen-check{display:none}
+/* Les sources (culture admin / divers / concours) ne sont pas couvertes par la feature */
+.biblio-source-card .biblio-read-status,
+.biblio-source-card .biblio-seen-check{display:none}
+
+/* Bouton "Marquer comme vu" dans le viewer PDF */
+.pdf-viewer-mark-seen{background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;cursor:pointer;font-size:.78rem;font-weight:600;font-family:'DM Sans',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:6px;margin-right:8px}
+.pdf-viewer-mark-seen:hover{background:#2d6a4f;border-color:#2d6a4f}
+.pdf-viewer-mark-seen.is-active{background:#2d6a4f;border-color:#2d6a4f}
+.pdf-viewer-mark-seen.is-active:hover{background:#256046}
+.pdf-viewer-mark-seen-ico{font-size:.95rem;line-height:1}
 /* Sur les fiches avec badge "Fiche", décale le lock pour ne pas chevaucher le NEW badge */
 .biblio-card.is-synthese .biblio-lock{top:26px}
 /* Masque le tag "GRATUIT" (::after) quand un badge NEW est présent sur la carte — évite collision visuelle */
@@ -1721,6 +1757,10 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <div class="pdf-viewer-meta" id="pdf-viewer-type">Document</div>
         <div class="pdf-viewer-title" id="pdf-viewer-title">—</div>
       </div>
+      <button class="pdf-viewer-mark-seen" id="pdf-viewer-mark-seen" onclick="toggleSeenFromViewer()" style="display:none">
+        <span class="pdf-viewer-mark-seen-ico">✓</span>
+        <span id="pdf-viewer-mark-seen-label">Marquer comme vu</span>
+      </button>
       <button class="pdf-viewer-close" onclick="closePdfViewer()">Fermer ✕</button>
     </div>
     <div class="pdf-viewer-body" oncontextmenu="return false" id="pdf-viewer-body">
@@ -5113,8 +5153,206 @@ var BADGE_RARITY_LABELS = {
   legendaire: 'Légendaire'
 };
 
-// État local : set des badges déjà obtenus par l'utilisateur courant (pour détection nouveaux)
-var earnedBadgeIds = new Set();
+// ================================================================
+// MODULE LECTURES BIBLIOTHÈQUE — statut "vu" par document
+// ----------------------------------------------------------------
+// Périmètre : fiches de synthèse + doctrines opérationnelles uniquement.
+// 3 états par doc : "unread" (jamais ouvert), "opened" (ouvert sans
+// être marqué vu), "seen" (explicitement marqué vu par le candidat).
+// Persistance : table Supabase "doc_completions" (1 ligne = doc vu).
+// L'état "opened" est dérivé de la table "doc_reads" existante.
+// ================================================================
+
+// Docs couverts par la feature — doit correspondre aux IDs utilisés
+// dans les appels openDoc() des cartes "fiche" et "doctrines".
+// On pourrait filtrer dynamiquement sur data-cat, mais la liste
+// explicite est plus sûre et permet de contrôler le périmètre.
+function _biblioIsTrackableCard(cardEl) {
+  if (!cardEl) return false;
+  if (cardEl.classList.contains('biblio-source-card')) return false;
+  if (cardEl.classList.contains('biblio-gift')) return false;
+  var cat = cardEl.getAttribute('data-cat');
+  // Fiches : culture admin avec is-synthese + concours fiche + divers fiches
+  if (cardEl.classList.contains('is-synthese')) return true;
+  // Doctrines opérationnelles (toutes les cartes sous data-cat="doctrines")
+  if (cat === 'doctrines') return true;
+  return false;
+}
+
+var _biblioSeenIds = new Set();       // docs explicitement marqués vus
+var _biblioOpenedIds = new Set();     // docs déjà ouverts au moins une fois
+var _biblioStatusLoaded = false;
+
+// Charge les deux sets depuis Supabase en parallèle
+function loadBiblioReadStatus() {
+  if (!window.supabaseClient || !currentMember) {
+    _biblioStatusLoaded = true;
+    return Promise.resolve();
+  }
+  var mid = (typeof espMemberId === 'function') ? espMemberId() : null;
+  if (!mid) {
+    _biblioStatusLoaded = true;
+    return Promise.resolve();
+  }
+
+  // 1) Docs marqués "vus"
+  var p1 = window.supabaseClient
+    .from('doc_completions')
+    .select('doc_id')
+    .eq('member_id', mid)
+    .then(function(res) {
+      if (res.error) { console.warn('[biblio] load doc_completions', res.error); return; }
+      _biblioSeenIds = new Set((res.data || []).map(function(r){ return r.doc_id; }));
+    })
+    .catch(function(e){ console.warn('[biblio] doc_completions exception', e); });
+
+  // 2) Docs déjà ouverts (distinct doc_id depuis doc_reads)
+  var p2 = window.supabaseClient
+    .from('doc_reads')
+    .select('doc_id')
+    .eq('member_id', mid)
+    .then(function(res) {
+      if (res.error) { console.warn('[biblio] load doc_reads', res.error); return; }
+      _biblioOpenedIds = new Set((res.data || []).map(function(r){ return r.doc_id; }));
+    })
+    .catch(function(e){ console.warn('[biblio] doc_reads exception', e); });
+
+  return Promise.all([p1, p2]).then(function() {
+    _biblioStatusLoaded = true;
+    renderBiblioReadStatus();
+  });
+}
+
+// Rend les pastilles "non lu/déjà ouvert/vu" et les checkboxes sur toutes les cartes éligibles
+function renderBiblioReadStatus() {
+  if (!currentMember) return;
+  var cards = document.querySelectorAll('.biblio-card');
+  cards.forEach(function(card) {
+    if (!_biblioIsTrackableCard(card)) return;
+    var docId = _biblioExtractDocId(card);
+    if (!docId) return;
+
+    var isSeen = _biblioSeenIds.has(docId);
+    var isOpened = _biblioOpenedIds.has(docId);
+
+    // État "is-seen" sur la carte pour le style général
+    card.classList.toggle('is-seen', isSeen);
+
+    // Nettoie les anciens éléments de statut avant d'en poser des nouveaux
+    var oldStatus = card.querySelector('.biblio-read-status');
+    if (oldStatus) oldStatus.remove();
+    var oldCheck = card.querySelector('.biblio-seen-check');
+    if (oldCheck) oldCheck.remove();
+
+    // Pastille de statut
+    var status;
+    if (isSeen) status = { cls: 'seen', label: '✓ Vu' };
+    else if (isOpened) status = { cls: 'opened', label: '👁 Déjà ouvert' };
+    else status = { cls: 'unread', label: 'Non lu' };
+    var statusEl = document.createElement('div');
+    statusEl.className = 'biblio-read-status ' + status.cls;
+    statusEl.textContent = status.label;
+    card.appendChild(statusEl);
+
+    // Case à cocher "Vu" — cliquable sans ouvrir le doc
+    var checkEl = document.createElement('div');
+    checkEl.className = 'biblio-seen-check' + (isSeen ? ' is-active' : '');
+    checkEl.innerHTML = '<span class="biblio-seen-check-box"></span>Vu';
+    checkEl.setAttribute('data-doc-id', docId);
+    checkEl.addEventListener('click', function(e) {
+      e.stopPropagation();  // ne pas ouvrir le doc
+      toggleDocSeen(docId, card);
+    });
+    card.appendChild(checkEl);
+  });
+}
+
+// Extrait le doc_id depuis l'onclick="openDoc('ID', ...)" du card
+function _biblioExtractDocId(cardEl) {
+  var onclick = cardEl.getAttribute('onclick') || '';
+  var m = onclick.match(/openDoc\(\s*['"]([^'"]+)['"]/);
+  return m ? m[1] : null;
+}
+
+// Toggle le statut "vu" d'un document + persist Supabase
+// cardEl peut être null si appelé depuis le viewer PDF
+function toggleDocSeen(docId, cardEl) {
+  if (!docId || !window.supabaseClient || !currentMember) return;
+  var mid = (typeof espMemberId === 'function') ? espMemberId() : null;
+  if (!mid) return;
+
+  var willBeSeen = !_biblioSeenIds.has(docId);
+
+  // Optimistic UI update
+  if (willBeSeen) _biblioSeenIds.add(docId);
+  else _biblioSeenIds.delete(docId);
+  renderBiblioReadStatus();                 // refresh tous les statuts (cartes)
+  _updateViewerMarkSeenButton();            // refresh le bouton du viewer si ouvert
+
+  if (willBeSeen) {
+    // Récupère name/type depuis la carte si présente, sinon depuis l'état du viewer
+    var docName = null, docType = null;
+    if (cardEl) {
+      var onclick = cardEl.getAttribute('onclick') || '';
+      var args = onclick.match(/openDoc\(\s*['"][^'"]+['"]\s*,\s*['"]([^'"]+)['"]\s*,\s*['"]([^'"]+)['"]/);
+      if (args) { docName = args[1]; docType = args[2]; }
+    }
+    if (!docName && _viewerCurrentDoc) { docName = _viewerCurrentDoc.name; docType = _viewerCurrentDoc.type; }
+
+    window.supabaseClient.from('doc_completions').insert({
+      member_id: mid,
+      doc_id: docId,
+      doc_name: docName || '',
+      doc_type: docType || ''
+    }).then(function(res){
+      if (res && res.error) {
+        // 23505 = unique_violation : déjà présent, OK
+        if (res.error.code !== '23505') {
+          console.warn('[biblio] insert doc_completion', res.error);
+          _biblioSeenIds.delete(docId);  // rollback
+          renderBiblioReadStatus();
+          _updateViewerMarkSeenButton();
+        }
+      }
+    });
+  } else {
+    window.supabaseClient.from('doc_completions').delete()
+      .eq('member_id', mid).eq('doc_id', docId)
+      .then(function(res){
+        if (res && res.error) {
+          console.warn('[biblio] delete doc_completion', res.error);
+          _biblioSeenIds.add(docId);  // rollback
+          renderBiblioReadStatus();
+          _updateViewerMarkSeenButton();
+        }
+      });
+  }
+}
+
+// ----- Intégration avec le viewer PDF -----
+
+// État courant du viewer (pour savoir quel doc on manipule depuis le bouton)
+var _viewerCurrentDoc = null;
+
+// Met à jour l'apparence du bouton "Marquer comme vu" du viewer
+function _updateViewerMarkSeenButton() {
+  var btn = document.getElementById('pdf-viewer-mark-seen');
+  var lbl = document.getElementById('pdf-viewer-mark-seen-label');
+  if (!btn || !lbl) return;
+  if (!_viewerCurrentDoc) { btn.style.display = 'none'; return; }
+  btn.style.display = 'inline-flex';
+  var isSeen = _biblioSeenIds.has(_viewerCurrentDoc.id);
+  btn.classList.toggle('is-active', isSeen);
+  lbl.textContent = isSeen ? 'Marqué vu ✓' : 'Marquer comme vu';
+}
+
+// Appelée au clic du bouton dans le viewer
+function toggleSeenFromViewer() {
+  if (!_viewerCurrentDoc) return;
+  toggleDocSeen(_viewerCurrentDoc.id, null);
+}
+
+
 var earnedBadgesLoaded = false;
 
 // Récupère les badges déjà obtenus depuis Supabase
@@ -10407,7 +10645,27 @@ function openDoc(id, name, type, url, accessLevel) {
   // Tracking uniquement pour les membres (connectés OU payants)
   if (currentMember) {
     espTrackDoc(id, name, type);
+    // Mémorise que ce doc a été ouvert (pour badge "Déjà ouvert") — hors sources/cadeau
+    if (_biblioOpenedIds && !_biblioOpenedIds.has(id)) {
+      _biblioOpenedIds.add(id);
+      // On ne refait pas tout le rendu ici (inutile pendant que la modal est ouverte) —
+      // le rendu aura lieu au retour sur la page biblio via renderBiblioReadStatus()
+    }
   }
+
+  // Mémorise le doc courant pour le bouton "Marquer comme vu" du viewer,
+  // et détermine si ce doc est dans le périmètre (fiches + doctrines).
+  // On regarde la carte qui a déclenché le clic pour savoir si c'est "trackable".
+  _viewerCurrentDoc = null;
+  var triggerCard = null;
+  if (typeof event !== 'undefined' && event && event.target) {
+    triggerCard = event.target.closest ? event.target.closest('.biblio-card') : null;
+  }
+  if (currentMember && triggerCard && _biblioIsTrackableCard(triggerCard)) {
+    _viewerCurrentDoc = { id: id, name: name, type: type };
+  }
+  _updateViewerMarkSeenButton();
+
   var overlay = document.getElementById('pdf-viewer-overlay');
   var iframe = document.getElementById('pdf-viewer-iframe');
   document.getElementById('pdf-viewer-title').textContent = name;
@@ -10429,6 +10687,11 @@ function closePdfViewer() {
   overlay.classList.remove('visible');
   document.body.classList.remove('pdf-open');
   document.body.style.overflow = '';
+  // Réinitialise l'état du viewer et rafraîchit les statuts des cartes
+  // (pour que l'état "déjà ouvert" apparaisse immédiatement si on vient d'ouvrir un doc)
+  _viewerCurrentDoc = null;
+  _updateViewerMarkSeenButton();
+  if (typeof renderBiblioReadStatus === 'function') renderBiblioReadStatus();
 }
 
 // Protections anti-copie sur le viewer
@@ -10721,6 +10984,10 @@ function updateNavMember(member) {
     document.body.classList.remove('is-member');
     document.body.classList.remove('is-free-member');
     document.body.classList.remove('is-logged');
+    // Invalide le cache des statuts de lecture biblio (pour la prochaine session)
+    _biblioSeenIds = new Set();
+    _biblioOpenedIds = new Set();
+    _biblioStatusLoaded = false;
     loginBtn.style.display  = 'inline-flex';
     logoutBtn.style.display = 'none';
     nameEl.style.display    = 'none';
@@ -11609,6 +11876,15 @@ goTo = function(id) {
   if (id === 'biblio') {
     showAnnalesThemes();
     renderAnnalesThemes();
+    // Charge les statuts de lecture depuis Supabase (avec cache : pas de rechargement inutile)
+    if (typeof loadBiblioReadStatus === 'function') {
+      if (_biblioStatusLoaded) {
+        // Déjà chargé → juste refresh l'affichage (prend en compte un éventuel "déjà ouvert")
+        renderBiblioReadStatus();
+      } else {
+        loadBiblioReadStatus();
+      }
+    }
   }
 };
 
