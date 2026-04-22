@@ -305,8 +305,8 @@ body.is-logged .hide-when-logged{display:none !important}
 .offer-price-alt{font-size:.78rem;color:var(--gray);margin-top:6px;margin-bottom:2px;font-style:italic}
 .offer-price-label{font-size:.78rem;color:var(--gray);margin-top:4px;margin-bottom:18px}
 .offer-price-note{font-size:.76rem;color:var(--gold);margin-top:8px;font-weight:500;margin-bottom:18px}
-/* Carte Découverte horizontale — placée sous les 3 offres payantes */
-.discover-card{background:var(--cream2);border:1px dashed var(--border);padding:28px 32px;margin-top:24px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;transition:border-color .2s}
+/* Carte Découverte horizontale — placée au-dessus des 3 offres payantes pour guider le prospect */
+.discover-card{background:var(--cream2);border:1px dashed var(--border);padding:28px 32px;margin-bottom:24px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;transition:border-color .2s}
 .discover-card:hover{border-color:var(--red);border-style:solid}
 .discover-card-left{display:flex;align-items:center;gap:16px}
 .discover-card-icon{width:48px;height:48px;background:var(--red-pale);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
@@ -2012,6 +2012,34 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   </div>
 
   <div class="section">
+
+    <!-- PALIER 1 — DÉCOUVERTE (gratuit, carte horizontale) — placée en tête pour guider le prospect avant les offres payantes -->
+    <div class="discover-card hide-when-logged" onclick="msSignupFree()" style="cursor:pointer">
+      <div class="discover-card-left">
+        <div class="discover-card-icon">🚪</div>
+        <div class="discover-card-title-wrap">
+          <div class="discover-card-title">Découverte</div>
+          <div class="discover-card-subtitle">Testez gratuitement la plateforme</div>
+        </div>
+      </div>
+      <div class="discover-card-center">
+        Pas encore prêt à t'engager ? Crée un compte gratuit et teste la plateforme avec une sélection représentative de contenu avant de choisir ta formule.
+        <ul class="discover-card-features">
+          <li><strong>🎁 Guide PDF ~50 pages</strong></li>
+          <li>30 QCM offerts</li>
+          <li>1 annale démo</li>
+          <li>Bibliothèque partielle</li>
+          <li>Actualités en libre accès</li>
+          <li>Premiers badges</li>
+        </ul>
+      </div>
+      <div class="discover-card-right">
+        <div class="discover-card-price-label">Sans CB requise</div>
+        <div class="discover-card-price">Gratuit</div>
+        <button class="btn btn-outline-red" onclick="event.stopPropagation();msSignupFree()">Créer mon compte →</button>
+      </div>
+    </div>
+
     <div class="offer-grid">
 
       <!-- PALIER 2A — PLATEFORME -->
@@ -2076,33 +2104,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <button class="btn btn-red" onclick="msPay('prc_accompagnement-pro-mensuel-s7ag0ei9')">Candidater</button>
       </div>
 
-    </div>
-
-    <!-- PALIER 1 — DÉCOUVERTE (gratuit, carte horizontale) -->
-    <div class="discover-card hide-when-logged" onclick="msSignupFree()" style="cursor:pointer">
-      <div class="discover-card-left">
-        <div class="discover-card-icon">🚪</div>
-        <div class="discover-card-title-wrap">
-          <div class="discover-card-title">Découverte</div>
-          <div class="discover-card-subtitle">Testez gratuitement la plateforme</div>
-        </div>
-      </div>
-      <div class="discover-card-center">
-        Pas encore prêt à t'engager ? Crée un compte gratuit et teste la plateforme avec une sélection représentative de contenu avant de choisir ta formule.
-        <ul class="discover-card-features">
-          <li><strong>🎁 Guide PDF ~50 pages</strong></li>
-          <li>30 QCM offerts</li>
-          <li>1 annale démo</li>
-          <li>Bibliothèque partielle</li>
-          <li>Actualités en libre accès</li>
-          <li>Premiers badges</li>
-        </ul>
-      </div>
-      <div class="discover-card-right">
-        <div class="discover-card-price-label">Sans CB requise</div>
-        <div class="discover-card-price">Gratuit</div>
-        <button class="btn btn-outline-red" onclick="event.stopPropagation();msSignupFree()">Créer mon compte →</button>
-      </div>
     </div>
 
     <!-- TABLEAU COMPARATIF -->
