@@ -1841,7 +1841,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     <div class="mobile-nav-link" onclick="goTo('parcours');closeMobileNav()"><span class="mn-ico">📖</span>Mon histoire<span class="mn-arrow">›</span></div>
 
     <!-- Espace candidat (visible uniquement si membre payant) -->
-    <div class="mobile-nav-link" id="mobile-espace-link" style="display:none" onclick="goTo('espace');closeMobileNav()"><span class="mn-ico">📊</span>Mon espace<span class="mn-arrow">›</span></div>
+    <div class="mobile-nav-link" id="mobile-espace-link" onclick="goToEspace();closeMobileNav()"><span class="mn-ico">📊</span>Mon espace<span class="mn-arrow">›</span></div>
 
     <!-- Comment je t'aide -->
     <div class="mobile-nav-category">Comment je t'aide</div>
@@ -1906,7 +1906,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <button class="nav-dropdown-item" data-page="qcm" onclick="goTo('qcm')"><span class="nav-item-ico">🎯</span>QCM</button>
         <button class="nav-dropdown-item" data-page="concours" onclick="goTo('concours')"><span class="nav-item-ico">⏱️</span>Mode concours</button>
         <button class="nav-dropdown-item" data-page="prepa" onclick="goToPrepa()"><span class="nav-item-ico">💪</span>Préparation physique</button>
-        <button class="nav-dropdown-item" data-page="espace" id="nav-espace-item" onclick="goTo('espace')" style="display:none"><span class="nav-item-ico">📊</span>Mon espace candidat</button>
+        <button class="nav-dropdown-item" data-page="espace" id="nav-espace-item" onclick="goToEspace()"><span class="nav-item-ico">📊</span>Mon espace candidat</button>
       </div>
     </div>
     <div class="nav-group" id="navg-ressources">
@@ -1945,6 +1945,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   <div class="cd-left">
     <div class="cd-label">⏳ Compte à rebours</div>
     <div class="cd-title">Inscriptions au prochain concours — 05 janvier 2027</div>
+    <div style="font-size:.78rem;color:rgba(255,255,255,0.72);margin-top:3px;font-weight:500">💡 Les meilleurs candidats préparent dès aujourd'hui — commence en douceur, progresse chaque semaine.</div>
   </div>
   <div class="cd-boxes">
     <div class="cd-box"><div class="cd-num" id="cd-d">---</div><div class="cd-unit">Jours</div></div>
@@ -2226,31 +2227,38 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <tbody>
           <tr>
             <td class="compare-feature">QCM corrigés</td>
-            <td>30</td>
-            <td class="yes">+1000</td>
-            <td class="compare-highlight yes">+1000</td>
-            <td class="yes">+1000</td>
+            <td>30 QCM</td>
+            <td class="yes">+1000 QCM</td>
+            <td class="compare-highlight yes">+1000 QCM</td>
+            <td class="yes">+1000 QCM</td>
           </tr>
           <tr>
             <td class="compare-feature">Annales commentées</td>
-            <td>1 démo</td>
-            <td class="yes">Toutes</td>
-            <td class="compare-highlight yes">Toutes</td>
-            <td class="yes">Toutes</td>
+            <td>1 annale démo</td>
+            <td class="yes">26 annales</td>
+            <td class="compare-highlight yes">26 annales</td>
+            <td class="yes">26 annales</td>
           </tr>
           <tr>
             <td class="compare-feature">Bibliothèque documentaire</td>
-            <td>Partielle</td>
-            <td class="yes">Complète</td>
-            <td class="compare-highlight yes">Complète</td>
-            <td class="yes">Complète</td>
+            <td>23 textes officiels</td>
+            <td class="yes">Tout + fiches synthèse</td>
+            <td class="compare-highlight yes">Tout + fiches synthèse</td>
+            <td class="yes">Tout + fiches synthèse</td>
           </tr>
           <tr>
-            <td class="compare-feature">Espace analytique &amp; badges</td>
-            <td>Basique</td>
-            <td class="yes">Complet</td>
-            <td class="compare-highlight yes">Complet</td>
-            <td class="yes">Complet</td>
+            <td class="compare-feature">Radar de compétences</td>
+            <td>Sur 7 jours</td>
+            <td class="yes">Historique 8 semaines</td>
+            <td class="compare-highlight yes">Historique 8 semaines</td>
+            <td class="yes">Historique 8 semaines</td>
+          </tr>
+          <tr>
+            <td class="compare-feature">Badges débloquables</td>
+            <td>Premiers badges</td>
+            <td class="yes">40 badges</td>
+            <td class="compare-highlight yes">40 + badges exclusifs</td>
+            <td class="yes">40 + badges exclusifs</td>
           </tr>
           <tr>
             <td class="compare-feature">Programmes physiques personnalisés</td>
@@ -2520,20 +2528,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             <div style="font-size:1.4rem;line-height:1;flex-shrink:0">🎁</div>
             <div style="flex:1;min-width:220px">
               <div style="font-size:.88rem;font-weight:700;color:#8B6914;margin-bottom:4px;letter-spacing:.3px">Mode démo — 10 questions par jour</div>
-              <div style="font-size:.85rem;color:var(--charcoal);line-height:1.55">
-                Tu testes la plateforme gratuitement. Tu peux t'entraîner sur <strong>10 questions aléatoires par jour</strong> parmi un échantillon de démonstration.
-                <span id="qcm-demo-remaining" style="display:inline-block;margin-top:4px;padding:2px 8px;background:#fff;border:1px solid #f5c66b;font-size:.78rem;font-weight:600;color:#8B6914">—</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BANDEAU MODE DÉMO (visible uniquement pour les non-payants) -->
-        <div id="qcm-demo-banner" style="display:none;background:#fff6e5;border:1px solid #f5c66b;border-left:3px solid #d68a1a;padding:16px 20px;margin-bottom:16px">
-          <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap">
-            <div style="font-size:1.4rem;line-height:1;flex-shrink:0">🎁</div>
-            <div style="flex:1;min-width:220px">
-              <div style="font-size:.88rem;font-weight:700;color:#8B6914;margin-bottom:4px;letter-spacing:.3px">Mode démo — 10 questions par jour</div>
               <div style="font-size:.85rem;color:var(--charcoal);line-height:1.55;margin-bottom:6px">
                 Tu testes la plateforme gratuitement. Tu peux t'entraîner sur <strong>10 questions aléatoires par jour</strong>, tirées dans l'ensemble des QCM du concours.
               </div>
@@ -2553,10 +2547,8 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         </div>
 
         <!-- CTA NON-MEMBRE / MEMBRE -->
-        <div style="margin-top:22px;background:var(--red-pale);border:1px solid var(--red-pale2);padding:20px;text-align:center" id="qcm-unlock-cta">
-          <div style="font-size:.88rem;font-weight:600;color:var(--red);margin-bottom:8px">🔒 Accès complet</div>
-          <div style="font-size:.9rem;color:var(--gray);line-height:1.55;margin-bottom:14px">Débloque les 1000+ QCM et toutes les statistiques détaillées à partir de 19€/mois</div>
-          <button class="btn btn-red" style="font-size:.88rem;padding:12px 22px" onclick="goTo('formation')">Débloquer →</button>
+        <div style="margin-top:14px;text-align:center" id="qcm-unlock-cta">
+          <button class="btn btn-outline-red" style="font-size:.82rem;padding:10px 20px" onclick="goTo('formation')">Accéder aux 1000+ QCM — voir les formules →</button>
         </div>
         <div style="margin-top:22px;background:#edf7ee;border:1px solid #c3e6c8;padding:18px 20px;display:none;text-align:center" id="qcm-member-cta">
           <div style="font-size:.88rem;font-weight:600;color:#1a5c25">✅ Accès complet activé — Tu as accès à tous les QCM.</div>
@@ -3293,7 +3285,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 
       <!-- SIDEBAR -->
       <div class="booking-info">
-        <div class="bi-price">79 &euro;</div>
+        <div class="bi-price">120 &euro;</div>
         <div class="bi-price-label">Séance de coaching en visio &middot; 60&ndash;90 min</div>
         <div style="font-size:.82rem;font-weight:600;color:var(--charcoal);margin-bottom:12px">Ce qui est inclus :</div>
         <ul class="bi-includes">
@@ -3306,10 +3298,10 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         </ul>
         <div class="bi-note">&#129526; Maximum 2 s&eacute;ances par semaine &mdash; places limit&eacute;es.</div>
         <div class="ch-pack" style="margin-top:24px">
-          <div class="ch-pack-label">Pack Complet</div>
-          <div class="ch-pack-price">217 &euro;</div>
-          <div class="ch-pack-desc">Acc&egrave;s plateforme + 3 s&eacute;ances coaching &mdash; priorit&eacute; de r&eacute;servation incluse.</div>
-          <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.8rem" onclick="msPay('prc_accompagnement-pro-mensuel-s7ag0ei9')">Choisir l'Accompagnement Premium &rarr;</button>
+          <div class="ch-pack-label">Envie d'un vrai suivi humain ?</div>
+          <div class="ch-pack-price">149 &euro;<span style="font-size:.82rem;font-weight:400;color:var(--gray);margin-left:4px">/mois</span></div>
+          <div class="ch-pack-desc">Accompagnement Premium : plateforme compl&egrave;te + pr&eacute;pa physique + RDV mensuel + WhatsApp + oraux blancs.</div>
+          <button class="btn btn-red" style="width:100%;justify-content:center;display:flex;font-size:.8rem" onclick="msPay('prc_accompagnement-pro-mensuel-s7ag0ei9')">D&eacute;couvrir l'Accompagnement Premium &rarr;</button>
         </div>
       </div>
     </div>
@@ -3320,7 +3312,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 <script>
 if(window.location.search.indexOf('success') !== -1) {
   document.addEventListener('DOMContentLoaded', function(){
-    var pages = ['home','parcours','formation','connexion','qcm','biblio','examen','correction','actu','coaching','espace','merci'];
+    var pages = ['home','parcours','formation','connexion','qcm','biblio','examen','correction','actu','coaching','espace','merci','concours','prepa','demo-espace','demo-prepa','bienvenue','candidats','profil','mentions','cgv','confidentialite','remboursement'];
     pages.forEach(function(p){
       var el = document.getElementById('page-'+p);
       if(el) el.classList.toggle('active', p === 'merci');
@@ -4313,82 +4305,15 @@ if(window.location.search.indexOf('success') !== -1) {
       </div>
     </div>
 
-    <div style="text-align:center;margin:56px 0 32px">
-      <div class="s-eyebrow" style="color:var(--red);margin-bottom:10px">Prêt à te lancer à fond ?</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--charcoal);line-height:1.2">
-        Passe directement à une <em style="color:var(--red)">formule complète</em>
-      </div>
+    <!-- Lien discret vers les formules payantes -->
+    <div style="text-align:center;margin-top:48px;padding:28px 24px;background:var(--cream2);border:1px dashed var(--border)">
+      <div style="font-size:.92rem;color:var(--charcoal);margin-bottom:6px">Tu sais déjà que tu veux aller plus loin ?</div>
+      <div style="font-size:.82rem;color:var(--gray);line-height:1.6;margin-bottom:16px">Tu peux aussi passer directement à une formule complète — Plateforme, Pack Complet, ou Accompagnement Premium.</div>
+      <button class="btn btn-outline-red" onclick="goTo('formation')" style="font-size:.88rem;padding:11px 22px">Voir les formules complètes →</button>
     </div>
 
-    <!-- Grille 3 offres payantes (identique à la page Formation) -->
-    <div class="offer-grid">
-
-      <!-- Palier 2A — Plateforme -->
-      <div class="offer-card">
-        <div class="offer-icon">📘</div>
-        <div class="offer-title">Plateforme</div>
-        <div class="offer-subtitle">Préparation Écrite complète</div>
-        <ul class="offer-features">
-          <li>+1000 QCM thématiques corrigés</li>
-          <li>Toutes les annales commentées</li>
-          <li>Bibliothèque documentaire complète</li>
-          <li>Mode examen chronométré illimité</li>
-          <li>Espace analytique &amp; badges avancés</li>
-          <li>Actualités premium &amp; mises à jour</li>
-        </ul>
-        <div class="offer-price">19 €<span class="offer-price-suffix">/mois</span></div>
-        <div class="offer-price-alt">ou 149 € / an · 2 mois offerts</div>
-        <div class="offer-price-label">Sans engagement · résiliable à tout moment</div>
-        <div class="offer-price-note" style="color:var(--gray)">💳 Satisfait ou remboursé sous 30j</div>
-        <button class="btn btn-red" onclick="msPay('prc_plateforme-mensuel-ol4g0ax1')">Choisir mensuel</button>
-        <button class="btn btn-outline" style="width:100%;margin-top:8px;justify-content:center;font-size:.95rem;font-weight:700;line-height:1.35;padding-top:10px;padding-bottom:10px" onclick="msPay('prc_plan-2a-plateforme-annuel-3v4y03zj')">Préférer l'annuel — 149 €<br><span style="font-weight:400;font-size:.82rem">(économise 40 €)</span></button>
-      </div>
-
-      <!-- Palier 2B — Pack Complet (recommandé) -->
-      <div class="offer-card featured">
-        <div class="offer-icon">🔥</div>
-        <div class="offer-title">Pack Complet</div>
-        <div class="offer-subtitle">Préparation Écrite et Physique</div>
-        <ul class="offer-features">
-          <li>Accès complet à la plateforme en ligne</li>
-          <li>Blocs de 6 semaines</li>
-          <li>Programme de préparation physique progressif</li>
-          <li>Personnalisé à ton niveau</li>
-          <li>Traceur de progressions physiques</li>
-          <li>Badges exclusifs</li>
-        </ul>
-        <div class="offer-price">49 €<span class="offer-price-suffix">/mois</span></div>
-        <div class="offer-price-alt">ou 399 € / an · 2 mois offerts</div>
-        <div class="offer-price-label">Sans engagement · résiliable à tout moment</div>
-        <div class="offer-price-note">🏆 La formule la plus choisie</div>
-        <button class="btn btn-red" onclick="msPay('prc_plateforme-physique-mensuel-9l4j0akb')">Choisir mensuel</button>
-        <button class="btn btn-outline" style="width:100%;margin-top:8px;justify-content:center;font-size:.95rem;font-weight:700;line-height:1.35;padding-top:10px;padding-bottom:10px" onclick="msPay('prc_formule-compl-te-th-orique-physique-12-mois-2-mois-offerts-7bae0e4l')">Préférer l'annuel — 399 €<br><span style="font-weight:400;font-size:.82rem">(économise 100 €)</span></button>
-      </div>
-
-      <!-- Palier 3 — Accompagnement Premium -->
-      <div class="offer-card">
-        <div class="offer-icon">💎</div>
-        <div class="offer-title">Accompagnement Premium</div>
-        <div class="offer-subtitle">Préparation Écrite, Physique et Orale + un vrai suivi humain jusqu'au jour J.</div>
-        <ul class="offer-features">
-          <li>Accès complet à la plateforme en ligne</li>
-          <li>Programme de préparation physique personnalisé</li>
-          <li>1 rendez-vous visio / mois pour faire le point</li>
-          <li>Mon contact WhatsApp pour poser tes questions</li>
-          <li>Oraux blancs personnalisés</li>
-          <li>Corrections écrites personnalisées</li>
-        </ul>
-        <div class="offer-price">149 €<span class="offer-price-suffix">/mois</span></div>
-        <div class="offer-price-alt">Engagement 6 mois min. — soit 894 €</div>
-        <div class="offer-price-label">Prolongeable au mois au-delà</div>
-        <div class="offer-price-note" style="color:var(--gold)">✦ Places limitées — 20 candidats max</div>
-        <button class="btn btn-red" onclick="msPay('prc_accompagnement-pro-mensuel-s7ag0ei9')">Candidater</button>
-      </div>
-
-    </div>
-
-    <div style="text-align:center;margin-top:40px">
-      <div style="font-size:.85rem;color:var(--gray);line-height:1.7">Tu peux toujours passer au niveau supérieur plus tard, depuis ton espace candidat.</div>
+    <div style="text-align:center;margin-top:32px">
+      <div style="font-size:.8rem;color:var(--gray);line-height:1.7">Tu peux toujours passer au niveau supérieur plus tard, depuis ton espace candidat.</div>
     </div>
 
   </div>
@@ -4642,6 +4567,98 @@ if(window.location.search.indexOf('success') !== -1) {
   </div>
 </div>
 
+<!-- ============================= PAGES LÉGALES (placeholders) ============================= -->
+<div class="page" id="page-mentions">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Informations légales</div>
+      <div class="s-title">Mentions <em>légales</em></div>
+    </div>
+  </div>
+  <div class="section" style="max-width:720px;margin:0 auto;padding:20px 5% 80px">
+    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:24px 28px;margin-bottom:28px">
+      <div style="font-weight:700;color:var(--red);margin-bottom:8px;font-size:.95rem">📝 Page en cours de rédaction</div>
+      <div style="font-size:.9rem;color:var(--charcoal);line-height:1.7">Cette page est en cours de finalisation. Les informations légales complètes (éditeur, hébergeur, directeur de publication) seront publiées très prochainement. En attendant, pour toute question administrative ou juridique, tu peux me contacter directement via la page <button onclick="goTo('coaching')" style="background:none;border:none;color:var(--red);text-decoration:underline;cursor:pointer;font:inherit;padding:0">Coaching</button>.</div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <button class="btn btn-outline" onclick="goTo('home')">← Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-cgv">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Conditions de vente</div>
+      <div class="s-title">Conditions générales <em>de vente</em></div>
+    </div>
+  </div>
+  <div class="section" style="max-width:720px;margin:0 auto;padding:20px 5% 80px">
+    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:24px 28px;margin-bottom:28px">
+      <div style="font-weight:700;color:var(--red);margin-bottom:8px;font-size:.95rem">📝 Page en cours de rédaction</div>
+      <div style="font-size:.9rem;color:var(--charcoal);line-height:1.7">Les conditions générales de vente détaillées seront publiées très prochainement. En attendant, voici les points principaux :</div>
+      <ul style="font-size:.88rem;color:var(--charcoal);line-height:1.8;margin-top:16px;padding-left:20px">
+        <li>Abonnements <strong>sans engagement</strong>, résiliables à tout moment depuis l'espace candidat.</li>
+        <li><strong>Satisfait ou remboursé sous 30 jours</strong> à compter du premier paiement.</li>
+        <li>Paiement sécurisé via Stripe.</li>
+        <li>Pour toute question ou réclamation, contacte-moi via la page <button onclick="goTo('coaching')" style="background:none;border:none;color:var(--red);text-decoration:underline;cursor:pointer;font:inherit;padding:0">Coaching</button>.</li>
+      </ul>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <button class="btn btn-outline" onclick="goTo('home')">← Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-confidentialite">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Données personnelles</div>
+      <div class="s-title">Politique de <em>confidentialité</em></div>
+    </div>
+  </div>
+  <div class="section" style="max-width:720px;margin:0 auto;padding:20px 5% 80px">
+    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:24px 28px;margin-bottom:28px">
+      <div style="font-weight:700;color:var(--red);margin-bottom:8px;font-size:.95rem">📝 Page en cours de rédaction</div>
+      <div style="font-size:.9rem;color:var(--charcoal);line-height:1.7">La politique de confidentialité détaillée sera publiée très prochainement. En attendant, voici les points essentiels :</div>
+      <ul style="font-size:.88rem;color:var(--charcoal);line-height:1.8;margin-top:16px;padding-left:20px">
+        <li>Tes données (email, statistiques, profil) sont stockées de manière sécurisée via <strong>Memberstack</strong> (authentification et paiement) et <strong>Supabase</strong> (données d'entraînement).</li>
+        <li>Aucune donnée n'est revendue à des tiers.</li>
+        <li>Tu peux demander l'export ou la suppression de tes données à tout moment via la page <button onclick="goTo('coaching')" style="background:none;border:none;color:var(--red);text-decoration:underline;cursor:pointer;font:inherit;padding:0">Coaching</button>.</li>
+        <li>Les paiements sont gérés par <strong>Stripe</strong> — aucune donnée bancaire n'est stockée sur le site.</li>
+      </ul>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <button class="btn btn-outline" onclick="goTo('home')">← Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-remboursement">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Garantie satisfait ou remboursé</div>
+      <div class="s-title">Politique de <em>remboursement</em></div>
+    </div>
+  </div>
+  <div class="section" style="max-width:720px;margin:0 auto;padding:20px 5% 80px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:2.5rem;margin-bottom:12px">🛡️</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--charcoal)">Satisfait ou remboursé sous 30 jours</div>
+    </div>
+    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:24px 28px;margin-bottom:28px">
+      <div style="font-size:.9rem;color:var(--charcoal);line-height:1.7;margin-bottom:14px">
+        Si tu ne trouves pas la plateforme à la hauteur de tes attentes dans les <strong>30 jours suivant ton premier paiement</strong>, je te rembourse intégralement. Sans question, sans délai.
+      </div>
+      <div style="font-weight:700;color:var(--red);margin-bottom:8px;font-size:.95rem;margin-top:20px">📝 Page en cours de rédaction</div>
+      <div style="font-size:.88rem;color:var(--charcoal);line-height:1.7">La procédure détaillée (délais de traitement, moyens de contact, cas particuliers des séances de coaching) sera publiée prochainement. Pour toute demande de remboursement, contacte-moi via la page <button onclick="goTo('coaching')" style="background:none;border:none;color:var(--red);text-decoration:underline;cursor:pointer;font:inherit;padding:0">Coaching</button>.</div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <button class="btn btn-outline" onclick="goTo('home')">← Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-top">
@@ -4669,21 +4686,21 @@ if(window.location.search.indexOf('success') !== -1) {
         <li><button onclick="goTo('parcours')">Mon parcours</button></li>
         <li><button onclick="goTo('actu')">Actualités</button></li>
         <li><button onclick="goTo('coaching')">Coaching</button></li>
-        <li><a href="#">Contact</a></li>
+        <li><button onclick="goTo('coaching')">Contact</button></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Légal</div>
       <ul class="footer-links">
-        <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">CGV</a></li>
-        <li><a href="#">Politique de confidentialité</a></li>
-        <li><a href="#">Remboursement</a></li>
+        <li><button onclick="goTo('mentions')">Mentions légales</button></li>
+        <li><button onclick="goTo('cgv')">CGV</button></li>
+        <li><button onclick="goTo('confidentialite')">Politique de confidentialité</button></li>
+        <li><button onclick="goTo('remboursement')">Remboursement</button></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Le Chemin du Sapeur-Pompier Professionnel — Tous droits réservés</div>
+    <div class="footer-copy">© 2025–2026 Le Chemin du Sapeur-Pompier Professionnel — Tous droits réservés</div>
     <div class="footer-made">🔥 Fait par un SPP, pour les futurs SPP</div>
   </div>
 </footer>
@@ -4855,6 +4872,17 @@ function goToPrepa() {
     goTo('prepa');
   } else {
     goTo('demo-prepa');
+  }
+}
+
+// Routage intelligent pour l'onglet "Mon espace candidat" du menu.
+// - Membre payant (2a/2b/3) → accède à son vrai espace
+// - Tout autre cas (pas connecté, compte gratuit) → démo espace
+function goToEspace() {
+  if (isPaidMember) {
+    goTo('espace');
+  } else {
+    goTo('demo-espace');
   }
 }
 
@@ -6902,7 +6930,7 @@ function refreshMemberAccess() {
 // ============================================================
 // NAVIGATION
 // ============================================================
-var pages = ['home','parcours','formation','connexion','qcm','biblio','examen','correction','actu','coaching','merci','concours','espace','prepa','demo-espace','demo-prepa','candidats','profil'];
+var pages = ['home','parcours','formation','connexion','qcm','biblio','examen','correction','actu','coaching','merci','concours','espace','prepa','demo-espace','demo-prepa','candidats','profil','mentions','cgv','confidentialite','remboursement'];
 
 function goTo(id) {
   pages.forEach(function(p) {
@@ -11157,10 +11185,11 @@ function updateNavMember(member) {
     // Masquer le CTA "Commencer gratuitement" dès qu'on est connecté
     var ctaSignup = document.getElementById('nav-cta-signup');
     if (ctaSignup) ctaSignup.style.display = 'none';
-    // L'espace candidat contient des stats personnelles réservées aux payants
+    // L'espace candidat : lien toujours visible dans le menu (routage conditionnel via goToEspace).
+    // Le bouton compact "📊 Mon espace" dans la nav reste réservé aux payants.
     if (spaceBtn)    spaceBtn.style.display    = isPaidMember ? 'inline-flex' : 'none';
-    if (espaceItem)  espaceItem.style.display  = isPaidMember ? 'block' : 'none';
-    if (mobileEspace) mobileEspace.style.display = isPaidMember ? 'block' : 'none';
+    if (espaceItem)  espaceItem.style.display  = 'block';
+    if (mobileEspace) mobileEspace.style.display = 'block';
     // Affichage du nom dans la nav : on commence par l'email (fallback),
     // puis dès que le profil Supabase est chargé, on passe à "[badge] pseudo"
     var email = (member.auth && member.auth.email) || member.email || '';
@@ -11225,8 +11254,8 @@ function updateNavMember(member) {
     var ctaSignupOff = document.getElementById('nav-cta-signup');
     if (ctaSignupOff) ctaSignupOff.style.display = 'inline-flex';
     if (spaceBtn) spaceBtn.style.display = 'none';
-    if (espaceItem) espaceItem.style.display = 'none';
-    if (mobileEspace) mobileEspace.style.display = 'none';
+    if (espaceItem) espaceItem.style.display = 'block';
+    if (mobileEspace) mobileEspace.style.display = 'block';
     // Rafraîchit l'UI QCM (mode démo à nouveau actif)
     if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
     if (typeof updateSummary === 'function') updateSummary();
