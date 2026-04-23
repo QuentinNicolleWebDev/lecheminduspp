@@ -4481,7 +4481,7 @@ if(window.location.search.indexOf('success') !== -1) {
           <div style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;text-align:center">📚 Révision</div>
         </div>
         <div id="prog-dispo-rows"></div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gray);line-height:1.5">💡 Coche <strong>Oui</strong> ou <strong>Non</strong> pour chaque jour. Le dimanche reçoit automatiquement <strong>15 min d'actualités</strong> (non modifiable). Côté sport : max <strong>5 séances par semaine</strong> dans l'ordre footing court → sortie longue → force bas → force haut → VMA.</div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gray);line-height:1.5">💡 Coche <strong>Oui</strong> ou <strong>Non</strong> pour chaque jour. Le dimanche est activé par défaut côté révision (<strong>15 min d'actus</strong>) mais rien n'est figé — tu peux tout désactiver ou ajouter du sport. Côté sport : max <strong>5 séances</strong> réparties selon ton programme physique — 1 = LUN · 2 = LUN+SAM · 3 = LUN+MER+SAM · 4 = LUN+MAR+JEU+VEN · 5 = semaine complète LUN+MAR+MER+VEN+SAM. On s'adapte si tes jours ne collent pas exactement.</div>
       </div>
     </div>
 
@@ -5532,10 +5532,13 @@ function demoPrepaUpdate() {
 // et exporter vers Google Agenda ou au format .ics.
 
 // Structure : { jour: [sportOui, revisionOui] } — booléens
+// Les jours SPORT suivent la logique du programme physique officiel :
+//   LUN footing · MAR force haut · MER VMA · JEU repos · VEN force bas · SAM sortie longue · DIM repos
+// Débutant : 2 séances (LUN + SAM) · Engagé : 3 séances (LUN + VEN + SAM) · Intensif : 5 séances
 var PROG_PROFILS_DISPO = {
-  debutant: { lun:[true,false], mar:[false,true], mer:[false,true], jeu:[true,false], ven:[false,true], sam:[true,false], dim:[false,true] },
-  engage:   { lun:[true,true],  mar:[false,true], mer:[false,true], jeu:[true,true],  ven:[false,true], sam:[true,true],  dim:[false,true] },
-  intensif: { lun:[true,true],  mar:[true,true],  mer:[true,true],  jeu:[true,true],  ven:[true,true],  sam:[true,true],  dim:[false,true] }
+  debutant: { lun:[true,false], mar:[false,true], mer:[false,true], jeu:[false,true], ven:[false,true], sam:[true,true], dim:[false,true] },
+  engage:   { lun:[true,true],  mar:[false,true], mer:[false,true], jeu:[false,true], ven:[true,true], sam:[true,true], dim:[false,true] },
+  intensif: { lun:[true,true],  mar:[true,true],  mer:[true,true],  jeu:[false,true], ven:[true,true], sam:[true,true], dim:[false,true] }
 };
 
 // Durées standard de chaque type de séance (alignées sur le programme physique du site)
@@ -5549,13 +5552,15 @@ var PROG_SPORT_DURATIONS = {
 
 // Priorité d'affectation des séances selon le nombre de jours sport disponibles
 // 1 jour → footing court · 2 → +sortie longue · 3 → +force bas · 4 → +force haut · 5 → +VMA
-// Au-delà de 5 jours, on plafonne : les jours supplémentaires restent libres
+// Au-delà de 5 jours, on plafonne : les jours supplémentaires restent libres.
+// Le champ `prefDay` indique le jour habituel du programme physique (alignement cohérent).
+// Le champ `family` sert à la règle : pas 2 courses ni 2 muscus à la suite, sauf cas forcé.
 var PROG_SPORT_SEQUENCE = [
-  { type:'footing_court', title:'Course — footing court', desc:'Allure facile, on parle sans halètement · travail d\'endurance fondamentale' },
-  { type:'sortie_longue', title:'Course — sortie longue endurance', desc:'Allure 70–75% FCmax · travail de volume' },
-  { type:'force_bas',     title:'Musculation — force bas du corps', desc:'Front squat + SDT + tractions · charges personnalisées' },
-  { type:'force_haut',    title:'Musculation — force haut du corps', desc:'Développé militaire + rowing + dips · haut du corps' },
-  { type:'vma',           title:'Course — fractionné VMA', desc:'10 × 200 m à 105% VMA · travail de vitesse' }
+  { type:'footing_court', title:'Course — footing court', desc:'Allure facile, on parle sans halètement · travail d\'endurance fondamentale', prefDay:'lun', family:'course' },
+  { type:'sortie_longue', title:'Course — sortie longue endurance', desc:'Allure 70–75% FCmax · travail de volume', prefDay:'sam', family:'course' },
+  { type:'force_bas',     title:'Musculation — force bas du corps', desc:'Front squat + SDT + tractions · charges personnalisées', prefDay:'ven', family:'muscu' },
+  { type:'force_haut',    title:'Musculation — force haut du corps', desc:'Développé militaire + rowing + dips · haut du corps', prefDay:'mar', family:'muscu' },
+  { type:'vma',           title:'Course — fractionné VMA', desc:'10 × 200 m à 105% VMA · travail de vitesse', prefDay:'mer', family:'course' }
 ];
 
 var PROG_REV_DURATION = 30; // 30 min par séance de révision
@@ -5576,13 +5581,13 @@ var progSessions = []; // généré par rebuildProgPlanning, manipulé par drag&
 
 // ---------- Rendu des sélecteurs de disponibilités ----------
 // Pour chaque jour, 2 boutons Oui/Non par colonne (sport, révision).
-// Le dimanche a la révision figée à Oui (15 min d'actus).
+// Tous les jours sont éditables — dimanche inclus (par défaut activé côté révision
+// avec 15 min d'actus, mais modifiable).
 function renderProgDispoRows() {
   var rows = document.getElementById('prog-dispo-rows');
   if (!rows) return;
   var html = '';
   PROG_DAYS.forEach(function(d) {
-    var isDim = d.key === 'dim';
     html += '<div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #F0EAE0">' +
       '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.74rem;letter-spacing:1.5px;color:var(--charcoal)">' + d.short + '</div>' +
       // Colonne sport : 2 boutons Oui/Non
@@ -5590,13 +5595,10 @@ function renderProgDispoRows() {
         yesNoButton(d.key, 0, true, progDispo[d.key][0] === true) +
         yesNoButton(d.key, 0, false, progDispo[d.key][0] === false) +
       '</div>' +
-      // Colonne révision
+      // Colonne révision : 2 boutons Oui/Non
       '<div style="display:flex;gap:4px;justify-content:center">' +
-        (isDim
-          ? '<span style="font-size:.72rem;color:var(--gray-light);font-style:italic;padding:5px 8px">Actus (fixe)</span>'
-          : (yesNoButton(d.key, 1, true, progDispo[d.key][1] === true) +
-             yesNoButton(d.key, 1, false, progDispo[d.key][1] === false))
-        ) +
+        yesNoButton(d.key, 1, true, progDispo[d.key][1] === true) +
+        yesNoButton(d.key, 1, false, progDispo[d.key][1] === false) +
       '</div>' +
     '</div>';
   });
@@ -5649,64 +5651,50 @@ function toggleProgDispo() {
 }
 
 // ---------- GÉNÉRATION DU PLANNING ----------
-// À partir des disponibilités (booléens), construit la liste progSessions[]
-// selon les règles de priorité sport/révision.
+// Règles de construction du planning sport selon le nombre de jours disponibles.
+// Chaque configuration a des JOURS IDÉAUX et une SÉQUENCE DE TYPES — dans cet ordre.
+// Si le candidat a ces jours exacts en dispo, on applique directement.
+// Sinon, on adapte avec la règle d'alternance course/muscu.
 //
-// SPORT — 5 séances max, ordre de priorité :
-//   1 jour  → footing court
-//   2 jours → + sortie longue
-//   3 jours → + force bas du corps
-//   4 jours → + force haut du corps
-//   5 jours → + VMA
-//   6-7 jours → on plafonne à 5, jours supplémentaires restent libres
+//   1 séance   : [LUN] → footing court
+//   2 séances  : jours consécutifs → footing + force bas (casse la répétition course)
+//                jours non consécutifs → [LUN, SAM] → footing + sortie longue
+//   3 séances  : [LUN, MER, SAM] → footing + force bas + sortie longue
+//   4 séances  : [LUN, MAR, JEU, VEN] → footing + force haut + sortie longue + force bas
+//   5 séances  : [LUN, MAR, MER, VEN, SAM] → footing + force haut + VMA + force bas + sortie longue
 //
-// RÉVISION — 30 min standard par séance, alternance QCM / biblio.
-//   Dimanche : toujours 15 min d'actus (non modifiable).
-//   Pas d'annales dans le programme type.
+// RÉVISION : 30 min/séance, alternance QCM/biblio.
+// Dimanche activé = 15 min d'actus (au lieu des 30 min standard).
 function rebuildProgPlanning() {
   progSessions = [];
 
   // ===== SPORT =====
-  // Jours avec sport = Oui (hors dimanche — on n'y met jamais de sport dans ce générateur)
+  // Tous les jours (dimanche inclus) peuvent recevoir du sport s'ils sont activés
   var sportDays = PROG_DAYS.filter(function(d) {
-    return d.key !== 'dim' && progDispo[d.key][0] === true;
+    return progDispo[d.key][0] === true;
   }).map(function(d) { return d.key; });
 
-  // Plafond à 5 séances : on prend les 5 premiers jours dispo dans l'ordre chronologique
-  var sportDaysCapped = sportDays.slice(0, 5);
-
-  // Assigner la séance selon le rang (index 0 → footing court, 1 → sortie longue, etc.)
-  var sportPlan = {};
-  sportDaysCapped.forEach(function(dayKey, rank) {
-    var seq = PROG_SPORT_SEQUENCE[rank];
-    if (!seq) return;
-    sportPlan[dayKey] = makeSportSession(seq.type, dayKey);
-  });
+  var sportPlan = generateSportPlan(sportDays);
 
   // ===== RÉVISION =====
-  // Jours avec révision = Oui (hors dimanche)
+  // Jours révision activés (hors dimanche, traité à part)
   var revDaysList = PROG_DAYS.filter(function(d) {
     return d.key !== 'dim' && progDispo[d.key][1] === true;
   });
-
   var qcmCount = 0, biblioCount = 0;
   var revPlan = {};
   revDaysList.forEach(function(d) {
-    // Alternance simple QCM/biblio pour varier les formats d'entraînement
     var useQcm = (qcmCount <= biblioCount);
-    if (useQcm) {
-      revPlan[d.key] = makeRevSession('qcm', d.key);
-      qcmCount++;
-    } else {
-      revPlan[d.key] = makeRevSession('biblio', d.key);
-      biblioCount++;
-    }
+    if (useQcm) { revPlan[d.key] = makeRevSession('qcm', d.key); qcmCount++; }
+    else        { revPlan[d.key] = makeRevSession('biblio', d.key); biblioCount++; }
   });
+  // Dimanche : actus 15 min UNIQUEMENT si révision Oui ce jour-là (c'est la valeur par défaut
+  // mais le candidat peut désactiver pour un repos mental complet).
+  if (progDispo.dim[1] === true) {
+    revPlan.dim = makeRevSession('actus', 'dim');
+  }
 
-  // Dimanche : toujours 15 min d'actus (non modifiable)
-  revPlan.dim = makeRevSession('actus', 'dim');
-
-  // ===== CONSTRUCTION FINALE DES SESSIONS =====
+  // ===== CONSTRUCTION FINALE =====
   PROG_DAYS.forEach(function(d) {
     if (sportPlan[d.key]) progSessions.push(sportPlan[d.key]);
     if (revPlan[d.key])   progSessions.push(revPlan[d.key]);
@@ -5714,6 +5702,72 @@ function rebuildProgPlanning() {
 
   renderProgWeek();
   renderProgSummary();
+}
+
+// ---------- Génération du plan sport ----------
+// Retourne un objet { dayKey: sessionSport } selon le nombre de jours dispo.
+function generateSportPlan(availableDays) {
+  var nbSlots = Math.min(availableDays.length, 5);
+  if (nbSlots === 0) return {};
+
+  // Récupère les 3 premiers jours trouvés dans availableDays matchant une liste idéale
+  // (on tolère de manquer un jour idéal si le candidat ne l'a pas)
+  function matchIdealDays(ideal, need) {
+    var kept = ideal.filter(function(d) { return availableDays.indexOf(d) !== -1; });
+    if (kept.length >= need) return kept.slice(0, need);
+    // Sinon, compléter avec d'autres jours dispo (dans l'ordre chronologique)
+    var extras = availableDays.filter(function(d) { return kept.indexOf(d) === -1; });
+    return kept.concat(extras).slice(0, need);
+  }
+
+  var types, days;
+  if (nbSlots === 1) {
+    days = matchIdealDays(['lun'], 1);
+    types = ['footing_court'];
+  } else if (nbSlots === 2) {
+    // Cas spécial : si les 2 jours dispo sont consécutifs, on fait footing + force bas
+    // (car 2 courses à la suite c'est pas recommandé — on casse avec une muscu)
+    if (areConsecutive(availableDays[0], availableDays[1])) {
+      days = [availableDays[0], availableDays[1]];
+      types = ['footing_court', 'force_bas'];
+    } else {
+      days = matchIdealDays(['lun', 'sam'], 2);
+      types = ['footing_court', 'sortie_longue'];
+    }
+  } else if (nbSlots === 3) {
+    days = matchIdealDays(['lun', 'mer', 'sam'], 3);
+    types = ['footing_court', 'force_bas', 'sortie_longue'];
+    // On aligne les types sur l'ordre chronologique des jours retenus
+    days.sort(dayCompare);
+  } else if (nbSlots === 4) {
+    days = matchIdealDays(['lun', 'mar', 'jeu', 'ven'], 4);
+    types = ['footing_court', 'force_haut', 'sortie_longue', 'force_bas'];
+    days.sort(dayCompare);
+  } else { // nbSlots === 5
+    days = matchIdealDays(['lun', 'mar', 'mer', 'ven', 'sam'], 5);
+    types = ['footing_court', 'force_haut', 'vma', 'force_bas', 'sortie_longue'];
+    days.sort(dayCompare);
+  }
+
+  // Associe chaque jour retenu à son type (dans l'ordre)
+  var plan = {};
+  days.forEach(function(dayKey, idx) {
+    plan[dayKey] = makeSportSession(types[idx], dayKey);
+  });
+  return plan;
+}
+
+// Deux jours sont-ils consécutifs dans la semaine ?
+function areConsecutive(day1, day2) {
+  var order = ['lun','mar','mer','jeu','ven','sam','dim'];
+  var i1 = order.indexOf(day1), i2 = order.indexOf(day2);
+  return Math.abs(i1 - i2) === 1;
+}
+
+// Comparateur pour trier les jours dans l'ordre chronologique
+function dayCompare(a, b) {
+  var order = ['lun','mar','mer','jeu','ven','sam','dim'];
+  return order.indexOf(a) - order.indexOf(b);
 }
 
 // Fabrique une séance sport à partir du type (durée prise dans PROG_SPORT_DURATIONS).
@@ -6026,13 +6080,13 @@ function renderProgSummary() {
   if (dispoSum) {
     var nbSport = 0, nbRev = 0;
     PROG_DAYS.forEach(function(d) {
-      if (d.key === 'dim') return; // dimanche exclu
       if (progDispo[d.key][0] === true) nbSport++;
-      if (progDispo[d.key][1] === true) nbRev++;
+      if (progDispo[d.key][1] === true && d.key !== 'dim') nbRev++;
     });
     var nbSportCapped = Math.min(nbSport, 5); // plafond sport
     var capInfo = (nbSport > 5) ? ' (5 utilisées sur ' + nbSport + ' dispo)' : '';
-    dispoSum.textContent = nbSportCapped + ' jour' + (nbSportCapped>1?'s':'') + ' sport' + capInfo + ' · ' + nbRev + ' jour' + (nbRev>1?'s':'') + ' révision · actus le dimanche';
+    var dimSuffix = progDispo.dim[1] === true ? ' · actus le dimanche' : '';
+    dispoSum.textContent = nbSportCapped + ' jour' + (nbSportCapped>1?'s':'') + ' sport' + capInfo + ' · ' + nbRev + ' jour' + (nbRev>1?'s':'') + ' révision' + dimSuffix;
   }
 
   // Total dans le bloc planning : minutes totales + badge intensité
