@@ -4435,83 +4435,125 @@ if(window.location.search.indexOf('success') !== -1) {
   <div class="page-header">
     <div class="page-header-inner">
       <div class="s-eyebrow">Ton plan hebdomadaire</div>
-      <div class="s-title">Combien de temps par jour ?<br>Voici un <em>programme type</em></div>
-      <div class="s-lead">Adapté à ton niveau et à ton temps dispo. Choisis le profil qui correspond le mieux à ta réalité — le planning se génère automatiquement pour toi.</div>
+      <div class="s-title">Ton planning<br><em>sur mesure</em></div>
+      <div class="s-lead">Dis combien de temps tu as par jour. On te propose un planning équilibré sport + révision, que tu peux réorganiser et exporter vers ton agenda.</div>
     </div>
   </div>
 
-  <div class="section" style="max-width:820px;margin:0 auto;padding:40px 5% 80px">
+  <div class="section" style="max-width:880px;margin:0 auto;padding:40px 5% 80px">
 
-    <!-- Sélecteur de profil -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px">
-      <button id="prog-btn-debutant" onclick="selectProgProfil('debutant')" style="background:white;border:1.5px solid var(--border);padding:18px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s">
-        <div style="font-size:1.6rem;margin-bottom:6px">⏱️</div>
-        <div style="font-size:.92rem;font-weight:700;color:var(--charcoal);margin-bottom:4px">Débutant</div>
-        <div style="font-size:.75rem;color:var(--gray);line-height:1.4">~4h/semaine<br>6 mois avant concours</div>
+    <!-- ===== 3 profils guides ===== -->
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px">Besoin d'un guide ?</div>
+    <div style="font-size:.82rem;color:var(--gray);line-height:1.55;margin-bottom:14px">Choisis un profil — il pré-remplit tes disponibilités. Tu pourras ensuite tout ajuster à ta réalité.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px">
+      <button id="prog-btn-debutant" onclick="applyProgProfil('debutant')" style="background:white;border:1.5px solid var(--border);padding:14px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s">
+        <div style="font-size:1.3rem;margin-bottom:4px">⏱️</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:3px">Débutant</div>
+        <div style="font-size:.7rem;color:var(--gray);line-height:1.35">~4h / sem.</div>
       </button>
-      <button id="prog-btn-engage" onclick="selectProgProfil('engage')" style="background:white;border:2px solid var(--red);padding:18px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;position:relative;transition:all .2s">
-        <div style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--red);color:white;font-size:.6rem;font-weight:700;letter-spacing:1.3px;padding:2px 10px;white-space:nowrap">LE PLUS CHOISI</div>
-        <div style="font-size:1.6rem;margin-bottom:6px">🎯</div>
-        <div style="font-size:.92rem;font-weight:700;color:var(--charcoal);margin-bottom:4px">Engagé</div>
-        <div style="font-size:.75rem;color:var(--gray);line-height:1.4">~8h/semaine<br>3 à 6 mois avant</div>
+      <button id="prog-btn-engage" onclick="applyProgProfil('engage')" style="background:white;border:2px solid var(--red);padding:14px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;position:relative;transition:all .2s">
+        <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--red);color:white;font-size:.55rem;font-weight:700;letter-spacing:1.2px;padding:2px 8px;white-space:nowrap">LE PLUS CHOISI</div>
+        <div style="font-size:1.3rem;margin-bottom:4px">🎯</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:3px">Engagé</div>
+        <div style="font-size:.7rem;color:var(--gray);line-height:1.35">~8h / sem.</div>
       </button>
-      <button id="prog-btn-intensif" onclick="selectProgProfil('intensif')" style="background:white;border:1.5px solid var(--border);padding:18px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s">
-        <div style="font-size:1.6rem;margin-bottom:6px">🔥</div>
-        <div style="font-size:.92rem;font-weight:700;color:var(--charcoal);margin-bottom:4px">Intensif</div>
-        <div style="font-size:.75rem;color:var(--gray);line-height:1.4">~12h/semaine<br>Dernière ligne droite</div>
+      <button id="prog-btn-intensif" onclick="applyProgProfil('intensif')" style="background:white;border:1.5px solid var(--border);padding:14px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;transition:all .2s">
+        <div style="font-size:1.3rem;margin-bottom:4px">🔥</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:3px">Intensif</div>
+        <div style="font-size:.7rem;color:var(--gray);line-height:1.35">~12h / sem.</div>
       </button>
     </div>
 
-    <!-- Planning hebdomadaire -->
-    <div style="background:white;border:1px solid var(--border);padding:28px 32px;margin-bottom:20px">
-      <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:4px">Une semaine type — profil <em style="color:var(--red)" id="prog-current-label">Engagé</em></div>
-      <div style="font-size:.82rem;color:var(--gray);margin-bottom:22px" id="prog-current-subtitle">~1h10 / jour en moyenne · 1 jour complet de repos</div>
+    <!-- ===== Bloc disponibilités (pliable) ===== -->
+    <div style="background:white;border:1px solid var(--border);padding:22px 26px;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--charcoal);line-height:1.2">Tes disponibilités</div>
+          <div style="font-size:.78rem;color:var(--gray);margin-top:3px" id="prog-dispo-summary">—</div>
+        </div>
+        <button onclick="toggleProgDispo()" id="prog-dispo-toggle" style="background:var(--cream2);border:1px solid var(--border);padding:8px 14px;font-size:.8rem;font-weight:600;color:var(--charcoal);cursor:pointer;font-family:'DM Sans',sans-serif">Changer mes disponibilités</button>
+      </div>
 
-      <div id="prog-week" style="display:grid;gap:10px"></div>
+      <div id="prog-dispo-panel" style="display:none">
+        <div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;align-items:center">
+          <div></div>
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;text-align:center">💪 Sport</div>
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;text-align:center">📚 Révision</div>
+        </div>
+        <div id="prog-dispo-rows"></div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gray);line-height:1.5">💡 Minutes par jour. Le dimanche reçoit automatiquement <strong>15 min d'actualités</strong> (non modifiable) — le reste de la journée t'appartient.</div>
+      </div>
+    </div>
+
+    <!-- ===== Planning généré ===== -->
+    <div style="background:white;border:1px solid var(--border);padding:24px 28px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--charcoal)">Ton planning généré</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span style="background:#edf7ee;color:#1a5c25;font-size:.6rem;font-weight:700;letter-spacing:1.2px;padding:3px 8px;border:1px solid #2d7a3a">AUTO-AJUSTÉ</span>
+        </div>
+      </div>
+      <div style="font-size:.76rem;color:var(--gray);margin-bottom:18px;line-height:1.5">💡 Glisse-dépose une séance pour changer son jour · Clique sur l'heure pour la modifier</div>
+
+      <div id="prog-week" style="display:grid;gap:8px"></div>
 
       <!-- Total -->
       <div style="background:var(--dark);color:white;padding:14px 18px;margin-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
         <div>
-          <div style="font-size:.72rem;color:#D5CCBB;letter-spacing:1px">TOTAL</div>
-          <div style="font-size:1.05rem;font-weight:600" id="prog-total">~6h de travail efficace / semaine</div>
+          <div style="font-size:.68rem;color:#D5CCBB;letter-spacing:1px">TON TOTAL HEBDO</div>
+          <div style="font-size:1rem;font-weight:600" id="prog-total">—</div>
         </div>
-        <div style="font-size:.78rem;color:#F09580;text-align:right;line-height:1.4" id="prog-total-note">Réparties sur 6 jours<br>pour rester régulier</div>
+        <div style="background:rgba(240,149,128,.2);color:#F09580;padding:5px 11px;font-size:.68rem;font-weight:700;letter-spacing:1.2px" id="prog-intensity">—</div>
       </div>
     </div>
 
-    <!-- 3 principes -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;margin-bottom:32px">
-      <div style="background:white;border:1px solid var(--border);padding:20px">
-        <div style="font-size:1.4rem;margin-bottom:10px">🎯</div>
-        <div style="font-size:.88rem;font-weight:700;color:var(--charcoal);margin-bottom:6px">Régularité > intensité</div>
-        <div style="font-size:.78rem;color:var(--gray);line-height:1.5">Mieux vaut 30 min chaque jour que 5h une fois le dimanche. Le cerveau consolide mieux en étalant.</div>
+    <!-- ===== Export agenda ===== -->
+    <div style="background:var(--cream2);border:1px solid var(--border);padding:22px 26px;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--charcoal)">📅 Exporte vers ton agenda</div>
+          <div style="font-size:.78rem;color:var(--gray);margin-top:3px">Reçois des rappels, bloque tes créneaux, tiens ton planning.</div>
+        </div>
       </div>
-      <div style="background:white;border:1px solid var(--border);padding:20px">
-        <div style="font-size:1.4rem;margin-bottom:10px">🔄</div>
-        <div style="font-size:.88rem;font-weight:700;color:var(--charcoal);margin-bottom:6px">Alterne les formats</div>
-        <div style="font-size:.78rem;color:var(--gray);line-height:1.5">QCM courts en semaine, annale complète le week-end. Variation = meilleure rétention.</div>
-      </div>
-      <div style="background:white;border:1px solid var(--border);padding:20px">
-        <div style="font-size:1.4rem;margin-bottom:10px">📊</div>
-        <div style="font-size:.88rem;font-weight:700;color:var(--charcoal);margin-bottom:6px">Mesure ta progression</div>
-        <div style="font-size:.78rem;color:var(--gray);line-height:1.5">Ton radar de compétences te dit chaque semaine où concentrer l'effort. Pas de travail au hasard.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button onclick="exportProgIcs()" class="btn btn-red" style="padding:10px 18px;font-size:.85rem">📥 Télécharger la semaine (.ics)</button>
+        <div style="font-size:.75rem;color:var(--gray);line-height:1.5;align-self:center;flex:1;min-width:200px">Compatible Google Agenda, Apple Calendar, Outlook. Chaque séance dispose aussi d'un bouton <em>"Ajouter à Google Agenda"</em> dans le planning.</div>
       </div>
     </div>
 
-    <!-- Avertissement réaliste -->
-    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:18px 22px;margin-bottom:32px">
-      <div style="font-size:.88rem;font-weight:700;color:var(--charcoal);margin-bottom:6px">⚠️ Un mot d'honnêteté</div>
-      <div style="font-size:.84rem;color:var(--charcoal);line-height:1.6">Ce programme est un cadre, pas une règle. Certaines semaines tu n'auras que 2h, d'autres tu abattras 15h. L'important c'est de <strong>ne pas décrocher plus de 3 jours d'affilée</strong> et de faire au moins <strong>une annale complète par quinzaine</strong> dans les 3 mois avant l'épreuve. Le reste peut s'ajuster à ton quotidien.</div>
+    <!-- ===== 3 principes ===== -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+      <div style="background:white;border:1px solid var(--border);padding:18px">
+        <div style="font-size:1.3rem;margin-bottom:8px">🎯</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:5px">Régularité > intensité</div>
+        <div style="font-size:.76rem;color:var(--gray);line-height:1.5">30 min chaque jour > 5h le dimanche. Le cerveau consolide en étalant.</div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);padding:18px">
+        <div style="font-size:1.3rem;margin-bottom:8px">🔄</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:5px">Alterne les formats</div>
+        <div style="font-size:.76rem;color:var(--gray);line-height:1.5">QCM courts en semaine, biblio ou annale plus longue le week-end.</div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);padding:18px">
+        <div style="font-size:1.3rem;margin-bottom:8px">📊</div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--charcoal);margin-bottom:5px">Mesure ta progression</div>
+        <div style="font-size:.76rem;color:var(--gray);line-height:1.5">Ton radar de compétences te dit où concentrer l'effort.</div>
+      </div>
     </div>
 
-    <!-- CTA final -->
-    <div class="hide-when-logged" style="background:var(--dark);color:var(--cream);padding:32px 28px;border:2px solid var(--red);text-align:center">
-      <div style="font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#F09580;margin-bottom:10px">Prêt à commencer ?</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:white;line-height:1.3;margin-bottom:8px">Ton planning personnalisé dans ton espace candidat</div>
-      <div style="font-size:.88rem;color:#D5CCBB;line-height:1.6;margin-bottom:20px;max-width:540px;margin-left:auto;margin-right:auto">Ce programme s'adapte automatiquement à ton niveau réel (via ton radar de compétences) et à ton temps dispo. Tu coches tes séances au fur et à mesure et tu vois ta progression.</div>
+    <!-- ===== Avertissement ===== -->
+    <div style="background:var(--cream2);border-left:3px solid var(--red);padding:16px 20px;margin-bottom:28px">
+      <div style="font-size:.84rem;font-weight:700;color:var(--charcoal);margin-bottom:4px">⚠️ Un mot d'honnêteté</div>
+      <div style="font-size:.8rem;color:var(--charcoal);line-height:1.6">Ce planning est un cadre, pas une règle. Certaines semaines tu n'auras que 2h, d'autres tu abattras 15h. L'important : <strong>ne pas décrocher plus de 3 jours d'affilée</strong> et faire au moins <strong>une annale complète par quinzaine</strong> dans les 3 mois avant l'épreuve.</div>
+    </div>
+
+    <!-- ===== CTA ===== -->
+    <div class="hide-when-logged" style="background:var(--dark);color:var(--cream);padding:28px 26px;border:2px solid var(--red);text-align:center">
+      <div style="font-size:.66rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#F09580;margin-bottom:8px">Prêt à commencer ?</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.35rem;color:white;line-height:1.3;margin-bottom:8px">Ton planning s'exécute dans ton espace candidat</div>
+      <div style="font-size:.84rem;color:#D5CCBB;line-height:1.6;margin-bottom:18px;max-width:540px;margin-left:auto;margin-right:auto">Coche tes séances au fur et à mesure, suis ta progression, et laisse ton radar de compétences t'orienter vers les points à travailler en priorité.</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-outline" onclick="goTo('connexion')" style="padding:12px 20px;border-color:var(--cream);color:var(--cream)">J'ai déjà un compte</button>
-        <button class="btn btn-red" onclick="msSignupFree()" style="padding:12px 22px">Commencer gratuitement →</button>
+        <button class="btn btn-outline" onclick="goTo('connexion')" style="padding:10px 18px;border-color:var(--cream);color:var(--cream)">J'ai déjà un compte</button>
+        <button class="btn btn-red" onclick="msSignupFree()" style="padding:10px 20px">Commencer gratuitement →</button>
       </div>
     </div>
 
@@ -5478,100 +5520,84 @@ function demoPrepaUpdate() {
 }
 
 // ============================================================
-// PAGE PROGRAMME TYPE — 3 profils hebdomadaires
+// PAGE PROGRAMME TYPE — générateur personnalisé + drag&drop + export agenda
 // ============================================================
-// Chaque profil = un planning hebdo adapté au niveau et au temps dispo.
-// L'objectif est de donner une réponse concrète à "combien de temps ?
-// comment m'organiser ?" que les visiteurs se posent fréquemment.
-var PROG_PROFILS = {
-  debutant: {
-    label: 'Débutant',
-    subtitle: '~35 min / jour en moyenne · 2 jours de repos complets',
-    total: '~4h de travail efficace / semaine',
-    totalNote: 'Réparties sur 5 jours<br>pour prendre de bonnes habitudes',
-    days: [
-      { day: 'LUN', title: '🎯 QCM thématique — Équipier', desc: '15 questions · lecture attentive des corrigés', time: '30 min', active: true },
-      { day: 'MAR', title: '💪 Course — footing aisance', desc: '25 min à allure facile, reprends progressivement', time: '30 min', active: true },
-      { day: 'MER', title: '🛌 Repos', desc: 'Récupération complète.', time: '—', active: false },
-      { day: 'JEU', title: '📚 Fiche GNR ou bibliothèque', desc: 'Lecture active — surligne ce qui te semble clé', time: '45 min', active: true },
-      { day: 'VEN', title: '💪 Renforcement léger', desc: 'Gainage + exercices au poids du corps', time: '30 min', active: true },
-      { day: 'SAM', title: '⏱️ Mini-annale QCM', desc: '30 questions en 30 min chrono + correction', time: '1h', active: true },
-      { day: 'DIM', title: '🛌 Repos', desc: 'Ton cerveau consolide pendant le repos.', time: '—', active: false }
-    ]
-  },
-  engage: {
-    label: 'Engagé',
-    subtitle: '~1h10 / jour en moyenne · 1 jour complet de repos',
-    total: '~8h de travail efficace / semaine',
-    totalNote: 'Réparties sur 6 jours<br>pour rester régulier',
-    days: [
-      { day: 'LUN', title: '🎯 QCM thématique — Incendie', desc: '30 questions · révision des corrigés', time: '45 min', active: true },
-      { day: 'MAR', title: '💪 Course — fractionné VMA court', desc: '10 × 200m à 105% VMA · séance complète', time: '45 min', active: true },
-      { day: 'MER', title: '📚 Fiche GNR + bibliothèque', desc: 'Lecture active d\'une fiche synthèse thématique', time: '1h', active: true },
-      { day: 'JEU', title: '💪 Musculation — force bas du corps', desc: 'Front squat + SDT + tractions · charges personnalisées', time: '1h', active: true },
-      { day: 'VEN', title: '🎯 QCM révision intelligente', desc: '20 questions ciblées sur tes points faibles', time: '30 min', active: true },
-      { day: 'SAM', title: '⏱️ Annale chronométrée complète', desc: '1 sujet d\'annale en conditions réelles + correction', time: '2h', active: true },
-      { day: 'DIM', title: '🛌 Repos', desc: 'Récupération complète — ta tête et ton corps travaillent quand tu te reposes.', time: '—', active: false }
-    ]
-  },
-  intensif: {
-    label: 'Intensif',
-    subtitle: '~1h45 / jour en moyenne · pas de jour de repos complet',
-    total: '~12h de travail efficace / semaine',
-    totalNote: 'Réparties sur 7 jours<br>— dernière ligne droite',
-    days: [
-      { day: 'LUN', title: '🎯 QCM + 💪 Course fractionné VMA', desc: '30 QCM Incendie (45 min) puis séance 10×400m VMA (45 min)', time: '1h30', active: true },
-      { day: 'MAR', title: '💪 Musculation — full body', desc: 'Front squat + SDT + DM + tractions · charges personnalisées', time: '1h15', active: true },
-      { day: 'MER', title: '⏱️ Annale partielle + 📚 fiche', desc: 'Épreuve de maths complète (1h) + fiche GNR (45 min)', time: '1h45', active: true },
-      { day: 'JEU', title: '🎯 QCM Équipier + 💪 course aisance', desc: '40 QCM thématiques (45 min) + footing récupération (30 min)', time: '1h15', active: true },
-      { day: 'VEN', title: '💪 Musculation — puissance', desc: 'Travail explosif : squat sauté, tractions lestées, gainage dynamique', time: '1h', active: true },
-      { day: 'SAM', title: '⏱️ Annale complète chronométrée', desc: '1 sujet intégral en conditions réelles + correction approfondie', time: '3h', active: true },
-      { day: 'DIM', title: '📚 Révision + QCM bilan', desc: 'Relecture fiches faibles + 20 QCM mix tous thèmes', time: '1h15', active: true }
-    ]
-  }
+// 3 profils servent uniquement à pré-remplir les disponibilités.
+// L'utilisateur ajuste ensuite chaque jour (sport + révision en minutes),
+// le planning se génère automatiquement selon des règles :
+//   - Sport : priorité course LUN+SAM, puis muscu bas (JEU), muscu haut (MAR), course JEU
+//   - Révision : QCM + biblio réparties, annales uniquement si total >= 10h
+//   - Dimanche : toujours 15 min d'actus (non modifiable)
+// L'utilisateur peut ensuite drag&drop les séances, modifier les horaires,
+// et exporter vers Google Agenda ou au format .ics.
+
+var PROG_PROFILS_DISPO = {
+  debutant: { lun:[30,0], mar:[0,15], mer:[0,30], jeu:[30,0], ven:[0,15], sam:[60,0], dim:[0,15] },
+  engage:   { lun:[45,30], mar:[0,45], mer:[0,30], jeu:[60,30], ven:[0,30], sam:[90,120], dim:[0,15] },
+  intensif: { lun:[60,45], mar:[60,30], mer:[60,60], jeu:[60,45], ven:[45,45], sam:[90,180], dim:[0,15] }
 };
 
-function renderProgWeek(profil) {
-  var p = PROG_PROFILS[profil] || PROG_PROFILS.engage;
+var PROG_DAYS = [
+  { key:'lun', label:'Lundi', short:'LUN', dayOffset:0 },
+  { key:'mar', label:'Mardi', short:'MAR', dayOffset:1 },
+  { key:'mer', label:'Mercredi', short:'MER', dayOffset:2 },
+  { key:'jeu', label:'Jeudi', short:'JEU', dayOffset:3 },
+  { key:'ven', label:'Vendredi', short:'VEN', dayOffset:4 },
+  { key:'sam', label:'Samedi', short:'SAM', dayOffset:5 },
+  { key:'dim', label:'Dimanche', short:'DIM', dayOffset:6 }
+];
 
-  // Titre et sous-titre
-  document.getElementById('prog-current-label').textContent = p.label;
-  document.getElementById('prog-current-subtitle').textContent = p.subtitle;
-  document.getElementById('prog-total').textContent = p.total;
-  document.getElementById('prog-total-note').innerHTML = p.totalNote;
+var PROG_TIME_STEPS = [0, 15, 20, 30, 45, 60, 90, 120];
 
-  // Grille des 7 jours
+// État courant
+var progDispo = JSON.parse(JSON.stringify(PROG_PROFILS_DISPO.engage)); // copie deep
+var progSessions = []; // généré par rebuildProgPlanning, manipulé par drag&drop
+
+// ---------- Rendu des sélecteurs de disponibilités ----------
+function renderProgDispoRows() {
+  var rows = document.getElementById('prog-dispo-rows');
+  if (!rows) return;
   var html = '';
-  p.days.forEach(function(d) {
-    if (d.active) {
-      html += '<div style="display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;padding:14px 18px;background:var(--cream2);border-left:3px solid var(--red)">' +
-        '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.72rem;letter-spacing:1.5px;color:var(--charcoal)">' + d.day + '</div>' +
-        '<div>' +
-          '<div style="font-size:.9rem;color:var(--charcoal);font-weight:500;margin-bottom:2px">' + d.title + '</div>' +
-          '<div style="font-size:.76rem;color:var(--gray);line-height:1.5">' + d.desc + '</div>' +
-        '</div>' +
-        '<div style="font-size:.82rem;font-weight:600;color:var(--red);white-space:nowrap">' + d.time + '</div>' +
-      '</div>';
-    } else {
-      html += '<div style="display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;padding:14px 18px;background:#f7f2ea;border-left:3px solid var(--border);opacity:.7">' +
-        '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.72rem;letter-spacing:1.5px;color:var(--gray)">' + d.day + '</div>' +
-        '<div>' +
-          '<div style="font-size:.9rem;color:var(--gray);font-weight:500;margin-bottom:2px">' + d.title + '</div>' +
-          '<div style="font-size:.76rem;color:var(--gray-light);line-height:1.5">' + d.desc + '</div>' +
-        '</div>' +
-        '<div style="font-size:.82rem;color:var(--gray-light)">' + d.time + '</div>' +
-      '</div>';
-    }
+  PROG_DAYS.forEach(function(d) {
+    var isDim = d.key === 'dim';
+    html += '<div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #F0EAE0">' +
+      '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.74rem;letter-spacing:1.5px;color:var(--charcoal)">' + d.short + '</div>' +
+      // Colonne sport
+      '<div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center">' +
+        PROG_TIME_STEPS.map(function(v) {
+          var selected = progDispo[d.key][0] === v;
+          return '<button onclick="setProgDispo(\'' + d.key + '\',0,' + v + ')" style="padding:4px 7px;font-size:.7rem;font-family:\'DM Sans\',sans-serif;border:1px solid ' + (selected?'var(--red)':'var(--border)') + ';background:' + (selected?'var(--red)':'white') + ';color:' + (selected?'white':'var(--gray)') + ';cursor:pointer;min-width:28px">' + v + '</button>';
+        }).join('') +
+      '</div>' +
+      // Colonne révision
+      '<div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center">' +
+        (isDim
+          ? '<span style="font-size:.75rem;color:var(--gray-light);font-style:italic;padding:5px 8px">15 min d\'actus (fixe)</span>'
+          : PROG_TIME_STEPS.map(function(v) {
+              var selected = progDispo[d.key][1] === v;
+              return '<button onclick="setProgDispo(\'' + d.key + '\',1,' + v + ')" style="padding:4px 7px;font-size:.7rem;font-family:\'DM Sans\',sans-serif;border:1px solid ' + (selected?'var(--red)':'var(--border)') + ';background:' + (selected?'var(--red)':'white') + ';color:' + (selected?'white':'var(--gray)') + ';cursor:pointer;min-width:28px">' + v + '</button>';
+            }).join('')
+        ) +
+      '</div>' +
+    '</div>';
   });
-  document.getElementById('prog-week').innerHTML = html;
+  rows.innerHTML = html;
 }
 
-function selectProgProfil(profil) {
-  // Met à jour les styles des 3 boutons selon la sélection
+function setProgDispo(dayKey, idx, value) {
+  progDispo[dayKey][idx] = value;
+  renderProgDispoRows();
+  rebuildProgPlanning();
+}
+
+// Applique un profil : remplit les dispo avec le preset
+function applyProgProfil(profilKey) {
+  progDispo = JSON.parse(JSON.stringify(PROG_PROFILS_DISPO[profilKey]));
+  // Highlight du bouton choisi
   ['debutant','engage','intensif'].forEach(function(p) {
     var btn = document.getElementById('prog-btn-' + p);
     if (!btn) return;
-    if (p === profil) {
+    if (p === profilKey) {
       btn.style.border = '2px solid var(--red)';
       btn.style.background = 'var(--red-pale)';
     } else {
@@ -5579,7 +5605,437 @@ function selectProgProfil(profil) {
       btn.style.background = 'white';
     }
   });
-  renderProgWeek(profil);
+  renderProgDispoRows();
+  rebuildProgPlanning();
+}
+
+// Plier / déplier le bloc disponibilités
+function toggleProgDispo() {
+  var panel = document.getElementById('prog-dispo-panel');
+  var btn = document.getElementById('prog-dispo-toggle');
+  if (!panel || !btn) return;
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    btn.textContent = '✓ Valider mes disponibilités';
+  } else {
+    panel.style.display = 'none';
+    btn.textContent = 'Changer mes disponibilités';
+  }
+}
+
+// ---------- GÉNÉRATION DU PLANNING ----------
+// À partir des disponibilités, construit la liste progSessions[]
+// selon les règles de priorité sport/révision.
+function rebuildProgPlanning() {
+  progSessions = [];
+
+  // ===== SPORT =====
+  // Compter les jours avec au moins 15 min de sport (hors dimanche)
+  var sportDays = PROG_DAYS.filter(function(d) {
+    return d.key !== 'dim' && progDispo[d.key][0] >= 15;
+  }).map(function(d) { return d.key; });
+
+  var nbSport = sportDays.length;
+
+  // Priorités selon le nombre de séances possibles
+  // 1 → LUN course court | 2 → + SAM long | 3 → + JEU muscu bas
+  // 4 → + MAR muscu haut | 5 → + JEU course endurance (mais JEU déjà pris par muscu)
+  // Ajustement : si 5 séances, on fait LUN/MAR/JEU/SAM + un autre jour dispo (MER ou VEN)
+  var sportPlan = {};
+  var remainingSlots = ['course_court_lun','course_long_sam','muscu_bas_jeu','muscu_haut_mar','course_endu_supp'];
+  var assignedOrder = [];
+
+  if (nbSport >= 1 && sportDays.indexOf('lun') !== -1) {
+    sportPlan.lun = makeSportSession('course_court', 'lun', progDispo.lun[0]);
+    assignedOrder.push('lun');
+  }
+  if (nbSport >= 2 && sportDays.indexOf('sam') !== -1) {
+    sportPlan.sam = makeSportSession('course_long', 'sam', progDispo.sam[0]);
+    assignedOrder.push('sam');
+  }
+  if (nbSport >= 3 && sportDays.indexOf('jeu') !== -1) {
+    sportPlan.jeu = makeSportSession('muscu_bas', 'jeu', progDispo.jeu[0]);
+    assignedOrder.push('jeu');
+  }
+  if (nbSport >= 4 && sportDays.indexOf('mar') !== -1) {
+    sportPlan.mar = makeSportSession('muscu_haut', 'mar', progDispo.mar[0]);
+    assignedOrder.push('mar');
+  }
+  // 5ème séance : on cherche un autre jour dispo non encore utilisé pour mettre une course endurance
+  if (nbSport >= 5) {
+    var extraDays = sportDays.filter(function(d) { return assignedOrder.indexOf(d) === -1; });
+    if (extraDays.length > 0) {
+      sportPlan[extraDays[0]] = makeSportSession('course_endu', extraDays[0], progDispo[extraDays[0]][0]);
+    }
+  }
+  // 6ème et plus : on ajoute d'autres courses d'endurance sur les jours libres
+  if (nbSport >= 6) {
+    var extraDays2 = sportDays.filter(function(d) {
+      return assignedOrder.indexOf(d) === -1 && !sportPlan[d];
+    });
+    extraDays2.forEach(function(d) {
+      sportPlan[d] = makeSportSession('course_endu', d, progDispo[d][0]);
+    });
+  }
+
+  // ===== RÉVISION =====
+  // Total révision (hors dimanche) : distribué entre QCM (~50%), biblio (~40%), annales (~10% si total >= 10h)
+  var totalRevMinutes = 0;
+  PROG_DAYS.forEach(function(d) {
+    if (d.key !== 'dim') totalRevMinutes += progDispo[d.key][1];
+  });
+  var totalGlobalMin = totalRevMinutes;
+  PROG_DAYS.forEach(function(d) {
+    totalGlobalMin += progDispo[d.key][0]; // + sport
+  });
+  var annalesDispo = totalGlobalMin >= 600; // 10h = 600 min
+
+  // Stratégie simple : chaque jour avec révision reçoit une activité selon son rang dans la semaine
+  // Rotation : QCM → Biblio → QCM → Biblio... avec 1 annale insérée le samedi si annalesDispo et samedi a 90+ min
+  var revDaysList = PROG_DAYS.filter(function(d) {
+    return d.key !== 'dim' && progDispo[d.key][1] >= 15;
+  });
+
+  var qcmCount = 0, biblioCount = 0;
+  var revPlan = {};
+
+  // Si annales disponibles et samedi a >= 90 min de révision → samedi = annale
+  if (annalesDispo && progDispo.sam[1] >= 90) {
+    revPlan.sam = makeRevSession('annale', 'sam', progDispo.sam[1]);
+  }
+
+  revDaysList.forEach(function(d) {
+    if (revPlan[d.key]) return; // déjà assigné
+    // Alternance QCM / biblio, en privilégiant QCM pour les séances courtes
+    var min = progDispo[d.key][1];
+    var useQcm = (qcmCount <= biblioCount) || min <= 30;
+    if (useQcm) {
+      revPlan[d.key] = makeRevSession('qcm', d.key, min);
+      qcmCount++;
+    } else {
+      revPlan[d.key] = makeRevSession('biblio', d.key, min);
+      biblioCount++;
+    }
+  });
+
+  // Dimanche : toujours 15 min d'actus
+  revPlan.dim = makeRevSession('actus', 'dim', 15);
+
+  // ===== CONSTRUCTION FINALE DES SESSIONS =====
+  PROG_DAYS.forEach(function(d) {
+    // SPORT
+    if (sportPlan[d.key]) {
+      progSessions.push(sportPlan[d.key]);
+    }
+    // RÉVISION
+    if (revPlan[d.key]) {
+      progSessions.push(revPlan[d.key]);
+    }
+  });
+
+  renderProgWeek();
+  renderProgSummary();
+}
+
+// Fabrique une séance sport avec horaire par défaut 18:00
+function makeSportSession(type, dayKey, duration) {
+  var types = {
+    course_court:  { icon:'💪', title:'Course — fractionné VMA court', desc:'10 × 200 m à 105% VMA · travail de vitesse', cat:'sport' },
+    course_long:   { icon:'💪', title:'Course — sortie longue endurance', desc:'Allure 70–75% FCmax · volume', cat:'sport' },
+    course_endu:   { icon:'💪', title:'Course — endurance fondamentale', desc:'Allure facile, on parle sans halètement', cat:'sport' },
+    muscu_bas:     { icon:'💪', title:'Musculation — force bas du corps', desc:'Front squat + SDT + tractions · charges personnalisées', cat:'sport' },
+    muscu_haut:    { icon:'💪', title:'Musculation — force haut du corps', desc:'Développé militaire + rowing + dips · haut du corps', cat:'sport' }
+  };
+  var t = types[type] || types.course_endu;
+  return {
+    id: 'sport-' + dayKey + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,5),
+    day: dayKey,
+    type: type,
+    cat: 'sport',
+    icon: t.icon,
+    title: t.title,
+    desc: t.desc,
+    duration: duration,
+    hour: '18',
+    minute: '00'
+  };
+}
+
+// Fabrique une séance révision avec horaire par défaut 20:30
+function makeRevSession(type, dayKey, duration) {
+  var types = {
+    qcm:    { icon:'🎯', title:'QCM thématique', desc:'Questions corrigées sur un thème SPP', cat:'revision' },
+    biblio: { icon:'📚', title:'Bibliothèque — fiche synthèse', desc:'Lecture active d\'un texte officiel ou d\'une fiche', cat:'revision' },
+    annale: { icon:'⏱️', title:'Annale chronométrée', desc:'Sujet complet en conditions réelles + correction', cat:'revision' },
+    actus:  { icon:'📰', title:'Lecture des actualités SPP', desc:'Faits marquants, jurisprudence, évolutions — rester à jour', cat:'revision' }
+  };
+  var t = types[type] || types.qcm;
+  return {
+    id: 'rev-' + dayKey + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,5),
+    day: dayKey,
+    type: type,
+    cat: 'revision',
+    icon: t.icon,
+    title: t.title,
+    desc: t.desc,
+    duration: duration,
+    hour: '20',
+    minute: '30'
+  };
+}
+
+// ---------- Rendu du planning hebdomadaire ----------
+// Affichage : une seule ligne par jour, avec sport et révision combinés si les deux sont présents.
+function renderProgWeek() {
+  var container = document.getElementById('prog-week');
+  if (!container) return;
+
+  var html = '';
+  PROG_DAYS.forEach(function(d) {
+    var daySessions = progSessions.filter(function(s) { return s.day === d.key; });
+    if (daySessions.length === 0) {
+      // Jour libre — reste un drop target
+      html += '<div class="prog-day-empty" data-day="' + d.key + '" ondragover="onProgDragOver(event)" ondragleave="onProgDragLeave(event)" ondrop="onProgDrop(event,\'' + d.key + '\')" style="display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:center;padding:14px 18px;background:#f7f2ea;border:1px dashed var(--border);color:var(--gray-light)">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.72rem;letter-spacing:1.5px">' + d.short + '</div>' +
+        '<div style="font-size:.78rem;font-style:italic">Jour de repos (glisse une séance ici pour l\'y déplacer)</div>' +
+      '</div>';
+    } else {
+      html += renderDayBlock(d, daySessions);
+    }
+  });
+  container.innerHTML = html;
+}
+
+// Bloc d'un jour combinant les N sessions (typiquement 1 sport + 1 révision)
+function renderDayBlock(d, daySessions) {
+  var hasSport = daySessions.some(function(s) { return s.cat === 'sport'; });
+  var hasRev = daySessions.some(function(s) { return s.cat === 'revision'; });
+  var borderColor = hasSport ? 'var(--red)' : '#877E72';
+  var bgColor = hasSport ? 'var(--cream2)' : '#ECE4D3';
+
+  var totalDuration = 0;
+  daySessions.forEach(function(s) { totalDuration += s.duration; });
+
+  var inner = '';
+  daySessions.forEach(function(s) {
+    inner += renderSessionInline(s, d);
+  });
+
+  return '<div class="prog-day-block" data-day="' + d.key + '" ondragover="onProgDragOver(event)" ondragleave="onProgDragLeave(event)" ondrop="onProgDrop(event,\'' + d.key + '\')" style="display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:flex-start;padding:14px 18px;background:' + bgColor + ';border-left:3px solid ' + borderColor + '">' +
+    '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.72rem;letter-spacing:1.5px;color:var(--charcoal);padding-top:4px">' + d.short + '</div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px">' + inner + '</div>' +
+    '<div style="font-size:.72rem;color:var(--gray);white-space:nowrap;padding-top:4px;font-weight:600">Total ' + formatDuration(totalDuration) + '</div>' +
+  '</div>';
+}
+
+// Une ligne "mini" dans le bloc du jour (session draggable)
+function renderSessionInline(s, d) {
+  var durationLabel = formatDuration(s.duration);
+  var timeStr = s.hour + ':' + s.minute;
+  var gcalUrl = buildGoogleCalUrl(s, d);
+  var catLabel = s.cat === 'sport' ? '💪 Sport' : '📚 Révision';
+  var catColor = s.cat === 'sport' ? 'var(--red)' : '#877E72';
+
+  return '<div class="prog-session" draggable="true" data-id="' + s.id + '" ondragstart="onProgDragStart(event,\'' + s.id + '\')" ondragend="onProgDragEnd(event)" style="background:white;border:1px solid var(--border);padding:10px 14px;cursor:grab;position:relative">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:6px">' +
+      '<div style="font-size:.66rem;font-weight:700;letter-spacing:1.5px;color:' + catColor + ';text-transform:uppercase">' + catLabel + ' · ' + durationLabel + '</div>' +
+      '<div style="font-size:.6rem;color:var(--gray-light);letter-spacing:1px">⋮⋮ glisser</div>' +
+    '</div>' +
+    '<div style="font-size:.85rem;color:var(--charcoal);font-weight:500;line-height:1.3;margin-bottom:2px">' + s.icon + ' ' + s.title + '</div>' +
+    '<div style="font-size:.72rem;color:var(--gray);line-height:1.45;margin-bottom:6px">' + s.desc + '</div>' +
+    '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">' +
+      '<button onclick="editProgTime(\'' + s.id + '\')" style="background:var(--cream2);border:1px solid var(--border);padding:2px 8px;font-size:.7rem;color:var(--charcoal);cursor:pointer;font-family:\'DM Sans\',sans-serif">🕐 ' + timeStr + '</button>' +
+      '<a href="' + gcalUrl + '" target="_blank" rel="noopener" style="font-size:.7rem;color:var(--red);text-decoration:underline;font-weight:500">+ Google Agenda</a>' +
+    '</div>' +
+  '</div>';
+}
+
+function formatDuration(min) {
+  if (min < 60) return min + ' min';
+  var h = Math.floor(min / 60);
+  var m = min % 60;
+  return m === 0 ? h + 'h' : h + 'h' + (m < 10 ? '0' : '') + m;
+}
+
+// ---------- Édition d'horaire ----------
+function editProgTime(sessionId) {
+  var s = progSessions.find(function(x) { return x.id === sessionId; });
+  if (!s) return;
+  var current = s.hour + ':' + s.minute;
+  var val = prompt('Horaire de cette séance (format HH:MM)', current);
+  if (!val) return;
+  var parts = val.trim().split(':');
+  if (parts.length !== 2) { showToast('Format HH:MM attendu (ex : 18:30)'); return; }
+  var h = parseInt(parts[0], 10);
+  var m = parseInt(parts[1], 10);
+  if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+    showToast('Horaire invalide');
+    return;
+  }
+  s.hour = (h < 10 ? '0' : '') + h;
+  s.minute = (m < 10 ? '0' : '') + m;
+  renderProgWeek();
+}
+
+// ---------- Drag & drop ----------
+var draggedId = null;
+function onProgDragStart(e, id) {
+  draggedId = id;
+  e.currentTarget.style.opacity = '0.4';
+  if (e.dataTransfer) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', id);
+  }
+}
+function onProgDragEnd(e) {
+  e.currentTarget.style.opacity = '1';
+  // Nettoyage visuel
+  document.querySelectorAll('.prog-session, .prog-day-empty').forEach(function(el) {
+    el.style.outline = '';
+  });
+}
+function onProgDragOver(e) {
+  if (e.preventDefault) e.preventDefault();
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.style.outline = '2px dashed var(--red)';
+  return false;
+}
+function onProgDragLeave(e) {
+  e.currentTarget.style.outline = '';
+}
+function onProgDrop(e, targetDay) {
+  if (e.stopPropagation) e.stopPropagation();
+  if (e.preventDefault) e.preventDefault();
+  e.currentTarget.style.outline = '';
+  if (!draggedId) return false;
+  var s = progSessions.find(function(x) { return x.id === draggedId; });
+  if (s) s.day = targetDay;
+  draggedId = null;
+  renderProgWeek();
+  return false;
+}
+
+// ---------- Résumé et intensité ----------
+function renderProgSummary() {
+  // Résumé disponibilités (dans le bandeau pliable)
+  var dispoSum = document.getElementById('prog-dispo-summary');
+  if (dispoSum) {
+    var totSport = 0, totRev = 0;
+    PROG_DAYS.forEach(function(d) {
+      totSport += progDispo[d.key][0];
+      totRev += progDispo[d.key][1];
+    });
+    dispoSum.textContent = formatDuration(totSport) + ' sport · ' + formatDuration(totRev) + ' révision · ' + formatDuration(totSport+totRev) + ' au total par semaine';
+  }
+
+  // Total dans le bloc planning
+  var totalEl = document.getElementById('prog-total');
+  var intEl = document.getElementById('prog-intensity');
+  if (totalEl || intEl) {
+    var total = 0;
+    progSessions.forEach(function(s) { total += s.duration; });
+    if (totalEl) totalEl.textContent = formatDuration(total) + ' / semaine · ' + progSessions.length + ' séance' + (progSessions.length>1?'s':'');
+    if (intEl) {
+      var intensity = 'Léger';
+      if (total >= 720) intensity = 'Intensif';
+      else if (total >= 480) intensity = 'Engagé';
+      else if (total >= 240) intensity = 'Régulier';
+      intEl.textContent = 'INTENSITÉ · ' + intensity.toUpperCase();
+    }
+  }
+}
+
+// ============================================================
+// EXPORT AGENDA — Google Calendar (per session) + .ics
+// ============================================================
+// Pour chaque séance, on calcule la date du prochain jour correspondant (ex: prochain lundi)
+// à partir du lundi de la semaine en cours.
+function getNextDayDate(dayKey) {
+  var dayOffsets = { lun:1, mar:2, mer:3, jeu:4, ven:5, sam:6, dim:0 };
+  var targetWeekday = dayOffsets[dayKey];
+  var now = new Date();
+  var currentDay = now.getDay(); // 0 = dimanche, 1 = lundi, ...
+  // On se cale sur le lundi de la semaine en cours (ou prochain si on est dimanche)
+  var mondayOffset = (currentDay === 0) ? 1 : (1 - currentDay);
+  var monday = new Date(now);
+  monday.setDate(now.getDate() + mondayOffset);
+  monday.setHours(0, 0, 0, 0);
+  // Ajout de l'offset du jour cible
+  var offsetFromMonday = (targetWeekday === 0) ? 6 : (targetWeekday - 1);
+  var targetDate = new Date(monday);
+  targetDate.setDate(monday.getDate() + offsetFromMonday);
+  return targetDate;
+}
+
+function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+// Format YYYYMMDDTHHmmSS pour Google Cal & .ics
+function formatDtGcal(date, hourStr, minStr, addMinutes) {
+  var d = new Date(date);
+  d.setHours(parseInt(hourStr,10), parseInt(minStr,10), 0, 0);
+  if (addMinutes) d.setMinutes(d.getMinutes() + addMinutes);
+  return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + pad2(d.getMinutes()) + '00';
+}
+
+function buildGoogleCalUrl(s, day) {
+  var date = getNextDayDate(s.day);
+  var start = formatDtGcal(date, s.hour, s.minute, 0);
+  var end = formatDtGcal(date, s.hour, s.minute, s.duration);
+  var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent(s.title) +
+    '&dates=' + start + '/' + end +
+    '&details=' + encodeURIComponent(s.desc + '\n\nPlanning généré via lecheminduspp.fr') +
+    '&location=' + encodeURIComponent('Le Chemin du SPP') +
+    '&recur=RRULE:FREQ=WEEKLY;COUNT=8';
+  return url;
+}
+
+// Export .ics complet
+function exportProgIcs() {
+  if (progSessions.length === 0) {
+    showToast('Aucune séance à exporter. Ajoute d\'abord des disponibilités.');
+    return;
+  }
+  var now = new Date();
+  var dtstamp = formatDtGcal(now, pad2(now.getHours()), pad2(now.getMinutes()), 0);
+
+  var lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Le Chemin du SPP//Programme hebdo//FR',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH'
+  ];
+
+  progSessions.forEach(function(s, idx) {
+    var date = getNextDayDate(s.day);
+    var start = formatDtGcal(date, s.hour, s.minute, 0);
+    var end = formatDtGcal(date, s.hour, s.minute, s.duration);
+    var uid = 'chemin-spp-' + s.id + '@lecheminduspp.fr';
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:' + uid);
+    lines.push('DTSTAMP:' + dtstamp);
+    lines.push('DTSTART:' + start);
+    lines.push('DTEND:' + end);
+    lines.push('SUMMARY:' + s.icon + ' ' + s.title);
+    lines.push('DESCRIPTION:' + s.desc.replace(/\n/g, '\\n') + '\\n\\nPlanning généré via lecheminduspp.fr');
+    lines.push('RRULE:FREQ=WEEKLY;COUNT=8');
+    lines.push('END:VEVENT');
+  });
+
+  lines.push('END:VCALENDAR');
+  var ics = lines.join('\r\n');
+
+  var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = 'planning-chemin-spp.ics';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  showToast('📥 Planning téléchargé — ouvre le fichier pour l\'ajouter à ton agenda');
 }
 
 // ============================================================
@@ -7704,7 +8160,12 @@ function goTo(id) {
   if (id === 'espace') { renderEspace(); }
   if (id === 'demo-espace') { renderDemoEspace(); }
   if (id === 'demo-prepa') { if (typeof demoPrepaUpdate === 'function') demoPrepaUpdate(); }
-  if (id === 'programme') { if (typeof renderProgWeek === 'function') renderProgWeek('engage'); }
+  if (id === 'programme') {
+    if (typeof renderProgDispoRows === 'function') {
+      renderProgDispoRows();
+      rebuildProgPlanning();
+    }
+  }
   if (id === 'candidats') { if (typeof renderCandidatesList === 'function') renderCandidatesList(); }
   if (id === 'profil') { if (typeof renderProfile === 'function') renderProfile(); }
   if (id === 'coaching') {
