@@ -4481,7 +4481,7 @@ if(window.location.search.indexOf('success') !== -1) {
           <div style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;color:var(--gray);text-transform:uppercase;text-align:center">📚 Révision</div>
         </div>
         <div id="prog-dispo-rows"></div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gray);line-height:1.5">💡 Minutes par jour. Le dimanche reçoit automatiquement <strong>15 min d'actualités</strong> (non modifiable) — le reste de la journée t'appartient.</div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--gray);line-height:1.5">💡 Coche <strong>Oui</strong> ou <strong>Non</strong> pour chaque jour. Le dimanche reçoit automatiquement <strong>15 min d'actualités</strong> (non modifiable). Côté sport : max <strong>5 séances par semaine</strong> dans l'ordre footing court → sortie longue → force bas → force haut → VMA.</div>
       </div>
     </div>
 
@@ -5531,11 +5531,34 @@ function demoPrepaUpdate() {
 // L'utilisateur peut ensuite drag&drop les séances, modifier les horaires,
 // et exporter vers Google Agenda ou au format .ics.
 
+// Structure : { jour: [sportOui, revisionOui] } — booléens
 var PROG_PROFILS_DISPO = {
-  debutant: { lun:[30,0], mar:[0,15], mer:[0,30], jeu:[30,0], ven:[0,15], sam:[60,0], dim:[0,15] },
-  engage:   { lun:[45,30], mar:[0,45], mer:[0,30], jeu:[60,30], ven:[0,30], sam:[90,120], dim:[0,15] },
-  intensif: { lun:[60,45], mar:[60,30], mer:[60,60], jeu:[60,45], ven:[45,45], sam:[90,180], dim:[0,15] }
+  debutant: { lun:[true,false], mar:[false,true], mer:[false,true], jeu:[true,false], ven:[false,true], sam:[true,false], dim:[false,true] },
+  engage:   { lun:[true,true],  mar:[false,true], mer:[false,true], jeu:[true,true],  ven:[false,true], sam:[true,true],  dim:[false,true] },
+  intensif: { lun:[true,true],  mar:[true,true],  mer:[true,true],  jeu:[true,true],  ven:[true,true],  sam:[true,true],  dim:[false,true] }
 };
+
+// Durées standard de chaque type de séance (alignées sur le programme physique du site)
+var PROG_SPORT_DURATIONS = {
+  footing_court:  45,  // Footing court / endurance fondamentale
+  sortie_longue:  90,  // Sortie longue endurance
+  force_bas:      60,  // Musculation force bas du corps
+  force_haut:     60,  // Musculation force haut du corps
+  vma:            45   // Séance VMA fractionnée
+};
+
+// Priorité d'affectation des séances selon le nombre de jours sport disponibles
+// 1 jour → footing court · 2 → +sortie longue · 3 → +force bas · 4 → +force haut · 5 → +VMA
+// Au-delà de 5 jours, on plafonne : les jours supplémentaires restent libres
+var PROG_SPORT_SEQUENCE = [
+  { type:'footing_court', title:'Course — footing court', desc:'Allure facile, on parle sans halètement · travail d\'endurance fondamentale' },
+  { type:'sortie_longue', title:'Course — sortie longue endurance', desc:'Allure 70–75% FCmax · travail de volume' },
+  { type:'force_bas',     title:'Musculation — force bas du corps', desc:'Front squat + SDT + tractions · charges personnalisées' },
+  { type:'force_haut',    title:'Musculation — force haut du corps', desc:'Développé militaire + rowing + dips · haut du corps' },
+  { type:'vma',           title:'Course — fractionné VMA', desc:'10 × 200 m à 105% VMA · travail de vitesse' }
+];
+
+var PROG_REV_DURATION = 30; // 30 min par séance de révision
 
 var PROG_DAYS = [
   { key:'lun', label:'Lundi', short:'LUN', dayOffset:0 },
@@ -5547,41 +5570,43 @@ var PROG_DAYS = [
   { key:'dim', label:'Dimanche', short:'DIM', dayOffset:6 }
 ];
 
-var PROG_TIME_STEPS = [0, 15, 20, 30, 45, 60, 90, 120];
-
 // État courant
 var progDispo = JSON.parse(JSON.stringify(PROG_PROFILS_DISPO.engage)); // copie deep
 var progSessions = []; // généré par rebuildProgPlanning, manipulé par drag&drop
 
 // ---------- Rendu des sélecteurs de disponibilités ----------
+// Pour chaque jour, 2 boutons Oui/Non par colonne (sport, révision).
+// Le dimanche a la révision figée à Oui (15 min d'actus).
 function renderProgDispoRows() {
   var rows = document.getElementById('prog-dispo-rows');
   if (!rows) return;
   var html = '';
   PROG_DAYS.forEach(function(d) {
     var isDim = d.key === 'dim';
-    html += '<div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #F0EAE0">' +
+    html += '<div style="display:grid;grid-template-columns:56px 1fr 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #F0EAE0">' +
       '<div style="font-family:\'Playfair Display\',serif;font-weight:700;font-size:.74rem;letter-spacing:1.5px;color:var(--charcoal)">' + d.short + '</div>' +
-      // Colonne sport
-      '<div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center">' +
-        PROG_TIME_STEPS.map(function(v) {
-          var selected = progDispo[d.key][0] === v;
-          return '<button onclick="setProgDispo(\'' + d.key + '\',0,' + v + ')" style="padding:4px 7px;font-size:.7rem;font-family:\'DM Sans\',sans-serif;border:1px solid ' + (selected?'var(--red)':'var(--border)') + ';background:' + (selected?'var(--red)':'white') + ';color:' + (selected?'white':'var(--gray)') + ';cursor:pointer;min-width:28px">' + v + '</button>';
-        }).join('') +
+      // Colonne sport : 2 boutons Oui/Non
+      '<div style="display:flex;gap:4px;justify-content:center">' +
+        yesNoButton(d.key, 0, true, progDispo[d.key][0] === true) +
+        yesNoButton(d.key, 0, false, progDispo[d.key][0] === false) +
       '</div>' +
       // Colonne révision
-      '<div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:center">' +
+      '<div style="display:flex;gap:4px;justify-content:center">' +
         (isDim
-          ? '<span style="font-size:.75rem;color:var(--gray-light);font-style:italic;padding:5px 8px">15 min d\'actus (fixe)</span>'
-          : PROG_TIME_STEPS.map(function(v) {
-              var selected = progDispo[d.key][1] === v;
-              return '<button onclick="setProgDispo(\'' + d.key + '\',1,' + v + ')" style="padding:4px 7px;font-size:.7rem;font-family:\'DM Sans\',sans-serif;border:1px solid ' + (selected?'var(--red)':'var(--border)') + ';background:' + (selected?'var(--red)':'white') + ';color:' + (selected?'white':'var(--gray)') + ';cursor:pointer;min-width:28px">' + v + '</button>';
-            }).join('')
+          ? '<span style="font-size:.72rem;color:var(--gray-light);font-style:italic;padding:5px 8px">Actus (fixe)</span>'
+          : (yesNoButton(d.key, 1, true, progDispo[d.key][1] === true) +
+             yesNoButton(d.key, 1, false, progDispo[d.key][1] === false))
         ) +
       '</div>' +
     '</div>';
   });
   rows.innerHTML = html;
+}
+
+// Petit utilitaire pour le bouton Oui ou Non
+function yesNoButton(dayKey, idx, value, selected) {
+  var label = value ? 'Oui' : 'Non';
+  return '<button onclick="setProgDispo(\'' + dayKey + '\',' + idx + ',' + value + ')" style="padding:6px 16px;font-size:.76rem;font-weight:600;font-family:\'DM Sans\',sans-serif;border:1px solid ' + (selected?'var(--red)':'var(--border)') + ';background:' + (selected?'var(--red)':'white') + ';color:' + (selected?'white':'var(--gray)') + ';cursor:pointer;min-width:52px">' + label + '</button>';
 }
 
 function setProgDispo(dayKey, idx, value) {
@@ -5624,150 +5649,98 @@ function toggleProgDispo() {
 }
 
 // ---------- GÉNÉRATION DU PLANNING ----------
-// À partir des disponibilités, construit la liste progSessions[]
+// À partir des disponibilités (booléens), construit la liste progSessions[]
 // selon les règles de priorité sport/révision.
+//
+// SPORT — 5 séances max, ordre de priorité :
+//   1 jour  → footing court
+//   2 jours → + sortie longue
+//   3 jours → + force bas du corps
+//   4 jours → + force haut du corps
+//   5 jours → + VMA
+//   6-7 jours → on plafonne à 5, jours supplémentaires restent libres
+//
+// RÉVISION — 30 min standard par séance, alternance QCM / biblio.
+//   Dimanche : toujours 15 min d'actus (non modifiable).
+//   Pas d'annales dans le programme type.
 function rebuildProgPlanning() {
   progSessions = [];
 
   // ===== SPORT =====
-  // Compter les jours avec au moins 15 min de sport (hors dimanche)
+  // Jours avec sport = Oui (hors dimanche — on n'y met jamais de sport dans ce générateur)
   var sportDays = PROG_DAYS.filter(function(d) {
-    return d.key !== 'dim' && progDispo[d.key][0] >= 15;
+    return d.key !== 'dim' && progDispo[d.key][0] === true;
   }).map(function(d) { return d.key; });
 
-  var nbSport = sportDays.length;
+  // Plafond à 5 séances : on prend les 5 premiers jours dispo dans l'ordre chronologique
+  var sportDaysCapped = sportDays.slice(0, 5);
 
-  // Priorités selon le nombre de séances possibles
-  // 1 → LUN course court | 2 → + SAM long | 3 → + JEU muscu bas
-  // 4 → + MAR muscu haut | 5 → + JEU course endurance (mais JEU déjà pris par muscu)
-  // Ajustement : si 5 séances, on fait LUN/MAR/JEU/SAM + un autre jour dispo (MER ou VEN)
+  // Assigner la séance selon le rang (index 0 → footing court, 1 → sortie longue, etc.)
   var sportPlan = {};
-  var remainingSlots = ['course_court_lun','course_long_sam','muscu_bas_jeu','muscu_haut_mar','course_endu_supp'];
-  var assignedOrder = [];
-
-  if (nbSport >= 1 && sportDays.indexOf('lun') !== -1) {
-    sportPlan.lun = makeSportSession('course_court', 'lun', progDispo.lun[0]);
-    assignedOrder.push('lun');
-  }
-  if (nbSport >= 2 && sportDays.indexOf('sam') !== -1) {
-    sportPlan.sam = makeSportSession('course_long', 'sam', progDispo.sam[0]);
-    assignedOrder.push('sam');
-  }
-  if (nbSport >= 3 && sportDays.indexOf('jeu') !== -1) {
-    sportPlan.jeu = makeSportSession('muscu_bas', 'jeu', progDispo.jeu[0]);
-    assignedOrder.push('jeu');
-  }
-  if (nbSport >= 4 && sportDays.indexOf('mar') !== -1) {
-    sportPlan.mar = makeSportSession('muscu_haut', 'mar', progDispo.mar[0]);
-    assignedOrder.push('mar');
-  }
-  // 5ème séance : on cherche un autre jour dispo non encore utilisé pour mettre une course endurance
-  if (nbSport >= 5) {
-    var extraDays = sportDays.filter(function(d) { return assignedOrder.indexOf(d) === -1; });
-    if (extraDays.length > 0) {
-      sportPlan[extraDays[0]] = makeSportSession('course_endu', extraDays[0], progDispo[extraDays[0]][0]);
-    }
-  }
-  // 6ème et plus : on ajoute d'autres courses d'endurance sur les jours libres
-  if (nbSport >= 6) {
-    var extraDays2 = sportDays.filter(function(d) {
-      return assignedOrder.indexOf(d) === -1 && !sportPlan[d];
-    });
-    extraDays2.forEach(function(d) {
-      sportPlan[d] = makeSportSession('course_endu', d, progDispo[d][0]);
-    });
-  }
+  sportDaysCapped.forEach(function(dayKey, rank) {
+    var seq = PROG_SPORT_SEQUENCE[rank];
+    if (!seq) return;
+    sportPlan[dayKey] = makeSportSession(seq.type, dayKey);
+  });
 
   // ===== RÉVISION =====
-  // Total révision (hors dimanche) : distribué entre QCM (~50%), biblio (~40%), annales (~10% si total >= 10h)
-  var totalRevMinutes = 0;
-  PROG_DAYS.forEach(function(d) {
-    if (d.key !== 'dim') totalRevMinutes += progDispo[d.key][1];
-  });
-  var totalGlobalMin = totalRevMinutes;
-  PROG_DAYS.forEach(function(d) {
-    totalGlobalMin += progDispo[d.key][0]; // + sport
-  });
-  var annalesDispo = totalGlobalMin >= 600; // 10h = 600 min
-
-  // Stratégie simple : chaque jour avec révision reçoit une activité selon son rang dans la semaine
-  // Rotation : QCM → Biblio → QCM → Biblio... avec 1 annale insérée le samedi si annalesDispo et samedi a 90+ min
+  // Jours avec révision = Oui (hors dimanche)
   var revDaysList = PROG_DAYS.filter(function(d) {
-    return d.key !== 'dim' && progDispo[d.key][1] >= 15;
+    return d.key !== 'dim' && progDispo[d.key][1] === true;
   });
 
   var qcmCount = 0, biblioCount = 0;
   var revPlan = {};
-
-  // Si annales disponibles et samedi a >= 90 min de révision → samedi = annale
-  if (annalesDispo && progDispo.sam[1] >= 90) {
-    revPlan.sam = makeRevSession('annale', 'sam', progDispo.sam[1]);
-  }
-
   revDaysList.forEach(function(d) {
-    if (revPlan[d.key]) return; // déjà assigné
-    // Alternance QCM / biblio, en privilégiant QCM pour les séances courtes
-    var min = progDispo[d.key][1];
-    var useQcm = (qcmCount <= biblioCount) || min <= 30;
+    // Alternance simple QCM/biblio pour varier les formats d'entraînement
+    var useQcm = (qcmCount <= biblioCount);
     if (useQcm) {
-      revPlan[d.key] = makeRevSession('qcm', d.key, min);
+      revPlan[d.key] = makeRevSession('qcm', d.key);
       qcmCount++;
     } else {
-      revPlan[d.key] = makeRevSession('biblio', d.key, min);
+      revPlan[d.key] = makeRevSession('biblio', d.key);
       biblioCount++;
     }
   });
 
-  // Dimanche : toujours 15 min d'actus
-  revPlan.dim = makeRevSession('actus', 'dim', 15);
+  // Dimanche : toujours 15 min d'actus (non modifiable)
+  revPlan.dim = makeRevSession('actus', 'dim');
 
   // ===== CONSTRUCTION FINALE DES SESSIONS =====
   PROG_DAYS.forEach(function(d) {
-    // SPORT
-    if (sportPlan[d.key]) {
-      progSessions.push(sportPlan[d.key]);
-    }
-    // RÉVISION
-    if (revPlan[d.key]) {
-      progSessions.push(revPlan[d.key]);
-    }
+    if (sportPlan[d.key]) progSessions.push(sportPlan[d.key]);
+    if (revPlan[d.key])   progSessions.push(revPlan[d.key]);
   });
 
   renderProgWeek();
   renderProgSummary();
 }
 
-// Fabrique une séance sport avec horaire par défaut 18:00
-function makeSportSession(type, dayKey, duration) {
-  var types = {
-    course_court:  { icon:'💪', title:'Course — fractionné VMA court', desc:'10 × 200 m à 105% VMA · travail de vitesse', cat:'sport' },
-    course_long:   { icon:'💪', title:'Course — sortie longue endurance', desc:'Allure 70–75% FCmax · volume', cat:'sport' },
-    course_endu:   { icon:'💪', title:'Course — endurance fondamentale', desc:'Allure facile, on parle sans halètement', cat:'sport' },
-    muscu_bas:     { icon:'💪', title:'Musculation — force bas du corps', desc:'Front squat + SDT + tractions · charges personnalisées', cat:'sport' },
-    muscu_haut:    { icon:'💪', title:'Musculation — force haut du corps', desc:'Développé militaire + rowing + dips · haut du corps', cat:'sport' }
-  };
-  var t = types[type] || types.course_endu;
+// Fabrique une séance sport à partir du type (durée prise dans PROG_SPORT_DURATIONS).
+function makeSportSession(type, dayKey) {
+  var seq = PROG_SPORT_SEQUENCE.find(function(s) { return s.type === type; });
+  if (!seq) return null;
+  var duration = PROG_SPORT_DURATIONS[type] || 60;
   return {
     id: 'sport-' + dayKey + '-' + Date.now() + '-' + Math.random().toString(36).substr(2,5),
     day: dayKey,
     type: type,
     cat: 'sport',
-    icon: t.icon,
-    title: t.title,
-    desc: t.desc,
+    icon: '💪',
+    title: seq.title,
+    desc: seq.desc,
     duration: duration,
     hour: '18',
     minute: '00'
   };
 }
 
-// Fabrique une séance révision avec horaire par défaut 20:30
-function makeRevSession(type, dayKey, duration) {
+// Fabrique une séance révision — durée standard 30 min sauf actus du dimanche (15 min).
+function makeRevSession(type, dayKey) {
   var types = {
-    qcm:    { icon:'🎯', title:'QCM thématique', desc:'Questions corrigées sur un thème SPP', cat:'revision' },
-    biblio: { icon:'📚', title:'Bibliothèque — fiche synthèse', desc:'Lecture active d\'un texte officiel ou d\'une fiche', cat:'revision' },
-    annale: { icon:'⏱️', title:'Annale chronométrée', desc:'Sujet complet en conditions réelles + correction', cat:'revision' },
-    actus:  { icon:'📰', title:'Lecture des actualités SPP', desc:'Faits marquants, jurisprudence, évolutions — rester à jour', cat:'revision' }
+    qcm:    { icon:'🎯', title:'QCM thématique', desc:'Questions corrigées sur un thème SPP · révision active', duration: PROG_REV_DURATION },
+    biblio: { icon:'📚', title:'Bibliothèque — fiche synthèse', desc:'Lecture active d\'un texte officiel ou d\'une fiche', duration: PROG_REV_DURATION },
+    actus:  { icon:'📰', title:'Lecture des actualités SPP', desc:'Faits marquants, jurisprudence, évolutions — rester à jour', duration: 15 }
   };
   var t = types[type] || types.qcm;
   return {
@@ -5778,7 +5751,7 @@ function makeRevSession(type, dayKey, duration) {
     icon: t.icon,
     title: t.title,
     desc: t.desc,
-    duration: duration,
+    duration: t.duration,
     hour: '20',
     minute: '30'
   };
@@ -6047,18 +6020,22 @@ function onProgDrop(e, targetDay) {
 
 // ---------- Résumé et intensité ----------
 function renderProgSummary() {
-  // Résumé disponibilités (dans le bandeau pliable)
+  // Résumé disponibilités (dans le bandeau pliable) :
+  // compté en NOMBRE DE JOURS activés puisqu'on est en oui/non
   var dispoSum = document.getElementById('prog-dispo-summary');
   if (dispoSum) {
-    var totSport = 0, totRev = 0;
+    var nbSport = 0, nbRev = 0;
     PROG_DAYS.forEach(function(d) {
-      totSport += progDispo[d.key][0];
-      totRev += progDispo[d.key][1];
+      if (d.key === 'dim') return; // dimanche exclu
+      if (progDispo[d.key][0] === true) nbSport++;
+      if (progDispo[d.key][1] === true) nbRev++;
     });
-    dispoSum.textContent = formatDuration(totSport) + ' sport · ' + formatDuration(totRev) + ' révision · ' + formatDuration(totSport+totRev) + ' au total par semaine';
+    var nbSportCapped = Math.min(nbSport, 5); // plafond sport
+    var capInfo = (nbSport > 5) ? ' (5 utilisées sur ' + nbSport + ' dispo)' : '';
+    dispoSum.textContent = nbSportCapped + ' jour' + (nbSportCapped>1?'s':'') + ' sport' + capInfo + ' · ' + nbRev + ' jour' + (nbRev>1?'s':'') + ' révision · actus le dimanche';
   }
 
-  // Total dans le bloc planning
+  // Total dans le bloc planning : minutes totales + badge intensité
   var totalEl = document.getElementById('prog-total');
   var intEl = document.getElementById('prog-intensity');
   if (totalEl || intEl) {
@@ -6067,8 +6044,8 @@ function renderProgSummary() {
     if (totalEl) totalEl.textContent = formatDuration(total) + ' / semaine · ' + progSessions.length + ' séance' + (progSessions.length>1?'s':'');
     if (intEl) {
       var intensity = 'Léger';
-      if (total >= 720) intensity = 'Intensif';
-      else if (total >= 480) intensity = 'Engagé';
+      if (total >= 600) intensity = 'Intensif';
+      else if (total >= 420) intensity = 'Engagé';
       else if (total >= 240) intensity = 'Régulier';
       intEl.textContent = 'INTENSITÉ · ' + intensity.toUpperCase();
     }
