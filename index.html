@@ -11402,12 +11402,6 @@ function getEvolutionGroups() {
   }).filter(Boolean);
 }
 
-// EVOLUTION_GROUPS dynamique : recalculé à chaque accès selon la voie active
-Object.defineProperty(window, 'EVOLUTION_GROUPS', {
-  get: function(){ return getEvolutionGroups(); },
-  configurable: true
-});
-
 // État UI : quelles courbes sont visibles (toggle via clic sur la légende)
 var _espEvoVisible = { culture:true, textes:true, maths:true, doctrines:true, secourisme:true };
 
@@ -11415,6 +11409,9 @@ function renderEspEvolution(data) {
   var canvas = document.getElementById('esp-evolution-canvas');
   var legend = document.getElementById('esp-evolution-legend');
   if (!canvas || !legend) return;
+
+  // Groupes à afficher selon la voie active (recalculé à chaque rendu pour suivre la voie)
+  var evolutionGroups = getEvolutionGroups();
 
   var answers = data.rawAnswers || [];
   if (answers.length === 0) {
@@ -11440,7 +11437,7 @@ function renderEspEvolution(data) {
 
   // Compte bonnes/total par (groupe, semaine)
   var buckets = {}; // { group: [ {seen, correct} x 8 ] }
-  EVOLUTION_GROUPS.forEach(function(g){
+  evolutionGroups.forEach(function(g){
     buckets[g.key] = weeks.map(function(){ return { seen: 0, correct: 0 }; });
   });
   answers.forEach(function(a){
@@ -11459,7 +11456,7 @@ function renderEspEvolution(data) {
   // Calcule les scores (en %) par semaine, null si aucune question cette semaine
   var series = {}; // { group: [pct or null x 8] }
   var hasAnyData = false;
-  EVOLUTION_GROUPS.forEach(function(g){
+  evolutionGroups.forEach(function(g){
     series[g.key] = buckets[g.key].map(function(b){
       if (b.seen === 0) return null;
       hasAnyData = true;
@@ -11497,7 +11494,7 @@ function renderEspEvolution(data) {
   svg += '<text x="' + (W/2) + '" y="' + (H - 10) + '" font-family="DM Sans, sans-serif" font-size="10" fill="#a8a196" text-anchor="middle">Semaine du (lundi)</text>';
 
   // Dessine chaque courbe
-  EVOLUTION_GROUPS.forEach(function(g){
+  evolutionGroups.forEach(function(g){
     if (!_espEvoVisible[g.key]) return;
     var points = series[g.key];
     // Construit le chemin en sautant les null (pas de données)
@@ -11524,7 +11521,7 @@ function renderEspEvolution(data) {
 
   // Légende cliquable (toggle visibilité des courbes)
   var legendHtml = '';
-  EVOLUTION_GROUPS.forEach(function(g){
+  evolutionGroups.forEach(function(g){
     var off = _espEvoVisible[g.key] ? '' : 'off';
     legendHtml += '<div class="esp-evo-leg ' + off + '" onclick="espToggleEvolutionSerie(\'' + g.key + '\')">';
     legendHtml += '<span class="esp-evo-leg-swatch" style="background:' + g.color + '"></span>';
