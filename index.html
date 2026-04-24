@@ -296,6 +296,8 @@ body.is-logged .show-when-logged{display:block !important}
 /* Grille 2×2 des points forts affichée à droite du hero (desktop uniquement) */
 .hero-features{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:460px;margin-left:auto}
 .hero-feature{background:white;border:1px solid var(--border);padding:22px 20px;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer;position:relative;overflow:hidden}
+/* Si nombre impair de cartes, la dernière seule s'étire sur toute la largeur pour rester équilibrée */
+.hero-feature:last-child:nth-child(odd){grid-column:1 / -1}
 .hero-feature:hover{transform:translateY(-3px);border-color:var(--red);box-shadow:0 8px 24px rgba(204,34,41,.1)}
 .hero-feature::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transform-origin:top;transition:transform .25s}
 .hero-feature:hover::before{transform:scaleY(1)}
@@ -2249,7 +2251,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     <div class="mobile-nav-link" onclick="goTo('qcm');closeMobileNav()"><span class="mn-ico">🎯</span>QCM<span class="mn-arrow">›</span></div>
     <div class="mobile-nav-link" onclick="goTo('concours');closeMobileNav()"><span class="mn-ico">⏱️</span>Mode concours<span class="mn-arrow">›</span></div>
     <div class="mobile-nav-link" onclick="goToPrepa();closeMobileNav()"><span class="mn-ico">💪</span>Préparation physique<span class="mn-arrow">›</span></div>
-    <div class="mobile-nav-link hide-when-logged" onclick="goTo('programme');closeMobileNav()"><span class="mn-ico">📅</span>Programme type<span class="mn-arrow">›</span></div>
+    <div class="mobile-nav-link hide-when-logged" onclick="goTo('programme');closeMobileNav()"><span class="mn-ico">📅</span>Planning intelligent<span class="mn-arrow">›</span></div>
 
     <!-- Ressources -->
     <div class="mobile-nav-category">Ressources</div>
@@ -2312,7 +2314,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
           <button class="nav-dropdown-item" data-page="qcm" onclick="goTo('qcm')"><span class="nav-item-ico">🎯</span>QCM</button>
           <button class="nav-dropdown-item" data-page="concours" onclick="goTo('concours')"><span class="nav-item-ico">⏱️</span>Mode concours</button>
           <button class="nav-dropdown-item" data-page="prepa" onclick="goToPrepa()"><span class="nav-item-ico">💪</span>Préparation physique</button>
-          <button class="nav-dropdown-item hide-when-logged" data-page="programme" onclick="goTo('programme')"><span class="nav-item-ico">📅</span>Programme type</button>
+          <button class="nav-dropdown-item hide-when-logged" data-page="programme" onclick="goTo('programme')"><span class="nav-item-ico">📅</span>Planning intelligent</button>
           <button class="nav-dropdown-item" data-page="espace" id="nav-espace-item" onclick="goToEspace()"><span class="nav-item-ico">📊</span>Mon espace candidat</button>
         </div>
       </div>
@@ -2388,6 +2390,12 @@ body:not(.is-logged) .mobile-nav-member{display:none}
           <div class="hero-feature-desc">+1000 questions corrigées par thème, avec explications détaillées.</div>
           <div class="hero-feature-link">Découvrir →</div>
         </div>
+        <div class="hero-feature" onclick="goTo('biblio')">
+          <span class="hero-feature-icon">📚</span>
+          <div class="hero-feature-title">Bibliothèque</div>
+          <div class="hero-feature-desc">Techniques et doctrines opérationnelles, textes réglementaires, fiches — tout au même endroit.</div>
+          <div class="hero-feature-link">Découvrir →</div>
+        </div>
         <div class="hero-feature" onclick="goTo('concours')">
           <span class="hero-feature-icon">⏱️</span>
           <div class="hero-feature-title">Mode concours</div>
@@ -2400,137 +2408,25 @@ body:not(.is-logged) .mobile-nav-member{display:none}
           <div class="hero-feature-desc">Programmes hebdo adaptés à ton niveau, séances guidées.</div>
           <div class="hero-feature-link">Découvrir →</div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section section-alt">
-    <div class="s-eyebrow">La plateforme</div>
-    <div class="s-title">Tout ce qu'il faut pour<br><em>réussir du premier coup</em></div>
-    <div class="divider"></div>
-    <div class="feature-grid">
-      <div class="feature-card" onclick="goTo('qcm')">
-        <div class="feature-card-icon">📝</div>
-        <div class="feature-card-title">QCM Thématiques</div>
-        <div class="feature-card-desc">+1000 questions corrigées avec explications détaillées, classées par matière.</div>
-        <div class="feature-card-link">Accéder →</div>
-      </div>
-      <div class="feature-card" onclick="goTo('biblio')">
-        <div class="feature-card-icon">📚</div>
-        <div class="feature-card-title">Annales Commentées</div>
-        <div class="feature-card-desc">5 années d'annales avec corrections détaillées et stratégie de réponse.</div>
-        <div class="feature-card-link">Accéder →</div>
-      </div>
-      <div class="feature-card" onclick="goTo('biblio')">
-        <div class="feature-card-icon">📖</div>
-        <div class="feature-card-title">Bibliothèque Docs</div>
-        <div class="feature-card-desc">Textes réglementaires, fiches synthèse, GNR, statuts — tout au même endroit.</div>
-        <div class="feature-card-link">Accéder →</div>
-      </div>
-      <div class="feature-card" onclick="goTo('coaching')">
-        <div class="feature-card-icon">💬</div>
-        <div class="feature-card-title">Coaching Individuel</div>
-        <div class="feature-card-desc">Séances personnalisées en visio pour un plan taillé selon votre profil.</div>
-        <div class="feature-card-link">Réserver →</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================= SECTION: APERÇU QCM (3 questions réelles) ============================= -->
-  <div class="section" style="background:var(--cream);padding:70px 5%">
-    <div style="max-width:820px;margin:0 auto">
-      <div style="text-align:center;margin-bottom:36px">
-        <div class="s-eyebrow" style="color:var(--red)">Aperçu gratuit</div>
-        <div style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.2rem);color:var(--charcoal);line-height:1.2;margin:10px 0 10px">La différence se joue<br>dans <em style="color:var(--red)">les corrigés</em></div>
-        <div style="font-size:.95rem;color:var(--gray);line-height:1.6;max-width:540px;margin:0 auto">Des milliers de sites proposent des QCM. Ce qui compte, c'est ce qu'il y a autour. Teste <strong>3 vraies questions corrigées</strong> — parmi les +1000 qui t'attendent.</div>
-      </div>
-
-      <!-- Carrousel -->
-      <div class="qcm-demo-carousel">
-        <button class="qcm-demo-arrow qcm-demo-arrow-prev" onclick="qcmDemoSlide(-1)" aria-label="Question précédente">‹</button>
-        <div class="qcm-demo-track-wrap">
-          <div class="qcm-demo-track" id="qcm-demo-track">
-
-            <!-- ===== Question 1 (facile) ===== -->
-            <div class="qcm-demo-slide">
-              <div class="qcm-demo-card">
-                <div class="qcm-demo-head">
-                  <div class="qcm-demo-head-left"><span class="qcm-demo-n">Question 1 / 3</span><span class="qcm-demo-diff qcm-demo-diff-facile">FACILE</span></div>
-                </div>
-                <div class="qcm-demo-q">Sous quelle autorité le directeur départemental des SIS est-il placé pour la direction opérationnelle ?</div>
-                <div class="qcm-demo-tip">📌 Coche la ou les bonnes réponses</div>
-
-                <div class="qcm-demo-opt qcm-demo-opt-bad"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>Sous l'autorité du président du conseil d'administration</span></div>
-                <div class="qcm-demo-opt qcm-demo-opt-good"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>Sous l'autorité du représentant de l'État dans le département</span></div>
-                <div class="qcm-demo-opt"><span class="qcm-demo-cb"></span><span>Sous l'autorité du maire</span></div>
-                <div class="qcm-demo-opt"><span class="qcm-demo-cb"></span><span>Sous l'autorité du ministre de l'intérieur directement</span></div>
-
-                <div class="qcm-demo-expl">
-                  Art. L.1424-33 CGCT : "Le directeur départemental des services d'incendie et de secours est placé sous l'autorité du représentant de l'État dans le département pour la direction opérationnelle du service d'incendie et de secours."
-                </div>
-              </div>
-            </div>
-
-            <!-- ===== Question 2 (très facile) ===== -->
-            <div class="qcm-demo-slide">
-              <div class="qcm-demo-card">
-                <div class="qcm-demo-head">
-                  <div class="qcm-demo-head-left"><span class="qcm-demo-n">Question 2 / 3</span><span class="qcm-demo-diff qcm-demo-diff-tresfacile">TRÈS FACILE</span></div>
-                </div>
-                <div class="qcm-demo-q">Quelle est l'autonomie minimale du système d'air respirable embarqué dans un CCF, pour 4 personnes ?</div>
-                <div class="qcm-demo-tip">📌 Coche la ou les bonnes réponses</div>
-
-                <div class="qcm-demo-opt"><span class="qcm-demo-cb"></span><span>6 minutes</span></div>
-                <div class="qcm-demo-opt"><span class="qcm-demo-cb"></span><span>8 minutes</span></div>
-                <div class="qcm-demo-opt qcm-demo-opt-good"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>10 minutes</span></div>
-                <div class="qcm-demo-opt"><span class="qcm-demo-cb"></span><span>15 minutes</span></div>
-
-                <div class="qcm-demo-expl">
-                  Le §3 du chapitre 2 précise que le système d'air respirable offre une autonomie minimale de 10 minutes pour 4 personnes sur une consommation de 30 l/min par personne. (À ne pas confondre avec le masque de fuite d'urgence, dont l'autonomie est de 6 minutes – §2.2.)
-                  <div class="qcm-demo-source">📖 Source : §3</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ===== Question 3 (moyen) ===== -->
-            <div class="qcm-demo-slide">
-              <div class="qcm-demo-card">
-                <div class="qcm-demo-head">
-                  <div class="qcm-demo-head-left"><span class="qcm-demo-n">Question 3 / 3</span><span class="qcm-demo-diff qcm-demo-diff-moyen">MOYEN</span></div>
-                </div>
-                <div class="qcm-demo-q">Chez quelle(s) victime(s) le thermomètre auriculaire est-il contre-indiqué ?</div>
-                <div class="qcm-demo-tip">📌 Coche la ou les bonnes réponses</div>
-
-                <div class="qcm-demo-opt qcm-demo-opt-good"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>Un nourrisson de moins de 3 mois</span></div>
-                <div class="qcm-demo-opt qcm-demo-opt-bad"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>Un adulte portant un appareil auditif</span></div>
-                <div class="qcm-demo-opt qcm-demo-opt-good-missed"><span class="qcm-demo-cb"></span><span>Une victime de traumatisme auriculaire bilatéral (accident avec explosion)</span></div>
-                <div class="qcm-demo-opt qcm-demo-opt-bad"><span class="qcm-demo-cb qcm-demo-cb-checked"></span><span>Un enfant de 5 ans</span></div>
-
-                <div class="qcm-demo-expl">
-                  « Le thermomètre auriculaire ne doit pas être utilisé chez : un nourrisson de moins de 3 mois, car le diamètre de son conduit auditif est inférieur à celui de la sonde du thermomètre ; une victime d'un traumatisme auriculaire bilatéral, lors d'un accident avec explosion, par exemple. »
-                  <div class="qcm-demo-source">📖 Source : PSE 2024 – Fiche 02FT08</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+        <div class="hero-feature" onclick="goTo('programme')">
+          <span class="hero-feature-icon">📅</span>
+          <div class="hero-feature-title">Planning intelligent</div>
+          <div class="hero-feature-desc">Génère ton planning sport + révision selon tes disponibilités.</div>
+          <div class="hero-feature-link">Découvrir →</div>
         </div>
-        <button class="qcm-demo-arrow qcm-demo-arrow-next" onclick="qcmDemoSlide(1)" aria-label="Question suivante">›</button>
-
-        <!-- Dots -->
-        <div class="qcm-demo-dots">
-          <button class="qcm-demo-dot active" onclick="qcmDemoGoTo(0)" aria-label="Question 1"></button>
-          <button class="qcm-demo-dot" onclick="qcmDemoGoTo(1)" aria-label="Question 2"></button>
-          <button class="qcm-demo-dot" onclick="qcmDemoGoTo(2)" aria-label="Question 3"></button>
+        <div class="hero-feature" onclick="goTo('actu')">
+          <span class="hero-feature-icon">📰</span>
+          <div class="hero-feature-title">Actualités</div>
+          <div class="hero-feature-desc">Mes décryptages hebdo des textes et évolutions du métier.</div>
+          <div class="hero-feature-link">Découvrir →</div>
+        </div>
+        <div class="hero-feature" onclick="goTo('coaching')">
+          <span class="hero-feature-icon">💬</span>
+          <div class="hero-feature-title">Coaching individuel</div>
+          <div class="hero-feature-desc">Séance en visio · bilan personnalisé et plan d'action adapté.</div>
+          <div class="hero-feature-link">Découvrir →</div>
         </div>
       </div>
-
-      <!-- CTA sous le carrousel -->
-      <div style="text-align:center;margin-top:36px">
-        <div style="font-size:.9rem;color:var(--gray);line-height:1.6;margin-bottom:16px;max-width:480px;margin-left:auto;margin-right:auto">Chaque question est corrigée comme celles-ci : source citée, piège expliqué, à-retenir clair.</div>
-        <button class="btn btn-red" onclick="goTo('formation')" style="padding:12px 26px">Accéder aux +1000 QCM corrigés →</button>
-      </div>
-
     </div>
   </div>
 
@@ -4852,7 +4748,7 @@ if(window.location.search.indexOf('success') !== -1) {
 <div class="page" id="page-programme">
   <div class="page-header">
     <div class="page-header-inner">
-      <div class="s-eyebrow">Ton plan hebdomadaire</div>
+      <div class="s-eyebrow">Planning intelligent</div>
       <div class="s-title">Ton planning<br><em>sur mesure</em></div>
       <div class="s-lead">Dis combien de temps tu as par jour. On te propose un planning équilibré sport + révision, que tu peux réorganiser et exporter vers ton agenda.</div>
     </div>
