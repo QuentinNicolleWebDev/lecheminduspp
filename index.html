@@ -1165,13 +1165,17 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .login-error.show{display:block}
 .member-btn{padding:8px 16px;border:1.5px solid var(--red);color:var(--red);font-size:.78rem;font-weight:600;letter-spacing:.5px;background:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
 .member-btn:hover{background:var(--red);color:white}
+/* Bouton Mon espace : icône + pseudo sur une seule ligne, alignés verticalement */
+#nav-space-btn{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;line-height:1.2}
+#nav-space-btn #nav-space-ico{display:inline-flex;align-items:center;font-size:.95rem;line-height:1}
+#nav-space-btn #nav-space-label{display:inline-flex;align-items:center;line-height:1;margin-left:0 !important}
 /* Sur mobile, le "Se connecter" et les autres disparaissent (accessibles via menu burger)
    — SAUF "Mon espace" (qui affiche le pseudo + icône badge) pour accès rapide */
 @media(max-width:900px){
-  #nav-login-btn,#nav-logout-btn,#nav-member-name{display:none !important}
+  #nav-login-btn,#nav-logout-btn{display:none !important}
   /* Bouton Mon espace compact sur mobile — le pseudo reste visible */
-  #nav-space-btn{padding:7px 10px;font-size:.72rem;letter-spacing:.3px;margin-right:6px;max-width:140px;overflow:hidden}
-  #nav-space-btn #nav-space-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle;max-width:100px}
+  #nav-space-btn{padding:7px 10px;font-size:.72rem;letter-spacing:.3px;margin-right:6px;max-width:160px;overflow:hidden}
+  #nav-space-btn #nav-space-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px}
 }
 .member-logout{padding:8px 16px;border:1.5px solid var(--gray-light);color:var(--gray);font-size:.78rem;font-weight:600;background:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
 .member-logout:hover{border-color:var(--charcoal);color:var(--charcoal)}
@@ -2445,9 +2449,8 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     <!-- Affiché si connecté : combine l'accès à l'espace + l'identité (icône badge ou 📊 + pseudo) -->
     <button class="member-btn" id="nav-space-btn" style="display:none" onclick="goTo('espace')" title="Mon espace candidat">
       <span id="nav-space-ico">📊</span>
-      <span id="nav-space-label" style="margin-left:4px">Mon espace</span>
+      <span id="nav-space-label">Mon espace</span>
     </button>
-    <span class="member-name" id="nav-member-name" style="display:none"></span>
     <button class="member-logout" id="nav-logout-btn" style="display:none" onclick="logoutMember()">Déconnexion</button>
     <button class="nav-mobile-btn" onclick="toggleMobileNav()" id="mobileBtn" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -13421,7 +13424,8 @@ function updateNavMember(member) {
     _biblioStatusLoaded = false;
     loginBtn.style.display  = 'inline-flex';
     logoutBtn.style.display = 'none';
-    nameEl.style.display    = 'none';
+    // nameEl n'existe plus dans le DOM (fusionné au bouton Mon espace) — on reste défensif
+    if (nameEl) nameEl.style.display = 'none';
     // Afficher le CTA "Commencer gratuitement" pour les non-inscrits
     var ctaSignupOff = document.getElementById('nav-cta-signup');
     if (ctaSignupOff) ctaSignupOff.style.display = 'inline-flex';
