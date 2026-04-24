@@ -1891,6 +1891,66 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   .beta-sv-rate-btn{width:38px;height:38px;font-size:.88rem}
 }
 
+/* ============================================================
+   MODULE ACTUALITÉS — chargement dynamique depuis actualites.json
+   ============================================================ */
+.actu-loading{padding:40px;text-align:center;color:var(--gray);font-size:.9rem;grid-column:1/-1;background:var(--cream2);border:1px dashed var(--border)}
+.actu-empty{padding:40px;text-align:center;color:var(--gray-light);font-size:.9rem;grid-column:1/-1;font-style:italic}
+
+/* Featured — article de décryptage mis en avant */
+.actu-featured-single{grid-column:1/-1;display:grid;grid-template-columns:1.3fr 1fr;gap:0;background:white;border:1px solid var(--border);box-shadow:0 4px 40px rgba(0,0,0,0.06)}
+.actu-featured-visual{background:linear-gradient(135deg,var(--red),var(--red-dark));padding:48px;display:flex;flex-direction:column;justify-content:space-between;color:white;min-height:320px}
+.actu-featured-kicker{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;opacity:.85;margin-bottom:20px}
+.actu-featured-visual h2{font-family:'Playfair Display',serif;font-size:2rem;line-height:1.15;font-weight:900}
+.actu-featured-visual-author{display:flex;align-items:center;gap:12px;margin-top:24px;font-size:.82rem;opacity:.9}
+.actu-featured-visual-author::before{content:'';width:36px;height:1.5px;background:white;opacity:.4}
+.actu-featured-body{padding:48px;display:flex;flex-direction:column;justify-content:center}
+.actu-featured-date{font-size:.78rem;color:var(--gray-light);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.actu-featured-excerpt{font-size:.98rem;color:var(--gray);line-height:1.75;margin-bottom:24px}
+.actu-featured-body .btn{align-self:flex-start}
+
+/* Petite carte */
+.actu-small-card{display:flex;flex-direction:column;cursor:pointer}
+.actu-small-card .actu-link{margin-top:auto;padding-top:12px}
+.actu-small-source{font-size:.72rem;color:var(--gray-light);font-style:italic;margin-top:6px}
+
+/* Catégories supplémentaires */
+.cat-decryptage{background:#2A2320;color:#F5F0E8}
+.cat-breve{background:var(--cream3);color:var(--dark);border:1px solid var(--border)}
+
+/* Sources externes */
+.actu-source-card{display:block;background:white;border:1px solid var(--border);padding:18px 20px;transition:all .2s;text-decoration:none;color:inherit}
+.actu-source-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 4px 20px rgba(184,50,50,.08)}
+.actu-source-name{font-family:'Playfair Display',serif;font-size:.98rem;color:var(--charcoal);margin-bottom:4px;line-height:1.3}
+.actu-source-desc{font-size:.8rem;color:var(--gray);line-height:1.55}
+
+/* Modal lecture d'article */
+.actu-modal-overlay{position:fixed;inset:0;background:rgba(28,28,28,0.82);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.actu-modal-overlay.visible{display:flex}
+.actu-modal{background:var(--cream);max-width:780px;width:100%;padding:56px 56px 48px;position:relative;border:1px solid var(--border);box-shadow:0 24px 80px rgba(0,0,0,0.4)}
+.actu-modal-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border:1px solid var(--border);background:white;font-size:1rem;cursor:pointer;color:var(--gray);font-family:'DM Sans',sans-serif;transition:all .2s}
+.actu-modal-close:hover{background:var(--red);color:white;border-color:var(--red)}
+.actu-modal-kicker{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.actu-modal h1{font-family:'Playfair Display',serif;font-size:2rem;line-height:1.15;color:var(--charcoal);margin-bottom:18px;font-weight:900}
+.actu-modal-meta{font-size:.82rem;color:var(--gray);margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.actu-modal-content{font-size:1rem;line-height:1.8;color:var(--dark)}
+.actu-modal-content h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin:28px 0 12px;color:var(--charcoal)}
+.actu-modal-content p{margin-bottom:16px}
+.actu-modal-content a{color:var(--red);text-decoration:underline}
+.actu-modal-content ul{margin:12px 0 16px 24px}
+.actu-modal-content li{margin-bottom:6px}
+.actu-modal-source{margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:.82rem;color:var(--gray)}
+.actu-modal-source a{color:var(--red);font-weight:600}
+
+@media(max-width:800px){
+  .actu-featured-single{grid-template-columns:1fr}
+  .actu-featured-visual{padding:36px;min-height:auto}
+  .actu-featured-visual h2{font-size:1.6rem}
+  .actu-featured-body{padding:36px}
+  .actu-modal{padding:40px 24px 32px}
+  .actu-modal h1{font-size:1.5rem}
+}
+
 </style>
 </head>
 <body>
@@ -3374,56 +3434,53 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     <div class="page-header-inner">
       <div class="s-eyebrow">Actualités</div>
       <div class="s-title">L'actu du monde<br><em>pompier &amp; fonctionnaire</em></div>
-      <div class="s-lead">Restez informé des évolutions réglementaires, des concours à venir et des actualités du monde sapeur-pompier.</div>
+      <div class="s-lead">Les évolutions réglementaires, les concours à venir et mes décryptages hebdomadaires pour rester sur le bon chemin.</div>
     </div>
   </div>
+
   <div class="section">
-    <div class="actu-featured">
-      <div class="actu-main-card">
-        <div class="actu-img-placeholder">🚒</div>
-        <div class="actu-body">
-          <span class="actu-cat-tag cat-pompier">Sapeur-Pompier</span>
-          <div class="actu-date">12 avril 2025</div>
-          <div class="actu-title">Concours SPP 2025 : nouvelles modalités des épreuves écrites</div>
-          <div class="actu-excerpt">Les épreuves du concours de Sapeur-Pompier Professionnel évoluent pour la session 2025. Le CNFPT a publié les nouvelles modalités concernant la durée et le contenu des épreuves de culture générale.</div>
-          <span class="actu-link" onclick="openLockModal()">Lire la suite →</span>
-        </div>
-      </div>
-      <div>
-        <div class="actu-main-card" style="margin-bottom:16px">
-          <div class="actu-body">
-            <span class="actu-cat-tag cat-fonct">Fonction Publique</span>
-            <div class="actu-date">28 mars 2025</div>
-            <div class="actu-title">Revalorisation des grilles indiciaires catégorie C</div>
-            <div class="actu-excerpt">La réforme des grilles de rémunération touche directement les SPP en début de carrière.</div>
-            <span class="actu-link" onclick="openLockModal()">Lire →</span>
-          </div>
-        </div>
-        <div class="actu-main-card">
-          <div class="actu-body">
-            <span class="actu-cat-tag cat-concours">Concours</span>
-            <div class="actu-date">15 mars 2025</div>
-            <div class="actu-title">Calendrier des inscriptions concours SPP 2025</div>
-            <div class="actu-excerpt">Le calendrier complet des inscriptions et épreuves pour les concours SPP de la session 2025.</div>
-            <span class="actu-link" onclick="openLockModal()">Lire →</span>
-          </div>
-        </div>
-      </div>
+
+    <!-- ======= ARTICLE DÉCRYPTAGE DE LA SEMAINE (mis en avant) ======= -->
+    <div id="actu-featured-slot" class="actu-featured">
+      <!-- Rempli dynamiquement par loadActualites() -->
+      <div class="actu-loading">Chargement des actualités…</div>
     </div>
-    <div style="border-top:1px solid var(--border);padding-top:40px">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px">
-        <button class="biblio-cat-btn active">Tous</button>
-        <button class="biblio-cat-btn">Concours</button>
-        <button class="biblio-cat-btn">Réglementation</button>
-        <button class="biblio-cat-btn">Sapeur-Pompier</button>
-        <button class="biblio-cat-btn">Fonction Publique</button>
+
+    <!-- ======= FILTRES ======= -->
+    <div style="border-top:1px solid var(--border);padding-top:40px;margin-top:8px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px" id="actu-filters">
+        <button class="biblio-cat-btn active" data-filter="all" onclick="filterActu(this,'all')">Tous</button>
+        <button class="biblio-cat-btn" data-filter="decryptage" onclick="filterActu(this,'decryptage')">Mes décryptages</button>
+        <button class="biblio-cat-btn" data-filter="breve" onclick="filterActu(this,'breve')">Actus de la semaine</button>
+        <button class="biblio-cat-btn" data-filter="concours" onclick="filterActu(this,'concours')">Concours</button>
+        <button class="biblio-cat-btn" data-filter="spp" onclick="filterActu(this,'spp')">Sapeur-Pompier</button>
+        <button class="biblio-cat-btn" data-filter="fpt" onclick="filterActu(this,'fpt')">Fonction Publique</button>
       </div>
-      <div class="actu-secondary-grid">
-        <div class="actu-small-card"><span class="actu-cat-tag cat-pompier">SPP</span><div class="actu-small-meta">Fév. 2025</div><div class="actu-small-title">Classement des SDIS 2024 : quels départements recrutent le plus ?</div><div class="actu-small-excerpt">Analyse des 97 SDIS de France métropolitaine.</div><span class="actu-link" onclick="openLockModal()">Lire →</span></div>
-        <div class="actu-small-card"><span class="actu-cat-tag cat-fonct">Fonction Publique</span><div class="actu-small-meta">Jan. 2025</div><div class="actu-small-title">Réforme de la protection sociale complémentaire dans la FP</div><div class="actu-small-excerpt">Ce qui change pour les fonctionnaires territoriaux en 2025.</div><span class="actu-link" onclick="openLockModal()">Lire →</span></div>
-        <div class="actu-small-card"><span class="actu-cat-tag cat-concours">Concours</span><div class="actu-small-meta">Jan. 2025</div><div class="actu-small-title">Épreuve physique SPP : évolution des épreuves à partir de 2025</div><div class="actu-small-excerpt">Le Gaier et la Navette 25 : ce qu'il faut savoir.</div><span class="actu-link" onclick="openLockModal()">Lire →</span></div>
+
+      <!-- ======= GRILLE D'ARTICLES ======= -->
+      <div class="actu-secondary-grid" id="actu-grid">
+        <!-- Rempli dynamiquement -->
       </div>
+
+      <!-- ======= SOURCES OFFICIELLES EXTERNES ======= -->
+      <div id="actu-sources-section" style="margin-top:56px;padding-top:40px;border-top:1px solid var(--border)">
+        <div class="s-eyebrow" style="margin-bottom:6px">Sources officielles</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--charcoal);line-height:1.3;margin-bottom:8px">Les sites que je consulte chaque semaine</div>
+        <div style="font-size:.88rem;color:var(--gray);margin-bottom:24px;max-width:640px">Pour ceux qui veulent aller plus loin et surveiller directement l'actualité institutionnelle.</div>
+        <div id="actu-sources-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px"></div>
+      </div>
+
     </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL LECTURE D'ARTICLE
+     ============================================================ -->
+<div id="actu-modal-overlay" class="actu-modal-overlay">
+  <div class="actu-modal" onclick="event.stopPropagation()">
+    <button class="actu-modal-close" onclick="closeActuModal()">✕</button>
+    <div id="actu-modal-content"></div>
   </div>
 </div>
 
@@ -7058,6 +7115,101 @@ function goTo(id) {
     }
   }
 }
+
+// ============================================================
+// HISTORIQUE NAVIGATEUR — Support du bouton Retour + URLs partageables
+// ============================================================
+// Wrapper autour de goTo qui pousse chaque changement de page dans l'historique
+// du navigateur. Permet à la flèche "Retour" de naviguer entre les sections du
+// site au lieu de quitter entièrement. Ajoute aussi un hash (#qcm, #biblio...)
+// à l'URL pour que les liens soient partageables et restaurables au refresh.
+(function() {
+  // Flag pour éviter de re-pousser l'historique quand le changement vient du popstate
+  var _navFromPopState = false;
+
+  // Garde la référence de la fonction originale
+  var _originalGoTo = window.goTo;
+
+  // Remplace goTo par une version qui gère l'historique
+  window.goTo = function(id) {
+    // Appelle le goTo original (toute la logique existante)
+    var result = _originalGoTo.apply(this, arguments);
+
+    // Si ce n'est pas un retour navigateur, pousse l'état dans l'historique
+    if (!_navFromPopState) {
+      try {
+        // On conserve les éventuels ?success=... de Stripe pour ne pas casser ce flux
+        var currentSearch = window.location.search || '';
+        var newUrl = window.location.pathname + currentSearch + '#' + id;
+        // Si l'URL actuelle est déjà celle-ci, on fait un replace plutôt qu'un push
+        // (évite les doublons dans l'historique quand on reclique sur la même page)
+        if (window.location.hash === '#' + id) {
+          history.replaceState({ page: id }, '', newUrl);
+        } else {
+          history.pushState({ page: id }, '', newUrl);
+        }
+      } catch(e) {
+        console.warn('[history] pushState failed', e);
+      }
+    }
+
+    return result;
+  };
+
+  // Écoute du bouton Retour / Suivant du navigateur
+  window.addEventListener('popstate', function(e) {
+    // Récupère la page depuis l'état, sinon depuis le hash
+    var targetPage = null;
+    if (e.state && e.state.page) {
+      targetPage = e.state.page;
+    } else if (window.location.hash) {
+      targetPage = window.location.hash.replace('#', '');
+    } else {
+      // Pas de hash, pas d'état = on est à la racine → home
+      targetPage = 'home';
+    }
+
+    // Sécurité : vérifier que la page cible existe
+    if (pages.indexOf(targetPage) === -1 && targetPage !== 'bienvenue') {
+      targetPage = 'home';
+    }
+
+    // Flag pour que le wrapper goTo ne re-pousse pas l'historique
+    _navFromPopState = true;
+    try {
+      window.goTo(targetPage);
+    } finally {
+      _navFromPopState = false;
+    }
+  });
+
+  // Au chargement initial : si l'URL a un hash, aller à cette page
+  // (en respectant les flux existants de Stripe ?success / #merci)
+  document.addEventListener('DOMContentLoaded', function() {
+    // Ne pas override si Stripe renvoie vers ?success=... (flux déjà géré)
+    if (window.location.search.includes('success')) return;
+
+    var hash = (window.location.hash || '').replace('#', '');
+    if (!hash || hash === 'merci') return; // #merci est déjà géré ailleurs
+
+    if (pages.indexOf(hash) !== -1 || hash === 'bienvenue') {
+      // Petit délai pour laisser le DOM et les autres init finir
+      setTimeout(function() {
+        _navFromPopState = true;
+        try { window.goTo(hash); }
+        finally { _navFromPopState = false; }
+        // Remplacer l'état initial avec la bonne page pour que le 1er Retour marche
+        try { history.replaceState({ page: hash }, '', window.location.href); } catch(e) {}
+      }, 100);
+    }
+  });
+
+  // Enregistre l'état initial (la home) pour que le premier Retour fonctionne
+  // correctement après la toute première navigation
+  if (!history.state) {
+    try { history.replaceState({ page: 'home' }, '', window.location.href); } catch(e) {}
+  }
+})();
 
 // Mobile nav
 function toggleMobileNav() {
@@ -13254,6 +13406,205 @@ var EMAILJS_TEMPLATE_ID = 'template_a1suwqk';
 
 (function() {
   try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch(e) {}
+})();
+</script>
+
+<!-- ============================================================
+     MODULE ACTUALITÉS — chargement dynamique depuis actualites.json
+     ============================================================ -->
+<script>
+(function(){
+  'use strict';
+
+  var ACTU_JSON_URL = 'actualites.json';
+
+  var CAT_LABELS = {
+    'decryptage': {label:'Décryptage', cls:'cat-decryptage'},
+    'breve':      {label:'Actus de la semaine', cls:'cat-breve'},
+    'concours':   {label:'Concours',   cls:'cat-concours'},
+    'spp':        {label:'Sapeur-Pompier', cls:'cat-pompier'},
+    'fpt':        {label:'Fonction Publique', cls:'cat-fonct'}
+  };
+
+  var state = {
+    articles: [],
+    externalLinks: [],
+    currentFilter: 'all'
+  };
+
+  // ====== UTILS ======
+  function fmtDate(isoOrDate){
+    try{
+      var d = (isoOrDate instanceof Date) ? isoOrDate : new Date(isoOrDate);
+      if(isNaN(d.getTime())) return '';
+      var mois = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+      return d.getDate()+' '+mois[d.getMonth()]+' '+d.getFullYear();
+    }catch(e){return '';}
+  }
+  function escapeHtml(s){ return !s ? '' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function truncate(s,n){ s=s||''; return s.length<=n?s:s.slice(0,n).replace(/\s+\S*$/,'')+'…'; }
+
+  // ====== RENDU ======
+  function renderFeatured(article){
+    var slot = document.getElementById('actu-featured-slot');
+    if(!slot) return;
+    if(!article){
+      slot.innerHTML = '<div class="actu-empty">Aucun article mis en avant cette semaine.</div>';
+      return;
+    }
+    slot.innerHTML =
+      '<div class="actu-featured-single">' +
+        '<div class="actu-featured-visual">' +
+          '<div><div class="actu-featured-kicker">Décryptage de la semaine</div><h2>'+escapeHtml(article.title)+'</h2></div>' +
+          '<div class="actu-featured-visual-author">Par '+escapeHtml(article.author||'Quentin')+'</div>' +
+        '</div>' +
+        '<div class="actu-featured-body">' +
+          '<div class="actu-featured-date">'+fmtDate(article.date)+'</div>' +
+          '<div class="actu-featured-excerpt">'+escapeHtml(article.excerpt||'')+'</div>' +
+          '<button class="btn btn-red" data-id="'+escapeHtml(article.id)+'">Lire l\'article →</button>' +
+        '</div></div>';
+    var btn = slot.querySelector('button[data-id]');
+    if(btn) btn.addEventListener('click', function(){ openArticleModal(article.id); });
+  }
+
+  function renderGrid(){
+    var grid = document.getElementById('actu-grid');
+    if(!grid) return;
+    var items = state.articles.filter(function(a){ return !a.featured; });
+    if(state.currentFilter !== 'all'){
+      items = items.filter(function(a){ return a.category === state.currentFilter; });
+    }
+    if(!items.length){
+      grid.innerHTML = '<div class="actu-empty">Aucun article dans cette catégorie pour le moment.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(function(a){
+      var cat = CAT_LABELS[a.category] || CAT_LABELS.spp;
+      return '<div class="actu-small-card" data-id="'+escapeHtml(a.id)+'">' +
+        '<span class="actu-cat-tag '+cat.cls+'">'+cat.label+'</span>' +
+        '<div class="actu-small-meta">'+fmtDate(a.date)+'</div>' +
+        '<div class="actu-small-title">'+escapeHtml(a.title)+'</div>' +
+        '<div class="actu-small-excerpt">'+escapeHtml(truncate(a.excerpt,140))+'</div>' +
+        '<span class="actu-link">Lire →</span>' +
+      '</div>';
+    }).join('');
+    Array.prototype.forEach.call(grid.querySelectorAll('.actu-small-card'), function(card){
+      card.addEventListener('click', function(){ openArticleModal(card.getAttribute('data-id')); });
+    });
+  }
+
+  function renderSources(){
+    var grid = document.getElementById('actu-sources-grid');
+    var section = document.getElementById('actu-sources-section');
+    if(!grid || !section) return;
+    var links = state.externalLinks || [];
+    if(!links.length){ section.style.display='none'; return; }
+    section.style.display='';
+    grid.innerHTML = links.map(function(l){
+      return '<a href="'+escapeHtml(l.url)+'" target="_blank" rel="noopener noreferrer" class="actu-source-card">' +
+        '<div class="actu-source-name">'+escapeHtml(l.name)+' ↗</div>' +
+        '<div class="actu-source-desc">'+escapeHtml(l.description||'')+'</div>' +
+      '</a>';
+    }).join('');
+  }
+
+  // ====== MODAL ======
+  window.openArticleModal = function(id){
+    var article = state.articles.find(function(a){ return a.id === id; });
+    if(!article) return;
+    var cat = CAT_LABELS[article.category] || CAT_LABELS.spp;
+    var content = document.getElementById('actu-modal-content');
+    content.innerHTML =
+      '<div class="actu-modal-kicker">'+cat.label+'</div>' +
+      '<h1>'+escapeHtml(article.title)+'</h1>' +
+      '<div class="actu-modal-meta">Publié le '+fmtDate(article.date)+' · Par '+escapeHtml(article.author||'Quentin')+'</div>' +
+      '<div class="actu-modal-content">'+(article.content_html||'<p>'+escapeHtml(article.excerpt)+'</p>')+'</div>' +
+      (article.source_url ? '<div class="actu-modal-source">Source : <a href="'+escapeHtml(article.source_url)+'" target="_blank" rel="noopener">'+escapeHtml(article.source||article.source_url)+'</a></div>' : '');
+    document.getElementById('actu-modal-overlay').classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeActuModal = function(){
+    document.getElementById('actu-modal-overlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('DOMContentLoaded', function(){
+    var overlay = document.getElementById('actu-modal-overlay');
+    if(overlay){
+      overlay.addEventListener('click', function(e){ if(e.target === overlay) closeActuModal(); });
+    }
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeActuModal(); });
+  });
+
+  // ====== FILTRES ======
+  window.filterActu = function(btn, filter){
+    state.currentFilter = filter;
+    Array.prototype.forEach.call(document.querySelectorAll('#actu-filters .biblio-cat-btn'), function(b){
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+    renderGrid();
+    renderSources();
+    var slot = document.getElementById('actu-featured-slot');
+    var featured = state.articles.find(function(a){ return a.featured; });
+    if(slot && featured){
+      var show = (filter === 'all' || filter === featured.category);
+      slot.style.display = show ? '' : 'none';
+    }
+  };
+
+  // ====== CHARGEMENT ======
+  function loadActualites(){
+    fetch(ACTU_JSON_URL, {cache:'no-store'})
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return r.json();
+      })
+      .then(function(data){
+        state.articles = (data.articles || []).slice().sort(function(a,b){
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        state.externalLinks = data.external_links || [];
+
+        var featured = state.articles.find(function(a){ return a.featured; });
+        if(!featured && state.articles.length){
+          featured = state.articles[0];
+          featured.featured = true;
+        }
+        renderFeatured(featured);
+        renderGrid();
+        renderSources();
+      })
+      .catch(function(err){
+        console.error('Erreur chargement actualites.json:', err);
+        var slot = document.getElementById('actu-featured-slot');
+        if(slot) slot.innerHTML = '<div class="actu-empty">Impossible de charger les actualités. Vérifiez que actualites.json est bien présent à la racine du site.</div>';
+        var grid = document.getElementById('actu-grid');
+        if(grid) grid.innerHTML = '';
+      });
+  }
+
+  // Déclenchement au chargement + à chaque visite de la page actu
+  document.addEventListener('DOMContentLoaded', function(){
+    var pageActu = document.getElementById('page-actu');
+    if(!pageActu) return;
+    var loaded = false;
+    function checkAndLoad(){
+      if(!loaded && pageActu.classList.contains('active')){
+        loaded = true;
+        loadActualites();
+      }
+    }
+    checkAndLoad();
+    var origGoTo = window.goTo;
+    if(typeof origGoTo === 'function'){
+      window.goTo = function(page){
+        var r = origGoTo.apply(this, arguments);
+        if(page === 'actu') checkAndLoad();
+        return r;
+      };
+    }
+  });
+
 })();
 </script>
 
