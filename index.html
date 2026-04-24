@@ -1166,17 +1166,12 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .member-btn{padding:8px 16px;border:1.5px solid var(--red);color:var(--red);font-size:.78rem;font-weight:600;letter-spacing:.5px;background:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
 .member-btn:hover{background:var(--red);color:white}
 /* Sur mobile, le "Se connecter" et les autres disparaissent (accessibles via menu burger)
-   — SAUF "Mon espace" qui reste visible en permanence pour accès rapide au planning */
+   — SAUF "Mon espace" (qui affiche le pseudo + icône badge) pour accès rapide */
 @media(max-width:900px){
   #nav-login-btn,#nav-logout-btn,#nav-member-name{display:none !important}
-  /* Bouton Mon espace : version compacte sur mobile, visible uniquement si connecté */
-  #nav-space-btn{padding:7px 10px;font-size:.72rem;letter-spacing:.3px;margin-right:6px}
-  #nav-space-btn .nav-space-full{display:none}
-  #nav-space-btn .nav-space-short{display:inline}
-}
-@media(min-width:901px){
-  #nav-space-btn .nav-space-full{display:inline}
-  #nav-space-btn .nav-space-short{display:none}
+  /* Bouton Mon espace compact sur mobile — le pseudo reste visible */
+  #nav-space-btn{padding:7px 10px;font-size:.72rem;letter-spacing:.3px;margin-right:6px;max-width:140px;overflow:hidden}
+  #nav-space-btn #nav-space-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle;max-width:100px}
 }
 .member-logout{padding:8px 16px;border:1.5px solid var(--gray-light);color:var(--gray);font-size:.78rem;font-weight:600;background:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
 .member-logout:hover{border-color:var(--charcoal);color:var(--charcoal)}
@@ -2447,10 +2442,10 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     </button>
     <!-- Bouton affiché si non connecté -->
     <button class="member-btn" id="nav-login-btn" onclick="goTo('connexion')">Se connecter →</button>
-    <!-- Affiché si connecté -->
-    <button class="member-btn" id="nav-space-btn" style="display:none" onclick="goTo('espace')">
-      <span class="nav-space-full">📊 Mon espace</span>
-      <span class="nav-space-short">📊 Espace</span>
+    <!-- Affiché si connecté : combine l'accès à l'espace + l'identité (icône badge ou 📊 + pseudo) -->
+    <button class="member-btn" id="nav-space-btn" style="display:none" onclick="goTo('espace')" title="Mon espace candidat">
+      <span id="nav-space-ico">📊</span>
+      <span id="nav-space-label" style="margin-left:4px">Mon espace</span>
     </button>
     <span class="member-name" id="nav-member-name" style="display:none"></span>
     <button class="member-logout" id="nav-logout-btn" style="display:none" onclick="logoutMember()">Déconnexion</button>
@@ -13370,13 +13365,10 @@ function updateNavMember(member) {
     if (spaceBtn)    spaceBtn.style.display    = 'inline-flex';
     if (espaceItem)  espaceItem.style.display  = 'block';
     if (mobileEspace) mobileEspace.style.display = 'block';
-    // Affichage du nom dans la nav : on commence par l'email (fallback),
-    // puis dès que le profil Supabase est chargé, on passe à "[badge] pseudo"
-    var email = (member.auth && member.auth.email) || member.email || '';
-    if (email) {
-      nameEl.textContent = '👤 ' + email.split('@')[0];
-      nameEl.style.display = 'inline';
-    }
+    // L'affichage pseudo + badge est géré entièrement par updateNavMemberName()
+    // qui remplit dynamiquement le bouton "Mon espace" (icône + pseudo).
+    // Fallback rapide : si le pseudo n'est pas encore chargé, on affiche l'email
+    // via une première passe d'updateNavMemberName (qui gère le fallback email).
     updateNavMemberName();
     checkAccessGate('qcm');
     // Migration localStorage → Supabase en arrière-plan (payants uniquement)
@@ -13447,13 +13439,15 @@ function updateNavMember(member) {
 // Fallback : affiche l'email split si pas de profil encore en cache.
 function updateNavMemberName() {
   var nameEl = document.getElementById('nav-member-name');
+  var spaceIco = document.getElementById('nav-space-ico');
+  var spaceLabel = document.getElementById('nav-space-label');
   var mobilePseudo = document.getElementById('mobile-member-pseudo');
   var mobileStatus = document.getElementById('mobile-member-status');
   if (!currentMember) return;
   var profile = currentMember._profile;
 
   // Détermine l'emoji + pseudo à afficher
-  var icon = '👤';
+  var icon = '📊';
   var displayName;
   if (profile && profile.pseudo) {
     if (profile.showcase_badge_id && typeof BADGES_DEFINITIONS !== 'undefined') {
@@ -13467,13 +13461,17 @@ function updateNavMemberName() {
     displayName = email ? email.split('@')[0] : 'candidat';
   }
 
-  // Mise à jour nav desktop
+  // Injection dans le bouton "Mon espace" (icône badge + pseudo)
+  if (spaceIco) spaceIco.textContent = icon;
+  if (spaceLabel) spaceLabel.textContent = displayName;
+
+  // L'ancien élément nav-member-name reste caché (remplacé par le bouton).
+  // On le laisse en place pour éventuels autres usages, mais on ne l'affiche plus.
   if (nameEl) {
-    nameEl.textContent = icon + ' ' + displayName;
-    nameEl.style.display = 'inline';
+    nameEl.style.display = 'none';
   }
 
-  // Mise à jour bandeau mobile
+  // Mise à jour bandeau mobile (inchangé)
   if (mobilePseudo) {
     mobilePseudo.textContent = icon + ' ' + displayName;
   }
