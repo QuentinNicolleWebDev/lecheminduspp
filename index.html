@@ -4422,7 +4422,7 @@ if(window.location.search.indexOf('success') !== -1) {
         <span class="comm-tab-badge" id="comm-friends-count-badge" style="display:none">0</span>
       </button>
       <button class="comm-tab" id="comm-tab-btn-annuaire" role="tab" onclick="commSwitchTab('annuaire')">
-        <span>👥</span> Annuaire
+        <span>👨‍🚒👩‍🚒</span> Annuaire
       </button>
     </div>
 
@@ -15815,9 +15815,20 @@ function renderCommPost(p, reactions, myId) {
   var captionHtml = p.caption ? '<div class="comm-post-caption">' + escapeHtml(p.caption) + '</div>' : '';
   var deleteBtn = isMine ? '<button class="comm-post-delete" onclick="deleteCommPost(' + p.id + ')" title="Supprimer">🗑</button>' : '';
 
+  // Avatar : badge vitrine porté au moment du partage, sinon initiale en fallback.
+  // Le badge est stocké dans event_data._author_badge lors de la publication.
+  var avatarHtml;
+  var badgeId = p.event_data && p.event_data._author_badge;
+  var badgeDef = badgeId ? BADGES_DEFINITIONS[badgeId] : null;
+  if (badgeDef && badgeDef.icon) {
+    avatarHtml = '<div class="comm-post-avatar" title="' + escapeHtml(badgeDef.label || '') + '" style="font-size:1.4rem">' + badgeDef.icon + '</div>';
+  } else {
+    avatarHtml = '<div class="comm-post-avatar">' + escapeHtml(commInitial(p.pseudo)) + '</div>';
+  }
+
   return '<div class="comm-post" data-post-id="' + p.id + '">' +
     '<div class="comm-post-head">' +
-      '<div class="comm-post-avatar">' + escapeHtml(commInitial(p.pseudo)) + '</div>' +
+      avatarHtml +
       '<div class="comm-post-meta">' +
         '<div class="comm-post-pseudo" onclick="goToProfile(\'' + encodeURIComponent(p.pseudo) + '\')">' + escapeHtml(p.pseudo) + '</div>' +
         '<div class="comm-post-time">' + commTimeAgo(p.created_at) + '</div>' +
@@ -15881,6 +15892,10 @@ function escapeHtml(s) {
 // RÉACTIONS — toggle emoji sur un post
 // ============================================================
 
+// Gestion des réactions : un seul emoji de réaction par candidat par post.
+// - Clic sur l'emoji actuellement actif → retire la réaction
+// - Clic sur un autre emoji → remplace l'ancien par le nouveau (via delete+insert)
+// - Clic sans réaction existante → ajoute simplement
 function toggleCommReaction(postId, emoji) {
   if (!currentMember) { showToast('Connecte-toi pour réagir'); return; }
   if (!window.supabaseClient) return;
@@ -15888,10 +15903,11 @@ function toggleCommReaction(postId, emoji) {
   var myId = commMemberId();
   var pseudo = commMemberPseudo();
   var myReactions = commMyReactions[postId] || [];
-  var hasReacted = myReactions.indexOf(emoji) !== -1;
+  var isSameEmoji = myReactions.indexOf(emoji) !== -1;
+  var hasOtherReaction = myReactions.length > 0 && !isSameEmoji;
 
-  if (hasReacted) {
-    // Enlever la réaction
+  if (isSameEmoji) {
+    // Cas 1 : clic sur l'emoji actif → on retire la réaction
     window.supabaseClient
       .from('community_reactions')
       .delete()
@@ -15900,19 +15916,43 @@ function toggleCommReaction(postId, emoji) {
       .eq('emoji', emoji)
       .then(function(res) {
         if (res.error) { console.warn('[comm] delete reaction error', res.error); return; }
-        // Refresh du feed pour voir les compteurs à jour
         loadCommFeed();
       });
-  } else {
-    // Ajouter la réaction
+    return;
+  }
+
+  if (hasOtherReaction) {
+    // Cas 2 : clic sur un emoji différent → on supprime d'abord toutes mes réactions
+    // existantes sur ce post, puis on insère la nouvelle.
+    // En pratique il ne devrait y avoir qu'une seule réaction (c'est la règle)
+    // mais on supprime toutes les lignes par sécurité (cas historique).
     window.supabaseClient
       .from('community_reactions')
-      .insert({ post_id: postId, member_id: myId, pseudo: pseudo, emoji: emoji })
-      .then(function(res) {
-        if (res.error) { console.warn('[comm] insert reaction error', res.error); return; }
-        loadCommFeed();
+      .delete()
+      .eq('post_id', postId)
+      .eq('member_id', myId)
+      .then(function(delRes) {
+        if (delRes.error) { console.warn('[comm] delete (swap) error', delRes.error); return; }
+        // Puis on insère la nouvelle réaction
+        window.supabaseClient
+          .from('community_reactions')
+          .insert({ post_id: postId, member_id: myId, pseudo: pseudo, emoji: emoji })
+          .then(function(insRes) {
+            if (insRes.error) { console.warn('[comm] insert (swap) error', insRes.error); return; }
+            loadCommFeed();
+          });
       });
+    return;
   }
+
+  // Cas 3 : aucune réaction existante → simple ajout
+  window.supabaseClient
+    .from('community_reactions')
+    .insert({ post_id: postId, member_id: myId, pseudo: pseudo, emoji: emoji })
+    .then(function(res) {
+      if (res.error) { console.warn('[comm] insert reaction error', res.error); return; }
+      loadCommFeed();
+    });
 }
 
 // ============================================================
@@ -16019,11 +16059,22 @@ function submitCommShare() {
     var captionEl = document.getElementById('comm-share-caption');
     var caption = (captionEl ? captionEl.value : '').trim().substring(0, COMM_CAPTION_MAX);
 
+    // On enrichit event_data avec le badge vitrine actuel de l'auteur.
+    // Comme ça, l'avatar du post affiche le badge porté au moment du partage.
+    var eventData = Object.assign({}, commPendingShare.data || {});
+    var showcaseBadgeId = null;
+    if (currentMember && currentMember._profile && currentMember._profile.showcase_badge_id) {
+      showcaseBadgeId = currentMember._profile.showcase_badge_id;
+    }
+    if (showcaseBadgeId) {
+      eventData._author_badge = showcaseBadgeId;
+    }
+
     window.supabaseClient.from('community_posts').insert({
       member_id: commMemberId(),
       pseudo: commMemberPseudo(),
       event_type: commPendingShare.type,
-      event_data: commPendingShare.data || {},
+      event_data: eventData,
       caption: caption || null
     }).then(function(res) {
       if (res.error) {
@@ -16046,9 +16097,25 @@ function submitCommShare() {
 // ============================================================
 
 function loadCommFriends() {
-  if (!window.supabaseClient || !commMemberId()) return;
   var container = document.getElementById('comm-amis-content');
   if (!container) return;
+
+  // Candidat non connecté : afficher l'invitation à se connecter/s'inscrire
+  if (!currentMember || !commMemberId()) {
+    container.innerHTML =
+      '<div style="background:var(--cream2);border:1px dashed var(--border);padding:48px 28px;text-align:center;max-width:560px;margin:0 auto">' +
+        '<div style="font-size:2.5rem;margin-bottom:16px">🔒</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:1.35rem;color:var(--charcoal);font-weight:700;line-height:1.25;margin-bottom:10px">Connecte-toi pour <em style="color:var(--red)">retrouver tes amis</em></div>' +
+        '<div style="font-size:.9rem;color:var(--gray);line-height:1.6;margin-bottom:22px;max-width:420px;margin-left:auto;margin-right:auto">Crée ton compte (gratuit) ou connecte-toi pour obtenir ton code personnel, ajouter tes connaissances et suivre leur progression ensemble.</div>' +
+        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+          '<button class="btn btn-outline-red" onclick="goTo(\'connexion\')" style="padding:10px 18px;font-size:.85rem">J\'ai déjà un compte</button>' +
+          '<button class="btn btn-red" onclick="msSignupFree()" style="padding:10px 20px;font-size:.85rem">Créer un compte →</button>' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+
+  if (!window.supabaseClient) return;
 
   var myId = commMemberId();
 
