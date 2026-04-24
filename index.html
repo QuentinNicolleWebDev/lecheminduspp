@@ -430,7 +430,8 @@ body.is-logged .show-when-logged{display:block !important}
 .qcm-check-item{padding:12px 14px;font-size:.9rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid var(--border);background:white;transition:all .15s;user-select:none}
 .qcm-check-item:hover{background:var(--cream);border-color:var(--red-pale2)}
 .qcm-check-item.checked{background:var(--red-pale);border-color:var(--red-pale2);color:var(--charcoal)}
-.qcm-check-parent{font-weight:600;color:var(--charcoal);grid-column:1/-1}
+.qcm-check-parent{font-weight:600;color:var(--charcoal)}
+.qcm-check-parent.open{border-color:var(--red-pale2);background:var(--cream)}
 .qcm-checkbox{font-size:1.1rem;color:var(--gray-light);flex-shrink:0;line-height:1}
 .qcm-check-item.checked .qcm-checkbox{color:var(--red)}
 .qcm-check-label{flex:1;line-height:1.35}
@@ -439,7 +440,7 @@ body.is-logged .show-when-logged{display:block !important}
 .qcm-subcat-arrow{font-size:.7rem;color:var(--gray-light);transition:transform .2s;display:inline-block;margin-left:6px}
 .qcm-check-parent.open .qcm-subcat-arrow{transform:rotate(90deg)}
 
-.qcm-subcats{display:none;grid-column:1/-1;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;padding:14px;background:var(--cream);border:1px solid var(--border);border-top:none;margin-top:-10px}
+.qcm-subcats{display:none;grid-column:1/-1;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;padding:14px;background:var(--cream);border:1px solid var(--border);margin-top:-4px}
 .qcm-subcats.open{display:grid}
 .qcm-subcheck-item{padding:10px 12px;font-size:.82rem;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:8px;border:1px solid var(--border);background:white;transition:all .15s;user-select:none}
 .qcm-subcheck-item:hover{background:var(--cream2);border-color:var(--red-pale2)}
@@ -2935,39 +2936,42 @@ body:not(.is-logged) .mobile-nav-member{display:none}
             </div>
 
             <div class="qcm-themes-grid">
-              <!-- Culture administrative : item parent pleine largeur -->
+              <!-- Carte 1 : Culture administrative (parent repliable) -->
               <div class="qcm-check-item qcm-check-parent" id="parent-culture" onclick="toggleCulturePanel(event)">
                 <span class="qcm-checkbox" id="chk-culture" onclick="event.stopPropagation();toggleCat('culture')" style="cursor:pointer">☐</span>
                 <span class="qcm-check-label">Culture administrative</span>
                 <span style="display:flex;align-items:center;gap:6px"><span class="qcm-cat-count" id="count-culture">173</span><span class="qcm-subcat-arrow" id="arrow-culture">▸</span></span>
               </div>
 
-              <!-- Sous-catégories de culture administrative -->
-              <div class="qcm-subcats" id="culture-sub">
-                <div class="qcm-subcheck-item" onclick="toggleSubCat('statut',event)"><span class="qcm-checkbox" id="chk-statut">☐</span><span class="qcm-check-label">Statut SPP &amp; Fonctionnaire</span><span class="qcm-cat-count" id="count-statut">105</span></div>
-                <div class="qcm-subcheck-item" onclick="toggleSubCat('sis',event)"><span class="qcm-checkbox" id="chk-sis">☐</span><span class="qcm-check-label">Organisation d'un SIS</span><span class="qcm-cat-count" id="count-sis">50</span></div>
-                <div class="qcm-subcheck-item" onclick="toggleSubCat('divers',event)"><span class="qcm-checkbox" id="chk-divers">☐</span><span class="qcm-check-label">Divers</span><span class="qcm-cat-count" id="count-divers">18</span></div>
-              </div>
-
-              <div class="qcm-check-item" onclick="toggleCat('textes')">
-                <span class="qcm-checkbox" id="chk-textes">☐</span>
-                <span class="qcm-check-label">Textes structurants du concours</span>
-                <span class="qcm-cat-count" id="count-textes">29</span>
-              </div>
-              <div class="qcm-check-item" onclick="toggleCat('maths')">
-                <span class="qcm-checkbox" id="chk-maths">☐</span>
-                <span class="qcm-check-label">Mathématiques</span>
-                <span class="qcm-cat-count" id="count-maths">150</span>
-              </div>
-
-              <!-- Doctrines : item parent pleine largeur -->
+              <!-- Carte 2 : Doctrines Opérationnelles (parent repliable) -->
               <div class="qcm-check-item qcm-check-parent" id="parent-doctrines" onclick="toggleDoctrinesPanel(event)">
                 <span class="qcm-checkbox" id="chk-doctrines" onclick="event.stopPropagation();toggleCat('doctrines')" style="cursor:pointer">☐</span>
                 <span class="qcm-check-label">Doctrines Opérationnelles</span>
                 <span style="display:flex;align-items:center;gap:6px"><span class="qcm-cat-count" id="count-doctrines">534</span><span class="qcm-subcat-arrow" id="arrow-doctrines">▸</span></span>
               </div>
 
-              <!-- Sous-catégories des doctrines -->
+              <!-- Carte 3 : Textes structurants du concours -->
+              <div class="qcm-check-item" onclick="toggleCat('textes')">
+                <span class="qcm-checkbox" id="chk-textes">☐</span>
+                <span class="qcm-check-label">Textes structurants du concours</span>
+                <span class="qcm-cat-count" id="count-textes">29</span>
+              </div>
+
+              <!-- Carte 4 : Mathématiques -->
+              <div class="qcm-check-item" onclick="toggleCat('maths')">
+                <span class="qcm-checkbox" id="chk-maths">☐</span>
+                <span class="qcm-check-label">Mathématiques</span>
+                <span class="qcm-cat-count" id="count-maths">150</span>
+              </div>
+
+              <!-- Panneau sous-catégories Culture administrative (pleine largeur, déplié au clic) -->
+              <div class="qcm-subcats" id="culture-sub">
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('statut',event)"><span class="qcm-checkbox" id="chk-statut">☐</span><span class="qcm-check-label">Statut SPP &amp; Fonctionnaire</span><span class="qcm-cat-count" id="count-statut">105</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('sis',event)"><span class="qcm-checkbox" id="chk-sis">☐</span><span class="qcm-check-label">Organisation d'un SIS</span><span class="qcm-cat-count" id="count-sis">50</span></div>
+                <div class="qcm-subcheck-item" onclick="toggleSubCat('divers',event)"><span class="qcm-checkbox" id="chk-divers">☐</span><span class="qcm-check-label">Divers</span><span class="qcm-cat-count" id="count-divers">18</span></div>
+              </div>
+
+              <!-- Panneau sous-catégories Doctrines (pleine largeur, déplié au clic) -->
               <div class="qcm-subcats" id="doctrines-sub">
                 <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-ventilation',event)"><span class="qcm-checkbox" id="chk-gto-ventilation">☐</span><span class="qcm-check-label">GTO Ventilation Opérationnelle</span><span class="qcm-cat-count" id="count-gto-ventilation">12</span></div>
                 <div class="qcm-subcheck-item" onclick="toggleSubCat('gto-sauvetage',event)"><span class="qcm-checkbox" id="chk-gto-sauvetage">☐</span><span class="qcm-check-label">GTO Sauvetage &amp; Mise en Sécurité</span><span class="qcm-cat-count" id="count-gto-sauvetage">49</span></div>
