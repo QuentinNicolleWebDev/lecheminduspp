@@ -2007,6 +2007,112 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   .beta-sv-rate-btn{width:38px;height:38px;font-size:.88rem}
 }
 
+/* ============================================================
+   COMMUNAUTÉ — Feed + amis + modale partage
+   ============================================================ */
+
+/* ----- Onglets de la page Communauté ----- */
+.comm-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:32px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.comm-tab{padding:14px 22px;background:none;border:none;border-bottom:2px solid transparent;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;color:var(--gray);cursor:pointer;letter-spacing:.3px;transition:all .15s;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;position:relative}
+.comm-tab:hover{color:var(--charcoal)}
+.comm-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.comm-tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;background:var(--red);color:white;font-size:.68rem;font-weight:700;border-radius:10px;font-family:'DM Sans',sans-serif}
+.comm-tab-pane{display:none}
+.comm-tab-pane.active{display:block}
+
+/* ----- Feed de posts ----- */
+.comm-feed{max-width:720px;margin:0 auto}
+.comm-feed-empty{text-align:center;padding:70px 24px;background:var(--cream2);border:1px dashed var(--border);color:var(--gray)}
+.comm-feed-empty-ico{font-size:2.5rem;margin-bottom:14px}
+.comm-feed-empty-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:10px;line-height:1.25}
+.comm-feed-empty-sub{font-size:.88rem;line-height:1.6;max-width:420px;margin:0 auto}
+
+.comm-post{background:white;border:1px solid var(--border);padding:22px 24px;margin-bottom:16px;transition:box-shadow .2s}
+.comm-post:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.comm-post-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.comm-post-avatar{flex-shrink:0;width:42px;height:42px;border-radius:50%;background:var(--cream2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--charcoal);font-size:1.05rem}
+.comm-post-meta{flex:1;min-width:0}
+.comm-post-pseudo{font-family:'Playfair Display',serif;font-weight:700;color:var(--charcoal);font-size:1rem;line-height:1.2;margin-bottom:3px;cursor:pointer}
+.comm-post-pseudo:hover{color:var(--red)}
+.comm-post-time{font-size:.74rem;color:var(--gray-light);letter-spacing:.3px}
+.comm-post-actions{display:flex;gap:6px;align-items:center}
+.comm-post-delete{background:none;border:none;color:var(--gray-light);cursor:pointer;font-size:1rem;padding:4px 8px;transition:color .15s}
+.comm-post-delete:hover{color:var(--red)}
+.comm-post-body{margin-bottom:16px}
+.comm-post-event{display:inline-flex;align-items:center;gap:8px;background:var(--cream2);border-left:3px solid var(--red);padding:10px 14px;font-size:.86rem;color:var(--charcoal);line-height:1.4}
+.comm-post-event-ico{font-size:1.1rem}
+.comm-post-event strong{color:var(--red)}
+.comm-post-caption{margin-top:10px;font-size:.88rem;color:var(--charcoal);line-height:1.55}
+
+/* Réactions */
+.comm-post-reactions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-top:12px;border-top:1px solid var(--border)}
+.comm-react-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--cream2);border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--charcoal);cursor:pointer;transition:all .15s;font-weight:500}
+.comm-react-btn:hover{border-color:var(--red);background:white}
+.comm-react-btn.active{background:var(--red-pale);border-color:var(--red);color:var(--red);font-weight:700}
+.comm-react-emoji{font-size:1rem;line-height:1}
+.comm-react-count{font-variant-numeric:tabular-nums;font-size:.78rem}
+.comm-react-count.zero{display:none}
+
+/* ----- Modale de partage post-action ----- */
+#comm-share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99999;display:none;align-items:center;justify-content:center;padding:20px}
+#comm-share-overlay.open{display:flex}
+#comm-share-modal{background:white;max-width:460px;width:100%;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.comm-share-head{padding:28px 30px 18px;text-align:center;border-bottom:1px solid var(--border);position:relative}
+.comm-share-ico{font-size:2.2rem;margin-bottom:10px}
+.comm-share-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--charcoal);font-weight:700;line-height:1.25;margin-bottom:8px}
+.comm-share-title em{font-style:italic;color:var(--red)}
+.comm-share-sub{font-size:.85rem;color:var(--gray);line-height:1.55}
+.comm-share-close{position:absolute;top:14px;right:14px;background:none;border:none;width:30px;height:30px;font-size:1.2rem;color:var(--gray);cursor:pointer;transition:color .15s}
+.comm-share-close:hover{color:var(--red)}
+.comm-share-body{padding:22px 30px 28px}
+.comm-share-preview{background:var(--cream2);border-left:3px solid var(--red);padding:12px 16px;margin-bottom:18px;font-size:.86rem;color:var(--charcoal);line-height:1.5}
+.comm-share-preview strong{color:var(--red)}
+.comm-share-caption-label{display:block;font-family:'DM Sans',sans-serif;font-size:.74rem;font-weight:600;color:var(--gray);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.comm-share-caption{width:100%;padding:10px 12px;border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--charcoal);background:white;outline:none;resize:vertical;min-height:70px;line-height:1.5;transition:border-color .15s;margin-bottom:16px}
+.comm-share-caption:focus{border-color:var(--red)}
+.comm-share-actions{display:flex;gap:8px}
+.comm-share-actions button{flex:1;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s}
+.comm-share-skip{background:white;color:var(--gray);border:1.5px solid var(--border)}
+.comm-share-skip:hover{border-color:var(--charcoal);color:var(--charcoal)}
+.comm-share-publish{background:var(--red);color:white;border:none}
+.comm-share-publish:hover{background:var(--red-dark)}
+.comm-share-publish:disabled{background:var(--gray-light);cursor:not-allowed}
+.comm-share-limit{font-size:.74rem;color:var(--gray-light);text-align:center;margin-top:12px;line-height:1.4}
+.comm-share-limit.blocked{color:var(--red);font-weight:600}
+
+/* ----- Onglet "Mes amis" ----- */
+.comm-friends-section{margin-bottom:36px}
+.comm-friends-title{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--charcoal);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.comm-friends-title-count{background:var(--red);color:white;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:12px;font-family:'DM Sans',sans-serif}
+.comm-friends-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.comm-friend-card{background:white;border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.comm-friend-card:hover{border-color:var(--red)}
+.comm-friend-avatar{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--cream2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:var(--charcoal)}
+.comm-friend-info{flex:1;min-width:0}
+.comm-friend-pseudo{font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;color:var(--charcoal);line-height:1.2;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comm-friend-pseudo:hover{color:var(--red)}
+.comm-friend-meta{font-size:.72rem;color:var(--gray);margin-top:2px}
+.comm-friend-actions{display:flex;gap:6px;flex-shrink:0}
+.comm-friend-btn{background:none;border:1px solid var(--border);padding:5px 10px;font-size:.72rem;font-family:'DM Sans',sans-serif;color:var(--charcoal);cursor:pointer;transition:all .15s}
+.comm-friend-btn:hover{border-color:var(--red);color:var(--red)}
+.comm-friend-btn.accept{background:var(--red);color:white;border-color:var(--red)}
+.comm-friend-btn.accept:hover{background:var(--red-dark)}
+.comm-friends-empty{text-align:center;padding:40px 20px;color:var(--gray);font-size:.86rem;line-height:1.6}
+
+/* Bouton "Ajouter en ami" sur les cartes candidats (annuaire) */
+.cand-add-friend{position:absolute;top:12px;right:12px;background:white;border:1px solid var(--border);padding:6px 10px;font-size:.72rem;font-family:'DM Sans',sans-serif;font-weight:600;color:var(--red);cursor:pointer;transition:all .15s;z-index:2}
+.cand-add-friend:hover{background:var(--red);color:white;border-color:var(--red)}
+.cand-add-friend.pending{color:var(--gray);cursor:default;border-color:var(--border)}
+.cand-add-friend.friends{color:#2d7a3a;cursor:default;border-color:#2d7a3a}
+
+@media(max-width:640px){
+  .comm-post{padding:18px 18px}
+  .comm-post-avatar{width:38px;height:38px}
+  .comm-react-btn{padding:5px 10px;font-size:.78rem}
+  .comm-tab{padding:12px 14px;font-size:.82rem}
+  .comm-friends-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -4299,46 +4405,106 @@ if(window.location.search.indexOf('success') !== -1) {
       <div class="s-eyebrow">Communauté</div>
       <div class="s-title">Les <em>candidats</em></div>
       <div class="s-intro">
-        Découvre celles et ceux qui préparent le concours avec toi. Chacun porte fièrement son badge favori.
+        Partage tes réussites, encourage les autres, tisse des liens. On avance mieux ensemble.
       </div>
     </div>
   </div>
 
   <div class="section" style="padding-top:30px">
 
-    <!-- Filtres -->
-    <div class="cand-filters">
-      <div class="cand-filters-row">
-        <div class="cand-filter-label">Filtrer par badge vitrine :</div>
-        <div class="cand-filter-chips" id="cand-filter-chips">
-          <button class="cand-chip active" data-cat="all" onclick="candFilterByCategory('all')">Tous</button>
-          <button class="cand-chip" data-cat="parcours" onclick="candFilterByCategory('parcours')">Parcours</button>
-          <button class="cand-chip" data-cat="regularite" onclick="candFilterByCategory('regularite')">Régularité</button>
-          <button class="cand-chip" data-cat="anciennete" onclick="candFilterByCategory('anciennete')">Ancienneté</button>
-          <button class="cand-chip" data-cat="performance" onclick="candFilterByCategory('performance')">Performance</button>
-          <button class="cand-chip" data-cat="insolites" onclick="candFilterByCategory('insolites')">Insolites</button>
-          <button class="cand-chip" data-cat="concours" onclick="candFilterByCategory('concours')">Concours</button>
-          <button class="cand-chip" data-cat="statut" onclick="candFilterByCategory('statut')">Abonnement</button>
-        </div>
-      </div>
-      <div class="cand-filters-row">
-        <div class="cand-filter-label">Trier par :</div>
-        <div class="cand-filter-chips">
-          <button class="cand-chip active" data-sort="recent" onclick="candSetSort('recent')">Plus récents</button>
-          <button class="cand-chip" data-sort="alpha" onclick="candSetSort('alpha')">Pseudo A-Z</button>
+    <!-- ============ ONGLETS ============ -->
+    <div class="comm-tabs" role="tablist">
+      <button class="comm-tab active" id="comm-tab-btn-feed" role="tab" onclick="commSwitchTab('feed')">
+        <span>📣</span> Feed
+      </button>
+      <button class="comm-tab" id="comm-tab-btn-amis" role="tab" onclick="commSwitchTab('amis')">
+        <span>🤝</span> Mes amis
+        <span class="comm-tab-badge" id="comm-friends-count-badge" style="display:none">0</span>
+      </button>
+      <button class="comm-tab" id="comm-tab-btn-annuaire" role="tab" onclick="commSwitchTab('annuaire')">
+        <span>👥</span> Annuaire
+      </button>
+    </div>
+
+    <!-- ============ PANE : FEED ============ -->
+    <div class="comm-tab-pane active" id="comm-tab-feed" role="tabpanel">
+      <div class="comm-feed" id="comm-feed">
+        <div class="comm-feed-empty">
+          <div class="comm-feed-empty-ico">📣</div>
+          <div class="comm-feed-empty-title">Le feed se remplit…</div>
+          <div class="comm-feed-empty-sub">Chargement des dernières réussites de la communauté.</div>
         </div>
       </div>
     </div>
 
-    <!-- Compteur + loader -->
-    <div class="cand-counter" id="cand-counter">Chargement…</div>
+    <!-- ============ PANE : MES AMIS ============ -->
+    <div class="comm-tab-pane" id="comm-tab-amis" role="tabpanel">
+      <div id="comm-amis-content">
+        <!-- Rempli dynamiquement par renderCommFriends() -->
+      </div>
+    </div>
 
-    <!-- Grille candidats -->
-    <div class="cand-grid" id="cand-grid"></div>
+    <!-- ============ PANE : ANNUAIRE (version existante) ============ -->
+    <div class="comm-tab-pane" id="comm-tab-annuaire" role="tabpanel">
+      <!-- Filtres -->
+      <div class="cand-filters">
+        <div class="cand-filters-row">
+          <div class="cand-filter-label">Filtrer par badge vitrine :</div>
+          <div class="cand-filter-chips" id="cand-filter-chips">
+            <button class="cand-chip active" data-cat="all" onclick="candFilterByCategory('all')">Tous</button>
+            <button class="cand-chip" data-cat="parcours" onclick="candFilterByCategory('parcours')">Parcours</button>
+            <button class="cand-chip" data-cat="regularite" onclick="candFilterByCategory('regularite')">Régularité</button>
+            <button class="cand-chip" data-cat="anciennete" onclick="candFilterByCategory('anciennete')">Ancienneté</button>
+            <button class="cand-chip" data-cat="performance" onclick="candFilterByCategory('performance')">Performance</button>
+            <button class="cand-chip" data-cat="insolites" onclick="candFilterByCategory('insolites')">Insolites</button>
+            <button class="cand-chip" data-cat="concours" onclick="candFilterByCategory('concours')">Concours</button>
+            <button class="cand-chip" data-cat="statut" onclick="candFilterByCategory('statut')">Abonnement</button>
+          </div>
+        </div>
+        <div class="cand-filters-row">
+          <div class="cand-filter-label">Trier par :</div>
+          <div class="cand-filter-chips">
+            <button class="cand-chip active" data-sort="recent" onclick="candSetSort('recent')">Plus récents</button>
+            <button class="cand-chip" data-sort="alpha" onclick="candSetSort('alpha')">Pseudo A-Z</button>
+          </div>
+        </div>
+      </div>
 
-    <!-- État vide -->
-    <div id="cand-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--gray);font-size:.9rem;line-height:1.7">
-      Aucun candidat ne correspond à ce filtre pour l'instant.
+      <!-- Compteur + loader -->
+      <div class="cand-counter" id="cand-counter">Chargement…</div>
+
+      <!-- Grille candidats -->
+      <div class="cand-grid" id="cand-grid"></div>
+
+      <!-- État vide -->
+      <div id="cand-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--gray);font-size:.9rem;line-height:1.7">
+        Aucun candidat ne correspond à ce filtre pour l'instant.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     COMMUNAUTÉ — Modale de partage (proposée après chaque action)
+     ============================================================ -->
+<div id="comm-share-overlay" onclick="if(event.target===this)closeCommShareModal()">
+  <div id="comm-share-modal">
+    <div class="comm-share-head">
+      <div class="comm-share-ico" id="comm-share-ico">🎉</div>
+      <div class="comm-share-title">Partager <em>cette réussite ?</em></div>
+      <div class="comm-share-sub">Inspire les autres candidats en montrant ta progression.</div>
+      <button class="comm-share-close" onclick="closeCommShareModal()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="comm-share-body">
+      <div class="comm-share-preview" id="comm-share-preview">—</div>
+      <label class="comm-share-caption-label">Message (optionnel)</label>
+      <textarea class="comm-share-caption" id="comm-share-caption" placeholder="Dis ce que tu en as pensé, ce qui t'a surpris…" maxlength="280"></textarea>
+      <div class="comm-share-actions">
+        <button class="comm-share-skip" onclick="closeCommShareModal()">Non merci</button>
+        <button class="comm-share-publish" id="comm-share-publish-btn" onclick="submitCommShare()">Publier 🚀</button>
+      </div>
+      <div class="comm-share-limit" id="comm-share-limit">3 partages par jour maximum.</div>
     </div>
   </div>
 </div>
@@ -7474,6 +7640,13 @@ function toggleDocSeen(docId, cardEl) {
           renderBiblioReadStatus();
           _updateViewerMarkSeenButton();
         }
+      } else {
+        // Proposer le partage dans la communauté (uniquement à la 1ère lecture, pas 23505)
+        if (typeof proposeCommShare === 'function' && docName) {
+          setTimeout(function() {
+            proposeCommShare('biblio', { name: docName, type: docType || 'Document' });
+          }, 800);
+        }
       }
     });
   } else {
@@ -7569,6 +7742,16 @@ function awardBadge(badgeId, metadata) {
       if (currentMember && currentMember._profile && !currentMember._profile.showcase_badge_id) {
         currentMember._profile.showcase_badge_id = badgeId;
         if (typeof updateNavMemberName === 'function') updateNavMemberName();
+      }
+      // Proposer le partage du badge dans la communauté
+      if (typeof proposeCommShare === 'function') {
+        setTimeout(function() {
+          proposeCommShare('badge', {
+            badge_id: badgeId,
+            name: (def && def.name) || badgeId,
+            icon: (def && def.icon) || '🏆'
+          });
+        }, 3500); // délai plus long pour laisser la popup badge se fermer naturellement
       }
       return true;
     }, function(e){
@@ -8346,7 +8529,7 @@ function loadCandidatesList() {
   // (le showcase est auto-défini sur le 1er badge, donc ça exclut naturellement les "sans badge")
   return window.supabaseClient
     .from('profiles')
-    .select('pseudo, showcase_badge_id, created_at')
+    .select('memberstack_id, pseudo, showcase_badge_id, created_at')
     .eq('is_banned', false)
     .not('showcase_badge_id', 'is', null)
     .order('created_at', { ascending: false })
@@ -8427,10 +8610,12 @@ function renderCandidatesGrid() {
   empty.style.display = 'none';
 
   var html = '';
+
   list.forEach(function(c) {
     var def = BADGES_DEFINITIONS[c.showcase_badge_id] || { icon:'🏆', label:'—', rarity:'commun' };
     var safePseudo = String(c.pseudo).replace(/[<>]/g, '');
-    html += '<div class="cand-card" onclick="goToProfile(\'' + encodeURIComponent(safePseudo) + '\')">';
+    html += '<div class="cand-card" onclick="goToProfile(\'' + encodeURIComponent(safePseudo) + '\')" style="position:relative">';
+
     html +=   '<span class="cand-card-rarity ' + def.rarity + '">' + (BADGE_RARITY_LABELS[def.rarity] || '') + '</span>';
     html +=   '<div class="cand-card-icon">' + def.icon + '</div>';
     html +=   '<div class="cand-card-pseudo">' + safePseudo + '</div>';
@@ -10309,6 +10494,16 @@ function espTrackSession(title, cats, sessScore, sessTotal) {
       score: sessScore, total: sessTotal, pct: pct
     });
   }
+  // Proposer le partage dans la communauté si score ≥ 60%
+  // Petit délai pour laisser les popups badges s'afficher d'abord, sinon
+  // ce serait trop d'écrans d'un coup.
+  if (pct >= 60 && typeof proposeCommShare === 'function') {
+    setTimeout(function() {
+      proposeCommShare('qcm', {
+        title: title, score: sessScore, total: sessTotal, pct: pct
+      });
+    }, 2500);
+  }
 }
 
 function espTrackDoc(id, name, type, cat) {
@@ -10332,6 +10527,13 @@ function espTrackDoc(id, name, type, cat) {
     }).then(function(res){
       if (res && res.error) console.warn('Supabase insert doc :', res.error.message);
     });
+  }
+  // Proposer le partage dans la communauté (biblio)
+  // Petit délai pour laisser le toast "document marqué comme vu" s'afficher d'abord.
+  if (typeof proposeCommShare === 'function') {
+    setTimeout(function() {
+      proposeCommShare('biblio', { id: id, name: name, type: type || 'Document', cat: cat || '' });
+    }, 1500);
   }
 }
 
@@ -15042,6 +15244,12 @@ function togglePrepaDone(jour) {
   if (isValidating) {
     done.push(jour);
     showToast('✓ Séance du ' + jour + ' validée — bravo !');
+    // Proposer le partage dans la communauté (uniquement à la validation, pas à l'annulation)
+    if (typeof proposeCommShare === 'function') {
+      setTimeout(function() {
+        proposeCommShare('prepa', { jour: jour });
+      }, 1200);
+    }
   } else {
     done.splice(idx, 1);
   }
@@ -15367,6 +15575,699 @@ var EMAILJS_TEMPLATE_ID = 'template_a1suwqk';
   try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch(e) {}
 })();
 </script>
+
+<!-- ============================================================
+     COMMUNAUTÉ — Logique JS (feed + réactions + amis + code ami)
+     ============================================================ -->
+<script>
+// ===== CONFIG =====
+var COMM_MAX_POSTS = 50;         // nombre de posts affichés dans le feed
+var COMM_DAILY_LIMIT = 3;        // nombre max de posts par jour et par candidat
+var COMM_CAPTION_MAX = 280;      // taille max du message libre
+
+// ===== ÉTAT =====
+var commCurrentTab = 'feed';
+var commPosts = [];              // posts chargés depuis Supabase
+var commMyReactions = {};        // { postId: ['clap', 'fire'] } — mes réactions
+var commMyFriends = [];          // mes amitiés (array d'objets friendship)
+var commMyFriendCode = null;     // mon propre code #A7K3N9
+var commPendingShare = null;     // { type, data } en attente de publication
+
+// ===== UTILITAIRES =====
+
+// Renvoie l'identifiant memberstack du candidat courant
+function commMemberId() {
+  if (!currentMember) return null;
+  return currentMember.id || (currentMember.auth && currentMember.auth.id) || null;
+}
+
+// Renvoie le pseudo courant (ou "Candidat" en fallback)
+function commMemberPseudo() {
+  if (currentMember && currentMember._profile && currentMember._profile.pseudo) {
+    return currentMember._profile.pseudo;
+  }
+  return 'Candidat';
+}
+
+// Initiale du pseudo pour l'avatar (première lettre majuscule)
+function commInitial(pseudo) {
+  if (!pseudo) return '?';
+  return pseudo.charAt(0).toUpperCase();
+}
+
+// Format "il y a X" — style twitter
+function commTimeAgo(ts) {
+  var date = new Date(ts);
+  var diff = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (diff < 60) return 'à l\'instant';
+  if (diff < 3600) return 'il y a ' + Math.floor(diff/60) + ' min';
+  if (diff < 86400) return 'il y a ' + Math.floor(diff/3600) + ' h';
+  if (diff < 86400*7) return 'il y a ' + Math.floor(diff/86400) + ' j';
+  return date.toLocaleDateString('fr-FR', { day:'numeric', month:'short' });
+}
+
+// Génère un code ami format #A7K3N9 (6 caractères sans 0/O/1/I/L)
+function commGenerateFriendCode() {
+  var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';  // 31 chars (sans O, I, L, 0, 1)
+  var code = '#';
+  for (var i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+// Normalise un code saisi par l'utilisateur (majuscules, préfixe #, espaces retirés)
+function commNormalizeCode(input) {
+  if (!input) return '';
+  var c = String(input).trim().toUpperCase().replace(/\s/g, '');
+  if (!c.startsWith('#')) c = '#' + c;
+  return c;
+}
+
+// ============================================================
+// ONGLETS — basculer entre Feed / Mes amis / Annuaire
+// ============================================================
+
+function commSwitchTab(tabName) {
+  commCurrentTab = tabName;
+  ['feed','amis','annuaire'].forEach(function(t){
+    var btn = document.getElementById('comm-tab-btn-' + t);
+    var pane = document.getElementById('comm-tab-' + t);
+    if (btn) btn.classList.toggle('active', t === tabName);
+    if (pane) pane.classList.toggle('active', t === tabName);
+  });
+  // Rendu on-demand
+  if (tabName === 'feed') loadCommFeed();
+  if (tabName === 'amis') loadCommFriends();
+  // L'annuaire est déjà géré par renderCandidatesList() au changement de page
+}
+
+// ============================================================
+// CODE AMI — générer ou récupérer son code personnel
+// ============================================================
+
+function ensureCommFriendCode(cb) {
+  if (commMyFriendCode) { if (cb) cb(commMyFriendCode); return; }
+  if (!window.supabaseClient || !commMemberId()) { if (cb) cb(null); return; }
+
+  var mid = commMemberId();
+  // 1) Essayer de récupérer un code existant
+  window.supabaseClient
+    .from('friend_codes')
+    .select('code')
+    .eq('member_id', mid)
+    .limit(1)
+    .then(function(res) {
+      if (res.error) { console.warn('[comm] load friend_code error', res.error); if (cb) cb(null); return; }
+      if (res.data && res.data.length > 0) {
+        commMyFriendCode = res.data[0].code;
+        if (cb) cb(commMyFriendCode);
+        return;
+      }
+      // 2) Pas de code → en générer un nouveau unique
+      generateUniqueFriendCode(function(code) {
+        commMyFriendCode = code;
+        if (cb) cb(code);
+      });
+    })
+    .catch(function(e){ console.warn('[comm] load friend_code exception', e); if (cb) cb(null); });
+}
+
+// Génère un code et vérifie son unicité en base (3 tentatives max)
+function generateUniqueFriendCode(cb, attempt) {
+  attempt = attempt || 0;
+  if (attempt > 3) { cb(null); return; }
+
+  var code = commGenerateFriendCode();
+  var mid = commMemberId();
+  var pseudo = commMemberPseudo();
+
+  window.supabaseClient
+    .from('friend_codes')
+    .insert({ member_id: mid, pseudo: pseudo, code: code })
+    .then(function(res) {
+      if (res.error) {
+        // Collision d'unicité ? → réessaie
+        console.warn('[comm] insert friend_code error (retry)', res.error);
+        generateUniqueFriendCode(cb, attempt + 1);
+        return;
+      }
+      cb(code);
+    })
+    .catch(function(e) {
+      console.warn('[comm] insert friend_code exception', e);
+      generateUniqueFriendCode(cb, attempt + 1);
+    });
+}
+
+// ============================================================
+// FEED — chargement + affichage
+// ============================================================
+
+function loadCommFeed() {
+  if (!window.supabaseClient) return;
+
+  var container = document.getElementById('comm-feed');
+  if (!container) return;
+
+  // Fetch posts + reactions + mes réactions en parallèle
+  Promise.all([
+    window.supabaseClient
+      .from('community_posts')
+      .select('id, created_at, member_id, pseudo, event_type, event_data, caption')
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+      .limit(COMM_MAX_POSTS),
+    window.supabaseClient
+      .from('community_reactions')
+      .select('post_id, member_id, emoji')
+  ]).then(function(results) {
+    var postsRes = results[0];
+    var reactionsRes = results[1];
+
+    if (postsRes.error) {
+      console.warn('[comm] load posts error', postsRes.error);
+      container.innerHTML = '<div class="comm-feed-empty"><div class="comm-feed-empty-ico">⚠️</div><div class="comm-feed-empty-title">Impossible de charger</div><div class="comm-feed-empty-sub">Réessaie dans quelques instants.</div></div>';
+      return;
+    }
+
+    commPosts = postsRes.data || [];
+
+    // Indexer les réactions par post
+    var reactionsByPost = {};
+    commMyReactions = {};
+    var myId = commMemberId();
+    if (!reactionsRes.error && reactionsRes.data) {
+      reactionsRes.data.forEach(function(r) {
+        if (!reactionsByPost[r.post_id]) reactionsByPost[r.post_id] = {};
+        reactionsByPost[r.post_id][r.emoji] = (reactionsByPost[r.post_id][r.emoji] || 0) + 1;
+        if (r.member_id === myId) {
+          if (!commMyReactions[r.post_id]) commMyReactions[r.post_id] = [];
+          commMyReactions[r.post_id].push(r.emoji);
+        }
+      });
+    }
+
+    renderCommFeed(reactionsByPost);
+  });
+}
+
+function renderCommFeed(reactionsByPost) {
+  var container = document.getElementById('comm-feed');
+  if (!container) return;
+
+  if (commPosts.length === 0) {
+    container.innerHTML = '<div class="comm-feed-empty">' +
+      '<div class="comm-feed-empty-ico">📣</div>' +
+      '<div class="comm-feed-empty-title">Sois le premier à partager</div>' +
+      '<div class="comm-feed-empty-sub">Termine un QCM, lis un document ou valide une séance : une modale te proposera de partager ta réussite.</div>' +
+      '</div>';
+    return;
+  }
+
+  var myId = commMemberId();
+  var html = commPosts.map(function(p) {
+    return renderCommPost(p, reactionsByPost[p.id] || {}, myId);
+  }).join('');
+  container.innerHTML = html;
+}
+
+function renderCommPost(p, reactions, myId) {
+  var isMine = (p.member_id === myId);
+  var myReactionsForPost = commMyReactions[p.id] || [];
+  var EMOJIS = [
+    { key:'clap', icon:'👏', label:'Bravo' },
+    { key:'fire', icon:'🔥', label:'Feu' },
+    { key:'muscle', icon:'💪', label:'Force' },
+    { key:'heart', icon:'❤️', label:'Coeur' }
+  ];
+
+  var reactionsHtml = EMOJIS.map(function(e) {
+    var count = reactions[e.key] || 0;
+    var active = myReactionsForPost.indexOf(e.key) !== -1;
+    return '<button class="comm-react-btn' + (active ? ' active' : '') + '" onclick="toggleCommReaction(' + p.id + ',\'' + e.key + '\')" title="' + e.label + '">' +
+      '<span class="comm-react-emoji">' + e.icon + '</span>' +
+      '<span class="comm-react-count' + (count === 0 ? ' zero' : '') + '">' + count + '</span>' +
+    '</button>';
+  }).join('');
+
+  var eventHtml = renderCommEventLine(p.event_type, p.event_data);
+  var captionHtml = p.caption ? '<div class="comm-post-caption">' + escapeHtml(p.caption) + '</div>' : '';
+  var deleteBtn = isMine ? '<button class="comm-post-delete" onclick="deleteCommPost(' + p.id + ')" title="Supprimer">🗑</button>' : '';
+
+  return '<div class="comm-post" data-post-id="' + p.id + '">' +
+    '<div class="comm-post-head">' +
+      '<div class="comm-post-avatar">' + escapeHtml(commInitial(p.pseudo)) + '</div>' +
+      '<div class="comm-post-meta">' +
+        '<div class="comm-post-pseudo" onclick="goToProfile(\'' + encodeURIComponent(p.pseudo) + '\')">' + escapeHtml(p.pseudo) + '</div>' +
+        '<div class="comm-post-time">' + commTimeAgo(p.created_at) + '</div>' +
+      '</div>' +
+      '<div class="comm-post-actions">' + deleteBtn + '</div>' +
+    '</div>' +
+    '<div class="comm-post-body">' + eventHtml + captionHtml + '</div>' +
+    '<div class="comm-post-reactions">' + reactionsHtml + '</div>' +
+  '</div>';
+}
+
+// Texte de l'événement ("A fini une session QCM avec 78%")
+function renderCommEventLine(type, data) {
+  data = data || {};
+  if (type === 'qcm') {
+    var pct = data.pct || 0;
+    var total = data.total || 0;
+    var theme = data.title || 'QCM';
+    return '<div class="comm-post-event">' +
+      '<span class="comm-post-event-ico">🎯</span>' +
+      '<span>A terminé <strong>' + escapeHtml(theme) + '</strong> avec <strong>' + pct + '%</strong> (' + total + ' questions)</span>' +
+    '</div>';
+  }
+  if (type === 'biblio') {
+    var docName = data.name || 'un document';
+    return '<div class="comm-post-event">' +
+      '<span class="comm-post-event-ico">📚</span>' +
+      '<span>A lu <strong>' + escapeHtml(docName) + '</strong></span>' +
+    '</div>';
+  }
+  if (type === 'prepa') {
+    var jour = data.jour || '';
+    return '<div class="comm-post-event">' +
+      '<span class="comm-post-event-ico">💪</span>' +
+      '<span>A validé sa <strong>séance de ' + escapeHtml(jour) + '</strong> 🔥</span>' +
+    '</div>';
+  }
+  if (type === 'badge') {
+    var badgeName = data.name || data.badge_id || 'un badge';
+    var badgeIcon = data.icon || '🏆';
+    return '<div class="comm-post-event">' +
+      '<span class="comm-post-event-ico">' + badgeIcon + '</span>' +
+      '<span>A débloqué le badge <strong>' + escapeHtml(badgeName) + '</strong></span>' +
+    '</div>';
+  }
+  return '<div class="comm-post-event"><span>Activité récente</span></div>';
+}
+
+// Petit helper d'échappement HTML (évite XSS si un pseudo a du HTML)
+function escapeHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ============================================================
+// RÉACTIONS — toggle emoji sur un post
+// ============================================================
+
+function toggleCommReaction(postId, emoji) {
+  if (!currentMember) { showToast('Connecte-toi pour réagir'); return; }
+  if (!window.supabaseClient) return;
+
+  var myId = commMemberId();
+  var pseudo = commMemberPseudo();
+  var myReactions = commMyReactions[postId] || [];
+  var hasReacted = myReactions.indexOf(emoji) !== -1;
+
+  if (hasReacted) {
+    // Enlever la réaction
+    window.supabaseClient
+      .from('community_reactions')
+      .delete()
+      .eq('post_id', postId)
+      .eq('member_id', myId)
+      .eq('emoji', emoji)
+      .then(function(res) {
+        if (res.error) { console.warn('[comm] delete reaction error', res.error); return; }
+        // Refresh du feed pour voir les compteurs à jour
+        loadCommFeed();
+      });
+  } else {
+    // Ajouter la réaction
+    window.supabaseClient
+      .from('community_reactions')
+      .insert({ post_id: postId, member_id: myId, pseudo: pseudo, emoji: emoji })
+      .then(function(res) {
+        if (res.error) { console.warn('[comm] insert reaction error', res.error); return; }
+        loadCommFeed();
+      });
+  }
+}
+
+// ============================================================
+// SUPPRESSION d'un post par son auteur
+// ============================================================
+
+function deleteCommPost(postId) {
+  if (!confirm('Supprimer ce partage ?')) return;
+  if (!window.supabaseClient) return;
+  window.supabaseClient
+    .from('community_posts')
+    .update({ deleted_at: new Date().toISOString() })
+    .eq('id', postId)
+    .eq('member_id', commMemberId())
+    .then(function(res) {
+      if (res.error) { console.warn('[comm] delete post error', res.error); return; }
+      showToast('Partage supprimé');
+      loadCommFeed();
+    });
+}
+
+// ============================================================
+// MODALE PARTAGE — proposée après QCM / doc / séance / badge
+// ============================================================
+
+// Appelée depuis les hooks (session QCM terminée, doc lu, etc.)
+// Affiche la modale en demandant d'abord au candidat s'il veut partager.
+function proposeCommShare(type, data) {
+  if (!currentMember) return;
+  if (!window.supabaseClient) return;
+
+  commPendingShare = { type: type, data: data };
+
+  // Remplir la preview
+  var preview = document.getElementById('comm-share-preview');
+  var icoEl = document.getElementById('comm-share-ico');
+  if (preview) preview.innerHTML = renderCommEventLine(type, data);
+  if (icoEl) {
+    var icons = { qcm:'🎯', biblio:'📚', prepa:'💪', badge:'🏆' };
+    icoEl.textContent = icons[type] || '🎉';
+  }
+  var captionEl = document.getElementById('comm-share-caption');
+  if (captionEl) captionEl.value = '';
+
+  // Vérifier la limite quotidienne AVANT d'afficher (UX : montrer l'info)
+  checkDailyLimit(function(count) {
+    var limitEl = document.getElementById('comm-share-limit');
+    var publishBtn = document.getElementById('comm-share-publish-btn');
+    if (!limitEl || !publishBtn) return;
+    if (count >= COMM_DAILY_LIMIT) {
+      limitEl.textContent = 'Limite atteinte : ' + count + '/' + COMM_DAILY_LIMIT + ' partages aujourd\'hui. Reviens demain !';
+      limitEl.classList.add('blocked');
+      publishBtn.disabled = true;
+    } else {
+      limitEl.textContent = (count) + '/' + COMM_DAILY_LIMIT + ' partages aujourd\'hui — encore ' + (COMM_DAILY_LIMIT - count) + ' possible' + (COMM_DAILY_LIMIT - count > 1 ? 's' : '');
+      limitEl.classList.remove('blocked');
+      publishBtn.disabled = false;
+    }
+  });
+
+  // Ouvrir la modale
+  var overlay = document.getElementById('comm-share-overlay');
+  if (overlay) overlay.classList.add('open');
+}
+
+function closeCommShareModal() {
+  var overlay = document.getElementById('comm-share-overlay');
+  if (overlay) overlay.classList.remove('open');
+  commPendingShare = null;
+}
+
+// Vérifie combien de posts le candidat a déjà publiés dans les 24 dernières heures
+function checkDailyLimit(cb) {
+  if (!window.supabaseClient || !commMemberId()) { cb(0); return; }
+  var yesterday = new Date(Date.now() - 24*3600*1000).toISOString();
+  window.supabaseClient
+    .from('community_posts')
+    .select('id', { count: 'exact', head: true })
+    .eq('member_id', commMemberId())
+    .is('deleted_at', null)
+    .gte('created_at', yesterday)
+    .then(function(res) {
+      cb(res.count || 0);
+    })
+    .catch(function(){ cb(0); });
+}
+
+// Publie le partage
+function submitCommShare() {
+  if (!commPendingShare) return;
+  if (!window.supabaseClient) return;
+
+  var publishBtn = document.getElementById('comm-share-publish-btn');
+  if (publishBtn) { publishBtn.disabled = true; publishBtn.textContent = 'Publication…'; }
+
+  // Double-check la limite côté client avant envoi
+  checkDailyLimit(function(count) {
+    if (count >= COMM_DAILY_LIMIT) {
+      showToast('⚠️ Tu as atteint la limite de ' + COMM_DAILY_LIMIT + ' partages par jour');
+      if (publishBtn) { publishBtn.disabled = false; publishBtn.textContent = 'Publier 🚀'; }
+      return;
+    }
+
+    var captionEl = document.getElementById('comm-share-caption');
+    var caption = (captionEl ? captionEl.value : '').trim().substring(0, COMM_CAPTION_MAX);
+
+    window.supabaseClient.from('community_posts').insert({
+      member_id: commMemberId(),
+      pseudo: commMemberPseudo(),
+      event_type: commPendingShare.type,
+      event_data: commPendingShare.data || {},
+      caption: caption || null
+    }).then(function(res) {
+      if (res.error) {
+        console.warn('[comm] insert post error', res.error);
+        showToast('⚠️ Échec de publication');
+        if (publishBtn) { publishBtn.disabled = false; publishBtn.textContent = 'Publier 🚀'; }
+        return;
+      }
+      showToast('✅ Partagé avec la communauté !');
+      closeCommShareModal();
+      if (publishBtn) { publishBtn.disabled = false; publishBtn.textContent = 'Publier 🚀'; }
+      // Si on est sur le feed, rafraîchir
+      if (commCurrentTab === 'feed') loadCommFeed();
+    });
+  });
+}
+
+// ============================================================
+// AMIS — chargement + affichage + ajout par code
+// ============================================================
+
+function loadCommFriends() {
+  if (!window.supabaseClient || !commMemberId()) return;
+  var container = document.getElementById('comm-amis-content');
+  if (!container) return;
+
+  var myId = commMemberId();
+
+  // Chargement en parallèle : code personnel + amis
+  ensureCommFriendCode(function(code) {
+    window.supabaseClient
+      .from('community_friendships')
+      .select('*')
+      .or('member_a_id.eq.' + myId + ',member_b_id.eq.' + myId)
+      .then(function(res) {
+        if (res.error) { console.warn('[comm] load friends error', res.error); commMyFriends = []; }
+        else commMyFriends = res.data || [];
+        renderCommFriends();
+      });
+  });
+}
+
+function renderCommFriends() {
+  var container = document.getElementById('comm-amis-content');
+  if (!container) return;
+  var myId = commMemberId();
+  var code = commMyFriendCode || '…';
+
+  // Compter les amis pour le badge d'onglet
+  var badge = document.getElementById('comm-friends-count-badge');
+  if (badge) {
+    if (commMyFriends.length > 0) {
+      badge.style.display = 'inline-flex';
+      badge.textContent = commMyFriends.length;
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  // Section 1 : Mon code personnel
+  var html = '<div class="comm-friends-section">' +
+    '<div class="comm-friends-title">🔑 Ton code personnel</div>' +
+    '<div style="background:white;border:1px solid var(--border);padding:20px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">' +
+      '<div style="flex:1;min-width:200px">' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:1.6rem;color:var(--red);font-weight:700;letter-spacing:2px;font-variant-numeric:tabular-nums" id="comm-my-code">' + escapeHtml(code) + '</div>' +
+        '<div style="font-size:.76rem;color:var(--gray);margin-top:4px;line-height:1.5">Partage ce code avec tes connaissances — il est unique et définitif.</div>' +
+      '</div>' +
+      '<button class="btn btn-outline-red" onclick="copyCommCode()" style="padding:9px 16px;font-size:.82rem;white-space:nowrap">📋 Copier</button>' +
+    '</div>' +
+  '</div>';
+
+  // Section 2 : Ajouter un ami
+  html += '<div class="comm-friends-section">' +
+    '<div class="comm-friends-title">➕ Ajouter un ami</div>' +
+    '<div style="background:var(--cream2);border:1px solid var(--border);padding:20px 22px">' +
+      '<div style="font-size:.85rem;color:var(--charcoal);line-height:1.55;margin-bottom:12px">Demande son code à la personne que tu connais, puis entre-le ci-dessous.</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<input type="text" id="comm-add-friend-input" placeholder="#A7K3N9" maxlength="7" style="flex:1;min-width:180px;padding:11px 14px;border:1.5px solid var(--border);font-family:\'DM Sans\',sans-serif;font-size:1rem;color:var(--charcoal);background:white;outline:none;text-transform:uppercase;letter-spacing:1.5px;font-weight:600" onkeydown="if(event.key===\'Enter\')addCommFriend()" />' +
+        '<button class="btn btn-red" onclick="addCommFriend()" style="padding:11px 20px;font-size:.85rem">Ajouter</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // Section 3 : Liste des amis
+  html += '<div class="comm-friends-section">' +
+    '<div class="comm-friends-title">👥 Mes amis <span class="comm-friends-title-count">' + commMyFriends.length + '</span></div>';
+
+  if (commMyFriends.length === 0) {
+    html += '<div class="comm-friends-empty">Tu n\'as pas encore d\'amis. Demande leur code à tes connaissances qui préparent le concours avec toi.</div>';
+  } else {
+    html += '<div class="comm-friends-grid">';
+    commMyFriends.forEach(function(f) {
+      // Identifier l'autre côté de l'amitié (qui n'est pas moi)
+      var friendId = (f.member_a_id === myId) ? f.member_b_id : f.member_a_id;
+      var friendPseudo = (f.member_a_id === myId) ? (f.member_b_pseudo || 'Ami') : (f.member_a_pseudo || 'Ami');
+      html += '<div class="comm-friend-card">' +
+        '<div class="comm-friend-avatar">' + escapeHtml(commInitial(friendPseudo)) + '</div>' +
+        '<div class="comm-friend-info">' +
+          '<div class="comm-friend-pseudo" onclick="goToProfile(\'' + encodeURIComponent(friendPseudo) + '\')">' + escapeHtml(friendPseudo) + '</div>' +
+          '<div class="comm-friend-meta">Ami depuis le ' + new Date(f.created_at).toLocaleDateString('fr-FR') + '</div>' +
+        '</div>' +
+        '<div class="comm-friend-actions">' +
+          '<button class="comm-friend-btn" onclick="removeCommFriend(\'' + friendId + '\',\'' + escapeHtml(friendPseudo).replace(/'/g, '\\\'') + '\')">Retirer</button>' +
+        '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+function copyCommCode() {
+  if (!commMyFriendCode) return;
+  var tmp = document.createElement('input');
+  tmp.value = commMyFriendCode;
+  document.body.appendChild(tmp);
+  tmp.select();
+  try {
+    document.execCommand('copy');
+    showToast('📋 Code copié — partage-le à tes connaissances !');
+  } catch(e) {}
+  document.body.removeChild(tmp);
+}
+
+function addCommFriend() {
+  var input = document.getElementById('comm-add-friend-input');
+  if (!input) return;
+  var code = commNormalizeCode(input.value);
+
+  // Validation format : #XXXXXX (7 caractères avec le #)
+  if (code.length !== 7) {
+    showToast('⚠️ Code invalide (format #A7K3N9)');
+    return;
+  }
+
+  // Refuser le propre code
+  if (commMyFriendCode && code === commMyFriendCode) {
+    showToast('😅 C\'est ton propre code !');
+    return;
+  }
+
+  // 1) Trouver le candidat avec ce code
+  window.supabaseClient
+    .from('friend_codes')
+    .select('member_id, pseudo, code')
+    .eq('code', code)
+    .limit(1)
+    .then(function(res) {
+      if (res.error) { showToast('⚠️ Erreur de connexion'); return; }
+      if (!res.data || res.data.length === 0) {
+        showToast('❌ Aucun candidat avec ce code');
+        return;
+      }
+      var friendCodeRow = res.data[0];
+      commCreateFriendship(friendCodeRow.member_id, friendCodeRow.pseudo);
+    });
+}
+
+// Crée l'amitié (bilatérale) avec normalisation A/B des IDs
+function commCreateFriendship(friendId, friendPseudo) {
+  var myId = commMemberId();
+  var myPseudo = commMemberPseudo();
+
+  // Normalisation : a = le plus petit alphabétiquement
+  var aId, aPseudo, bId, bPseudo;
+  if (myId < friendId) {
+    aId = myId; aPseudo = myPseudo; bId = friendId; bPseudo = friendPseudo;
+  } else {
+    aId = friendId; aPseudo = friendPseudo; bId = myId; bPseudo = myPseudo;
+  }
+
+  window.supabaseClient
+    .from('community_friendships')
+    .insert({
+      member_a_id: aId,
+      member_a_pseudo: aPseudo,
+      member_b_id: bId,
+      member_b_pseudo: bPseudo,
+      initiated_by: myId
+    })
+    .then(function(res) {
+      if (res.error) {
+        // Erreur 23505 = collision unique → déjà amis
+        if (res.error.code === '23505' || (res.error.message || '').indexOf('duplicate') !== -1) {
+          showToast('✓ Vous êtes déjà amis avec ' + friendPseudo);
+          return;
+        }
+        console.warn('[comm] insert friendship error', res.error);
+        showToast('⚠️ Erreur lors de l\'ajout');
+        return;
+      }
+      showToast('🎉 ' + friendPseudo + ' a rejoint tes amis !');
+      var input = document.getElementById('comm-add-friend-input');
+      if (input) input.value = '';
+      loadCommFriends();
+    });
+}
+
+function removeCommFriend(friendId, friendPseudo) {
+  if (!confirm('Retirer ' + friendPseudo + ' de tes amis ?')) return;
+  var myId = commMemberId();
+
+  // Déterminer l'ordre A/B pour trouver la ligne
+  var aId, bId;
+  if (myId < friendId) { aId = myId; bId = friendId; }
+  else { aId = friendId; bId = myId; }
+
+  window.supabaseClient
+    .from('community_friendships')
+    .delete()
+    .eq('member_a_id', aId)
+    .eq('member_b_id', bId)
+    .then(function(res) {
+      if (res.error) { console.warn('[comm] delete friendship error', res.error); showToast('⚠️ Erreur'); return; }
+      showToast('Ami retiré');
+      loadCommFriends();
+    });
+}
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+
+// Hook sur goTo('candidats') — charger le feed dès l'entrée sur la page
+(function hookCommInit() {
+  var origGoTo = window.goTo;
+  if (typeof origGoTo !== 'function') return;
+  window.goTo = function(page) {
+    var r = origGoTo.apply(this, arguments);
+    if (page === 'candidats') {
+      setTimeout(function() {
+        // S'assurer que l'onglet actif est bien le feed par défaut
+        commSwitchTab(commCurrentTab || 'feed');
+        // Générer le code ami si besoin (en tâche de fond)
+        if (currentMember) ensureCommFriendCode();
+      }, 50);
+    }
+    return r;
+  };
+})();
+</script>
+
 
 <!-- ============================================================
      BETA TEST — Logique JS (verrouillage + feedback + guide + survey)
@@ -15974,6 +16875,7 @@ function submitBetaSurvey() {
   }, 100);
 })();
 </script>
+
 </body>
 </html>
 
