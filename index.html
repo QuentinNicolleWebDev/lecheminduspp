@@ -12712,11 +12712,11 @@ var _voieConcours = 'v2';
 var VOIE_AXES = {
   'v1': {
     order: ['culture', 'textes', 'maths'],
-    labels: { culture: 'Culture admin.', textes: 'Textes structurants', maths: 'Mathématiques' }
+    labels: { culture: 'Culture admin.', textes: 'Textes', maths: 'Mathématiques' }
   },
   'v2': {
     order: ['culture', 'textes', 'doctrines', 'secourisme'],
-    labels: { culture: 'Culture admin.', textes: 'Textes structurants', doctrines: 'Doctrines', secourisme: 'Secourisme' }
+    labels: { culture: 'Culture admin.', textes: 'Textes', doctrines: 'Doctrines', secourisme: 'Secourisme' }
   }
 };
 
@@ -12876,8 +12876,8 @@ function renderEspRadar(data) {
 
   // Paramètres SVG
   var R = 150;               // rayon max du radar
-  var margin = 150;          // marge large pour accueillir les labels (Textes épars etc.)
-  var size = R * 2 + margin * 2; // taille carrée du viewBox (= 600)
+  var margin = 220;          // marge large pour accueillir les labels longs (Textes structurants, Mathématiques, Secourisme)
+  var size = R * 2 + margin * 2; // taille carrée du viewBox (= 740)
   var cx = size / 2;         // centre x
   var cy = size / 2;         // centre y
   var rings = [20, 40, 60, 80, 100]; // graduation
