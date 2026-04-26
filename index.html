@@ -11472,18 +11472,29 @@ var tourCurrentStep = 0;
 var tourActive = false;
 var tourResizeHandler = null;
 
-// Définition des 12 étapes du tour
+// Définition des 22 étapes du tour.
+// Le tour mélange :
+//  - des étapes contextuelles (sur la fonctionnalité elle-même)
+//  - des étapes "NAV" qui mettent en lumière l'onglet du menu correspondant
+//    AVANT de changer de page — pour que le candidat apprenne à naviguer
+//    par lui-même, pas juste à voir des écrans défiler
+//  - des sous-étapes pédagogiques qui pointent les détails clés
+//    (timer du concours, formulaire de profil prépa, sources/fiches biblio,
+//    actualisation hebdo de la page actu, etc.)
 var tourSteps = [
+  // ÉTAPE 1 — Welcome
   {
     centered: true,
-    stepLabel: 'Étape 1 / 12',
+    stepLabel: 'Étape 1 / 22',
     title: 'Bienvenue parmi nous 👋',
-    text: "Tu viens de rejoindre Le Chemin du SPP. Avant de te lancer, laisse-moi te faire visiter en deux minutes pour que tu saches où trouver ce dont tu as besoin. Ce tour ne se relance pas automatiquement — autant le faire maintenant."
+    text: "Tu viens de rejoindre Le Chemin du SPP. Je vais te faire visiter en quelques minutes pour que tu saches où trouver ce dont tu as besoin et comment naviguer. Ce tour ne se relance pas automatiquement — autant le faire maintenant."
   },
+
+  // ÉTAPES 2-4 — Mon espace
   {
     page: 'espace',
     targetSelector: '#esp-tab-btn-planning',
-    stepLabel: 'Étape 2 / 12',
+    stepLabel: 'Étape 2 / 22',
     title: 'Mon planning, ta page d\'accueil',
     text: "C'est par ici que tu commences chaque session. Tu y vois ta semaine de travail, ce qui t'attend aujourd'hui et ce qui t'attend demain. Pas besoin de réfléchir, tu suis.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
@@ -11491,7 +11502,7 @@ var tourSteps = [
   {
     page: 'espace',
     targetSelector: '#esp-tab-btn-stats',
-    stepLabel: 'Étape 3 / 12',
+    stepLabel: 'Étape 3 / 22',
     title: 'Tes statistiques',
     text: "Tout ton historique de travail est ici : tes sessions de QCM, ton score par catégorie, ton évolution dans le temps, tes badges. C'est ton miroir de progression.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('stats'); }
@@ -11499,65 +11510,160 @@ var tourSteps = [
   {
     page: 'espace',
     targetSelector: '.esp-coach-block',
-    stepLabel: 'Étape 4 / 12',
+    stepLabel: 'Étape 4 / 22',
     title: 'Le coaching individuel',
     text: "Si tu as besoin d'un avis extérieur sur ton plan, ou d'une simulation d'oral, tu peux réserver une heure en visio avec moi. Pas obligatoire, mais accessible quand tu en as besoin.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
   },
+
+  // ÉTAPE 5 — NAV vers Préparation écrite
+  {
+    page: 'espace',
+    targetSelector: '#navg-prepa-ecrite',
+    stepLabel: 'Étape 5 / 22',
+    title: 'Naviguer vers la préparation écrite',
+    text: "Pour accéder à tes outils de préparation théorique, passe ta souris sur cet onglet du menu. Un sous-menu s'ouvre avec les QCM et le Mode concours. C'est le réflexe à prendre.",
+    onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
+  },
+
+  // ÉTAPES 6-7 — QCM
   {
     page: 'qcm',
-    targetSelector: '.qcm-launch-screen, #qcm-launch-screen',
-    stepLabel: 'Étape 5 / 12',
+    targetSelector: '.qcm-setup-header',
+    stepLabel: 'Étape 6 / 22',
     title: 'Les QCM thématiques',
-    text: "Le cœur de ta préparation théorique. Choisis un thème, lance une session, chaque réponse est sourcée. Plus tu en fais, plus l'algorithme te connaît."
+    text: "Tu choisis combien de questions tu veux traiter, puis tu sélectionnes tes thèmes. Lance et chaque réponse est sourcée pour que tu saches d'où elle vient."
   },
   {
     page: 'qcm',
-    targetSelector: '.qcm-mode-card[data-mode="review"], #qcm-mode-review',
-    stepLabel: 'Étape 6 / 12',
+    targetSelector: '#tab-review',
+    stepLabel: 'Étape 7 / 22',
     title: 'La Révision Intelligente',
-    text: "Une fois que tu auras fait quelques sessions, ce mode utilise tes erreurs pour te proposer en priorité les questions sur lesquelles tu dois revenir. C'est l'IA qui cible tes faiblesses pour toi."
+    text: "Ce mode utilise ton historique pour cibler en priorité les questions sur lesquelles tu te trompes. Plus tu pratiques, plus l'algorithme te connaît et te propose pile ce dont tu as besoin."
+  },
+
+  // ÉTAPE 8 — NAV vers Mode concours (sous le même onglet)
+  {
+    page: 'qcm',
+    targetSelector: '#navg-prepa-ecrite',
+    stepLabel: 'Étape 8 / 22',
+    title: 'Le Mode concours est juste à côté',
+    text: "Le Mode concours se trouve dans le même onglet \"Préparation écrite\". Survole-le pour voir les deux options : QCM et Mode concours."
+  },
+
+  // ÉTAPES 9a-9b — Mode concours (décomposé : grille des thèmes + explication conditions)
+  {
+    page: 'concours',
+    targetSelector: '#annales-themes-grid',
+    stepLabel: 'Étape 9 / 22',
+    title: 'Choisis ton épreuve d\'annales',
+    text: "Trois thèmes d'annales officielles. Tu cliques sur celui qui t'intéresse, tu choisis l'année, et tu te lances."
   },
   {
     page: 'concours',
-    targetSelector: '.concours-list, #concours-grid, .annales-grid',
-    stepLabel: 'Étape 7 / 12',
-    title: 'Mode concours',
-    text: "Quand tu te sens prêt, tu passes en conditions réelles. Annales officielles avec timer, correction sourcée à la fin. C'est l'épreuve d'entraînement qui ressemble le plus au jour J."
+    centered: true,
+    stepLabel: 'Étape 10 / 22',
+    title: '1 heure, sans tricher',
+    text: "Une fois lancée, l'annale démarre un chronomètre d'1 heure exactement. Tu n'as accès aux corrections qu'à la fin du temps imparti — comme le jour J. C'est ce qui rend cet entraînement utile : pas de raccourci, pas de bouton \"voir la réponse\", juste toi face à l'épreuve."
+  },
+
+  // ÉTAPE 11 — NAV vers Préparation physique
+  {
+    page: 'concours',
+    targetSelector: '#navg-prepa-physique',
+    stepLabel: 'Étape 11 / 22',
+    title: 'Naviguer vers la préparation physique',
+    text: "Cet onglet est un raccourci direct, pas de sous-menu. Un clic suffit pour accéder à ta préparation sportive."
+  },
+
+  // ÉTAPES 12-13 — Préparation physique (décomposé : profil + génération auto)
+  {
+    page: 'prepa',
+    targetSelector: '#prepa-missing-profile, #prepa-profile-btn',
+    stepLabel: 'Étape 12 / 22',
+    title: 'Tu commences par renseigner tes valeurs',
+    text: "Avant tout, tu saisis tes valeurs de référence : ta VMA en course à pied, tes 1RM en musculation, ton poids de corps. Ça prend 2 minutes et c'est ce qui rend ton programme adapté à toi."
   },
   {
     page: 'prepa',
-    targetSelector: '.page-header, .prepa-hero',
-    stepLabel: 'Étape 8 / 12',
-    title: 'La préparation physique',
-    text: "Tu rentres ta VMA et ton niveau de force, le programme s'adapte à toi. Plus de \"séances au feeling\" : tu sais à quelle allure courir et avec quelle charge soulever."
+    centered: true,
+    stepLabel: 'Étape 13 / 22',
+    title: 'Le programme se construit tout seul',
+    text: "À partir de ces valeurs, le système génère ta semaine d'entraînement : nombre de séances, allures de course exactes, charges précises en kilos pour chaque mouvement. Tu n'as plus à réfléchir à \"combien je dois faire\" — tu sais déjà."
+  },
+
+  // ÉTAPE 14 — NAV vers Ressources
+  {
+    page: 'prepa',
+    targetSelector: '#navg-ressources-member',
+    stepLabel: 'Étape 14 / 22',
+    title: 'Naviguer vers les ressources',
+    text: "Survole cet onglet pour accéder à la Bibliothèque et aux Actualités. Ce sont les deux sources documentaires de la plateforme."
+  },
+
+  // ÉTAPES 15-17 — Bibliothèque (décomposé : recherche + catégories + sources/fiches)
+  {
+    page: 'biblio',
+    targetSelector: '.biblio-search',
+    stepLabel: 'Étape 15 / 22',
+    title: 'La barre de recherche',
+    text: "Tape un mot-clé — \"matras\", \"GDO\", \"statut\"… — pour filtrer instantanément. C'est le raccourci quand tu cherches un texte précis."
   },
   {
     page: 'biblio',
-    targetSelector: '.biblio-search, .biblio-grid, .page-header',
-    stepLabel: 'Étape 9 / 12',
-    title: 'La bibliothèque',
-    text: "Tous les textes officiels classés et synthétisés : GNR, GTO, GDO, statut. Plus besoin de chasser l'info ailleurs, tout est ici, à jour."
+    targetSelector: '.biblio-acc-section',
+    stepLabel: 'Étape 16 / 22',
+    title: 'Les catégories de documents',
+    text: "Chaque catégorie est un accordéon que tu déplies. Tu y retrouves les Doctrines opérationnelles, la Culture administrative, le Statut SPP, et plus. Tout est rangé pour que tu trouves vite."
+  },
+  {
+    page: 'biblio',
+    centered: true,
+    stepLabel: 'Étape 17 / 22',
+    title: 'Sources officielles + fiches de synthèse',
+    text: "Pour chaque thème, tu as deux types de documents : les sources officielles (les textes bruts, parfois indigestes) et mes fiches de synthèse condensées qui en extraient l'essentiel. Tu choisis selon le temps que tu as."
+  },
+
+  // ÉTAPES 18-19 — Actualités (décomposé : décryptage de la semaine + actualisation hebdo)
+  {
+    page: 'actu',
+    targetSelector: '#actu-featured-slot',
+    stepLabel: 'Étape 18 / 22',
+    title: 'Le décryptage de la semaine',
+    text: "Chaque semaine, je publie un décryptage d'une actu majeure du métier. C'est l'article mis en avant ici, et c'est souvent ce qui peut tomber à l'oral du concours."
   },
   {
     page: 'actu',
-    targetSelector: '.actu-list, .actu-grid, .page-header',
-    stepLabel: 'Étape 10 / 12',
-    title: 'Les actualités',
-    text: "Chaque semaine, je décrypte les actus du métier qui peuvent tomber au concours ou à l'oral. Tu t'évites de surveiller dix sites en parallèle."
+    centered: true,
+    stepLabel: 'Étape 19 / 22',
+    title: 'Une mise à jour tous les dimanches',
+    text: "Cette page est rafraîchie chaque dimanche soir. Prends l'habitude d'y faire un tour le lundi : tu auras un résumé clair et hiérarchisé de la semaine pompière, sans avoir à surveiller dix sites."
   },
+
+  // ÉTAPE 20 — NAV vers Communauté
+  {
+    page: 'actu',
+    targetSelector: '#navg-candidats-member',
+    stepLabel: 'Étape 20 / 22',
+    title: 'Naviguer vers la communauté',
+    text: "Dernier onglet du menu : la communauté des candidats. Un clic direct, pas de sous-menu."
+  },
+
+  // ÉTAPE 21 — Communauté
   {
     page: 'candidats',
-    targetSelector: '.candidats-grid, .candidats-list, .page-header',
-    stepLabel: 'Étape 11 / 12',
+    targetSelector: '.comm-tabs',
+    stepLabel: 'Étape 21 / 22',
     title: 'La communauté',
-    text: "Tu n'es pas seul. Ici tu vois les autres candidats qui préparent comme toi. C'est une rampe d'émulation, pas une compétition."
+    text: "Tu n'es pas seul. Le Feed te montre l'activité des autres candidats, tu peux te lier d'amitié, partager tes réussites. C'est une rampe d'émulation, pas une compétition."
   },
+
+  // ÉTAPE 22 — Final
   {
     centered: true,
-    stepLabel: 'Étape 12 / 12',
+    stepLabel: 'Étape 22 / 22',
     title: 'Tu es prêt 🚀',
-    text: "Tu connais maintenant l'essentiel. Le reste, tu le découvriras en pratiquant. La meilleure chose que tu puisses faire maintenant : lancer ta première session de QCM. Bonne préparation."
+    text: "Tu connais maintenant l'essentiel. Le reste, tu le découvriras en pratiquant. La meilleure chose que tu puisses faire maintenant : aller dans Mon espace et lancer ta première session de QCM. Au passage : un clic sur le logo en haut à gauche te ramène toujours à Mon espace. Bonne préparation."
   }
 ];
 
