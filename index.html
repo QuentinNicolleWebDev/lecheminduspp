@@ -507,6 +507,10 @@ body.is-logged .nav-member-only{display:revert}
 .qcm-results-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .question-card{background:white;border:1px solid var(--border);padding:36px;margin-bottom:20px}
 .q-num{font-size:.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+/* Tag Révision Intelligente : affiché à côté du badge de niveau pendant
+   une session lancée depuis la Révision Intelligente. Fond cream, texte
+   discret, pour ne pas voler la vedette à la question elle-même. */
+.qcm-review-tag{display:inline-block;font-size:.66rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--charcoal);background:var(--cream2);border:1px solid var(--border);padding:3px 8px;margin-left:8px;vertical-align:middle}
 .q-text{font-size:1rem;font-weight:500;color:var(--charcoal);line-height:1.6;margin-bottom:24px}
 .q-choices{display:flex;flex-direction:column;gap:8px}
 .q-choice{padding:12px 18px;border:1px solid var(--border);background:var(--cream);font-size:.9rem;color:var(--charcoal);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;text-align:left}
@@ -11115,6 +11119,14 @@ function renderQ() {
     levelBadge = '<span style="font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:' + levelColors[q.level] + ';border:1px solid ' + levelColors[q.level] + ';padding:3px 8px;margin-left:10px">' + levelLabels[q.level] + '</span>';
   }
 
+  // Tag explicatif "Révision Intelligente" : indique pourquoi cette question
+  // a été tirée (ratée X fois, catégorie faible, pas vue depuis Y jours, etc.).
+  // Présent uniquement quand q._reviewTag a été assigné par launchReviewSession.
+  var reviewTag = '';
+  if (q._reviewTag) {
+    reviewTag = '<span class="qcm-review-tag">🧠 ' + q._reviewTag + '</span>';
+  }
+
   // Indicateur neutre : ne révèle pas le nombre de bonnes réponses
   var multiHint = '<div style="background:var(--red-pale);border:1px solid var(--red-pale2);padding:8px 14px;margin-bottom:16px;font-size:.8rem;color:var(--red);font-weight:600;display:inline-block">📌 Coche la ou les bonnes réponses</div>';
 
@@ -11127,7 +11139,7 @@ function renderQ() {
 
   area.innerHTML =
     '<div class="question-card">' +
-      '<div class="q-num">Question ' + (qIdx + 1) + ' / ' + activeSession.length + levelBadge + '</div>' +
+      '<div class="q-num">Question ' + (qIdx + 1) + ' / ' + activeSession.length + levelBadge + reviewTag + '</div>' +
       '<div class="q-text">' + q.q + '</div>' +
       multiHint +
       '<div class="q-choices" id="choices">' + choicesHtml + '</div>' +
@@ -11580,9 +11592,10 @@ function espFetchDetailedHistory(cb) {
   }
   var mid = espMemberId();
   if (!mid) { cb(localResult); return; }
-  // On récupère toutes les réponses individuelles qui ont un question_id
+  // On récupère toutes les réponses individuelles qui ont un question_id.
+  // created_at est nécessaire pour calculer la composante temporelle de la révision.
   window.supabaseClient.from('qcm_answers')
-    .select('category,question_id,is_correct')
+    .select('category,question_id,is_correct,created_at')
     .eq('member_id', mid)
     .not('question_id', 'is', null)
     .limit(10000)
@@ -11600,10 +11613,15 @@ function espFetchDetailedHistory(cb) {
         if (!cat || !qid) return;
         var key = cat + ':' + qid;
         if (!perQuestion[key]) {
-          perQuestion[key] = { cat: cat, qid: qid, seen: 0, correct: 0 };
+          perQuestion[key] = { cat: cat, qid: qid, seen: 0, correct: 0, lastSeen: 0 };
         }
         perQuestion[key].seen++;
         if (row.is_correct) perQuestion[key].correct++;
+        // Conserver le timestamp de la tentative la plus récente
+        if (row.created_at) {
+          var ts = new Date(row.created_at).getTime();
+          if (ts > perQuestion[key].lastSeen) perQuestion[key].lastSeen = ts;
+        }
         if (!perCat[cat]) perCat[cat] = { seen: 0, correct: 0 };
         perCat[cat].seen++;
         if (row.is_correct) perCat[cat].correct++;
@@ -11628,14 +11646,13 @@ function analyzeReviewPool() {
   espFetchDetailedHistory(function(data) {
     var perQuestion = data.perQuestion || {};
     var perCat = data.perCat || {};
-    // On ne garde que les questions plus ratées que réussies (wrong > correct)
+    // On garde TOUTES les questions vues (l'algo de pondération décide ensuite
+    // de leur priorité réelle). Les questions jamais vues seront ajoutées
+    // dynamiquement plus tard via injectFreshQuestions.
     var poolItems = [];
     Object.keys(perQuestion).forEach(function(k){
       var r = perQuestion[k];
-      var wrong = r.seen - r.correct;
-      if (wrong > r.correct) {
-        poolItems.push(r);
-      }
+      if (r.seen > 0) poolItems.push(r);
     });
     // Scores par catégorie
     var catScores = {};
@@ -11699,49 +11716,123 @@ function analyzeReviewPool() {
   });
 }
 
-// Sélectionne N questions à réviser, pondérées par la faiblesse de chaque catégorie.
-// Retourne un tableau de {cat, qid} où on pioche proportionnellement.
+// ============================================================================
+//  RÉVISION INTELLIGENTE — Algorithme de sélection pondérée à 4 composantes
+// ============================================================================
+//  Chaque question candidate reçoit un score de priorité multiplicatif :
+//    score = poids_question × poids_catégorie × poids_temps
+//  Plus le score est élevé, plus la question a de chances d'être tirée.
+//  Le tirage utilise la méthode du "cumulative weight" : un random uniforme
+//  est mappé sur la somme cumulée des poids → tirage exact, pas d'arrondi.
+//
+//  Composantes :
+//    1. poids_question  : 0.5 (jamais ratée) → 2.5 (toujours ratée)
+//    2. poids_catégorie : 0.5 (cat à 100%)   → 2.5 (cat à 0%)
+//    3. poids_temps     : 0.5 (vue hier)     → 2.0 (vue il y a 6+ mois)
+//    4. questions jamais vues : poids fixe 1.0 (neutre, ni boost ni frein)
+// ============================================================================
+
+// Calcule les 3 poids et le tag explicatif d'une question.
+// Renvoie { weight, reasonTag } pour usage dans le tirage et l'affichage.
+function computeQuestionPriority(item, catScores) {
+  var seen = item.seen || 0;
+  var correct = item.correct || 0;
+  var lastSeen = item.lastSeen || 0;
+
+  // --- Composante 1 : maîtrise de la question ---
+  var wQuestion, qTag = null;
+  if (seen === 0) {
+    // Question jamais vue → poids neutre
+    wQuestion = 1.0;
+    qTag = 'Découverte';
+  } else {
+    var errorRate = (seen - correct) / seen;
+    wQuestion = 0.5 + 2.0 * errorRate;
+    var wrong = seen - correct;
+    if (wrong >= 2) qTag = 'Ratée ' + wrong + ' fois';
+    else if (wrong === 1) qTag = 'Ratée 1 fois';
+    else if (correct >= 3) qTag = 'Bien maîtrisée';
+    // sinon pas de tag question
+  }
+
+  // --- Composante 2 : maîtrise de la catégorie ---
+  var catScore = catScores[item.cat] != null ? catScores[item.cat] : 75;
+  var wCat = (100 - catScore) / 50 + 0.5; // 100% → 0.5 ; 0% → 2.5
+  if (wCat < 0.5) wCat = 0.5;
+  if (wCat > 2.5) wCat = 2.5;
+  var catTag = null;
+  if (catScore < 50) catTag = 'Catégorie faible';
+  else if (catScore < 70) catTag = 'À consolider';
+
+  // --- Composante 3 : ancienneté ---
+  var wTime = 1.0;
+  var timeTag = null;
+  if (lastSeen > 0) {
+    var days = Math.max(0, (Date.now() - lastSeen) / (24 * 3600 * 1000));
+    // Courbe logarithmique : croissance rapide puis plafonnée à 2.0
+    wTime = 0.5 + Math.log(days + 1) / 2;
+    if (wTime > 2.0) wTime = 2.0;
+    if (wTime < 0.5) wTime = 0.5;
+    if (days >= 60) timeTag = 'Pas vue depuis ' + Math.round(days) + ' j';
+    else if (days >= 14) timeTag = 'Pas vue depuis ' + Math.round(days) + ' j';
+    // Sous 14 jours : pas de tag temporel pour ne pas bruiter l'affichage
+  }
+
+  // Tag d'affichage : on choisit le plus parlant (priorité : question > cat > temps)
+  var reasonTag = qTag || catTag || timeTag || null;
+
+  return {
+    weight: wQuestion * wCat * wTime,
+    reasonTag: reasonTag,
+    debug: { wQ: wQuestion, wC: wCat, wT: wTime, score: catScore }
+  };
+}
+
+// Sélectionne N questions à réviser via tirage pondéré continu.
+// Chaque question retourne avec ses métadonnées (cat, qid, reasonTag).
 function pickWeightedReviewQuestions(n) {
   if (!reviewPoolCache || !reviewPoolCache.items || reviewPoolCache.items.length === 0) return [];
   var items = reviewPoolCache.items.slice();
   var catScores = reviewPoolCache.catScores || {};
-  // Calcul du poids par catégorie : plus le score est bas, plus le poids est élevé
-  function weightForCat(cat) {
-    var score = catScores[cat] != null ? catScores[cat] : 75;
-    if (score < 50) return 2.0;
-    if (score < 70) return 1.5;
-    return 1.0;
-  }
-  // Construction d'une urne pondérée : chaque question est répétée selon le poids
-  // de sa catégorie, ce qui biaise le tirage sans exclure les cats fortes
-  var urn = [];
-  items.forEach(function(it){
-    var w = weightForCat(it.cat);
-    // On répète ×2 ou ×3 pour multiplier les chances (entiers uniquement)
-    var reps = Math.round(w * 2); // w=1 → 2x, w=1.5 → 3x, w=2 → 4x
-    for (var i = 0; i < reps; i++) urn.push(it);
+
+  // Calcul des poids et tags pour chaque item du pool
+  var weighted = items.map(function(it){
+    var p = computeQuestionPriority(it, catScores);
+    return {
+      cat: it.cat,
+      qid: it.qid,
+      weight: p.weight,
+      reasonTag: p.reasonTag
+    };
   });
-  // Tirage sans remise de n questions distinctes
+
+  // Tirage pondéré sans remise — méthode "cumulative weight"
   var picked = [];
-  var pickedKeys = {};
   var safety = 0;
-  while (picked.length < n && urn.length > 0 && safety < 5000) {
+  while (picked.length < n && weighted.length > 0 && safety < 5000) {
     safety++;
-    var idx = Math.floor(Math.random() * urn.length);
-    var it = urn[idx];
-    var key = it.cat + ':' + it.qid;
-    if (!pickedKeys[key]) {
-      pickedKeys[key] = true;
-      picked.push(it);
+    // Somme cumulée des poids
+    var totalWeight = 0;
+    for (var i = 0; i < weighted.length; i++) totalWeight += weighted[i].weight;
+    if (totalWeight <= 0) break;
+    var r = Math.random() * totalWeight;
+    var acc = 0;
+    var chosenIdx = 0;
+    for (var j = 0; j < weighted.length; j++) {
+      acc += weighted[j].weight;
+      if (r <= acc) { chosenIdx = j; break; }
     }
-    // Pour éviter un tirage infini, on retire l'item de l'urne
-    urn.splice(idx, 1);
+    picked.push(weighted[chosenIdx]);
+    weighted.splice(chosenIdx, 1); // sans remise
   }
   return picked;
 }
 
 // Prépare et lance une session de révision : charge les JSON des cats concernées,
 // extrait les questions demandées, puis démarre la session classique
+// Lance une session de révision intelligente.
+// Mix automatique : ~80% questions déjà vues (pondérées) + ~20% jamais vues
+// piochées dans les catégories les plus faibles, pour étendre la couverture.
 function launchReviewSession() {
   // Plafond démo pour les non-payants
   var wanted = randomNb || 10;
@@ -11754,19 +11845,52 @@ function launchReviewSession() {
     wanted = Math.min(wanted, remaining);
   }
 
-  var picks = pickWeightedReviewQuestions(wanted);
-  if (picks.length === 0) {
+  // 80% / 20% — minimum 1 question fraîche dès que wanted >= 5
+  var freshTarget = wanted >= 5 ? Math.max(1, Math.round(wanted * 0.2)) : 0;
+  var seenTarget = wanted - freshTarget;
+
+  var picks = pickWeightedReviewQuestions(seenTarget);
+  if (picks.length === 0 && freshTarget === 0) {
     showToast('Aucune question à réviser trouvée. Fais quelques sessions d\'abord !');
     return;
   }
 
-  // On regroupe par catégorie pour minimiser les fetches
+  // Construire la table des questions déjà vues pour exclusion ultérieure
+  var seenSet = {};
+  if (reviewPoolCache && reviewPoolCache.items) {
+    reviewPoolCache.items.forEach(function(it){ seenSet[it.cat + ':' + it.qid] = true; });
+  }
+
+  // Identifier les catégories prioritaires pour les questions fraîches :
+  // celles avec le score le plus bas dans catScores
+  var catScores = (reviewPoolCache && reviewPoolCache.catScores) || {};
+  var weakCats = Object.keys(catScores).map(function(c){
+    return { cat: c, score: catScores[c] };
+  }).sort(function(a, b){ return a.score - b.score; }).slice(0, 5);
+  // Si aucune catégorie historique, on prend l'union des catégories des picks
+  if (weakCats.length === 0) {
+    var seenCats = {};
+    picks.forEach(function(p){ seenCats[p.cat] = true; });
+    weakCats = Object.keys(seenCats).map(function(c){ return { cat: c, score: 50 }; });
+  }
+
+  // On regroupe les picks déjà vus par catégorie pour minimiser les fetches
   var byCat = {};
   picks.forEach(function(p){
     if (!byCat[p.cat]) byCat[p.cat] = [];
     byCat[p.cat].push(p.qid);
   });
+  // S'assurer qu'on charge aussi les catégories faibles pour piocher du frais
+  weakCats.forEach(function(wc){
+    if (!byCat[wc.cat]) byCat[wc.cat] = [];
+  });
   var cats = Object.keys(byCat);
+
+  // Index des tags par {cat:qid} pour les retrouver après chargement
+  var tagsByKey = {};
+  picks.forEach(function(p){
+    if (p.reasonTag) tagsByKey[p.cat + ':' + p.qid] = p.reasonTag;
+  });
 
   showLoadingScreen();
   Promise.all(cats.map(function(c){ return loadCat(c); })).then(function(loadedArrs){
@@ -11776,9 +11900,52 @@ function launchReviewSession() {
       var ids = byCat[c];
       ids.forEach(function(qid){
         var q = questions.find(function(x){ return x.id === qid; });
-        if (q) found.push(q);
+        if (q) {
+          var key = c + ':' + qid;
+          q._reviewTag = tagsByKey[key] || null;
+          found.push(q);
+        }
       });
     });
+
+    // Injection de questions jamais vues, piochées dans les catégories faibles
+    if (freshTarget > 0) {
+      var freshCandidates = [];
+      cats.forEach(function(c, i){
+        var questions = loadedArrs[i];
+        if (!questions) return;
+        questions.forEach(function(q){
+          var key = c + ':' + q.id;
+          if (!seenSet[key]) {
+            // Bonus si la catégorie est faible
+            var s = catScores[c] != null ? catScores[c] : 75;
+            var freshWeight = s < 50 ? 2.0 : (s < 70 ? 1.5 : 1.0);
+            freshCandidates.push({ q: q, cat: c, weight: freshWeight });
+          }
+        });
+      });
+      // Tirage pondéré des questions fraîches
+      var freshPicked = 0;
+      var safety = 0;
+      while (freshPicked < freshTarget && freshCandidates.length > 0 && safety < 1000) {
+        safety++;
+        var totalW = 0;
+        for (var k = 0; k < freshCandidates.length; k++) totalW += freshCandidates[k].weight;
+        var rr = Math.random() * totalW;
+        var acc = 0;
+        var idx = 0;
+        for (var m = 0; m < freshCandidates.length; m++) {
+          acc += freshCandidates[m].weight;
+          if (rr <= acc) { idx = m; break; }
+        }
+        var picked = freshCandidates[idx].q;
+        picked._reviewTag = 'Découverte';
+        found.push(picked);
+        freshCandidates.splice(idx, 1);
+        freshPicked++;
+      }
+    }
+
     if (found.length === 0) {
       showToast('Questions introuvables dans les fichiers de référence.');
       stopSession();
