@@ -1958,14 +1958,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .comment-card-cta{background:none;border:none;padding:0;color:var(--red);font-size:.88rem;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;letter-spacing:.2px;align-self:flex-start;transition:color .15s}
 .comment-card-cta:hover{color:var(--red-dark)}
 
-/* Section "journée type" */
-.comment-day-section{background:var(--cream2);padding-top:60px;padding-bottom:60px;margin-top:30px}
-.comment-day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
-.comment-day-block{background:white;border:1px solid var(--border);padding:28px 26px;border-top:3px solid var(--red)}
-.comment-day-time{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--red);line-height:1;margin-bottom:6px}
-.comment-day-title{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray-light);margin-bottom:14px}
-.comment-day-text{font-size:.86rem;color:var(--charcoal);line-height:1.65}
-
 /* Bloc coaching dédié */
 .comment-coach-block{background:var(--charcoal);color:white;padding:42px 40px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;max-width:1100px;margin:0 auto}
 .comment-coach-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:600;line-height:1.25;margin-top:8px;margin-bottom:14px}
@@ -1978,7 +1970,6 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 /* Responsive : grilles en colonne unique sur mobile */
 @media(max-width:880px){
   .comment-grid{grid-template-columns:1fr}
-  .comment-day-grid{grid-template-columns:1fr}
   .comment-coach-block{grid-template-columns:1fr;padding:32px 28px;gap:20px}
   .comment-section-title{font-size:1.6rem}
 }
@@ -3143,11 +3134,12 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <div class="comment-card-icon">🎯</div>
         <div class="comment-card-eyebrow">QCM thématiques</div>
         <h3 class="comment-card-title">Des centaines de questions classées par domaine</h3>
-        <div class="comment-card-text">[PLACEHOLDER — décrire : les thèmes couverts (incendie, secours, statut, hiérarchie...), la difficulté progressive, les corrections justifiées avec source, les sessions personnalisables.]</div>
+        <div class="comment-card-text">[PLACEHOLDER — décrire : les thèmes couverts (incendie, secours, statut, hiérarchie...), la difficulté progressive, les corrections justifiées avec source, les sessions personnalisables, la Révision Intelligente qui cible automatiquement tes lacunes via l'IA.]</div>
         <ul class="comment-card-features">
           <li>1000+ QCM corrigés et sourcés</li>
           <li>3 niveaux de difficulté</li>
           <li>Sessions personnalisables</li>
+          <li>Révision Intelligente par IA</li>
         </ul>
         <button class="comment-card-cta" onclick="goTo('qcm')">Essayer les QCM →</button>
       </div>
@@ -3174,7 +3166,8 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <div class="comment-card-text">[PLACEHOLDER — décrire : le calcul de VMA et 1RM, les programmes hebdomadaires (1 à 5 séances), les calculateurs d'allure et de charge, le suivi des séances faites.]</div>
         <ul class="comment-card-features">
           <li>Programmes 1 à 5 séances/semaine</li>
-          <li>Calculateurs VMA & 1RM intégrés</li>
+          <li>Sessions personnalisées</li>
+          <li>Calcul des allures et des charges basé sur ton niveau actuel</li>
           <li>Suivi des séances réalisées</li>
         </ul>
         <button class="comment-card-cta" onclick="goTo('demo-prepa')">Tester un calculateur →</button>
@@ -3187,8 +3180,9 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <h3 class="comment-card-title">Ton tableau de bord personnalisé</h3>
         <div class="comment-card-text">[PLACEHOLDER — décrire : les statistiques de progression, le radar des compétences, l'évolution dans le temps, l'historique des sessions, les badges, la série de jours actifs (streak).]</div>
         <ul class="comment-card-features">
-          <li>Radar de compétences par thème</li>
-          <li>Streak quotidien & badges</li>
+          <li>Statistiques détaillées</li>
+          <li>Une vision claire de tes progrès</li>
+          <li>Un système de badge ludique</li>
           <li>Historique complet de tes sessions</li>
         </ul>
         <button class="comment-card-cta" onclick="goTo('demo-espace')">Voir une démo →</button>
@@ -3201,9 +3195,9 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <h3 class="comment-card-title">Un planning sur-mesure à partir de tes disponibilités</h3>
         <div class="comment-card-text">[PLACEHOLDER — décrire : tu indiques tes créneaux de sport et de révision, l'algorithme génère ta semaine, tu peux glisser-déposer pour réorganiser, exporter vers Google Calendar / Apple / Outlook.]</div>
         <ul class="comment-card-features">
-          <li>Génération auto selon tes dispos</li>
-          <li>Sport + révision équilibrés</li>
-          <li>Export agenda (.ics)</li>
+          <li>S'adapte automatiquement à tes contraintes personnelles</li>
+          <li>Planifie tes sessions de sports et de révisions jour par jour</li>
+          <li>Planning exportable sur ton Google Agenda</li>
         </ul>
         <button class="comment-card-cta" onclick="goTo('programme')">Tester le planning →</button>
       </div>
@@ -3215,40 +3209,14 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         <h3 class="comment-card-title">Tous les textes à jour, expliqués</h3>
         <div class="comment-card-text">[PLACEHOLDER — décrire : la bibliothèque de textes officiels (GNR, GTO, GDO, statut...), les fiches synthèse, mes décryptages hebdo des actualités du métier, l'ebook de bienvenue offert.]</div>
         <ul class="comment-card-features">
-          <li>GNR, GTO, GDO, textes statutaires</li>
-          <li>Fiches de synthèse condensées</li>
-          <li>Décryptages d'actualité hebdo</li>
+          <li>Tout ce dont tu as besoin au même endroit</li>
+          <li>Guide de Doctrines et Techniques Opérationnelles (GDO / GTO)</li>
+          <li>Fiches de synthèses claires de Culture Administrative</li>
+          <li>Actualités de la semaine</li>
         </ul>
         <button class="comment-card-cta" onclick="goTo('biblio')">Parcourir la biblio →</button>
       </div>
 
-    </div>
-  </div>
-
-  <!-- ========== SECTION : UNE JOURNÉE TYPE ==========
-       Bloc narratif optionnel pour rendre concret l'usage. À remplir éditorialement
-       quand tu auras le temps. Peut être supprimé si tu préfères. -->
-  <div class="section comment-day-section">
-    <div class="comment-section-intro">
-      <div class="s-eyebrow" style="color:var(--red)">Concrètement</div>
-      <h2 class="comment-section-title">Une journée type<br>avec la plateforme</h2>
-    </div>
-    <div class="comment-day-grid">
-      <div class="comment-day-block">
-        <div class="comment-day-time">07h00</div>
-        <div class="comment-day-title">[Matin]</div>
-        <div class="comment-day-text">[PLACEHOLDER — décrire un usage matinal type. Ex : 30 min de QCM thématique sur une catégorie ciblée par le radar, ou lecture d'une fiche synthèse pendant le café.]</div>
-      </div>
-      <div class="comment-day-block">
-        <div class="comment-day-time">12h30</div>
-        <div class="comment-day-title">[Midi]</div>
-        <div class="comment-day-text">[PLACEHOLDER — décrire un usage de pause déjeuner. Ex : lecture d'une actu décryptée, validation d'une séance prépa physique du matin sur Mon espace.]</div>
-      </div>
-      <div class="comment-day-block">
-        <div class="comment-day-time">19h00</div>
-        <div class="comment-day-title">[Soir]</div>
-        <div class="comment-day-text">[PLACEHOLDER — décrire un usage du soir. Ex : annale complète en mode concours pour s'entraîner en conditions réelles, debrief avec la correction sourcée.]</div>
-      </div>
     </div>
   </div>
 
