@@ -2158,6 +2158,54 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .parcours-radio-desc{font-size:.76rem;color:var(--gray);line-height:1.5}
 .parcours-modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;padding-top:18px;border-top:1px solid var(--cream3)}
 
+/* --- Suggestion de bascule P1 → P2 (parcours terminé) --- */
+.parcours-suggestion{background:#edf7ee;border:1px solid #2d7a3a;border-left-width:4px;padding:18px 22px;margin-bottom:22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.parcours-suggestion-left{flex:1;min-width:240px}
+.parcours-suggestion-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2d7a3a;margin-bottom:4px}
+.parcours-suggestion-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--charcoal);margin-bottom:4px;line-height:1.3}
+.parcours-suggestion-text{font-size:.85rem;color:var(--charcoal);line-height:1.55}
+.parcours-suggestion-actions{flex-shrink:0;display:flex;gap:8px}
+.btn-parcours-suggestion{padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;background:#2d7a3a;color:white;border:none;cursor:pointer;line-height:1.2}
+.btn-parcours-suggestion:hover{background:#1f5c28}
+.btn-parcours-suggestion-secondary{padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;background:transparent;color:var(--gray);border:1px solid var(--border);cursor:pointer}
+.btn-parcours-suggestion-secondary:hover{background:white;color:var(--charcoal)}
+@media(max-width:640px){
+  .parcours-suggestion{flex-direction:column;align-items:flex-start}
+  .parcours-suggestion-actions{width:100%;flex-direction:column}
+  .btn-parcours-suggestion,.btn-parcours-suggestion-secondary{width:100%;text-align:center}
+}
+
+/* --- Encart "Prochain doc à lire" en Phase 1 (sous le bandeau) --- */
+.parcours-next-doc{background:white;border:1px solid var(--border);border-left:4px solid var(--red);padding:16px 20px;margin-bottom:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.parcours-next-doc-left{flex:1;min-width:240px}
+.parcours-next-doc-eyebrow{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:3px}
+.parcours-next-doc-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--charcoal);line-height:1.25;margin-bottom:3px}
+.parcours-next-doc-bloc{font-size:.78rem;color:var(--gray)}
+.parcours-next-doc-actions{flex-shrink:0}
+.btn-parcours-next-doc{padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;background:var(--red);color:white;border:none;cursor:pointer;line-height:1.2}
+.btn-parcours-next-doc:hover{background:var(--red-dark)}
+@media(max-width:640px){
+  .parcours-next-doc{flex-direction:column;align-items:flex-start}
+  .parcours-next-doc-actions{width:100%}
+  .btn-parcours-next-doc{width:100%}
+}
+
+/* --- Bloc "Tes 3 points faibles" en Phase 3 (sous le bandeau) --- */
+.parcours-weak{background:white;border:1px solid var(--border);padding:22px 26px;margin-bottom:22px}
+.parcours-weak-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+.parcours-weak-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--charcoal)}
+.parcours-weak-sub{font-size:.78rem;color:var(--gray)}
+.parcours-weak-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.parcours-weak-item{border:1px solid var(--red);background:var(--red-pale);padding:12px 14px}
+.parcours-weak-item-rank{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.parcours-weak-item-name{font-weight:700;font-size:.92rem;color:var(--charcoal);margin-bottom:3px;line-height:1.3}
+.parcours-weak-item-score{font-size:.74rem;color:var(--charcoal)}
+.parcours-weak-item-score strong{color:var(--red);font-weight:700}
+.parcours-weak-empty{padding:14px 16px;background:var(--cream2);border:1px dashed var(--border);font-size:.82rem;color:var(--gray);line-height:1.55;margin-top:10px}
+@media(max-width:640px){
+  .parcours-weak-list{grid-template-columns:1fr}
+}
+
 /* ===== BLOC COACHING dans l'onglet Planning de Mon espace =====
    Mis en avant comme un service personnel pour le membre. */
 .esp-coach-block{background:var(--charcoal);color:white;padding:32px 30px;margin-bottom:28px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
@@ -6862,16 +6910,35 @@ function rebuildProgPlanning() {
   if (phase === 1) {
     // ----- PHASE 1 — ACQUISITION : que de la lecture, prescrite doc par doc -----
     // On affecte chaque jour de révision au prochain doc non-lu du parcours.
-    // Si le parcours est terminé, on retombe sur des QCM (le candidat a tout lu,
-    // il peut commencer à s'entraîner même si l'algo le maintient en P1).
+    // Si le parcours est terminé OU si le bloc 1 est vide (V1 sans matériel maths
+    // par exemple), on retombe sur des QCM appropriés.
     var nextDocs = (typeof getNextDocsToRead === 'function')
       ? getNextDocsToRead(revDaysList.length) : [];
 
+    var globalProg = (typeof getParcoursGlobalProgress === 'function')
+      ? getParcoursGlobalProgress() : { total: 0, read: 0 };
+    var voie = (typeof _voieConcours !== 'undefined' && _voieConcours) ? _voieConcours : 'v2';
+
+    // V1 (externe non-SPV) : la priorité c'est les MATHS. Tant que le matériel
+    // maths n'est pas dans la biblio, on intercale 1 QCM Maths sur 2 séances
+    // (sinon le candidat ne fait que de la culture admin et oublie les maths).
+    // Détection : V1 + bloc 1 (Mathématiques) sans aucun doc.
+    var blocs = (typeof getParcoursBlocs === 'function') ? getParcoursBlocs() : [];
+    var v1MathsManquant = (voie === 'v1' && blocs[0] && blocs[0].docs && blocs[0].docs.length === 0);
+
     revDaysList.forEach(function(d, idx) {
-      if (nextDocs[idx]) {
+      // V1 sans maths + slot pair → QCM Maths ciblé en priorité
+      if (v1MathsManquant && idx % 2 === 0) {
+        revPlan[d.key] = makeRevSession('qcm-target', d.key, {
+          targetCat: 'maths',
+          rank: 1
+        });
+      }
+      else if (nextDocs[idx]) {
         revPlan[d.key] = makeRevSession('lecture', d.key, { docInfo: nextDocs[idx] });
-      } else {
-        // Plus de doc à lire : on place un QCM aléatoire de validation
+      }
+      else {
+        // Plus de doc à lire : QCM aléatoire (parcours terminé ou cas dégénéré)
         revPlan[d.key] = makeRevSession('qcm-random', d.key);
       }
     });
@@ -17206,6 +17273,76 @@ function renderParcours() {
       '</div>' +
     '</div>';
 
+  // ===== SUGGESTION P1 → P2 (parcours terminé) =====
+  // S'affiche uniquement en Phase 1 quand tous les docs disponibles ont été marqués vus,
+  // et uniquement si le candidat n'a pas cliqué "Plus tard" récemment (cooldown 7 jours).
+  var parcoursTermine = phase === 1 && globalProg.total > 0 && globalProg.read >= globalProg.total;
+  var dismissed = (typeof isPhaseUpgradeDismissed === 'function') ? isPhaseUpgradeDismissed() : false;
+  if (parcoursTermine && !dismissed) {
+    html += '' +
+      '<div class="parcours-suggestion">' +
+        '<div class="parcours-suggestion-left">' +
+          '<div class="parcours-suggestion-eyebrow">✓ Parcours terminé</div>' +
+          '<div class="parcours-suggestion-title">Tu as lu et fiché les ' + globalProg.total + ' documents du parcours</div>' +
+          '<div class="parcours-suggestion-text">Tes fondations sont posées. Il est temps de basculer en <strong>Phase 2 — Entraînement</strong> pour enchaîner les QCM et consolider tout ça.</div>' +
+        '</div>' +
+        '<div class="parcours-suggestion-actions">' +
+          '<button class="btn-parcours-suggestion-secondary" onclick="dismissPhaseUpgrade()">Plus tard</button>' +
+          '<button class="btn-parcours-suggestion" onclick="advanceToPhase2()">Passer en Phase 2 →</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // ===== ENCART "PROCHAIN DOC À LIRE" — uniquement Phase 1, parcours non terminé =====
+  // Donne au candidat un point d'entrée immédiat ("clique ici pour ouvrir").
+  if (phase === 1 && !parcoursTermine) {
+    var nextDoc = (typeof getNextDocToRead === 'function') ? getNextDocToRead() : null;
+    if (nextDoc) {
+      var nextTitle = (typeof getDocTitle === 'function') ? getDocTitle(nextDoc.docId, true) : nextDoc.docId;
+      html += '' +
+        '<div class="parcours-next-doc">' +
+          '<div class="parcours-next-doc-left">' +
+            '<div class="parcours-next-doc-eyebrow">📚 Prochain doc à lire</div>' +
+            '<div class="parcours-next-doc-title">' + nextTitle + '</div>' +
+            '<div class="parcours-next-doc-bloc">Bloc en cours : ' + nextDoc.blocLabel + '</div>' +
+          '</div>' +
+          '<div class="parcours-next-doc-actions">' +
+            '<button class="btn-parcours-next-doc" onclick="openParcoursDoc(\'' + nextDoc.docId + '\')">Ouvrir →</button>' +
+          '</div>' +
+        '</div>';
+    }
+  }
+
+  // ===== BLOC POINTS FAIBLES — uniquement Phase 3 =====
+  // Visualisation des 3 thèmes les plus faibles auto-détectés.
+  // En cohérence avec ce que rebuildProgPlanning utilise pour cibler les QCM.
+  if (phase === 3) {
+    var weakest = (typeof getWeakestCategories === 'function') ? getWeakestCategories(3) : [];
+    html += '<div class="parcours-weak">' +
+      '<div class="parcours-weak-header">' +
+        '<div class="parcours-weak-title">Tes points faibles auto-détectés</div>' +
+        '<div class="parcours-weak-sub">Mis à jour à chaque QCM · base : ≥ 5 questions vues, &lt; 75% de réussite</div>' +
+      '</div>';
+    if (weakest.length === 0) {
+      html += '<div class="parcours-weak-empty">' +
+        'Pas encore assez de données pour identifier tes points faibles. ' +
+        'Lance quelques sessions QCM (au moins 5 questions par thème) et reviens : tes 3 priorités s\'afficheront ici.' +
+      '</div>';
+    } else {
+      html += '<div class="parcours-weak-list">';
+      weakest.forEach(function(w, idx) {
+        var lbl = (typeof CAT_LABELS !== 'undefined' && CAT_LABELS[w.cat]) ? CAT_LABELS[w.cat] : w.cat;
+        html += '<div class="parcours-weak-item">' +
+          '<div class="parcours-weak-item-rank">Priorité ' + (idx + 1) + '</div>' +
+          '<div class="parcours-weak-item-name">' + lbl + '</div>' +
+          '<div class="parcours-weak-item-score">Score : <strong>' + Math.round(w.pct * 100) + '%</strong> · ' + w.seen + ' Q vues</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+
   // ===== PARCOURS 4 BLOCS — uniquement en Phase 1 =====
   if (phase === 1) {
     var blocs = getParcoursBlocs();
@@ -17274,6 +17411,40 @@ function markPreambleRead() {
   if (typeof showToast === 'function') {
     showToast('✓ Préambule validé. Bonne préparation !');
   }
+}
+
+// Suggestion P1→P2 : bascule manuelle vers la Phase 2 quand le parcours est terminé.
+// Pose un override explicite sur le profil et reconstruit planning + parcours.
+function advanceToPhase2() {
+  setParcoursField('phase_override', 2);
+  renderParcours();
+  if (typeof rebuildProgPlanning === 'function') rebuildProgPlanning();
+  if (typeof showToast === 'function') {
+    showToast('✓ Phase 2 activée — bonne séance !');
+  }
+  // Scroll en haut pour qu'on voie le bandeau changer
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// "Plus tard" sur la suggestion : on stocke la décision en localStorage pour
+// ne plus afficher la bannière pendant 7 jours (UX : ne pas harceler).
+function dismissPhaseUpgrade() {
+  try {
+    var until = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    localStorage.setItem('parcours_phase_upgrade_dismissed_until', String(until));
+  } catch(e) {}
+  // Re-render pour faire disparaître la bannière (renderParcours lit cette clé)
+  renderParcours();
+}
+
+// Vrai si la bannière de suggestion est en cooldown (cliqué "Plus tard" récemment).
+function isPhaseUpgradeDismissed() {
+  try {
+    var raw = localStorage.getItem('parcours_phase_upgrade_dismissed_until');
+    if (!raw) return false;
+    var until = parseInt(raw, 10);
+    return !isNaN(until) && Date.now() < until;
+  } catch(e) { return false; }
 }
 
 // Navigue vers la bibliothèque, onglet correspondant au bloc.
