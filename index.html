@@ -296,6 +296,27 @@ body.tour-active .tour-bubble{display:block}
 body.tour-active .tour-exit{display:block}
 .tour-exit:hover{color:var(--charcoal);border-color:var(--charcoal)}
 
+/* Bouton "?" flottant pour relancer le tutoriel contextuel de la page courante.
+   Affiché uniquement aux membres payants, et seulement sur les pages qui ont
+   un tutoriel défini dans CONTEXT_TOURS. Caché pendant qu'un tour est actif. */
+.ctx-help-btn{
+  position:fixed;bottom:20px;left:20px;z-index:9990;
+  width:42px;height:42px;border-radius:50%;
+  background:white;color:var(--gray);
+  border:1px solid var(--border);
+  font-size:1.05rem;font-weight:700;
+  cursor:pointer;font-family:'DM Sans',sans-serif;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+  transition:all .2s;
+}
+.ctx-help-btn:hover{color:var(--red);border-color:var(--red);transform:translateY(-1px)}
+.ctx-help-btn[data-visible="1"]:not(.tour-active-hidden){display:flex}
+body.tour-active .ctx-help-btn{display:none !important}
+@media (max-width:600px){
+  .ctx-help-btn{width:38px;height:38px;bottom:16px;left:16px;font-size:1rem}
+}
+
 /* Variante centrée : pour les étapes "welcome" et "final" sans cible précise.
    La bulle est centrée à l'écran et l'overlay couvre tout. */
 .tour-bubble.tour-bubble-centered{
@@ -2481,6 +2502,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
      ============================================================================ -->
 <div class="tour-overlay" id="tour-overlay" aria-hidden="true"></div>
 <button class="tour-exit" id="tour-exit-btn" onclick="tourExit()">Quitter le tour ✕</button>
+<button class="ctx-help-btn" id="ctx-help-btn" onclick="ctxHelpClick()" title="Revoir le tutoriel de cette page" aria-label="Revoir le tutoriel">?</button>
 <div class="tour-bubble" id="tour-bubble" role="dialog" aria-live="polite">
   <div class="tour-bubble-step" id="tour-bubble-step"></div>
   <div class="tour-bubble-title" id="tour-bubble-title"></div>
@@ -11946,6 +11968,280 @@ function tourRestart() {
 }
 
 // ============================================================================
+// TUTORIELS CONTEXTUELS — Mini-tours par page accessibles via le bouton "?"
+// ----------------------------------------------------------------------------
+// Réutilise le moteur tourSteps existant en swappant temporairement le tableau
+// d'étapes. À la fin du mini-tour, le tableau global est restauré.
+// Visible uniquement aux membres payants, sur les pages référencées dans
+// CONTEXT_TOURS, et masqué pendant qu'un tour est actif.
+// ============================================================================
+
+var CONTEXT_TOURS = {
+  'qcm': [
+    {
+      page: 'qcm',
+      targetSelector: '#tab-select',
+      stepLabel: 'Tutoriel · 1 / 4',
+      title: 'Choisir tes catégories',
+      text: "Mode par défaut : tu choisis exactement les thèmes et sous-thèmes à travailler. Idéal quand tu veux cibler une faiblesse identifiée."
+    },
+    {
+      page: 'qcm',
+      targetSelector: '#tab-random',
+      stepLabel: 'Tutoriel · 2 / 4',
+      title: 'Mode aléatoire',
+      text: "Tirage au sort dans tout le corpus. Bon pour se tester en conditions proches du concours, sans biais de sélection."
+    },
+    {
+      page: 'qcm',
+      targetSelector: '#tab-review',
+      stepLabel: 'Tutoriel · 3 / 4',
+      title: 'Mode révision intelligente',
+      text: "L'algo te ressort en priorité les questions sur lesquelles tu t'es trompé. Plus tu travailles, plus le pool s'affine."
+    },
+    {
+      page: 'qcm',
+      targetSelector: '#qcm-launch-btn',
+      stepLabel: 'Tutoriel · 4 / 4',
+      title: 'Lancer la session',
+      text: "Une fois ta config validée, tu cliques ici. Tes réponses sont enregistrées en temps réel : si tu fermes par erreur, tout est sauvegardé."
+    }
+  ],
+
+  'concours': [
+    {
+      centered: true,
+      stepLabel: 'Tutoriel · 1 / 2',
+      title: 'Annales officielles du concours',
+      text: "Cette page rassemble les sujets officiels passés par les CDG (Centres de gestion). Tu peux les passer en mode entraînement ou en mode examen chronométré."
+    },
+    {
+      page: 'concours',
+      targetSelector: '#page-concours',
+      stepLabel: 'Tutoriel · 2 / 2',
+      title: 'Mode examen chronométré',
+      text: "Le mode examen reproduit les conditions réelles : durée bloquée, pas de retour en arrière, correction à la fin avec score détaillé. Le meilleur entraînement avant le jour J."
+    }
+  ],
+
+  'prepa': [
+    {
+      page: 'prepa',
+      targetSelector: '#prepa-profile-btn',
+      stepLabel: 'Tutoriel · 1 / 4',
+      title: 'Ton profil physique',
+      text: "Renseigne tes performances de départ (VMA, force, endurance) ici. C'est ce qui détermine ton niveau (débutant / confirmé / avancé) et adapte le programme."
+    },
+    {
+      page: 'prepa',
+      targetSelector: '#prepa-level-badge',
+      stepLabel: 'Tutoriel · 2 / 4',
+      title: 'Niveau auto-calculé',
+      text: "Ton niveau est calculé à partir de ton profil — tu n'as pas à le choisir manuellement. Il évolue si tu mets à jour tes performances."
+    },
+    {
+      page: 'prepa',
+      targetSelector: '#prepa-week-title',
+      stepLabel: 'Tutoriel · 3 / 4',
+      title: 'Cycle de 6 semaines',
+      text: "Le programme s'organise sur 6 semaines de progression. Chaque semaine te montre les séances à réaliser, adaptées à ton niveau."
+    },
+    {
+      page: 'prepa',
+      targetSelector: '#prepa-days-list',
+      stepLabel: 'Tutoriel · 4 / 4',
+      title: 'Cocher tes séances',
+      text: "Au fur et à mesure que tu réalises tes séances, tu les coches. Ça alimente tes statistiques et débloque des badges d'assiduité."
+    }
+  ],
+
+  'biblio': [
+    {
+      centered: true,
+      stepLabel: 'Tutoriel · 1 / 4',
+      title: 'La bibliothèque',
+      text: "Tous les documents de référence pour préparer le concours sont ici : doctrines officielles, fiches de synthèse maison, et textes structurants du concours."
+    },
+    {
+      page: 'biblio',
+      targetSelector: '.biblio-card.is-synthese',
+      stepLabel: 'Tutoriel · 2 / 4',
+      title: 'Fiches de synthèse',
+      text: "Reconnaissables au liseré rouge et au badge \u00ab Fiche \u00bb : ce sont mes synthèses pédagogiques, recentrées sur ce qui tombe au concours. Elles complètent les textes officiels."
+    },
+    {
+      page: 'biblio',
+      targetSelector: '.biblio-sources-section',
+      stepLabel: 'Tutoriel · 3 / 4',
+      title: 'Textes sources',
+      text: "À l'intérieur de chaque section, un sous-bloc regroupe les textes officiels (décrets, arrêtés). Accès gratuit dès que tu es connecté — utile pour vérifier les citations."
+    },
+    {
+      page: 'biblio',
+      targetSelector: '.biblio-read-status',
+      stepLabel: 'Tutoriel · 4 / 4',
+      title: 'Statut de lecture',
+      text: "Chaque document affiche son statut : non lu, déjà ouvert, ou marqué vu. Tu peux cocher \u00ab Vu \u00bb sur la carte pour suivre ta progression dans la lecture."
+    }
+  ],
+
+  'actu': [
+    {
+      centered: true,
+      stepLabel: 'Tutoriel · 1 / 2',
+      title: 'Actualités hebdo',
+      text: "Une fois par semaine, je publie 1 décryptage long sur un sujet d'actualité du métier, et 2 à 4 brèves sur des points utiles pour ta culture concours."
+    },
+    {
+      page: 'actu',
+      targetSelector: '#actu-filters',
+      stepLabel: 'Tutoriel · 2 / 2',
+      title: 'Filtrer par thème',
+      text: "Tu peux filtrer par catégorie pour retrouver rapidement un sujet (statut, doctrine, organisation des SIS, etc.)."
+    }
+  ],
+
+  'espace': [
+    {
+      page: 'espace',
+      targetSelector: '#esp-tab-btn-planning',
+      stepLabel: 'Tutoriel · 1 / 5',
+      title: 'Ton planning',
+      text: "Page d'accueil de ton espace : ce que tu dois faire aujourd'hui et demain pour avancer. Pas besoin de réfléchir, tu suis le programme."
+    },
+    {
+      page: 'espace',
+      targetSelector: '#esp-tab-btn-stats',
+      stepLabel: 'Tutoriel · 2 / 5',
+      title: 'Tes statistiques',
+      text: "Historique complet : sessions QCM, score par catégorie, évolution dans le temps, radar de couverture. Ton miroir de progression.",
+      onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('stats'); }
+    },
+    {
+      page: 'espace',
+      targetSelector: '#esp-streak-box',
+      stepLabel: 'Tutoriel · 3 / 5',
+      title: 'Série en cours',
+      text: "Compteur de jours consécutifs de travail. La régularité paie plus que l'intensité : 30 minutes par jour valent mieux que 3 heures une fois par semaine."
+    },
+    {
+      page: 'espace',
+      targetSelector: '#esp-tab-btn-badges',
+      stepLabel: 'Tutoriel · 4 / 5',
+      title: 'Badges',
+      text: "Récompenses qui marquent les paliers : régularité, ancienneté, performance, parcours. Pas obligatoire, mais ça aide à entretenir la motivation.",
+      onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('badges'); }
+    },
+    {
+      page: 'espace',
+      targetSelector: '#esp-tab-btn-infos',
+      stepLabel: 'Tutoriel · 5 / 5',
+      title: 'Tes infos',
+      text: "Pseudo, email, abonnement. Tu peux modifier ton pseudo ici (il apparaît dans les badges partagés)."
+    }
+  ]
+};
+
+// Stockage du tour global pour pouvoir le restaurer à la fin d'un mini-tour
+var _tourGlobalStepsBackup = null;
+
+// Lance un mini-tour contextuel en swappant tourSteps temporairement.
+// Conserve le tableau global pour pouvoir le restaurer à la fin.
+function tourStartContext(pageId) {
+  if (tourActive) return;
+  var steps = CONTEXT_TOURS[pageId];
+  if (!steps || !steps.length) return;
+  _tourGlobalStepsBackup = tourSteps;
+  tourSteps = steps;
+  tourCurrentStep = 0;
+  tourActive = true;
+  document.body.classList.add('tour-active');
+  document.body.style.overflow = 'hidden';
+  tourResizeHandler = function(){ tourPositionBubble(); };
+  window.addEventListener('resize', tourResizeHandler);
+  tourShowStep();
+}
+
+// Restaure le tableau d'étapes global après un mini-tour.
+// Hookée via le wrapping de tourTeardown ci-dessous.
+function _tourRestoreGlobalSteps() {
+  if (_tourGlobalStepsBackup) {
+    tourSteps = _tourGlobalStepsBackup;
+    _tourGlobalStepsBackup = null;
+  }
+}
+
+// On enrobe tourTeardown sans casser le comportement existant : si on sortait
+// d'un mini-tour, on restaure le tour global. Sinon, comportement inchangé.
+var _tourTeardownOriginal = tourTeardown;
+tourTeardown = function() {
+  _tourTeardownOriginal();
+  _tourRestoreGlobalSteps();
+};
+
+// Pour les mini-tours, on ne veut pas marquer le tutoriel global comme complété
+// quand le candidat finit un mini-tour. On override tourFinish pour distinguer
+// les deux cas via la présence du backup.
+var _tourFinishOriginal = tourFinish;
+tourFinish = function() {
+  var wasContextTour = (_tourGlobalStepsBackup !== null);
+  if (wasContextTour) {
+    tourTeardown(); // restaurera aussi le tableau global via le wrapping
+    showToast('Tutoriel terminé. Bon travail !');
+  } else {
+    _tourFinishOriginal();
+  }
+};
+
+// ----------------------------------------------------------------------------
+// Bouton "?" flottant — visible aux membres payants sur les pages configurées
+// ----------------------------------------------------------------------------
+
+// Identifie la page courante via la classe .page.active
+function _ctxCurrentPageId() {
+  var active = document.querySelector('.page.active');
+  if (!active || !active.id) return null;
+  return active.id.replace(/^page-/, '');
+}
+
+// Met à jour la visibilité du bouton "?" en fonction de la page et du statut
+function ctxHelpUpdate() {
+  var btn = document.getElementById('ctx-help-btn');
+  if (!btn) return;
+  var pageId = _ctxCurrentPageId();
+  var hasTour = pageId && CONTEXT_TOURS[pageId];
+  var isPaid = (typeof isPaidMember !== 'undefined') && isPaidMember;
+  if (hasTour && isPaid) {
+    btn.setAttribute('data-visible', '1');
+  } else {
+    btn.removeAttribute('data-visible');
+  }
+}
+
+// Click handler : lance le mini-tour de la page courante
+function ctxHelpClick() {
+  var pageId = _ctxCurrentPageId();
+  if (!pageId || !CONTEXT_TOURS[pageId]) return;
+  tourStartContext(pageId);
+}
+
+// Appelle ctxHelpUpdate() à chaque changement de page.
+// On hooke goTo() sans le réécrire (wrapping pattern).
+if (typeof goTo === 'function') {
+  var _goToOriginal = goTo;
+  goTo = function(pageId) {
+    var ret = _goToOriginal.apply(this, arguments);
+    setTimeout(ctxHelpUpdate, 30);
+    return ret;
+  };
+}
+
+// Mise à jour initiale au chargement et après login Memberstack
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(ctxHelpUpdate, 500);
+});
+
+// ============================================================================
 // ESPACE CANDIDAT — Statistiques (Supabase + fallback localStorage)
 // ============================================================================
 // Source de vérité : Supabase (3 tables : qcm_answers, qcm_sessions, doc_reads)
@@ -15209,6 +15505,8 @@ function updateNavMember(member) {
     // via une première passe d'updateNavMemberName (qui gère le fallback email).
     updateNavMemberName();
     checkAccessGate('qcm');
+    // Met à jour la visibilité du bouton tutoriel contextuel "?" (réservé payants)
+    if (typeof ctxHelpUpdate === 'function') ctxHelpUpdate();
     // Migration localStorage → Supabase en arrière-plan (payants uniquement)
     if (isPaidMember) {
       setTimeout(function(){ try { espMigrateLocalToSupabase(); } catch(e){} }, 1200);
@@ -15273,6 +15571,8 @@ function updateNavMember(member) {
     // Rafraîchit l'UI QCM (mode démo à nouveau actif)
     if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
     if (typeof updateSummary === 'function') updateSummary();
+    // Masque le bouton tutoriel contextuel "?" (réservé payants)
+    if (typeof ctxHelpUpdate === 'function') ctxHelpUpdate();
   }
 }
 
