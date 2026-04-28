@@ -1100,6 +1100,31 @@ body.biblio-searching .biblio-acc-section.empty{display:none}
 .prepa-bloc-val{font-family:'Playfair Display',serif;font-weight:700;color:var(--red);font-size:1rem}
 .prepa-bloc-personal{font-size:.78rem;color:var(--gray);margin-top:4px;font-style:italic}
 
+/* Lien cliquable sur le nom d'exercice (ouvre la modale vidéo de démo) */
+.prepa-exo-link{color:var(--charcoal);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border-bottom:1px dotted var(--gray-light);transition:all .15s}
+.prepa-exo-link:hover{color:var(--red);border-bottom-color:var(--red)}
+.prepa-exo-link b{font-weight:700}
+.prepa-exo-play{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:var(--red);color:white;border-radius:50%;font-size:.55rem;line-height:1;padding-left:1px;flex-shrink:0;transition:transform .15s}
+.prepa-exo-link:hover .prepa-exo-play{transform:scale(1.12)}
+
+/* Modale vidéo de démonstration des exercices */
+#exo-video-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:99998;display:none;align-items:center;justify-content:center;padding:20px}
+#exo-video-overlay.open{display:flex}
+#exo-video-box{background:var(--charcoal);max-width:880px;width:100%;border:1px solid var(--charcoal);box-shadow:0 30px 80px rgba(0,0,0,.6);display:flex;flex-direction:column;max-height:calc(100vh - 40px)}
+.exo-video-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.1);background:var(--charcoal);color:white}
+.exo-video-title{flex:1;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;line-height:1.2;color:white}
+.exo-video-close{background:none;border:1px solid rgba(255,255,255,.25);color:white;width:34px;height:34px;cursor:pointer;font-size:.95rem;font-family:'DM Sans',sans-serif;transition:all .15s;flex-shrink:0}
+.exo-video-close:hover{background:rgba(255,255,255,.1);border-color:white}
+.exo-video-body{position:relative;width:100%;padding-bottom:56.25%;background:black}
+.exo-video-body iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.exo-video-foot{padding:10px 18px;background:var(--charcoal);color:rgba(255,255,255,.55);font-size:.74rem;font-family:'DM Sans',sans-serif;text-align:center;border-top:1px solid rgba(255,255,255,.08)}
+@media (max-width:600px){
+  #exo-video-overlay{padding:0}
+  #exo-video-box{max-height:100vh;height:100vh;width:100vw;max-width:none}
+  .exo-video-body{padding-bottom:0;flex:1}
+  .exo-video-title{font-size:1rem}
+}
+
 .prepa-day-actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
 .prepa-done-btn{padding:10px 18px;background:var(--red);color:white;border:none;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
 .prepa-done-btn:hover{background:var(--red-dark)}
@@ -2504,6 +2529,22 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   </div>
 </div>
 
+
+<!-- ===== MODALE VIDÉO EXERCICE ===== -->
+<div id="exo-video-overlay" onclick="if(event.target===this)closeExoVideo()" role="dialog" aria-modal="true" aria-labelledby="exo-video-title">
+  <div id="exo-video-box">
+    <div class="exo-video-head">
+      <div class="exo-video-title" id="exo-video-title">Démonstration</div>
+      <button class="exo-video-close" onclick="closeExoVideo()" aria-label="Fermer">✕</button>
+    </div>
+    <div class="exo-video-body">
+      <iframe id="exo-video-iframe" src="about:blank" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="exo-video-foot">
+      <span>Vidéo de démonstration · Adapte la technique à ton niveau</span>
+    </div>
+  </div>
+</div>
 
 <!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
@@ -16966,16 +17007,30 @@ function renderBloc(bloc, profile) {
     };
     var exKey = bloc.exercice || 'autre';
     var exLabel = exerciceLabels[exKey] || (bloc.nom || exKey);
+    // Si une vidéo de démonstration existe pour cet exercice, on transforme
+    // le label en lien cliquable qui ouvre la modale vidéo. Sinon, label brut.
+    var hasVideo = (typeof EXERCICE_VIDEOS !== 'undefined') && EXERCICE_VIDEOS[exKey];
+    var labelHtml;
+    if (hasVideo) {
+      labelHtml = '<a class="prepa-exo-link" href="javascript:void(0)" '
+                + 'onclick="openExoVideo(\'' + exKey + '\')" '
+                + 'title="Voir la démonstration vidéo">'
+                + '<b>' + exLabel + '</b>'
+                + '<span class="prepa-exo-play" aria-hidden="true">▶</span>'
+                + '</a>';
+    } else {
+      labelHtml = '<b>' + exLabel + '</b>';
+    }
     var s = bloc.series || 1;
     var r = bloc.repetitions; // peut être absent (ex : tractions pilotées uniquement par %1RM)
     var pct = bloc.intensite_pct || null;
     // Si pas de repetitions : on affiche "N séries à X% 1RM" (plus cohérent pour les tractions)
     var descEx;
     if (r) {
-      descEx = '<b>' + exLabel + '</b> — ' + s + ' × ' + r;
+      descEx = labelHtml + ' — ' + s + ' × ' + r;
       if (pct) descEx += ' à <span class="prepa-bloc-val">' + pct + '% 1RM</span>';
     } else {
-      descEx = '<b>' + exLabel + '</b> — ' + s + ' série' + (s > 1 ? 's' : '');
+      descEx = labelHtml + ' — ' + s + ' série' + (s > 1 ? 's' : '');
       if (pct) descEx += ' à <span class="prepa-bloc-val">' + pct + '% 1RM</span>';
     }
     if (bloc.recup) descEx += ' &middot; récup ' + escapeHtml(bloc.recup);
@@ -17015,6 +17070,74 @@ function escapeHtml(s) {
   if (s == null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+// ============================================================================
+// VIDÉOS DE DÉMONSTRATION DES MOUVEMENTS DE MUSCULATION
+// ----------------------------------------------------------------------------
+// Mapping clé exercice → ID vidéo YouTube (la partie après v= dans l'URL).
+// Exemple : pour https://www.youtube.com/watch?v=ABCdef12345, l'ID est ABCdef12345
+//
+// Comment ajouter / changer une vidéo :
+//   1. Trouver une bonne vidéo YouTube de démonstration du mouvement
+//   2. Copier l'ID (les 11 caractères après "v=")
+//   3. Le coller en valeur de la clé correspondante ci-dessous
+//
+// Une clé vide ("") = pas de vidéo, le label de l'exercice ne sera pas cliquable.
+// ============================================================================
+
+var EXERCICE_VIDEOS = {
+  'front_squat': 'Qh-u0nNBDK4',  // Front Squat — Marcus Filly / Functional Bodybuilding
+  'devm':        '22gQUcvcW1o',  // Dumbbell Strict Press — variante haltères du développé militaire
+  'devc':        'hm_TrCkhJgo',  // Dumbbell Bench Press — variante haltères du développé couché
+  'squat':       'Rvy12jFLBFo',  // Back Squat — Marcus Filly / Functional Bodybuilding
+  'sdt':         'iVpVk8x-VDQ',  // Deadlift Off Blocks — variante du soulevé de terre
+  'trac':        'un6HKZo2Mhs'   // Pronated Strict Pull Up — traction pronation stricte
+};
+
+var EXERCICE_LABELS_VIDEO = {
+  'front_squat': 'Front squat',
+  'devm':        'Développé militaire',
+  'devc':        'Développé couché',
+  'squat':       'Back squat',
+  'sdt':         'Soulevé de terre',
+  'trac':        'Tractions'
+};
+
+// Ouvre la modale et charge la vidéo dans l'iframe YouTube.
+// On charge l'iframe seulement à l'ouverture pour éviter le coût réseau
+// et le préchargement de toutes les vidéos.
+function openExoVideo(exKey) {
+  var videoId = EXERCICE_VIDEOS[exKey];
+  if (!videoId) return;
+  var overlay = document.getElementById('exo-video-overlay');
+  var iframe  = document.getElementById('exo-video-iframe');
+  var titleEl = document.getElementById('exo-video-title');
+  if (!overlay || !iframe) return;
+  titleEl.textContent = EXERCICE_LABELS_VIDEO[exKey] || 'Démonstration';
+  // Paramètres : autoplay, contrôles minimaux, sans suggestions YouTube en fin
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videoId)
+             + '?autoplay=1&rel=0&modestbranding=1';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeExoVideo() {
+  var overlay = document.getElementById('exo-video-overlay');
+  var iframe  = document.getElementById('exo-video-iframe');
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  // Vider l'iframe coupe la vidéo et libère la bande passante
+  if (iframe) iframe.src = 'about:blank';
+  document.body.style.overflow = '';
+}
+
+// ESC ferme la modale
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var overlay = document.getElementById('exo-video-overlay');
+    if (overlay && overlay.classList.contains('open')) closeExoVideo();
+  }
+});
 
 // ---------- CHARGEMENT ET RENDU DE LA SEMAINE ----------
 
