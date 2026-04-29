@@ -17,6 +17,17 @@
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
 
+<!-- ===================== PWA ===================== -->
+<link rel="manifest" href="/manifest.json">
+<meta name="application-name" content="Chemin SPP">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chemin SPP">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-TileColor" content="#CC2229">
+<meta name="msapplication-TileImage" content="logo.png">
+<!-- =================== /PWA ====================== -->
+
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lecheminduspp.fr/">
@@ -20628,6 +20639,251 @@ function submitBetaFeedback() {
     </div>
   </div>
 </div>
+
+<!-- ===================== PWA · BANDEAU D'INSTALLATION ===================== -->
+<style>
+/* Bandeau d'invitation à installer l'app — visible uniquement sur mobile,
+   uniquement si la PWA n'est pas installée, à chaque session. */
+#pwa-install-banner {
+  display: none;
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+  background: white;
+  border: 1px solid #CC2229;
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  font-family: 'DM Sans', sans-serif;
+  animation: pwa-banner-in 0.35s ease-out;
+}
+@keyframes pwa-banner-in {
+  from { transform: translateY(120%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+#pwa-install-banner .pwa-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+#pwa-install-banner .pwa-icon {
+  width: 40px;
+  height: 40px;
+  background: #CC2229;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#pwa-install-banner .pwa-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#pwa-install-banner .pwa-text {
+  flex: 1;
+  min-width: 0;
+}
+#pwa-install-banner .pwa-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2a2320;
+  line-height: 1.2;
+  margin-bottom: 3px;
+}
+#pwa-install-banner .pwa-desc {
+  font-size: 0.78rem;
+  color: #5a5550;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+#pwa-install-banner .pwa-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+#pwa-install-banner .pwa-btn-primary {
+  background: #CC2229;
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+#pwa-install-banner .pwa-btn-secondary {
+  background: none;
+  color: #888;
+  font-size: 0.78rem;
+  padding: 7px 8px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+/* Variante iOS : bouton primaire en outline (pas d'install programmatique sur iOS) */
+#pwa-install-banner.ios .pwa-btn-primary {
+  background: white;
+  color: #CC2229;
+  border: 1.5px solid #CC2229;
+}
+/* Mode "comment installer" (instructions iOS) */
+#pwa-ios-instructions {
+  display: none;
+  font-size: 0.78rem;
+  color: #5a5550;
+  line-height: 1.5;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+#pwa-ios-instructions strong { color: #2a2320; }
+</style>
+
+<div id="pwa-install-banner" role="dialog" aria-label="Installer l'application">
+  <div class="pwa-row">
+    <div class="pwa-icon"><img src="logo.png" alt=""></div>
+    <div class="pwa-text">
+      <div class="pwa-title">Installe l'app Chemin SPP</div>
+      <div class="pwa-desc">Un raccourci sur ton téléphone, accès direct à ton espace candidat.</div>
+      <div class="pwa-actions">
+        <button class="pwa-btn-primary" id="pwa-install-btn" onclick="pwaHandleInstall()">Installer</button>
+        <button class="pwa-btn-secondary" onclick="pwaDismissBanner()">Plus tard</button>
+      </div>
+      <div id="pwa-ios-instructions">
+        Sur iPhone : appuie sur <strong>Partager</strong> en bas de Safari, puis <strong>Sur l'écran d'accueil</strong>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== PWA · LOGIQUE =====================
+// Comportement souhaité :
+//  1. Enregistrer le service worker (rend la PWA installable)
+//  2. Afficher le bandeau à CHAQUE session sur mobile, sauf si l'app est installée
+//  3. Bouton "Installer" : déclenche le prompt natif Chrome/Android, ou affiche les instructions iOS
+//  4. Si l'app est lancée en mode standalone (icône écran d'accueil), redirige vers #espace
+//     et masque le bandeau définitivement.
+
+(function() {
+
+  // --- 1. Enregistrement du service worker ---
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/service-worker.js').then(
+        function(reg) { /* console.log('[PWA] SW enregistré', reg.scope); */ },
+        function(err) { /* console.warn('[PWA] SW échec', err); */ }
+      );
+    });
+  }
+
+  // --- 2. Détection plateforme et état d'installation ---
+  function isStandalone() {
+    // Mode app installé (lancé depuis l'icône écran d'accueil)
+    return window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true; // iOS Safari
+  }
+  function isMobile() {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+  function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
+  // --- 3. Si l'app est en mode standalone : redirige vers #espace + masque tout ---
+  if (isStandalone()) {
+    // L'utilisateur a ouvert l'app depuis l'icône → on l'amène direct à Mon espace.
+    // On ne le fait que si on est sur la racine (pas sur une page ciblée par hash).
+    if (!location.hash || location.hash === '' || location.hash === '#') {
+      // Petit délai pour laisser le SPA s'initialiser, puis goTo si dispo
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          if (typeof window.goTo === 'function') {
+            try { window.goTo('espace'); } catch(e) { location.hash = '#espace'; }
+          } else {
+            location.hash = '#espace';
+          }
+        }, 300);
+      });
+    }
+    return; // pas de bandeau si déjà installé
+  }
+
+  // --- 4. Capture de l'événement beforeinstallprompt (Chrome/Android) ---
+  var deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    // L'événement n'est dispo que sur Chrome/Edge/Android — on stocke pour usage différé
+  });
+
+  // --- 5. Affichage du bandeau ---
+  // Demande : à CHAQUE session sur mobile, sauf si déjà installé.
+  // Une session = une visite jusqu'à fermeture de l'onglet → on utilise sessionStorage
+  // (et non localStorage) pour que le bandeau réapparaisse à la session suivante.
+  function showBannerIfEligible() {
+    if (!isMobile()) return;                              // pas affiché sur desktop
+    if (isStandalone()) return;                           // déjà installée
+    if (sessionStorage.getItem('pwa_banner_dismissed_session') === '1') return; // fermé pour CETTE session
+    var banner = document.getElementById('pwa-install-banner');
+    if (!banner) return;
+    if (isIOS()) banner.classList.add('ios');
+    // Petit délai pour ne pas être agressif au chargement
+    setTimeout(function() {
+      banner.style.display = 'block';
+    }, 1500);
+  }
+
+  // Le bandeau s'affiche après chargement complet
+  if (document.readyState === 'complete') {
+    showBannerIfEligible();
+  } else {
+    window.addEventListener('load', showBannerIfEligible);
+  }
+
+  // --- 6. Handlers exposés globalement (pour les onclick du bandeau) ---
+  window.pwaHandleInstall = function() {
+    if (deferredInstallPrompt) {
+      // Android / Chrome : prompt natif
+      deferredInstallPrompt.prompt();
+      deferredInstallPrompt.userChoice.then(function() {
+        deferredInstallPrompt = null;
+        var banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.display = 'none';
+      });
+    } else if (isIOS()) {
+      // iOS : pas d'API d'installation, on affiche les instructions
+      var instr = document.getElementById('pwa-ios-instructions');
+      if (instr) instr.style.display = 'block';
+    } else {
+      // Fallback : on cache simplement le bandeau
+      pwaDismissBanner();
+    }
+  };
+
+  window.pwaDismissBanner = function() {
+    var banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.style.display = 'none';
+    // Mémorise le rejet UNIQUEMENT pour la session courante
+    // (le bandeau reviendra à la prochaine ouverture du site)
+    sessionStorage.setItem('pwa_banner_dismissed_session', '1');
+  };
+
+  // --- 7. Si l'app vient d'être installée pendant la session, masque le bandeau ---
+  window.addEventListener('appinstalled', function() {
+    var banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.style.display = 'none';
+  });
+
+})();
+</script>
+<!-- =================== /PWA ===================== -->
 
 </body>
 
