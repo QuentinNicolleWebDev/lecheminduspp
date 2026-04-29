@@ -3262,9 +3262,9 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
           <tr>
             <td class="compare-feature">Annales commentées</td>
             <td>3 annales démo</td>
-            <td class="yes">7 annales</td>
-            <td class="compare-highlight yes">7 annales</td>
-            <td class="yes">7 annales</td>
+            <td class="yes">23 annales</td>
+            <td class="compare-highlight yes">23 annales</td>
+            <td class="yes">23 annales</td>
           </tr>
           <tr>
             <td class="compare-feature">Bibliothèque documentaire</td>
@@ -8591,7 +8591,7 @@ var BADGES_DEFINITIONS = {
   'parc_tour_complet':  { label: 'Tour complet',       icon: '📚', desc: 'Tu as fait au moins un QCM dans chaque thème.',        category: 'parcours',   rarity: 'commun' },
   'parc_500_club':      { label: '500 Club',           icon: '🎯', desc: 'Tu as complété 500 QCM.',                               category: 'parcours',   rarity: 'rare' },
   'parc_millenaire':    { label: 'Millénaire',         icon: '🏛️', desc: 'Tu as complété 1000 QCM.',                              category: 'parcours',   rarity: 'rare' },
-  'parc_explorateur':   { label: 'Explorateur',        icon: '🗺️', desc: 'Tu as tenté les 7 annales officielles.',                category: 'parcours',   rarity: 'rare' },
+  'parc_explorateur':   { label: 'Explorateur',        icon: '🗺️', desc: 'Tu as tenté les 23 annales officielles.',               category: 'parcours',   rarity: 'rare' },
   'parc_titan':         { label: 'Titan',              icon: '👑', desc: 'Tu as complété 2500 QCM.',                              category: 'parcours',   rarity: 'epique' },
 
   // ---------- RÉGULARITÉ — QUOTIDIEN (6) ----------
@@ -16782,7 +16782,7 @@ function renderAnnalesThemes() {
     if (!isPaidMember) {
       html += '<div style="grid-column:1/-1;background:white;border:1px solid var(--border);padding:32px;margin-top:16px;text-align:center">' +
         '<div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:10px">Accède à toutes les annales complètes</div>' +
-        '<div style="font-size:.9rem;color:var(--gray);line-height:1.65;max-width:540px;margin:0 auto 20px">Une fois les 3 démos testées (Équipier · Maths · Étude de texte), débloque les <strong>7 annales Équipier complètes</strong> (CDG13, CDG35, CDG57, CDG69 de 2021 à 2025), la bibliothèque documentaire, les QCM thématiques et ton espace de suivi personnel.</div>' +
+        '<div style="font-size:.9rem;color:var(--gray);line-height:1.65;max-width:540px;margin:0 auto 20px">Une fois les 3 démos testées (Équipier · Maths · Étude de texte), débloque les <strong>23 annales officielles</strong> (CDG13, CDG35, CDG57, CDG69 de 2021 à 2025), la bibliothèque documentaire, les QCM thématiques et ton espace de suivi personnel.</div>' +
         '<button class="btn btn-red" onclick="msPay(\'prc_performance-mensuel-fw4103ti\')">Débloquer l\'accès — 49€/mois →</button>' +
         (currentMember ? '' : ' <button class="btn btn-outline-red" onclick="goTo(\'connexion\')" style="margin-left:6px">J\'ai déjà un compte</button>') +
       '</div>';
@@ -16843,15 +16843,15 @@ function showAnnalesThemes() {
 
 // ---------- DEMARRAGE MODE EXAMEN ----------
 function startExam(annaleId) {
-  // Les annales de démo (IDs finissant par "-demo") sont accessibles aux non-payants.
-  // Toutes les autres sont réservées aux membres.
-  var isDemoId = /-demo$/.test(annaleId);
-  if (!isPaidMember && !isDemoId) {
+  // Une annale est en démo si son flag is_demo:true est positionné dans index.json.
+  // Les annales démo sont accessibles aux non-payants ; toutes les autres sont réservées aux abonnés.
+  var annaleInfo = (annalesData && annalesData.annales || []).find(function(a) { return a.id === annaleId; });
+  var isDemo = annaleInfo && annaleInfo.is_demo === true;
+  if (!isPaidMember && !isDemo) {
     openLockModal();
     return;
   }
   // Charge le fichier détaillé de l'annale (organisé en sous-dossiers par thème)
-  var annaleInfo = (annalesData && annalesData.annales || []).find(function(a) { return a.id === annaleId; });
   var themeFolder = annaleInfo ? annaleInfo.theme : '';
   var path = 'annales/' + themeFolder + '/' + annaleId + '.json';
   fetch(path).then(function(r) {
@@ -17042,7 +17042,7 @@ function submitExam(forced) {
         id: currentAnnale.id || '',
         title: currentAnnale.title || 'Annale',
         theme: currentAnnale.theme || null,
-        isDemo: !!currentAnnale.is_demo || /-demo$/.test(currentAnnale.id || ''),
+        isDemo: !!currentAnnale.is_demo,
         nCorrect: nCorrect,
         nWrong: nWrong,
         nSkipped: nSkipped,
