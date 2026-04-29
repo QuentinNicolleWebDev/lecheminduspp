@@ -1721,12 +1721,15 @@ body.demo-mode:not(.is-logged) .page-header,
 body.demo-mode:not(.is-logged) .login-wrap,
 body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
 
-/* Layout examen DESKTOP en mode démo : on réduit la hauteur des panneaux pour libérer la place de la barre démo.
-   Les versions mobile sont gérées dans les @media plus haut (à max-width:900px et 680px). */
+/* Layout examen DESKTOP en mode démo : nav (68px) + barre démo (50px) = 118px d'espace pris en haut.
+   On retire le margin-top sur .exam-layout (les sticky se positionnent par rapport au viewport),
+   on réduit la hauteur des panneaux pour qu'ils tiennent sous la barre démo,
+   et on ajuste le top des éléments sticky pour qu'ils apparaissent juste sous la barre démo. */
 @media(min-width:901px){
   body.demo-mode:not(.is-logged) .exam-layout{margin-top:50px}
   body.demo-mode:not(.is-logged) .exam-pdf-pane{height:calc(100vh - 50px);top:118px}
   body.demo-mode:not(.is-logged) .exam-answers-pane{height:calc(100vh - 50px)}
+  body.demo-mode:not(.is-logged) .exam-timer-bar{top:118px}
 }
 
 @media (max-width:680px){
@@ -2982,7 +2985,7 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
     <span class="demo-nav-label">🚪 Mode démo</span>
     <div class="demo-nav-tabs" id="demo-nav-tabs">
       <button class="demo-nav-tab" data-demo-target="qcm" onclick="goTo('qcm')"><span class="demo-nav-tab-ico">🎯</span>QCM</button>
-      <button class="demo-nav-tab" data-demo-target="examen" onclick="goTo('examen')"><span class="demo-nav-tab-ico">📝</span>Annales</button>
+      <button class="demo-nav-tab" data-demo-target="concours" onclick="goTo('concours')"><span class="demo-nav-tab-ico">📝</span>Annales</button>
       <button class="demo-nav-tab" data-demo-target="biblio" onclick="goTo('biblio')"><span class="demo-nav-tab-ico">📚</span>Biblio</button>
       <button class="demo-nav-tab" data-demo-target="demo-prepa" onclick="goTo('demo-prepa')"><span class="demo-nav-tab-ico">💪</span>Physique</button>
       <button class="demo-nav-tab" data-demo-target="demo-espace" onclick="goTo('demo-espace')"><span class="demo-nav-tab-ico">📊</span>Espace</button>
@@ -5799,7 +5802,7 @@ if(window.location.search.indexOf('success') !== -1) {
       </button>
 
       <!-- 2. Mode concours (annales) -->
-      <button class="disc-hub-card" onclick="goTo('examen')">
+      <button class="disc-hub-card" onclick="goTo('concours')">
         <div class="disc-hub-card-head">
           <div class="disc-hub-card-icon">📝</div>
           <span class="disc-hub-card-tag demo">Démo</span>
@@ -17116,9 +17119,11 @@ function showCorrection(nCorrect, nWrong, nSkipped, nTotal, details) {
 var _origGoTo = goTo;
 
 // Pages qui font partie de la "démo" (visible aux non connectés sur ces pages → barre sticky)
-var DEMO_PAGES = ['qcm','examen','correction','biblio','demo-prepa','demo-espace','programme','actu','decouverte'];
+var DEMO_PAGES = ['qcm','concours','examen','correction','biblio','demo-prepa','demo-espace','programme','actu','decouverte'];
 // Note : 'examen' utilise un layout pleine hauteur ; un CSS spécifique ajuste la hauteur des
 // panneaux pour que la barre démo reste visible au-dessus.
+// L'onglet "Annales" de la barre démo a data-demo-target="concours" et reste actif aussi sur
+// les pages 'examen' (sujet en cours) et 'correction' (résultats post-soumission).
 
 function updateDemoModeUI(pageId) {
   // Active/désactive body.demo-mode selon la page courante
@@ -17129,8 +17134,9 @@ function updateDemoModeUI(pageId) {
   var tabs = document.querySelectorAll('.demo-nav-tab');
   tabs.forEach(function(t) {
     var target = t.getAttribute('data-demo-target');
-    // L'onglet "Annales" reste actif sur la page correction (qui suit examen)
-    var isActive = (target === pageId) || (target === 'examen' && pageId === 'correction');
+    // L'onglet "Annales" (target=concours) reste actif sur concours / examen / correction
+    var isAnnalesContext = (target === 'concours' && (pageId === 'concours' || pageId === 'examen' || pageId === 'correction'));
+    var isActive = (target === pageId) || isAnnalesContext;
     t.classList.toggle('active', isActive);
   });
 }
