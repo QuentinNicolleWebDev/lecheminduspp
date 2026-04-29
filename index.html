@@ -1248,6 +1248,15 @@ body.biblio-searching .biblio-acc-section.empty{display:none}
 
   .annales-theme-grid{grid-template-columns:1fr}
   .correction-stats{grid-template-columns:repeat(2,1fr)}
+
+  /* Examen en mode démo (visiteur non connecté) : on libère l'espace de la barre démo en haut.
+     Sur mobile la barre fait 50px (au-delà de 680px). Les panneaux passent à 50/50 du reste. */
+  body.demo-mode:not(.is-logged) .exam-layout{
+    height:calc(100vh - 50px);
+    height:calc(100dvh - 50px);
+    margin-top:50px;
+  }
+  body.demo-mode:not(.is-logged) .exam-pdf-pane{height:calc(50vh - 25px);height:calc(50dvh - 25px);max-height:calc(50vh - 25px);max-height:calc(50dvh - 25px)}
 }
 
 /* Très petits écrans : le timer + les infos doivent rester lisibles */
@@ -1683,6 +1692,64 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 .esp-ctx-msg{background:var(--cream2);border:1px solid var(--border);border-left:3px solid var(--red);padding:14px 20px;margin-bottom:24px;font-size:.92rem;color:var(--charcoal);line-height:1.5;display:flex;align-items:center;gap:12px}
 .esp-ctx-msg-icon{font-size:1.3rem;flex-shrink:0}
 .esp-ctx-msg-text strong{color:var(--red)}
+
+/* ===== Barre fixe de navigation entre démos ===== */
+/* Visible UNIQUEMENT pour les visiteurs non connectés ET sur les pages démo (body.demo-mode) */
+.demo-nav-bar{display:none;position:fixed;top:68px;left:0;right:0;z-index:850;background:white;border-bottom:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+body.is-logged .demo-nav-bar{display:none !important}
+body.demo-mode:not(.is-logged) .demo-nav-bar{display:block}
+.demo-nav-inner{max-width:1200px;margin:0 auto;padding:10px 5%;display:flex;align-items:center;gap:14px}
+.demo-nav-label{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);white-space:nowrap;flex-shrink:0}
+.demo-nav-tabs{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.demo-nav-tabs::-webkit-scrollbar{height:3px}
+.demo-nav-tabs::-webkit-scrollbar-thumb{background:var(--border)}
+.demo-nav-tab{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;background:var(--cream2);border:1px solid transparent;font-family:inherit;font-size:.8rem;color:var(--charcoal);cursor:pointer;white-space:nowrap;transition:all .15s;border-radius:3px}
+.demo-nav-tab:hover{background:var(--cream3);border-color:var(--border)}
+.demo-nav-tab.active{background:var(--red);color:white;font-weight:600}
+.demo-nav-tab.active:hover{background:var(--red-dark);border-color:transparent}
+.demo-nav-tab-ico{font-size:.95rem;line-height:1}
+.demo-nav-cta{flex-shrink:0;font-size:.78rem;font-weight:700;color:var(--gray);background:none;border:0;cursor:pointer;padding:6px 10px;font-family:inherit;text-decoration:underline}
+.demo-nav-cta:hover{color:var(--red)}
+
+/* Compensation : quand la barre démo est visible, on décale tout le contenu de 50px supplémentaires */
+/* La barre prend ~50px de haut (10px padding + ~30px contenu + bordure). */
+body.demo-mode:not(.is-logged) .countdown-bar,
+body.demo-mode:not(.is-logged) .hero,
+body.demo-mode:not(.is-logged) .qcm-page,
+body.demo-mode:not(.is-logged) .ch-hero,
+body.demo-mode:not(.is-logged) .page-header,
+body.demo-mode:not(.is-logged) .login-wrap,
+body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
+
+/* Layout examen DESKTOP en mode démo : on réduit la hauteur des panneaux pour libérer la place de la barre démo.
+   Les versions mobile sont gérées dans les @media plus haut (à max-width:900px et 680px). */
+@media(min-width:901px){
+  body.demo-mode:not(.is-logged) .exam-layout{margin-top:50px}
+  body.demo-mode:not(.is-logged) .exam-pdf-pane{height:calc(100vh - 50px);top:118px}
+  body.demo-mode:not(.is-logged) .exam-answers-pane{height:calc(100vh - 50px)}
+}
+
+@media (max-width:680px){
+  .demo-nav-inner{gap:8px;padding:8px 12px}
+  .demo-nav-label{font-size:.62rem;letter-spacing:1px}
+  .demo-nav-tab{padding:6px 9px;font-size:.74rem}
+  .demo-nav-cta{font-size:.7rem;padding:6px 4px}
+  /* Sur mobile la barre est plus dense, ~46px → on compense ~46+68 = 114px */
+  body.demo-mode:not(.is-logged) .countdown-bar,
+  body.demo-mode:not(.is-logged) .hero,
+  body.demo-mode:not(.is-logged) .qcm-page,
+  body.demo-mode:not(.is-logged) .ch-hero,
+  body.demo-mode:not(.is-logged) .page-header,
+  body.demo-mode:not(.is-logged) .login-wrap,
+  body.demo-mode:not(.is-logged) .examen-wrap{margin-top:114px}
+  /* Layout examen mobile en mode démo : barre 46px, panneaux empilés 50/50 du reste */
+  body.demo-mode:not(.is-logged) .exam-layout{
+    height:calc(100vh - 46px);
+    height:calc(100dvh - 46px);
+    margin-top:46px;
+  }
+  body.demo-mode:not(.is-logged) .exam-pdf-pane{height:calc(50vh - 23px);height:calc(50dvh - 23px);max-height:calc(50vh - 23px);max-height:calc(50dvh - 23px)}
+}
 
 /* ===== Toggle voie de concours (Voie 1° externe / Voie 2° externe SPV) ===== */
 .esp-voie-toggle{display:inline-flex;background:var(--cream2);border:1px solid var(--border);padding:3px;margin-bottom:14px;border-radius:6px}
@@ -2809,7 +2876,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   <!-- Footer : CTAs contextuels -->
   <div class="mobile-nav-footer">
     <!-- CTA principal (non connectés) -->
-    <button class="btn btn-red mobile-nav-cta-signup" onclick="goTo('formation');closeMobileNav()">Voir les formules</button>
+    <button class="btn btn-red mobile-nav-cta-signup" onclick="goTo('decouverte');closeMobileNav()">Essai gratuit</button>
     <button class="btn btn-outline mobile-nav-cta-signup" onclick="goTo('connexion');closeMobileNav()">Se connecter</button>
     <!-- Logout (connectés) -->
     <button class="btn btn-outline mobile-nav-logout" onclick="logoutMember();closeMobileNav()">Déconnexion</button>
@@ -2890,9 +2957,9 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   </div>
   <div class="nav-right">
     <!-- CTA rouge visible uniquement aux non-inscrits -->
-    <button class="btn btn-red nav-cta" id="nav-cta-signup" onclick="goTo('formation')">
-      <span class="nav-cta-full">Voir les formules</span>
-      <span class="nav-cta-short">Formules</span>
+    <button class="btn btn-red nav-cta" id="nav-cta-signup" onclick="goTo('decouverte')">
+      <span class="nav-cta-full">Essai gratuit</span>
+      <span class="nav-cta-short">Essai</span>
     </button>
     <!-- Bouton affiché si non connecté -->
     <button class="member-btn" id="nav-login-btn" onclick="goTo('connexion')">Se connecter →</button>
@@ -2908,6 +2975,23 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     </button>
   </div>
 </nav>
+
+<!-- ===== BARRE STICKY DÉMO (visible uniquement pour visiteurs non connectés sur les 7 pages démo) ===== -->
+<div class="demo-nav-bar" id="demo-nav-bar" role="navigation" aria-label="Navigation entre les démos">
+  <div class="demo-nav-inner">
+    <span class="demo-nav-label">🚪 Mode démo</span>
+    <div class="demo-nav-tabs" id="demo-nav-tabs">
+      <button class="demo-nav-tab" data-demo-target="qcm" onclick="goTo('qcm')"><span class="demo-nav-tab-ico">🎯</span>QCM</button>
+      <button class="demo-nav-tab" data-demo-target="examen" onclick="goTo('examen')"><span class="demo-nav-tab-ico">📝</span>Annales</button>
+      <button class="demo-nav-tab" data-demo-target="biblio" onclick="goTo('biblio')"><span class="demo-nav-tab-ico">📚</span>Biblio</button>
+      <button class="demo-nav-tab" data-demo-target="demo-prepa" onclick="goTo('demo-prepa')"><span class="demo-nav-tab-ico">💪</span>Physique</button>
+      <button class="demo-nav-tab" data-demo-target="demo-espace" onclick="goTo('demo-espace')"><span class="demo-nav-tab-ico">📊</span>Espace</button>
+      <button class="demo-nav-tab" data-demo-target="programme" onclick="goTo('programme')"><span class="demo-nav-tab-ico">📅</span>Planning</button>
+      <button class="demo-nav-tab" data-demo-target="actu" onclick="goTo('actu')"><span class="demo-nav-tab-ico">📰</span>Actus</button>
+    </div>
+    <button class="demo-nav-cta" onclick="goTo('formation')">S'abonner →</button>
+  </div>
+</div>
 
 <!-- ============================= PAGE: HOME ============================= -->
 <div class="page active" id="page-home">
@@ -2990,8 +3074,8 @@ body:not(.is-logged) .mobile-nav-member{display:none}
     <div style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:white;margin:12px 0 20px;line-height:1.2">La plateforme complète à partir de <span style="text-decoration:underline">19€/mois</span></div>
     <div style="font-size:.95rem;color:rgba(255,255,255,0.8);margin-bottom:32px">QCM · Annales · Bibliothèque · Programmes physiques — choisis ta formule.</div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="btn" style="background:white;color:var(--red);font-weight:700" onclick="goTo('formation')">Voir les formules</button>
-      <button class="btn btn-outline-white" onclick="goTo('qcm')">Tester sans inscription</button>
+      <button class="btn" style="background:white;color:var(--red);font-weight:700" onclick="goTo('decouverte')">Essai gratuit</button>
+      <button class="btn btn-outline-white" onclick="goTo('formation')">Voir les formules →</button>
     </div>
   </div>
 </div>
@@ -3065,7 +3149,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   <div class="section">
 
     <!-- PALIER 1 — DÉCOUVERTE (libre, sans inscription) — placée en tête pour guider le prospect avant les offres payantes -->
-    <div class="discover-card hide-when-logged" onclick="goTo('qcm')" style="cursor:pointer">
+    <div class="discover-card hide-when-logged" onclick="goTo('decouverte')" style="cursor:pointer">
       <div class="discover-card-left">
         <div class="discover-card-icon">🚪</div>
         <div class="discover-card-title-wrap">
@@ -3074,18 +3158,19 @@ body:not(.is-logged) .mobile-nav-member{display:none}
         </div>
       </div>
       <div class="discover-card-center">
-        Tu peux tester la plateforme tout de suite, sans créer de compte ni laisser ton email. Une fois convaincu, choisis l'une des trois formules pour débloquer l'accès complet.
+        Tu peux tester la plateforme tout de suite, sans créer de compte ni laisser ton email. Six outils à essayer librement avant de choisir ta formule.
         <ul class="discover-card-features">
           <li>10 QCM par jour, tous thèmes</li>
-          <li>1 annale démo par épreuve</li>
-          <li>Bibliothèque officielle complète</li>
+          <li>3 annales démo en mode concours</li>
+          <li>Bibliothèque officielle (47 documents)</li>
+          <li>Aperçus prépa physique &amp; espace candidat</li>
           <li>Actualités en libre accès</li>
         </ul>
       </div>
       <div class="discover-card-right">
         <div class="discover-card-price-label">Sans inscription</div>
         <div class="discover-card-price">Gratuit</div>
-        <button class="btn btn-outline-red" onclick="event.stopPropagation();goTo('qcm')">Tester maintenant →</button>
+        <button class="btn btn-outline-red" onclick="event.stopPropagation();goTo('decouverte')">Tester maintenant →</button>
       </div>
     </div>
 
@@ -3409,9 +3494,9 @@ body:not(.is-logged) .mobile-nav-member{display:none}
   <div class="section">
     <div class="comment-final-cta hide-when-logged">
       <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--charcoal);line-height:1.25;margin-bottom:14px">Prêt à voir tout ça <em style="color:var(--red)">par toi-même</em> ?</div>
-      <div style="font-size:.95rem;color:var(--gray);line-height:1.6;max-width:580px;margin:0 auto 26px">Teste la plateforme tout de suite, sans inscription : 10 QCM par jour, une annale démo par épreuve, et toute la bibliothèque officielle en accès libre. Tu te feras ton propre avis — c'est la meilleure façon de savoir si la méthode te correspond.</div>
+      <div style="font-size:.95rem;color:var(--gray);line-height:1.6;max-width:580px;margin:0 auto 26px">Teste la plateforme tout de suite, sans inscription : six outils à essayer librement (QCM, annales, bibliothèque, prépa physique, espace candidat, actualités). Tu te feras ton propre avis — c'est la meilleure façon de savoir si la méthode te correspond.</div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-red" onclick="goTo('qcm')" style="padding:14px 28px">Tester sans inscription</button>
+        <button class="btn btn-red" onclick="goTo('decouverte')" style="padding:14px 28px">Essai gratuit</button>
         <button class="btn btn-outline" onclick="goTo('formation')" style="padding:14px 28px">Voir les tarifs →</button>
       </div>
     </div>
@@ -3445,7 +3530,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
       </div>
       <div class="hide-when-logged" style="border-top:1px solid var(--border);margin-top:28px;padding-top:20px;text-align:center;font-size:.83rem;color:var(--gray)">
         Pas encore abonné ?<br>
-        <button onclick="goTo('formation')" style="background:none;border:none;cursor:pointer;color:var(--red);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;text-decoration:underline;margin-top:6px">Voir les formules →</button>
+        <button onclick="goTo('decouverte')" style="background:none;border:none;cursor:pointer;color:var(--red);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;text-decoration:underline;margin-top:6px">Essai gratuit →</button>
       </div>
     </div>
   </div>
@@ -4435,7 +4520,7 @@ body:not(.is-logged) .mobile-nav-member{display:none}
 <script>
 if(window.location.search.indexOf('success') !== -1) {
   document.addEventListener('DOMContentLoaded', function(){
-    var pages = ['home','parcours','comment','formation','connexion','qcm','biblio','examen','correction','actu','coaching','espace','merci','concours','prepa','demo-espace','demo-prepa','bienvenue','candidats','profil','mentions','cgv','confidentialite','remboursement','programme','contact'];
+    var pages = ['home','parcours','comment','formation','connexion','qcm','biblio','examen','correction','actu','coaching','espace','merci','concours','prepa','demo-espace','demo-prepa','decouverte','candidats','profil','mentions','cgv','confidentialite','remboursement','programme','contact'];
     pages.forEach(function(p){
       var el = document.getElementById('page-'+p);
       if(el) el.classList.toggle('active', p === 'merci');
@@ -5665,55 +5750,134 @@ if(window.location.search.indexOf('success') !== -1) {
   </div>
 </div>
 
-<!-- ============================= PAGE: BIENVENUE (choix de formule après signup gratuit) ============================= -->
-<div class="page" id="page-bienvenue">
+<!-- ============================= PAGE: DÉCOUVERTE (hub 6 outils accessibles sans inscription) ============================= -->
+<style>
+  .disc-hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:0 auto}
+  @media (max-width:900px){.disc-hub-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.disc-hub-grid{grid-template-columns:1fr;gap:14px}}
+  .disc-hub-card{background:white;border:1px solid var(--border);padding:28px 26px;display:flex;flex-direction:column;transition:border-color .2s,transform .2s,box-shadow .2s;cursor:pointer;text-align:left;font-family:inherit;color:inherit}
+  .disc-hub-card:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:0 6px 20px rgba(204,34,41,0.08)}
+  .disc-hub-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .disc-hub-card-icon{font-size:1.9rem;line-height:1}
+  .disc-hub-card-tag{font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 9px;background:#e8f3ec;color:#2d6a4f;white-space:nowrap;align-self:flex-start;margin-top:6px}
+  .disc-hub-card-tag.demo{background:#fff6e5;color:#8B6914}
+  .disc-hub-card-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--charcoal);line-height:1.25;margin-bottom:10px}
+  .disc-hub-card-text{font-size:.85rem;color:var(--gray);line-height:1.6;margin-bottom:16px;flex:1}
+  .disc-hub-card-meta{font-size:.72rem;color:var(--charcoal);font-weight:600;margin-bottom:14px;padding:8px 12px;background:var(--cream2);border-left:2px solid var(--red)}
+  .disc-hub-card-arrow{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:700;color:var(--red);margin-top:auto}
+  .disc-hub-intro{max-width:760px;margin:0 auto 36px;text-align:center;font-size:.95rem;color:var(--gray);line-height:1.7}
+  .disc-hub-cta-final{max-width:760px;margin:48px auto 0;background:var(--charcoal);color:white;padding:32px 36px;text-align:center}
+  .disc-hub-cta-final-eyebrow{font-size:.66rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#F09580;margin-bottom:10px}
+  .disc-hub-cta-final-title{font-family:'Playfair Display',serif;font-size:1.4rem;line-height:1.3;margin-bottom:8px}
+  .disc-hub-cta-final-text{font-size:.85rem;color:rgba(255,255,255,0.8);line-height:1.6;margin-bottom:22px;max-width:520px;margin-left:auto;margin-right:auto}
+</style>
+<div class="page" id="page-decouverte">
   <div class="page-header">
     <div class="page-header-inner">
-      <div class="s-eyebrow">Bienvenue dans l'aventure</div>
-      <div class="s-title">Bienvenue <em id="bienvenue-pseudo">candidat</em></div>
+      <div class="s-eyebrow">Mode Découverte · sans inscription</div>
+      <div class="s-title">Teste la plateforme <em>par toi-même</em></div>
       <div class="s-intro">
-        Ton compte est créé. Il ne te reste plus qu'à choisir comment tu veux préparer ton concours. Tu peux commencer en mode découverte gratuit et évoluer quand tu veux.
+        Six outils à essayer librement, sans créer de compte ni laisser ton email. Clique sur chaque carte pour explorer comment fonctionne la préparation au concours de Caporal SPP.
       </div>
     </div>
   </div>
 
   <div class="section">
 
-    <!-- Carte Découverte (format bannière comme sur page Formation) -->
-    <div class="discover-card" style="margin-top:40px;cursor:pointer" onclick="startFreeJourney()">
-      <div class="discover-card-left">
-        <div class="discover-card-icon">🚪</div>
-        <div class="discover-card-title-wrap">
-          <div class="discover-card-title">Commencer en Découverte</div>
-          <div class="discover-card-subtitle">Gratuit · sans CB · accès immédiat</div>
+    <div class="disc-hub-grid">
+
+      <!-- 1. QCM thématiques -->
+      <button class="disc-hub-card" onclick="goTo('qcm')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">🎯</div>
+          <span class="disc-hub-card-tag demo">Démo</span>
         </div>
-      </div>
-      <div class="discover-card-center">
-        Tu accèdes dès maintenant à une sélection représentative. Idéal pour prendre tes marques avant de t'engager.
-        <ul class="discover-card-features">
-          <li>30 QCM offerts</li>
-          <li>1 annale démo par épreuve</li>
-          <li>Bibliothèque officielle</li>
-          <li>Actualités en libre accès</li>
-          <li>Premiers badges</li>
-        </ul>
-      </div>
-      <div class="discover-card-right">
-        <div class="discover-card-price-label">Recommandé pour démarrer</div>
-        <div class="discover-card-price" style="color:var(--red)">Gratuit</div>
-        <button class="btn btn-red" onclick="event.stopPropagation();startFreeJourney()">Commencer →</button>
-      </div>
+        <div class="disc-hub-card-title">QCM thématiques</div>
+        <div class="disc-hub-card-text">Choisis un ou plusieurs thèmes du concours et entraîne-toi avec des questions tirées au sort, corrigées et sourcées.</div>
+        <div class="disc-hub-card-meta">10 questions par jour · tous thèmes du programme</div>
+        <span class="disc-hub-card-arrow">Lancer une session →</span>
+      </button>
+
+      <!-- 2. Mode concours (annales) -->
+      <button class="disc-hub-card" onclick="goTo('examen')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">📝</div>
+          <span class="disc-hub-card-tag demo">Démo</span>
+        </div>
+        <div class="disc-hub-card-title">Mode concours</div>
+        <div class="disc-hub-card-text">Place-toi dans les conditions du jour J. Sujet PDF à gauche, grille de réponses à droite, chrono qui tourne. Correction à la fin.</div>
+        <div class="disc-hub-card-meta">3 annales démo : Équipier · Maths · Étude de texte</div>
+        <span class="disc-hub-card-arrow">Tester une annale →</span>
+      </button>
+
+      <!-- 3. Bibliothèque -->
+      <button class="disc-hub-card" onclick="goTo('biblio')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">📚</div>
+          <span class="disc-hub-card-tag">Libre</span>
+        </div>
+        <div class="disc-hub-card-title">Bibliothèque officielle</div>
+        <div class="disc-hub-card-text">Tous les textes officiels et doctrines opérationnelles du concours, en accès direct, sans téléchargement payant.</div>
+        <div class="disc-hub-card-meta">47 documents publics · GTO · GDO · sources juridiques</div>
+        <span class="disc-hub-card-arrow">Consulter →</span>
+      </button>
+
+      <!-- 4. Préparation physique -->
+      <button class="disc-hub-card" onclick="goTo('demo-prepa')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">💪</div>
+          <span class="disc-hub-card-tag demo">Démo</span>
+        </div>
+        <div class="disc-hub-card-title">Préparation physique</div>
+        <div class="disc-hub-card-text">Entre tes performances de base (VMA, force) et reçois un programme adapté à ton niveau pour préparer les épreuves physiques.</div>
+        <div class="disc-hub-card-meta">Aperçu du programme · profil simplifié</div>
+        <span class="disc-hub-card-arrow">Voir un exemple →</span>
+      </button>
+
+      <!-- 5. Espace candidat -->
+      <button class="disc-hub-card" onclick="goTo('demo-espace')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">📊</div>
+          <span class="disc-hub-card-tag demo">Démo</span>
+        </div>
+        <div class="disc-hub-card-title">Espace candidat</div>
+        <div class="disc-hub-card-text">Stats détaillées par thème, radar des compétences, courbe d'évolution sur 8 semaines, planning personnalisé. Aperçu du tableau de bord abonné.</div>
+        <div class="disc-hub-card-meta">Aperçu interactif · données fictives</div>
+        <span class="disc-hub-card-arrow">Voir le tableau de bord →</span>
+      </button>
+
+      <!-- 6. Actualités -->
+      <button class="disc-hub-card" onclick="goTo('actu')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">📰</div>
+          <span class="disc-hub-card-tag">Libre</span>
+        </div>
+        <div class="disc-hub-card-title">Actualités</div>
+        <div class="disc-hub-card-text">Décryptages des concours en cours, actus de la fonction publique territoriale, brèves de la semaine sur le monde des SDIS.</div>
+        <div class="disc-hub-card-meta">Mise à jour régulière · libre accès</div>
+        <span class="disc-hub-card-arrow">Lire les actus →</span>
+      </button>
+
+      <!-- 7. Planning intelligent -->
+      <button class="disc-hub-card" onclick="goTo('programme')">
+        <div class="disc-hub-card-head">
+          <div class="disc-hub-card-icon">📅</div>
+          <span class="disc-hub-card-tag demo">Démo</span>
+        </div>
+        <div class="disc-hub-card-title">Planning intelligent</div>
+        <div class="disc-hub-card-text">Indique combien de temps tu as par jour. La plateforme te génère un planning équilibré sport + révision, exportable vers ton agenda.</div>
+        <div class="disc-hub-card-meta">Génération automatique · planning type</div>
+        <span class="disc-hub-card-arrow">Tester →</span>
+      </button>
+
     </div>
 
-    <!-- Lien discret vers les formules payantes -->
-    <div style="text-align:center;margin-top:48px;padding:28px 24px;background:var(--cream2);border:1px dashed var(--border)">
-      <div style="font-size:.92rem;color:var(--charcoal);margin-bottom:6px">Tu sais déjà que tu veux aller plus loin ?</div>
-      <div style="font-size:.82rem;color:var(--gray);line-height:1.6;margin-bottom:16px">Tu peux aussi passer directement à une formule complète — Préparation, Performance, ou Excellence.</div>
-      <button class="btn btn-outline-red" onclick="goTo('formation')" style="font-size:.88rem;padding:11px 22px">Voir les formules complètes →</button>
-    </div>
-
-    <div style="text-align:center;margin-top:32px">
-      <div style="font-size:.8rem;color:var(--gray);line-height:1.7">Tu peux toujours passer au niveau supérieur plus tard, depuis ton espace candidat.</div>
+    <!-- CTA final : passer à l'abonnement -->
+    <div class="disc-hub-cta-final">
+      <div class="disc-hub-cta-final-eyebrow">Convaincu ?</div>
+      <div class="disc-hub-cta-final-title">Passe à l'abonnement et débloque tout</div>
+      <div class="disc-hub-cta-final-text">QCM illimités, toutes les annales corrigées, programmes physiques personnalisés, ton espace candidat avec sauvegarde de tes progrès, et un suivi humain pour les abonnés Excellence.</div>
+      <button class="btn btn-red" onclick="goTo('formation')" style="padding:14px 28px">Voir les formules →</button>
     </div>
 
   </div>
@@ -10430,7 +10594,7 @@ function refreshMemberAccess() {
 // ============================================================
 // NAVIGATION
 // ============================================================
-var pages = ['home','parcours','comment','formation','connexion','qcm','biblio','examen','correction','actu','coaching','merci','concours','espace','prepa','demo-espace','demo-prepa','candidats','profil','mentions','cgv','confidentialite','remboursement','programme','contact'];
+var pages = ['home','parcours','comment','formation','connexion','qcm','biblio','examen','correction','actu','coaching','merci','concours','espace','prepa','demo-espace','demo-prepa','decouverte','candidats','profil','mentions','cgv','confidentialite','remboursement','programme','contact'];
 
 function goTo(id) {
   pages.forEach(function(p) {
@@ -10490,14 +10654,6 @@ function goTo(id) {
     // Si paiement récent détecté (< 2h), afficher directement le calendrier
     if (typeof coachingCheckPrepaidStatus === 'function') coachingCheckPrepaidStatus();
   }
-  if (id === 'bienvenue') {
-    // Afficher le pseudo dans le titre de la page Bienvenue
-    var bEl = document.getElementById('bienvenue-pseudo');
-    if (bEl) {
-      var pseudo = (currentMember && currentMember._profile && currentMember._profile.pseudo) || 'candidat';
-      bEl.textContent = pseudo;
-    }
-  }
 }
 
 // ============================================================
@@ -10554,7 +10710,7 @@ function goTo(id) {
     }
 
     // Sécurité : vérifier que la page cible existe
-    if (pages.indexOf(targetPage) === -1 && targetPage !== 'bienvenue') {
+    if (pages.indexOf(targetPage) === -1) {
       targetPage = 'home';
     }
 
@@ -10576,7 +10732,7 @@ function goTo(id) {
     var hash = (window.location.hash || '').replace('#', '');
     if (!hash || hash === 'merci') return; // #merci est déjà géré ailleurs
 
-    if (pages.indexOf(hash) !== -1 || hash === 'bienvenue') {
+    if (pages.indexOf(hash) !== -1) {
       // Petit délai pour laisser le DOM et les autres init finir
       setTimeout(function() {
         _navFromPopState = true;
@@ -16330,9 +16486,9 @@ function msSignupFree() {
     setTimeout(msSignupFree, 1500);
     return;
   }
-  // Court-circuit : si déjà en mémoire qu'on est connecté, on va direct à /bienvenue
+  // Court-circuit : si déjà en mémoire qu'on est connecté, on va direct à /decouverte
   if (currentMember) {
-    goTo('bienvenue');
+    goTo('decouverte');
     return;
   }
   function launchSignupAndWait() {
@@ -16342,7 +16498,7 @@ function msSignupFree() {
           // Memberstack ne ferme pas la modale automatiquement après signup — on le fait nous-même
           try { ms.hideModal(); } catch(e) { console.warn('[signup-free] hideModal failed', e); }
           updateNavMember(result.data.member);
-          waitForPseudoAndGoTo('bienvenue');
+          waitForPseudoAndGoTo('decouverte');
         }
       },
       function(e) { console.log('[signup-free] modal closed or failed', e); }
@@ -16353,7 +16509,7 @@ function msSignupFree() {
     function(res) {
       if (res && res.data && res.data.member) {
         updateNavMember(res.data.member);
-        goTo('bienvenue');
+        goTo('decouverte');
       } else {
         launchSignupAndWait();
       }
@@ -16958,14 +17114,30 @@ function showCorrection(nCorrect, nWrong, nSkipped, nTotal, details) {
 
 // Hook : recharger les thèmes quand on arrive sur la page biblio
 var _origGoTo = goTo;
+
+// Pages qui font partie de la "démo" (visible aux non connectés sur ces pages → barre sticky)
+var DEMO_PAGES = ['qcm','examen','correction','biblio','demo-prepa','demo-espace','programme','actu','decouverte'];
+// Note : 'examen' utilise un layout pleine hauteur ; un CSS spécifique ajuste la hauteur des
+// panneaux pour que la barre démo reste visible au-dessus.
+
+function updateDemoModeUI(pageId) {
+  // Active/désactive body.demo-mode selon la page courante
+  var inDemo = DEMO_PAGES.indexOf(pageId) !== -1;
+  document.body.classList.toggle('demo-mode', inDemo);
+
+  // Met à jour l'onglet actif dans la barre démo
+  var tabs = document.querySelectorAll('.demo-nav-tab');
+  tabs.forEach(function(t) {
+    var target = t.getAttribute('data-demo-target');
+    // L'onglet "Annales" reste actif sur la page correction (qui suit examen)
+    var isActive = (target === pageId) || (target === 'examen' && pageId === 'correction');
+    t.classList.toggle('active', isActive);
+  });
+}
+
 goTo = function(id) {
-  // La page "bienvenue" n'est plus utilisée depuis la suppression de l'inscription gratuite.
-  // Si quelqu'un atterrit dessus (ancien lien, retour Memberstack...), on redirige vers Formation.
-  if (id === 'bienvenue') {
-    _origGoTo('formation');
-    return;
-  }
   _origGoTo(id);
+  updateDemoModeUI(id);
   if (id === 'biblio') {
     showAnnalesThemes();
     renderAnnalesThemes();
@@ -16987,6 +17159,16 @@ goTo = function(id) {
     if (typeof initActualites === 'function') initActualites();
   }
 };
+
+// Initialiser l'état au chargement de la page (au cas où on arrive directement sur une URL #qcm)
+document.addEventListener('DOMContentLoaded', function() {
+  // Détermine la page initiale active
+  var activePage = document.querySelector('.page.active');
+  if (activePage) {
+    var pageId = activePage.id.replace('page-', '');
+    updateDemoModeUI(pageId);
+  }
+});
 
 // ================================================================
 // ACTUALITÉS — Chargement depuis actualites.json
