@@ -6,32 +6,32 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#F5F0E8",
+  "background_color": "#CC2229",
   "theme_color": "#CC2229",
   "lang": "fr-FR",
   "dir": "ltr",
   "categories": ["education", "productivity"],
   "icons": [
     {
-      "src": "logo.png",
+      "src": "logo_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "logo_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "logo_192_maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "logo.png",
+      "src": "logo_512_maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

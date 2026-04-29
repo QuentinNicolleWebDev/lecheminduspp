@@ -14,8 +14,9 @@
 <link rel="canonical" href="https://lecheminduspp.fr/">
 
 <!-- Favicon & icônes -->
-<link rel="icon" type="image/png" href="logo.png">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="logo_192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
 <!-- ===================== PWA ===================== -->
 <link rel="manifest" href="/manifest.json">
@@ -25,7 +26,7 @@
 <meta name="apple-mobile-web-app-title" content="Chemin SPP">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="msapplication-TileColor" content="#CC2229">
-<meta name="msapplication-TileImage" content="logo.png">
+<meta name="msapplication-TileImage" content="logo_192.png">
 <!-- =================== /PWA ====================== -->
 
 <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
@@ -194,7 +195,11 @@ document.addEventListener('DOMContentLoaded', function(){
       clearInterval(interval);
       console.log('MEMBERSTACK: initialisé avec succès');
       window.$memberstackDom.getCurrentMember().then(function(res){
-        if (!res || !res.data) return;
+        if (!res || !res.data) {
+          // Pas de membre connecté — on signale quand même que le check a abouti
+          window.pwaMemberstackChecked = true;
+          return;
+        }
         // Memberstack peut retourner soit { data: { member: {...} } } (ancien format)
         // soit { data: {...} } directement avec les infos du membre (nouveau format).
         // On gère les deux cas pour rester compatible.
@@ -202,8 +207,11 @@ document.addEventListener('DOMContentLoaded', function(){
         if (member && member.id) {
           updateNavMember(member);
         }
+        // Signal pour la PWA : Memberstack a fini son check de session
+        window.pwaMemberstackChecked = true;
       }).catch(function(e){
         console.warn('MEMBERSTACK getCurrentMember :', e);
+        window.pwaMemberstackChecked = true; // débloque même en cas d'erreur
       });
     }
   }, 200);
@@ -772,6 +780,20 @@ body.is-logged .nav-member-only{display:revert}
 /* Filtres categories meres (niveau 1) */
 /* ===== BARRE DE RECHERCHE ===== */
 .biblio-search{position:relative;margin-bottom:20px}
+
+/* ===== Bannière Cadeau de bienvenue (membres connectés uniquement) ===== */
+.biblio-gift{display:flex;align-items:center;gap:20px;background:linear-gradient(135deg,#2a2320 0%,#1C1C1C 100%);color:white;padding:22px 26px;margin-bottom:28px;border-left:4px solid var(--red);position:relative}
+.biblio-gift-icon{font-size:2.4rem;flex-shrink:0;line-height:1}
+.biblio-gift-text{flex:1;min-width:0}
+.biblio-gift-eyebrow{font-size:.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#E88080;margin-bottom:6px}
+.biblio-gift-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:white;line-height:1.25;margin-bottom:4px}
+.biblio-gift-desc{font-size:.85rem;color:#C8C2BB;line-height:1.5}
+.biblio-gift-btn{flex-shrink:0;background:var(--red);color:white;padding:13px 22px;text-decoration:none;font-size:.88rem;font-weight:600;font-family:inherit;white-space:nowrap;transition:background .2s;border:none;cursor:pointer}
+.biblio-gift-btn:hover{background:var(--red-dark)}
+@media (max-width:720px){
+  .biblio-gift{flex-direction:column;align-items:flex-start;gap:16px;padding:20px}
+  .biblio-gift-btn{width:100%;text-align:center;justify-content:center;display:flex;align-items:center}
+}
 .biblio-search-input{width:100%;padding:14px 44px 14px 44px;border:1px solid var(--border);background:white;font-size:.95rem;color:var(--charcoal);font-family:inherit;transition:all .2s}
 .biblio-search-input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(204,34,41,0.1)}
 .biblio-search-input::placeholder{color:var(--gray-light)}
@@ -4083,6 +4105,17 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
     </div>
   </div>
   <div class="section">
+
+    <!-- ===== CADEAU DE BIENVENUE (membres connectés uniquement) ===== -->
+    <div id="biblio-gift-banner" class="biblio-gift" style="display:none">
+      <div class="biblio-gift-icon">🎁</div>
+      <div class="biblio-gift-text">
+        <div class="biblio-gift-eyebrow">Ton cadeau de bienvenue</div>
+        <div class="biblio-gift-title">Les 5 erreurs qui éliminent les bons candidats</div>
+        <div class="biblio-gift-desc">Le guide écrit par Quentin pour t'éviter les pièges les plus courants de la prépa. À lire en premier.</div>
+      </div>
+      <a class="biblio-gift-btn" href="ebook_V2_pdf.pdf" download="Le_Chemin_du_SPP_Les_5_erreurs.pdf" onclick="trackGiftDownload()">Télécharger le PDF →</a>
+    </div>
 
     <!-- ===== BARRE DE RECHERCHE ===== -->
     <div class="biblio-search">
@@ -16294,6 +16327,16 @@ function getMemberstack() {
   return window.$memberstackDom || null;
 }
 
+// Hook de tracking déclenché au clic sur "Télécharger le PDF" du cadeau de bienvenue.
+// Pour l'instant volontairement minimaliste (no-op) : à brancher sur un analytics
+// (Plausible/Umami) plus tard si besoin de mesurer le taux d'usage du cadeau.
+function trackGiftDownload() {
+  try {
+    if (typeof plausible === 'function') plausible('Gift Download');
+    if (typeof umami === 'object' && umami.track) umami.track('gift-download');
+  } catch(e) {}
+}
+
 function updateNavMember(member) {
   var loginBtn  = document.getElementById('nav-login-btn');
   var logoutBtn = document.getElementById('nav-logout-btn');
@@ -16327,6 +16370,9 @@ function updateNavMember(member) {
     if (spaceBtn)    spaceBtn.style.display    = 'inline-flex';
     if (espaceItem)  espaceItem.style.display  = 'block';
     if (mobileEspace) mobileEspace.style.display = 'block';
+    // Affichage du cadeau de bienvenue dans la Bibliothèque (membre connecté uniquement)
+    var gift = document.getElementById('biblio-gift-banner');
+    if (gift) gift.style.display = 'flex';
     // L'affichage pseudo + badge est géré entièrement par updateNavMemberName()
     // qui remplit dynamiquement le bouton "Mon espace" (icône + pseudo).
     // Fallback rapide : si le pseudo n'est pas encore chargé, on affiche l'email
@@ -16396,6 +16442,9 @@ function updateNavMember(member) {
     if (spaceBtn) spaceBtn.style.display = 'none';
     if (espaceItem) espaceItem.style.display = 'block';
     if (mobileEspace) mobileEspace.style.display = 'block';
+    // Masque le cadeau de bienvenue quand l'utilisateur se déconnecte
+    var giftOff = document.getElementById('biblio-gift-banner');
+    if (giftOff) giftOff.style.display = 'none';
     // Rafraîchit l'UI QCM (mode démo à nouveau actif)
     if (typeof refreshDemoBanner === 'function') refreshDemoBanner();
     if (typeof updateSummary === 'function') updateSummary();
@@ -20663,91 +20712,43 @@ function submitBetaFeedback() {
   from { transform: translateY(120%); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
-#pwa-install-banner .pwa-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
+#pwa-install-banner .pwa-row { display: flex; align-items: flex-start; gap: 12px; }
 #pwa-install-banner .pwa-icon {
-  width: 40px;
-  height: 40px;
-  background: #CC2229;
-  border-radius: 8px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 40px; height: 40px;
+  background: #CC2229; border-radius: 8px;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
   overflow: hidden;
 }
-#pwa-install-banner .pwa-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-#pwa-install-banner .pwa-text {
-  flex: 1;
-  min-width: 0;
-}
-#pwa-install-banner .pwa-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #2a2320;
-  line-height: 1.2;
-  margin-bottom: 3px;
-}
-#pwa-install-banner .pwa-desc {
-  font-size: 0.78rem;
-  color: #5a5550;
-  line-height: 1.4;
-  margin-bottom: 8px;
-}
-#pwa-install-banner .pwa-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
+#pwa-install-banner .pwa-icon img { width: 100%; height: 100%; object-fit: cover; }
+#pwa-install-banner .pwa-text { flex: 1; min-width: 0; }
+#pwa-install-banner .pwa-title { font-size: 0.92rem; font-weight: 600; color: #2a2320; line-height: 1.2; margin-bottom: 3px; }
+#pwa-install-banner .pwa-desc { font-size: 0.78rem; color: #5a5550; line-height: 1.4; margin-bottom: 8px; }
+#pwa-install-banner .pwa-actions { display: flex; gap: 8px; align-items: center; }
 #pwa-install-banner .pwa-btn-primary {
-  background: #CC2229;
-  color: white;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 7px 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
+  background: #CC2229; color: white;
+  font-size: 0.78rem; font-weight: 600;
+  padding: 7px 14px; border: none; border-radius: 4px;
+  cursor: pointer; font-family: inherit;
 }
 #pwa-install-banner .pwa-btn-secondary {
-  background: none;
-  color: #888;
-  font-size: 0.78rem;
-  padding: 7px 8px;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
+  background: none; color: #888;
+  font-size: 0.78rem; padding: 7px 8px;
+  border: none; cursor: pointer; font-family: inherit;
 }
-/* Variante iOS : bouton primaire en outline (pas d'install programmatique sur iOS) */
 #pwa-install-banner.ios .pwa-btn-primary {
-  background: white;
-  color: #CC2229;
-  border: 1.5px solid #CC2229;
+  background: white; color: #CC2229; border: 1.5px solid #CC2229;
 }
-/* Mode "comment installer" (instructions iOS) */
 #pwa-ios-instructions {
   display: none;
-  font-size: 0.78rem;
-  color: #5a5550;
-  line-height: 1.5;
-  margin-top: 8px;
-  padding-top: 10px;
-  border-top: 1px solid #eee;
+  font-size: 0.78rem; color: #5a5550; line-height: 1.5;
+  margin-top: 8px; padding-top: 10px; border-top: 1px solid #eee;
 }
 #pwa-ios-instructions strong { color: #2a2320; }
 </style>
 
 <div id="pwa-install-banner" role="dialog" aria-label="Installer l'application">
   <div class="pwa-row">
-    <div class="pwa-icon"><img src="logo.png" alt=""></div>
+    <div class="pwa-icon"><img src="logo_192.png" alt=""></div>
     <div class="pwa-text">
       <div class="pwa-title">Installe l'app Chemin SPP</div>
       <div class="pwa-desc">Un raccourci sur ton téléphone, accès direct à ton espace candidat.</div>
@@ -20767,9 +20768,12 @@ function submitBetaFeedback() {
 // Comportement souhaité :
 //  1. Enregistrer le service worker (rend la PWA installable)
 //  2. Afficher le bandeau à CHAQUE session sur mobile, sauf si l'app est installée
-//  3. Bouton "Installer" : déclenche le prompt natif Chrome/Android, ou affiche les instructions iOS
-//  4. Si l'app est lancée en mode standalone (icône écran d'accueil), redirige vers #espace
-//     et masque le bandeau définitivement.
+//  3. Si l'app est lancée en mode standalone (icône écran d'accueil) :
+//     - candidat connecté    → redirection vers Mon espace (#espace)
+//     - candidat non connecté → redirection vers la page Découverte (#decouverte, "Essai")
+//
+// La redirection ne s'applique QU'EN mode standalone (PWA installée).
+// Sur le site web normal, la page d'accueil reste affichée comme avant.
 
 (function() {
 
@@ -20785,9 +20789,8 @@ function submitBetaFeedback() {
 
   // --- 2. Détection plateforme et état d'installation ---
   function isStandalone() {
-    // Mode app installé (lancé depuis l'icône écran d'accueil)
     return window.matchMedia('(display-mode: standalone)').matches
-        || window.navigator.standalone === true; // iOS Safari
+        || window.navigator.standalone === true;
   }
   function isMobile() {
     return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -20796,20 +20799,51 @@ function submitBetaFeedback() {
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  // --- 3. Si l'app est en mode standalone : redirige vers #espace + masque tout ---
+  // --- 3. Si l'app est en mode standalone : redirection conditionnelle + masque le bandeau ---
   if (isStandalone()) {
-    // L'utilisateur a ouvert l'app depuis l'icône → on l'amène direct à Mon espace.
-    // On ne le fait que si on est sur la racine (pas sur une page ciblée par hash).
-    if (!location.hash || location.hash === '' || location.hash === '#') {
-      // Petit délai pour laisser le SPA s'initialiser, puis goTo si dispo
+    // On ne redirige que sur la racine (pas si l'utilisateur a un lien direct vers #qcm, etc.)
+    var atRoot = !location.hash || location.hash === '' || location.hash === '#';
+
+    if (atRoot) {
+      // Détection de l'état de connexion : on attend que Memberstack ait fini son check
+      // de session pour décider du routage. Le flag window.pwaMemberstackChecked est posé
+      // par le bootstrap Memberstack (en haut du fichier) à la fin du getCurrentMember(),
+      // qu'un membre soit trouvé ou non.
       window.addEventListener('load', function() {
-        setTimeout(function() {
+        var maxWaitMs = 5000;
+        var stepMs    = 150;
+        var elapsed   = 0;
+
+        function decideAndRoute() {
+          // Détection robuste : currentMember (variable globale) ET classe body 'is-logged'.
+          // Les deux sont posées par updateNavMember() quand un membre est détecté.
+          var loggedIn =
+            (typeof window.currentMember !== 'undefined' && window.currentMember !== null)
+            || document.body.classList.contains('is-logged');
+
+          var target = loggedIn ? 'espace' : 'decouverte';
+
           if (typeof window.goTo === 'function') {
-            try { window.goTo('espace'); } catch(e) { location.hash = '#espace'; }
+            try { window.goTo(target); }
+            catch(e) { location.hash = '#' + target; }
           } else {
-            location.hash = '#espace';
+            location.hash = '#' + target;
           }
-        }, 300);
+        }
+
+        function pollMemberstack() {
+          // On attend que Memberstack ait terminé son check de session.
+          // Si timeout : on route quand même (en supposant non connecté).
+          if (window.pwaMemberstackChecked === true || elapsed >= maxWaitMs) {
+            decideAndRoute();
+            return;
+          }
+          elapsed += stepMs;
+          setTimeout(pollMemberstack, stepMs);
+        }
+
+        // Petit délai initial pour laisser le SPA s'initialiser
+        setTimeout(pollMemberstack, 300);
       });
     }
     return; // pas de bandeau si déjà installé
@@ -20820,37 +20854,29 @@ function submitBetaFeedback() {
   window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
     deferredInstallPrompt = e;
-    // L'événement n'est dispo que sur Chrome/Edge/Android — on stocke pour usage différé
   });
 
   // --- 5. Affichage du bandeau ---
   // Demande : à CHAQUE session sur mobile, sauf si déjà installé.
-  // Une session = une visite jusqu'à fermeture de l'onglet → on utilise sessionStorage
-  // (et non localStorage) pour que le bandeau réapparaisse à la session suivante.
   function showBannerIfEligible() {
-    if (!isMobile()) return;                              // pas affiché sur desktop
-    if (isStandalone()) return;                           // déjà installée
-    if (sessionStorage.getItem('pwa_banner_dismissed_session') === '1') return; // fermé pour CETTE session
+    if (!isMobile()) return;
+    if (isStandalone()) return;
+    if (sessionStorage.getItem('pwa_banner_dismissed_session') === '1') return;
     var banner = document.getElementById('pwa-install-banner');
     if (!banner) return;
     if (isIOS()) banner.classList.add('ios');
-    // Petit délai pour ne pas être agressif au chargement
-    setTimeout(function() {
-      banner.style.display = 'block';
-    }, 1500);
+    setTimeout(function() { banner.style.display = 'block'; }, 1500);
   }
 
-  // Le bandeau s'affiche après chargement complet
   if (document.readyState === 'complete') {
     showBannerIfEligible();
   } else {
     window.addEventListener('load', showBannerIfEligible);
   }
 
-  // --- 6. Handlers exposés globalement (pour les onclick du bandeau) ---
+  // --- 6. Handlers des boutons du bandeau (exposés globalement) ---
   window.pwaHandleInstall = function() {
     if (deferredInstallPrompt) {
-      // Android / Chrome : prompt natif
       deferredInstallPrompt.prompt();
       deferredInstallPrompt.userChoice.then(function() {
         deferredInstallPrompt = null;
@@ -20858,11 +20884,9 @@ function submitBetaFeedback() {
         if (banner) banner.style.display = 'none';
       });
     } else if (isIOS()) {
-      // iOS : pas d'API d'installation, on affiche les instructions
       var instr = document.getElementById('pwa-ios-instructions');
       if (instr) instr.style.display = 'block';
     } else {
-      // Fallback : on cache simplement le bandeau
       pwaDismissBanner();
     }
   };
@@ -20870,12 +20894,9 @@ function submitBetaFeedback() {
   window.pwaDismissBanner = function() {
     var banner = document.getElementById('pwa-install-banner');
     if (banner) banner.style.display = 'none';
-    // Mémorise le rejet UNIQUEMENT pour la session courante
-    // (le bandeau reviendra à la prochaine ouverture du site)
     sessionStorage.setItem('pwa_banner_dismissed_session', '1');
   };
 
-  // --- 7. Si l'app vient d'être installée pendant la session, masque le bandeau ---
   window.addEventListener('appinstalled', function() {
     var banner = document.getElementById('pwa-install-banner');
     if (banner) banner.style.display = 'none';
