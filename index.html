@@ -4769,7 +4769,7 @@ if(window.location.search.indexOf('success') !== -1) {
         </div>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
           <button class="btn btn-outline-red" onclick="goTo('connexion')">J'ai déjà un compte</button>
-          <button class="btn btn-red" onclick="msPay('prc_performance-mensuel-fw4103ti')">Accès complet — 49€/mois →</button>
+          <button class="btn btn-red" onclick="msPay('prc_-pr-paration-annuel-mr4003iu')">Accès complet — à partir de 15,80€/mois →</button>
         </div>
       </div>
     </div>
@@ -6242,9 +6242,9 @@ if(window.location.search.indexOf('success') !== -1) {
     <button class="lock-modal-close" id="lock-modal-close-btn" aria-label="Fermer">✕</button>
     <div class="lock-modal-icon">🔒</div>
     <div class="lock-modal-title">Contenu réservé aux membres</div>
-    <div class="lock-modal-text">Accède à l'intégralité du contenu — QCM illimités, annales, bibliothèque, actualités et programmes physiques — avec l'abonnement Performance.</div>
+    <div class="lock-modal-text">Accède à l'intégralité du contenu écrit — QCM illimités, annales et bibliothèque documentaire — avec l'abonnement Préparation.</div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <button class="btn btn-red" style="width:100%;justify-content:center" id="lock-modal-pay-btn">Accéder maintenant — 49€/mois</button>
+      <button class="btn btn-red" style="width:100%;justify-content:center" id="lock-modal-pay-btn">Accéder maintenant — à partir de 15,80€/mois</button>
       <button class="btn btn-outline" style="width:100%;justify-content:center" id="lock-modal-login-btn">J'ai déjà un compte →</button>
     </div>
   </div>
@@ -6874,7 +6874,7 @@ var PAID_PLAN_IDS = (function() {
 // ============================================================
 // Point d'entrée unique : si tu veux un jour changer le produit vers lequel
 // tu pousses par défaut (ex : bascule de 2b vers 2a), modifie uniquement ici.
-var DEFAULT_CHECKOUT_ID = 'prc_performance-mensuel-fw4103ti'; // Palier 2B Mensuel (49€)
+var DEFAULT_CHECKOUT_ID = 'prc_-pr-paration-annuel-mr4003iu'; // Préparation Annuel — 190€/an = 15,80€/mois équivalent
 
 // ============================================================
 // FONCTIONS D'ACCÈS
@@ -11967,7 +11967,7 @@ function showSessionResults() {
         '</div>',
         '<div class="qcm-results-actions">',
           '<button class="btn btn-outline-red" onclick="stopSession()">← Retour</button>',
-          '<button class="btn btn-red" onclick="msPay(\'prc_performance-mensuel-fw4103ti\')">Accès complet — 49€/mois →</button>',
+          '<button class="btn btn-red" onclick="msPay(\'prc_-pr-paration-annuel-mr4003iu\')">Accès complet — à partir de 15,80€/mois →</button>',
         '</div>',
         ctaLogin,
       '</div>'
@@ -12178,7 +12178,7 @@ function showDemoLimitReached() {
       '</div>',
       '<div class="qcm-results-actions">',
         '<button class="btn btn-outline-red" onclick="stopSession()">← Retour</button>',
-        '<button class="btn btn-red" onclick="msPay(\'prc_performance-mensuel-fw4103ti\')">Accès complet — 49€/mois →</button>',
+        '<button class="btn btn-red" onclick="msPay(\'prc_-pr-paration-annuel-mr4003iu\')">Accès complet — à partir de 15,80€/mois →</button>',
       '</div>',
     '</div>'
   ].join('');
@@ -17123,7 +17123,7 @@ function renderAnnalesThemes() {
       html += '<div style="grid-column:1/-1;background:white;border:1px solid var(--border);padding:32px;margin-top:16px;text-align:center">' +
         '<div style="font-family:\'Playfair Display\',serif;font-size:1.3rem;color:var(--charcoal);margin-bottom:10px">Accède à toutes les annales complètes</div>' +
         '<div style="font-size:.9rem;color:var(--gray);line-height:1.65;max-width:540px;margin:0 auto 20px">Une fois les 3 démos testées (Équipier · Maths · Étude de texte), débloque les <strong>23 annales officielles</strong> (CDG13, CDG35, CDG57, CDG69 de 2021 à 2025), la bibliothèque documentaire, les QCM thématiques et ton espace de suivi personnel.</div>' +
-        '<button class="btn btn-red" onclick="msPay(\'prc_performance-mensuel-fw4103ti\')">Débloquer l\'accès — 49€/mois →</button>' +
+        '<button class="btn btn-red" onclick="msPay(\'prc_-pr-paration-annuel-mr4003iu\')">Débloquer l\'accès — à partir de 15,80€/mois →</button>' +
         (currentMember ? '' : ' <button class="btn btn-outline-red" onclick="goTo(\'connexion\')" style="margin-left:6px">J\'ai déjà un compte</button>') +
       '</div>';
     }
