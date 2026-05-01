@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function(){
 :root{
   --cream:#F5F0E8;--cream2:#EDE8DC;--cream3:#E4DDD0;--cream4:#D5CCBB;
   --red:#B83232;--red-light:#C84040;--red-dark:#8B2020;--red-pale:#F5EAEA;--red-pale2:#EDD8D8;
-  --charcoal:#1C1C1C;--dark:#2A2320;--gray:#6B6560;--gray-light:#9B9590;
+  --charcoal:#1C1C1C;--dark:#2A2320;--gray:#6B6560;--gray-light:#7A746E;
   --border:#D8D0C2;--border-light:#E8E2D8;--white:#FFFFFF;
   --gold:#8B6914;--gold-light:#B8920C;
 }
@@ -5102,6 +5102,7 @@ if(window.location.search.indexOf('success') !== -1) {
             </div>
             <div class="esp-infos-value">
               <span id="esp-infos-tier">—</span>
+              <button class="btn btn-outline" id="esp-manage-sub-btn" style="font-size:.78rem;padding:6px 14px;display:none" onclick="openManageSubscription()">Gérer mon abonnement</button>
             </div>
           </div>
 
@@ -6534,9 +6535,16 @@ if(window.location.search.indexOf('success') !== -1) {
     </div>
 
     <div style="background:white;border:1px solid var(--border);padding:28px 32px;margin-bottom:20px">
-      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--charcoal);margin-bottom:12px">Cookies</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--charcoal);margin-bottom:12px">Cookies et traceurs</div>
       <div style="font-size:.9rem;color:var(--charcoal);line-height:1.7">
-        Le site utilise uniquement des <strong>cookies techniques</strong> strictement nécessaires à son bon fonctionnement (authentification, maintien de la session, préférences d'affichage). Ces cookies ne nécessitent pas de consentement préalable. Aucun cookie publicitaire, traceur tiers ou outil de suivi comportemental n'est utilisé.
+        Le site utilise deux catégories de cookies :
+        <ul style="margin:10px 0 0 18px;line-height:1.8">
+          <li><strong>Cookies techniques (sans consentement)</strong> : strictement nécessaires au fonctionnement du site (authentification Memberstack, maintien de la session, préférences d'affichage, suivi local de la progression via <code style="background:var(--cream2);padding:1px 5px;font-size:.85em">localStorage</code> et <code style="background:var(--cream2);padding:1px 5px;font-size:.85em">sessionStorage</code> pour les statistiques, le tutoriel d'onboarding, la mémorisation du choix cookies). Ces cookies ne nécessitent pas de consentement préalable conformément à l'article 82 de la loi Informatique et Libertés.</li>
+          <li><strong>Cookies de mesure d'audience (avec consentement)</strong> : le site utilise <strong>Google Analytics 4</strong> (identifiant <code style="background:var(--cream2);padding:1px 5px;font-size:.85em">G-C5YC1E4YXJ</code>) pour mesurer la fréquentation et améliorer l'expérience utilisateur. Ce traceur est configuré en mode <em>Consent Mode v2</em> avec anonymisation IP, désactivation des signaux publicitaires Google et désactivation de la personnalisation. <strong>Aucun cookie GA4 n'est déposé tant que le Client n'a pas donné son consentement explicite</strong> via le bandeau cookies affiché à la première visite. Durée de conservation des cookies GA4 : 2 ans maximum à compter du dernier passage.</li>
+        </ul>
+        <br>
+        <strong>Aucun cookie publicitaire, aucun cookie de réseau social et aucun cookie de personnalisation comportementale n'est utilisé.</strong> Aucune donnée n'est partagée avec des tiers à des fins publicitaires.<br><br>
+        Le Client peut à tout moment <strong>modifier ou retirer son consentement</strong> via le bouton « Gestion des cookies » présent dans le pied de page du site, ou en supprimant les cookies du site dans les paramètres de son navigateur. Le Client peut également s'opposer au traceur Google Analytics en installant le module complémentaire de désactivation : <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener" style="color:var(--red);text-decoration:underline">tools.google.com/dlpage/gaoptout</a>.
       </div>
     </div>
 
@@ -7474,13 +7482,13 @@ function renderSessionCompact(s) {
   var shortTitle = s.title.split(' — ')[0];
   if (shortTitle.length > 22) shortTitle = shortTitle.substr(0, 22) + '…';
 
-  return '<div class="prog-session" draggable="true" data-id="' + s.id + '" ondragstart="onProgDragStart(event,\'' + s.id + '\')" ondragend="onProgDragEnd(event)" style="background:var(--cream2);border-left:2px solid ' + catColor + ';padding:6px 8px;margin-bottom:4px;cursor:grab;font-size:.7rem">' +
-    '<div style="font-size:.6rem;font-weight:700;color:' + catColor + ';letter-spacing:.5px;margin-bottom:2px">' + catLabel + ' · ' + formatDuration(s.duration) + '</div>' +
-    '<div style="font-size:.7rem;color:var(--charcoal);font-weight:500;line-height:1.2;margin-bottom:4px">' + s.icon + ' ' + shortTitle + '</div>' +
-    '<div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">' +
-      '<button onclick="editProgTime(\'' + s.id + '\')" style="background:white;border:1px solid var(--border);padding:1px 4px;font-size:.58rem;color:var(--charcoal);cursor:pointer;font-family:\'DM Sans\',sans-serif">🕐' + timeStr + '</button>' +
-      '<button onclick="goToSessionPage(\'' + s.type + '\',\'' + s.cat + '\',\'' + s.id + '\')" style="background:' + catColor + ';color:white;border:none;padding:1px 6px;font-size:.58rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-weight:600">Y aller →</button>' +
-      '<a href="' + gcalUrl + '" target="_blank" rel="noopener" style="font-size:.58rem;color:var(--red);text-decoration:underline;font-weight:500">+ GCal</a>' +
+  return '<div class="prog-session" draggable="true" data-id="' + s.id + '" ondragstart="onProgDragStart(event,\'' + s.id + '\')" ondragend="onProgDragEnd(event)" style="background:var(--cream2);border-left:2px solid ' + catColor + ';padding:7px 9px;margin-bottom:4px;cursor:grab;font-size:.72rem">' +
+    '<div style="font-size:.65rem;font-weight:700;color:' + catColor + ';letter-spacing:.5px;margin-bottom:3px">' + catLabel + ' · ' + formatDuration(s.duration) + '</div>' +
+    '<div style="font-size:.72rem;color:var(--charcoal);font-weight:500;line-height:1.25;margin-bottom:6px">' + s.icon + ' ' + shortTitle + '</div>' +
+    '<div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">' +
+      '<button onclick="editProgTime(\'' + s.id + '\')" style="background:white;border:1px solid var(--border);padding:3px 7px;font-size:.7rem;color:var(--charcoal);cursor:pointer;font-family:\'DM Sans\',sans-serif">🕐' + timeStr + '</button>' +
+      '<button onclick="goToSessionPage(\'' + s.type + '\',\'' + s.cat + '\',\'' + s.id + '\')" style="background:' + catColor + ';color:white;border:none;padding:3px 9px;font-size:.7rem;cursor:pointer;font-family:\'DM Sans\',sans-serif;font-weight:600">Y aller →</button>' +
+      '<a href="' + gcalUrl + '" target="_blank" rel="noopener" style="font-size:.68rem;color:var(--red);text-decoration:underline;font-weight:500;padding:3px 2px">+ GCal</a>' +
     '</div>' +
   '</div>';
 }
@@ -8048,9 +8056,9 @@ function renderDemoProgWeekDesktop() {
   else                                  catLabel = '🎯 QCM';
         var shortTitle = s.title.split(' — ')[0];
         if (shortTitle.length > 22) shortTitle = shortTitle.substr(0, 22) + '…';
-        html += '<div style="background:var(--cream2);border-left:2px solid ' + catColor + ';padding:6px 8px;margin-bottom:4px;font-size:.7rem">' +
-          '<div style="font-size:.6rem;font-weight:700;color:' + catColor + ';letter-spacing:.5px;margin-bottom:2px">' + catLabel + ' · ' + formatDuration(s.duration) + '</div>' +
-          '<div style="font-size:.7rem;color:var(--charcoal);font-weight:500;line-height:1.2">' + s.icon + ' ' + shortTitle + '</div>' +
+        html += '<div style="background:var(--cream2);border-left:2px solid ' + catColor + ';padding:7px 9px;margin-bottom:4px;font-size:.72rem">' +
+          '<div style="font-size:.65rem;font-weight:700;color:' + catColor + ';letter-spacing:.5px;margin-bottom:3px">' + catLabel + ' · ' + formatDuration(s.duration) + '</div>' +
+          '<div style="font-size:.72rem;color:var(--charcoal);font-weight:500;line-height:1.25">' + s.icon + ' ' + shortTitle + '</div>' +
         '</div>';
       });
     }
@@ -9648,23 +9656,32 @@ function evaluateStatutBadges() {
 }
 
 // ============================================================
-// STREAK QUOTIDIEN — tracking localStorage + badges
+// STREAK QUOTIDIEN — Source de vérité unique : Supabase profiles
 // ============================================================
-// On stocke dans localStorage les dates de session (YYYY-MM-DD).
-// À chaque login ou session_end, on met à jour le streak courant.
+// Source de vérité unique : la table profiles côté Supabase
+// (current_streak, longest_streak, last_activity_date).
+// Le localStorage sert uniquement de cache pour l'affichage instantané
+// pendant que la requête Supabase se fait. La RPC update_streak() côté
+// Supabase fait l'arithmétique (incrément si lastDate=hier, reset si gap, etc.)
+// et renvoie l'état à jour.
 
+// Clé de cache local. Lié au memberstack_id pour ne pas mélanger les comptes
+// sur un même device partagé.
 function streakStorageKey() {
   var id = currentMember && (currentMember.id || (currentMember.auth && currentMember.auth.id));
   return 'streakData_' + (id || 'anon');
 }
 
+// Charge le cache local (utilisé pour l'affichage instantané).
+// Structure : { current, longest, lastDate, had_break, syncedAt }
 function loadStreakData() {
   try {
     var raw = localStorage.getItem(streakStorageKey());
-    return raw ? JSON.parse(raw) : { lastDate: null, current: 0, longest: 0, had_break: false };
-  } catch(e) { return { lastDate: null, current: 0, longest: 0, had_break: false }; }
+    return raw ? JSON.parse(raw) : { lastDate: null, current: 0, longest: 0, had_break: false, syncedAt: 0 };
+  } catch(e) { return { lastDate: null, current: 0, longest: 0, had_break: false, syncedAt: 0 }; }
 }
 
+// Sauvegarde le cache local (toujours en miroir de Supabase).
 function saveStreakData(data) {
   try { localStorage.setItem(streakStorageKey(), JSON.stringify(data)); } catch(e){}
 }
@@ -9681,65 +9698,133 @@ function daysBetween(a, b) {
   return Math.round((db - da) / 86400000);
 }
 
-// Appelée à chaque activité (session_end ou login)
-function updateStreak() {
-  var data = loadStreakData();
-  var today = todayISO();
-  if (data.lastDate === today) return data; // déjà compté aujourd'hui
-  if (!data.lastDate) {
-    data.current = 1;
-  } else {
-    var diff = daysBetween(data.lastDate, today);
-    if (diff === 1) {
-      data.current += 1;
-    } else if (diff > 1) {
-      // Interruption
-      if (diff > 7) data.had_break = true; // pour badge Inébranlable
-      data.current = 1;
-    }
-  }
-  data.lastDate = today;
-  if (data.current > data.longest) data.longest = data.current;
-  saveStreakData(data);
-
-  // Attribution des badges streak
-  if (data.current >= 3   && !earnedBadgeIds.has('reg_3_jours'))        awardBadge('reg_3_jours',        { streak: data.current });
-  if (data.current >= 7   && !earnedBadgeIds.has('reg_semaine_pleine')) awardBadge('reg_semaine_pleine', { streak: data.current });
-  if (data.current >= 30  && !earnedBadgeIds.has('reg_mois_complet'))   awardBadge('reg_mois_complet',   { streak: data.current });
-  if (data.current >= 100 && !earnedBadgeIds.has('reg_100_jours'))      awardBadge('reg_100_jours',      { streak: data.current });
+// Évalue les badges streak en fonction du current courant.
+// Extraite pour pouvoir être appelée à plusieurs endroits sans dupliquer.
+function evaluateStreakBadges(current, hadBreak) {
+  if (!earnedBadgeIds) return;
+  if (current >= 3   && !earnedBadgeIds.has('reg_3_jours'))        awardBadge('reg_3_jours',        { streak: current });
+  if (current >= 7   && !earnedBadgeIds.has('reg_semaine_pleine')) awardBadge('reg_semaine_pleine', { streak: current });
+  if (current >= 30  && !earnedBadgeIds.has('reg_mois_complet'))   awardBadge('reg_mois_complet',   { streak: current });
+  if (current >= 100 && !earnedBadgeIds.has('reg_100_jours'))      awardBadge('reg_100_jours',      { streak: current });
   // Inébranlable : avait pris break >7j, et repart sur 7j consécutifs
-  if (data.had_break && data.current >= 7 && !earnedBadgeIds.has('reg_inebranlable')) {
-    awardBadge('reg_inebranlable', { streak: data.current });
+  if (hadBreak && current >= 7 && !earnedBadgeIds.has('reg_inebranlable')) {
+    awardBadge('reg_inebranlable', { streak: current });
+  }
+}
+
+// Appelée à chaque activité (session_end, login, prépa physique cochée).
+// Source de vérité : Supabase profiles (via RPC update_streak).
+// Le cache local est mis à jour à partir de la réponse RPC.
+function updateStreak() {
+  var local = loadStreakData();
+  var today = todayISO();
+
+  // Optimistic update local (pour que l'UI réagisse immédiatement).
+  // Sera écrasé par la valeur Supabase dès que la RPC répond.
+  if (local.lastDate !== today) {
+    if (!local.lastDate) {
+      local.current = 1;
+    } else {
+      var diff = daysBetween(local.lastDate, today);
+      if (diff === 1) local.current += 1;
+      else if (diff > 1) {
+        if (diff > 7) local.had_break = true;
+        local.current = 1;
+      }
+    }
+    local.lastDate = today;
+    if (local.current > local.longest) local.longest = local.current;
+    saveStreakData(local);
+    evaluateStreakBadges(local.current, local.had_break);
   }
 
-  // Sync côté Supabase pour que la streak soit lisible sur le profil public
-  // (non bloquant, en arrière-plan, ne doit jamais planter le flow local)
+  // Sync Supabase (autoritaire) — la RPC fait les calculs côté serveur
+  // et renvoie l'état canonique. On écrase le cache local à la réception.
   syncStreakToSupabase();
 
-  return data;
+  return local;
 }
 
 // Appelle la RPC update_streak(p_memberstack_id) de Supabase pour persister
-// current_streak et longest_streak dans la table profiles. La RPC met à jour
-// uniquement la ligne du membre passé en paramètre.
+// current_streak, longest_streak, last_activity_date. Récupère ensuite la
+// valeur canonique pour rafraîchir le cache local et l'UI.
 function syncStreakToSupabase() {
   if (!window.supabaseClient) return;
-  // On a besoin du memberstack_id pour identifier le membre côté DB
-  // (le site n'établit pas de session Supabase, le rôle utilisé est 'anon')
   var mid = (typeof espMemberId === 'function') ? espMemberId() : null;
-  if (!mid) return; // pas connecté → pas de streak à synchroniser
+  if (!mid) return;
   try {
     window.supabaseClient.rpc('update_streak', { p_memberstack_id: mid }).then(
       function(res) {
         if (res && res.error) {
           console.warn('[streak] update_streak RPC error:', res.error.message);
+          return;
         }
+        // Re-fetch la ligne profile pour récupérer les valeurs canoniques
+        // (la RPC pourrait elle-même retourner les valeurs, mais on reste
+        // robuste en re-lisant la table)
+        fetchStreakFromSupabase();
       },
       function(err) { console.warn('[streak] update_streak RPC failed:', err); }
     );
   } catch(e) {
     console.warn('[streak] syncStreakToSupabase threw:', e);
   }
+}
+
+// Lit la streak canonique depuis Supabase et met à jour le cache local + l'UI.
+// Appelée au login et après chaque updateStreak().
+function fetchStreakFromSupabase(cb) {
+  cb = cb || function(){};
+  if (!window.supabaseClient) { cb(null); return; }
+  var mid = (typeof espMemberId === 'function') ? espMemberId() : null;
+  if (!mid) { cb(null); return; }
+
+  window.supabaseClient
+    .from('profiles')
+    .select('current_streak, longest_streak, last_activity_date')
+    .eq('memberstack_id', mid)
+    .maybeSingle()
+    .then(function(res) {
+      if (res.error || !res.data) {
+        cb(null);
+        return;
+      }
+      // Vérifie que la streak est encore "vivante" (last_activity = aujourd'hui ou hier)
+      var today = todayISO();
+      var yesterday = (function(){
+        var d = new Date(); d.setDate(d.getDate()-1);
+        return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      })();
+      var lastActive = res.data.last_activity_date;
+      var streakValid = (lastActive === today || lastActive === yesterday);
+
+      // Met à jour le cache local avec les valeurs canoniques
+      var canonical = {
+        current: streakValid ? (res.data.current_streak || 0) : 0,
+        longest: res.data.longest_streak || 0,
+        lastDate: lastActive,
+        had_break: false, // n'a plus de sens en mode serveur ; le serveur tranche
+        syncedAt: Date.now()
+      };
+      saveStreakData(canonical);
+
+      // Ré-évaluer les badges au cas où on aurait raté des paliers
+      evaluateStreakBadges(canonical.current, false);
+
+      // Rafraîchir l'affichage dans Mon espace si la page est active
+      var streakNumEl = document.getElementById('esp-streak-num');
+      if (streakNumEl) streakNumEl.textContent = canonical.current;
+      var streakSEl = document.getElementById('esp-streak-s');
+      if (streakSEl) streakSEl.textContent = canonical.current > 1 ? 's' : '';
+      var streakS2El = document.getElementById('esp-streak-s2');
+      if (streakS2El) streakS2El.textContent = canonical.current > 1 ? 's' : '';
+
+      cb(canonical);
+    })
+    .catch(function(err){
+      console.warn('[streak] fetchStreakFromSupabase exception:', err);
+      cb(null);
+    });
 }
 
 // ============================================================
@@ -9925,7 +10010,15 @@ function evaluateBadges(trigger, ctx) {
     }
     if (trigger === 'login' || trigger === 'tier_change') {
       evaluateStatutBadges();
-      updateStreak();
+      // Au login, on commence par récupérer la streak canonique depuis Supabase
+      // (utile si le candidat se connecte depuis un nouveau device : son cache
+      // local serait à 0 mais sa vraie streak est à 12). Puis updateStreak()
+      // applique l'incrément du jour si pertinent.
+      if (typeof fetchStreakFromSupabase === 'function') {
+        fetchStreakFromSupabase(function(){ updateStreak(); });
+      } else {
+        updateStreak();
+      }
       updateSeniorityBadges();
       evaluateInsolitesAdvanced(ctx); // check jour férié / anniv même sans session
     }
@@ -10677,6 +10770,43 @@ function renderInfosTab() {
     };
     tierEl.textContent = tierLabels[memberTier] || '🚪 Découverte (gratuit)';
   }
+
+  // Bouton "Gérer mon abonnement" : visible uniquement pour les membres qui ont un
+  // abonnement actif (donc pas les comptes Découverte gratuits, qui n'ont rien à gérer).
+  // Le clic ouvre le portail Memberstack qui permet de modifier le moyen de paiement,
+  // changer de formule ou résilier — conformément à l'art. 4 des CGV.
+  var manageBtn = document.getElementById('esp-manage-sub-btn');
+  if (manageBtn) {
+    manageBtn.style.display = (memberTier && isPaidMember) ? '' : 'none';
+  }
+}
+
+// Ouvre le portail Memberstack de gestion d'abonnement (modification CB,
+// changement de formule, résiliation). Memberstack v2 redirige vers le
+// Customer Portal Stripe pour les actions Stripe-side.
+// Fallback : si la modale n'est pas dispo, on renvoie vers un mailto support.
+function openManageSubscription() {
+  var ms = getMemberstack();
+  if (!ms) {
+    showToast('Chargement en cours, réessaie dans 2 secondes.');
+    return;
+  }
+  // Memberstack v2 expose openModal('PROFILE') qui inclut l'onglet "Abonnement"
+  // avec les boutons "Annuler", "Modifier mon paiement", etc.
+  if (typeof ms.openModal === 'function') {
+    try {
+      ms.openModal('PROFILE').catch(function(e){
+        console.warn('[manage-sub] openModal PROFILE failed', e);
+        // Fallback : email support
+        window.location.href = 'mailto:lechemindupompierprofessionnel@gmail.com?subject=Gestion%20de%20mon%20abonnement';
+      });
+      return;
+    } catch(e) {
+      console.warn('[manage-sub] openModal threw', e);
+    }
+  }
+  // Dernier fallback
+  window.location.href = 'mailto:lechemindupompierprofessionnel@gmail.com?subject=Gestion%20de%20mon%20abonnement';
 }
 
 // Enregistre la date de naissance depuis l'onglet Mes infos
@@ -12303,7 +12433,11 @@ var tourCurrentStep = 0;
 var tourActive = false;
 var tourResizeHandler = null;
 
-// Définition des 22 étapes du tour.
+// Définition des 10 étapes du tour onboarding.
+// Réduit de 22 à 10 étapes pour limiter la fatigue cognitive : un nouveau
+// candidat décroche autour de la 8e-10e étape. Les détails de chaque page
+// sont accessibles via les mini-tours contextuels (CONTEXT_TOURS) lancés
+// par le bouton "?" présent sur chaque page concernée.
 // Le tour mélange :
 //  - des étapes contextuelles (sur la fonctionnalité elle-même)
 //  - des étapes "NAV" qui mettent en lumière l'onglet du menu correspondant
@@ -12313,188 +12447,94 @@ var tourResizeHandler = null;
 //    (timer du concours, formulaire de profil prépa, sources/fiches biblio,
 //    actualisation hebdo de la page actu, etc.)
 var tourSteps = [
-  // ÉTAPE 1 — Welcome
+  // ÉTAPE 1 — Welcome (centré, pose le contexte)
   {
     centered: true,
-    stepLabel: 'Étape 1 / 22',
+    stepLabel: 'Étape 1 / 10',
     title: 'Bienvenue parmi nous 👋',
-    text: "Tu viens de rejoindre Le Chemin du SPP. Je vais te faire visiter en quelques minutes pour que tu saches où trouver ce dont tu as besoin et comment naviguer. Ce tour ne se relance pas automatiquement — autant le faire maintenant."
+    text: "Tu viens de rejoindre Le Chemin du SPP. Je vais te faire un tour rapide en 10 étapes — environ 2 minutes — pour que tu saches naviguer. Tu pourras ensuite explorer chaque page en détail à ton rythme via le bouton « ? » qui apparaît en bas à droite sur chaque section."
   },
 
-  // ÉTAPES 2-4 — Mon espace
+  // ÉTAPE 2 — Mon espace = ta base de départ
   {
     page: 'espace',
     targetSelector: '#esp-tab-btn-planning',
-    stepLabel: 'Étape 2 / 22',
+    stepLabel: 'Étape 2 / 10',
     title: 'Mon planning, ta page d\'accueil',
-    text: "C'est par ici que tu commences chaque session. Tu y vois ta semaine de travail, ce qui t'attend aujourd'hui et ce qui t'attend demain. Pas besoin de réfléchir, tu suis.",
+    text: "Quand tu te connectes, tu arrives ici. Tu vois ce que tu dois faire aujourd'hui et demain. Pas besoin de réfléchir : tu suis le programme.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
   },
+
+  // ÉTAPE 3 — Stats pour suivre la progression
   {
     page: 'espace',
     targetSelector: '#esp-tab-btn-stats',
-    stepLabel: 'Étape 3 / 22',
+    stepLabel: 'Étape 3 / 10',
     title: 'Tes statistiques',
-    text: "Tout ton historique de travail est ici : tes sessions de QCM, ton score par catégorie, ton évolution dans le temps, tes badges. C'est ton miroir de progression.",
+    text: "Ton miroir de progression : score par catégorie, évolution dans le temps, radar des compétences, badges. Tu vois où tu en es à chaque instant.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('stats'); }
   },
-  {
-    page: 'espace',
-    targetSelector: '.esp-coach-block',
-    stepLabel: 'Étape 4 / 22',
-    title: 'Le coaching individuel',
-    text: "Si tu as besoin d'un avis extérieur sur ton plan, ou d'une simulation d'oral, tu peux réserver une heure en visio avec moi. Pas obligatoire, mais accessible quand tu en as besoin.",
-    onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
-  },
 
-  // ÉTAPE 5 — NAV vers Préparation écrite
+  // ÉTAPE 4 — Préparation écrite (regroupe QCM + Mode concours)
   {
     page: 'espace',
     targetSelector: '#navg-prepa-ecrite',
-    stepLabel: 'Étape 5 / 22',
-    title: 'Naviguer vers la préparation écrite',
-    text: "Pour accéder à tes outils de préparation théorique, passe ta souris sur cet onglet du menu. Un sous-menu s'ouvre avec les QCM et le Mode concours. C'est le réflexe à prendre.",
+    stepLabel: 'Étape 4 / 10',
+    title: 'Préparation écrite',
+    text: "Sous cet onglet, tu retrouves les QCM thématiques (1000+ questions sourcées) et le Mode concours (annales chronométrées en conditions réelles).",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
   },
 
-  // ÉTAPES 6-7 — QCM
-  {
-    page: 'qcm',
-    targetSelector: '.qcm-setup-header',
-    stepLabel: 'Étape 6 / 22',
-    title: 'Les QCM thématiques',
-    text: "Tu choisis combien de questions tu veux traiter, puis tu sélectionnes tes thèmes. Lance et chaque réponse est sourcée pour que tu saches d'où elle vient."
-  },
+  // ÉTAPE 5 — Révision Intelligente : la vraie valeur ajoutée
   {
     page: 'qcm',
     targetSelector: '#tab-review',
-    stepLabel: 'Étape 7 / 22',
+    stepLabel: 'Étape 5 / 10',
     title: 'La Révision Intelligente',
-    text: "Ce mode utilise ton historique pour cibler en priorité les questions sur lesquelles tu te trompes. Plus tu pratiques, plus l'algorithme te connaît et te propose pile ce dont tu as besoin."
+    text: "C'est le mode qui te fera vraiment progresser. L'algorithme analyse ton historique et te ressort en priorité les questions sur lesquelles tu te trompes. Plus tu pratiques, plus il te connaît."
   },
 
-  // ÉTAPE 8 — NAV vers Mode concours (sous le même onglet)
+  // ÉTAPE 6 — Préparation physique
   {
     page: 'qcm',
-    targetSelector: '#navg-prepa-ecrite',
-    stepLabel: 'Étape 8 / 22',
-    title: 'Le Mode concours est juste à côté',
-    text: "Le Mode concours se trouve dans le même onglet \"Préparation écrite\". Survole-le pour voir les deux options : QCM et Mode concours."
-  },
-
-  // ÉTAPES 9a-9b — Mode concours (décomposé : grille des thèmes + explication conditions)
-  {
-    page: 'concours',
-    targetSelector: '#annales-themes-grid',
-    stepLabel: 'Étape 9 / 22',
-    title: 'Choisis ton épreuve d\'annales',
-    text: "Trois thèmes d'annales officielles. Tu cliques sur celui qui t'intéresse, tu choisis l'année, et tu te lances."
-  },
-  {
-    page: 'concours',
-    centered: true,
-    stepLabel: 'Étape 10 / 22',
-    title: '1 heure, sans tricher',
-    text: "Une fois lancée, l'annale démarre un chronomètre d'1 heure exactement. Tu n'as accès aux corrections qu'à la fin du temps imparti — comme le jour J. C'est ce qui rend cet entraînement utile : pas de raccourci, pas de bouton \"voir la réponse\", juste toi face à l'épreuve."
-  },
-
-  // ÉTAPE 11 — NAV vers Préparation physique
-  {
-    page: 'concours',
     targetSelector: '#navg-prepa-physique',
-    stepLabel: 'Étape 11 / 22',
-    title: 'Naviguer vers la préparation physique',
-    text: "Cet onglet est un raccourci direct, pas de sous-menu. Un clic suffit pour accéder à ta préparation sportive."
+    stepLabel: 'Étape 6 / 10',
+    title: 'Préparation physique',
+    text: "Tu renseignes tes valeurs (VMA, 1RM, poids), et le programme se construit tout seul : nombre de séances, allures exactes, charges précises en kilos. Pas de programme générique trouvé sur internet."
   },
 
-  // ÉTAPES 12-13 — Préparation physique (décomposé : profil + génération auto)
-  {
-    page: 'prepa',
-    targetSelector: '#prepa-missing-profile, #prepa-profile-btn',
-    stepLabel: 'Étape 12 / 22',
-    title: 'Tu commences par renseigner tes valeurs',
-    text: "Avant tout, tu saisis tes valeurs de référence : ta VMA en course à pied, tes 1RM en musculation, ton poids de corps. Ça prend 2 minutes et c'est ce qui rend ton programme adapté à toi."
-  },
-  {
-    page: 'prepa',
-    centered: true,
-    stepLabel: 'Étape 13 / 22',
-    title: 'Le programme se construit tout seul',
-    text: "À partir de ces valeurs, le système génère ta semaine d'entraînement : nombre de séances, allures de course exactes, charges précises en kilos pour chaque mouvement. Tu n'as plus à réfléchir à \"combien je dois faire\" — tu sais déjà."
-  },
-
-  // ÉTAPE 14 — NAV vers Ressources
+  // ÉTAPE 7 — Bibliothèque (textes officiels + fiches de synthèse)
   {
     page: 'prepa',
     targetSelector: '#navg-ressources-member',
-    stepLabel: 'Étape 14 / 22',
-    title: 'Naviguer vers les ressources',
-    text: "Survole cet onglet pour accéder à la Bibliothèque et aux Actualités. Ce sont les deux sources documentaires de la plateforme."
+    stepLabel: 'Étape 7 / 10',
+    title: 'Bibliothèque & Actualités',
+    text: "Sous Ressources : la bibliothèque (textes officiels + mes fiches de synthèse condensées) et les actualités hebdomadaires. C'est ce qui complète tes QCM."
   },
 
-  // ÉTAPES 15-17 — Bibliothèque (décomposé : recherche + catégories + sources/fiches)
+  // ÉTAPE 8 — Communauté
   {
-    page: 'biblio',
-    targetSelector: '.biblio-search',
-    stepLabel: 'Étape 15 / 22',
-    title: 'La barre de recherche',
-    text: "Tape un mot-clé — \"matras\", \"GDO\", \"statut\"… — pour filtrer instantanément. C'est le raccourci quand tu cherches un texte précis."
-  },
-  {
-    page: 'biblio',
-    targetSelector: '.biblio-acc-section',
-    stepLabel: 'Étape 16 / 22',
-    title: 'Les catégories de documents',
-    text: "Chaque catégorie est un accordéon que tu déplies. Tu y retrouves les Doctrines opérationnelles, la Culture administrative, le Statut SPP, et plus. Tout est rangé pour que tu trouves vite."
-  },
-  {
-    page: 'biblio',
-    centered: true,
-    stepLabel: 'Étape 17 / 22',
-    title: 'Sources officielles + fiches de synthèse',
-    text: "Pour chaque thème, tu as deux types de documents : les sources officielles (les textes bruts, parfois indigestes) et mes fiches de synthèse condensées qui en extraient l'essentiel. Tu choisis selon le temps que tu as."
-  },
-
-  // ÉTAPES 18-19 — Actualités (décomposé : décryptage de la semaine + actualisation hebdo)
-  {
-    page: 'actu',
-    targetSelector: '#actu-featured-slot',
-    stepLabel: 'Étape 18 / 22',
-    title: 'Le décryptage de la semaine',
-    text: "Chaque semaine, je publie un décryptage d'une actu majeure du métier. C'est l'article mis en avant ici, et c'est souvent ce qui peut tomber à l'oral du concours."
-  },
-  {
-    page: 'actu',
-    centered: true,
-    stepLabel: 'Étape 19 / 22',
-    title: 'Une mise à jour tous les dimanches',
-    text: "Cette page est rafraîchie chaque dimanche soir. Prends l'habitude d'y faire un tour le lundi : tu auras un résumé clair et hiérarchisé de la semaine pompière, sans avoir à surveiller dix sites."
-  },
-
-  // ÉTAPE 20 — NAV vers Communauté
-  {
-    page: 'actu',
+    page: 'prepa',
     targetSelector: '#navg-candidats-member',
-    stepLabel: 'Étape 20 / 22',
-    title: 'Naviguer vers la communauté',
-    text: "Dernier onglet du menu : la communauté des candidats. Un clic direct, pas de sous-menu."
-  },
-
-  // ÉTAPE 21 — Communauté
-  {
-    page: 'candidats',
-    targetSelector: '.comm-tabs',
-    stepLabel: 'Étape 21 / 22',
+    stepLabel: 'Étape 8 / 10',
     title: 'La communauté',
-    text: "Tu n'es pas seul. Le Feed te montre l'activité des autres candidats, tu peux te lier d'amitié, partager tes réussites. C'est une rampe d'émulation, pas une compétition."
+    text: "Tu n'es pas seul. Le Feed montre l'activité des autres candidats, tu peux partager tes réussites. C'est une rampe d'émulation, pas une compétition."
   },
 
-  // ÉTAPE 22 — Final
+  // ÉTAPE 9 — Bouton ? sur chaque page (mini-tours contextuels)
   {
     centered: true,
-    stepLabel: 'Étape 22 / 22',
+    stepLabel: 'Étape 9 / 10',
+    title: 'Le bouton « ? » sur chaque page',
+    text: "Sur les pages QCM, Mode concours, Préparation physique, Bibliothèque, Actualités et Mon espace, tu trouveras un bouton « ? » en bas à droite. Il lance un mini-tour spécifique de la page courante quand tu en as besoin — utile quand tu reviens après quelques semaines."
+  },
+
+  // ÉTAPE 10 — Final + appel à l'action
+  {
+    centered: true,
+    stepLabel: 'Étape 10 / 10',
     title: 'Tu es prêt 🚀',
-    text: "Tu connais maintenant l'essentiel. Le reste, tu le découvriras en pratiquant. La meilleure chose que tu puisses faire maintenant : aller dans Mon espace et lancer ta première session de QCM. Au passage : un clic sur le logo en haut à gauche te ramène toujours à Mon espace. Bonne préparation."
+    text: "Tu connais l'essentiel. Le reste se découvre en pratiquant. Le mieux que tu puisses faire maintenant : aller dans Mon espace, regarder ton planning du jour, et lancer ta première session. Bonne préparation."
   }
 ];
 
@@ -12683,7 +12723,7 @@ function tourExit() {
   tourMarkCompleted();
 }
 
-// Fin du tour atteinte au bout des 12 étapes
+// Fin du tour atteinte au bout des 10 étapes
 function tourFinish() {
   tourTeardown();
   tourMarkCompleted();
@@ -13110,6 +13150,132 @@ function espTodayKey() {
 // Chaque tracker écrit TOUJOURS en localStorage (instantané, pour l'UX)
 // et en parallèle essaie d'écrire dans Supabase.
 
+// ============================================================
+// QUEUE OFFLINE — retry des inserts Supabase qui ont échoué
+// ============================================================
+// Si la connexion Supabase est temporairement indisponible (4G coupée pendant
+// un QCM, captive portal en caserne, etc.), les inserts sont mis en attente
+// dans localStorage et flushés au prochain succès.
+// La queue est plafonnée à 500 entrées pour éviter de saturer le localStorage.
+// Format : [{ table: 'qcm_answers'|'qcm_sessions'|'doc_reads', payload: {...}, queuedAt: ts }]
+
+var SUPA_QUEUE_KEY = 'spp_supa_queue';
+var SUPA_QUEUE_MAX = 500;
+var _supaQueueFlushing = false;
+
+function supaQueueLoad() {
+  try {
+    var raw = localStorage.getItem(SUPA_QUEUE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function supaQueueSave(queue) {
+  try {
+    // Cap à SUPA_QUEUE_MAX entrées (on garde les plus récentes)
+    if (queue.length > SUPA_QUEUE_MAX) {
+      queue = queue.slice(-SUPA_QUEUE_MAX);
+    }
+    localStorage.setItem(SUPA_QUEUE_KEY, JSON.stringify(queue));
+  } catch(e) {
+    // localStorage plein ou désactivé : on accepte la perte côté serveur
+    // (les data restent en espLoadLocal pour le candidat)
+    console.warn('[supa-queue] save failed', e);
+  }
+}
+
+function supaQueuePush(table, payload) {
+  var queue = supaQueueLoad();
+  queue.push({ table: table, payload: payload, queuedAt: Date.now() });
+  supaQueueSave(queue);
+}
+
+// Insert dans Supabase avec fallback queue. À utiliser à la place des
+// `.from(table).insert(payload)` directs.
+function supaInsertWithQueue(table, payload) {
+  if (!window.supabaseClient) {
+    supaQueuePush(table, payload);
+    return;
+  }
+  window.supabaseClient.from(table).insert(payload).then(
+    function(res) {
+      if (res && res.error) {
+        console.warn('[supa-insert] ' + table + ' error:', res.error.message);
+        supaQueuePush(table, payload);
+      } else {
+        // Succès : opportunité de flusher la queue (on en profite)
+        supaQueueFlush();
+      }
+    },
+    function(err) {
+      console.warn('[supa-insert] ' + table + ' failed:', err);
+      supaQueuePush(table, payload);
+    }
+  );
+}
+
+// Tente de re-jouer toute la queue. Appelé après chaque insert réussi
+// et au login.
+function supaQueueFlush() {
+  if (_supaQueueFlushing) return;
+  if (!window.supabaseClient) return;
+  var queue = supaQueueLoad();
+  if (queue.length === 0) return;
+
+  _supaQueueFlushing = true;
+  console.log('[supa-queue] flushing', queue.length, 'entries');
+
+  // On traite en série pour ne pas saturer Supabase si la queue est grosse
+  var remaining = queue.slice();
+  var failures = [];
+
+  function next() {
+    if (remaining.length === 0) {
+      // Fin : on garde uniquement les échecs
+      supaQueueSave(failures);
+      _supaQueueFlushing = false;
+      if (failures.length > 0) {
+        console.warn('[supa-queue] flush done with', failures.length, 'remaining');
+      } else {
+        console.log('[supa-queue] flush complete');
+      }
+      return;
+    }
+    var entry = remaining.shift();
+    window.supabaseClient.from(entry.table).insert(entry.payload).then(
+      function(res) {
+        if (res && res.error) {
+          // Erreur fonctionnelle (ex: contrainte unique) → on abandonne cette entrée
+          // pour éviter une boucle infinie. On ne la remet pas dans failures.
+          console.warn('[supa-queue] dropping unrecoverable entry:', res.error.message);
+        }
+        next();
+      },
+      function(err) {
+        // Erreur réseau → on remet en file
+        console.warn('[supa-queue] retry failed for', entry.table, err);
+        failures.push(entry);
+        next();
+      }
+    );
+  }
+  next();
+}
+
+// Flush au démarrage si la queue contient des entrées
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    if (window.supabaseClient && supaQueueLoad().length > 0) {
+      supaQueueFlush();
+    }
+  }, 3000); // délai pour laisser Memberstack/Supabase s'initialiser
+});
+
+// Flush quand on revient online (après une coupure réseau)
+window.addEventListener('online', function() {
+  setTimeout(supaQueueFlush, 1000);
+});
+
 function espTrackAnswer(cat, isCorrect, level, questionId) {
   if (!currentMember) return;
   // Local
@@ -13133,19 +13299,15 @@ function espTrackAnswer(cat, isCorrect, level, questionId) {
     data.perQuestion[key].lastSeen = Date.now();
   }
   espSaveLocal(data);
-  // Supabase (best-effort, non bloquant)
-  if (window.supabaseClient) {
-    window.supabaseClient.from('qcm_answers').insert({
-      member_id: espMemberId(),
-      member_email: espMemberEmail(),
-      category: cat,
-      level: level || null,
-      is_correct: !!isCorrect,
-      question_id: questionId || null
-    }).then(function(res){
-      if (res && res.error) console.warn('Supabase insert answer :', res.error.message);
-    });
-  }
+  // Supabase (avec queue offline si échec)
+  supaInsertWithQueue('qcm_answers', {
+    member_id: espMemberId(),
+    member_email: espMemberEmail(),
+    category: cat,
+    level: level || null,
+    is_correct: !!isCorrect,
+    question_id: questionId || null
+  });
 }
 
 function espTrackSession(title, cats, sessScore, sessTotal) {
@@ -13159,20 +13321,16 @@ function espTrackSession(title, cats, sessScore, sessTotal) {
   });
   if (data.sessions.length > 50) data.sessions = data.sessions.slice(0, 50);
   espSaveLocal(data);
-  // Supabase
-  if (window.supabaseClient) {
-    window.supabaseClient.from('qcm_sessions').insert({
-      member_id: espMemberId(),
-      member_email: espMemberEmail(),
-      title: title || 'Session QCM',
-      categories: cats || [],
-      score: sessScore,
-      total: sessTotal,
-      pct: pct
-    }).then(function(res){
-      if (res && res.error) console.warn('Supabase insert session :', res.error.message);
-    });
-  }
+  // Supabase (avec queue offline si échec)
+  supaInsertWithQueue('qcm_sessions', {
+    member_id: espMemberId(),
+    member_email: espMemberEmail(),
+    title: title || 'Session QCM',
+    categories: cats || [],
+    score: sessScore,
+    total: sessTotal,
+    pct: pct
+  });
   // Évaluation badges de fin de session (Parcours + Performance + Insolites)
   if (typeof evaluateBadges === 'function') {
     evaluateBadges('session_end', {
@@ -13202,18 +13360,14 @@ function espTrackDoc(id, name, type, cat) {
   var today = espTodayKey();
   if (data.activeDays.indexOf(today) === -1) data.activeDays.push(today);
   espSaveLocal(data);
-  // Supabase
-  if (window.supabaseClient) {
-    window.supabaseClient.from('doc_reads').insert({
-      member_id: espMemberId(),
-      member_email: espMemberEmail(),
-      doc_id: id,
-      doc_name: name,
-      doc_type: type || 'Document'
-    }).then(function(res){
-      if (res && res.error) console.warn('Supabase insert doc :', res.error.message);
-    });
-  }
+  // Supabase (avec queue offline si échec)
+  supaInsertWithQueue('doc_reads', {
+    member_id: espMemberId(),
+    member_email: espMemberEmail(),
+    doc_id: id,
+    doc_name: name,
+    doc_type: type || 'Document'
+  });
 }
 
 // Tracking d'une annale terminée (mode concours)
@@ -15044,19 +15198,39 @@ function espFormatDate(ts) {
   return dd + '/' + mm + '/' + d.getFullYear();
 }
 
-// ----- Calcul du streak consécutif -----
+// ----- Lecture du streak (source unique : cache local synchronisé avec Supabase) -----
+// Le paramètre activeDays est conservé pour rétro-compat mais ignoré : la source
+// de vérité est désormais le cache loadStreakData() qui reflète Supabase profiles.
+// En fallback (cache vide, premier login, mode dégradé), on calcule depuis activeDays.
 function espCalcStreak(activeDays) {
+  // 1. Source de vérité : cache local synchronisé Supabase
+  var cached = (typeof loadStreakData === 'function') ? loadStreakData() : null;
+  if (cached && cached.lastDate) {
+    var today = espTodayKey();
+    var yesterday = (function(){
+      var d = new Date(); d.setDate(d.getDate()-1);
+      var mm = String(d.getMonth()+1).padStart(2,'0');
+      var dd = String(d.getDate()).padStart(2,'0');
+      return d.getFullYear()+'-'+mm+'-'+dd;
+    })();
+    // Streak vivante uniquement si dernière activité = aujourd'hui ou hier
+    if (cached.lastDate === today || cached.lastDate === yesterday) {
+      return cached.current || 0;
+    }
+    return 0; // streak cassée
+  }
+
+  // 2. Fallback : recalcul depuis activeDays (Supabase pas encore synchronisé)
   if (!activeDays || activeDays.length === 0) return 0;
   var sorted = activeDays.slice().sort().reverse();
-  var today = espTodayKey();
-  var yesterday = (function(){
+  var todayFb = espTodayKey();
+  var yesterdayFb = (function(){
     var d = new Date(); d.setDate(d.getDate()-1);
     var mm = String(d.getMonth()+1).padStart(2,'0');
     var dd = String(d.getDate()).padStart(2,'0');
     return d.getFullYear()+'-'+mm+'-'+dd;
   })();
-  // Le streak doit démarrer aujourd'hui ou hier pour être actif
-  if (sorted[0] !== today && sorted[0] !== yesterday) return 0;
+  if (sorted[0] !== todayFb && sorted[0] !== yesterdayFb) return 0;
   var streak = 1;
   var current = new Date(sorted[0]);
   for (var i = 1; i < sorted.length; i++) {
@@ -18864,25 +19038,91 @@ function getActivePrepaLevel(p) {
   return detectPrepaLevel(p).level;
 }
 
+// Modale custom pour choisir le niveau (remplace l'ancien prompt() natif).
+// Cohérente avec le reste du design system, accessible au clavier.
 function promptForcePrepaLevel() {
   var p = getPrepaProfile();
   var auto = detectPrepaLevel(p).level;
+  var current = getActivePrepaLevel(p);
   var labels = { debutant: '🟢 Débutant', confirme: '🟠 Confirmé', avance: '🔴 Avancé' };
-  var txt = 'Niveau détecté automatiquement : ' + labels[auto] + '\n\n' +
-    'Quel niveau veux-tu suivre ?\n' +
-    '1 — 🟢 Débutant (VMA < 13 · force modérée)\n' +
-    '2 — 🟠 Confirmé (VMA 13-16 · force intermédiaire)\n' +
-    '3 — 🔴 Avancé (VMA > 16 · force élevée)\n' +
-    '0 — Revenir à la détection automatique\n\n' +
-    'Tape 1, 2, 3 ou 0 :';
-  var rep = prompt(txt);
-  if (rep === null) return;
-  var map = { '1': 'debutant', '2': 'confirme', '3': 'avance', '0': null };
-  if (rep in map) {
-    setPrepaForcedLevel(map[rep]);
-    showToast(map[rep] ? '✓ Niveau ' + labels[map[rep]] + ' sélectionné' : '✓ Détection automatique réactivée');
-    renderPrepa();
+  var descs = {
+    debutant: 'VMA < 13 km/h · force modérée · charges réduites',
+    confirme: 'VMA 13-16 km/h · force intermédiaire · charges standards',
+    avance:   'VMA > 16 km/h · force élevée · charges majorées'
+  };
+
+  // Construction de la modale (créée à la volée, retirée à la fermeture)
+  var existing = document.getElementById('prepa-level-modal');
+  if (existing) existing.remove();
+
+  var modal = document.createElement('div');
+  modal.id = 'prepa-level-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-labelledby', 'prepa-level-modal-title');
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(28,18,12,0.82);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px';
+
+  function levelOption(key) {
+    var isCurrent = (current === key);
+    var isAuto = (auto === key);
+    var border = isCurrent ? 'var(--red)' : 'var(--border)';
+    var bg = isCurrent ? 'var(--red-pale)' : 'white';
+    var badge = isAuto ? '<span style="font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);background:var(--cream2);padding:2px 7px;margin-left:8px">Auto-détecté</span>' : '';
+    return '<button type="button" class="prepa-level-opt" data-level="' + key + '" style="display:block;width:100%;text-align:left;padding:16px 18px;margin-bottom:8px;border:1.5px solid ' + border + ';background:' + bg + ';cursor:pointer;font-family:inherit">' +
+      '<div style="font-family:\'Playfair Display\',serif;font-size:1.05rem;color:var(--charcoal);margin-bottom:4px">' + labels[key] + badge + '</div>' +
+      '<div style="font-size:.82rem;color:var(--gray);line-height:1.5">' + descs[key] + '</div>' +
+    '</button>';
   }
+
+  modal.innerHTML =
+    '<div style="background:white;max-width:520px;width:100%;padding:32px 28px;position:relative">' +
+      '<button id="prepa-level-modal-close" aria-label="Fermer" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.4rem;color:var(--gray);cursor:pointer;line-height:1">✕</button>' +
+      '<div id="prepa-level-modal-title" style="font-family:\'Playfair Display\',serif;font-size:1.4rem;color:var(--charcoal);margin-bottom:6px;line-height:1.3">Choisir mon niveau d\'entraînement</div>' +
+      '<div style="font-size:.86rem;color:var(--gray);line-height:1.6;margin-bottom:22px">Le niveau détermine les charges et allures de tes séances. Le niveau auto-détecté est calculé à partir de ton profil. Tu peux le forcer manuellement si tu veux travailler à un niveau supérieur ou inférieur.</div>' +
+      levelOption('debutant') +
+      levelOption('confirme') +
+      levelOption('avance') +
+      '<button type="button" id="prepa-level-auto-btn" style="display:block;width:100%;margin-top:14px;padding:12px;background:var(--cream2);border:1px solid var(--border);font-family:inherit;font-size:.86rem;color:var(--charcoal);cursor:pointer">↻ Revenir à la détection automatique</button>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  // Handlers
+  function close() {
+    modal.remove();
+    document.removeEventListener('keydown', escHandler);
+  }
+  function escHandler(e) {
+    if (e.key === 'Escape') close();
+  }
+  document.addEventListener('keydown', escHandler);
+
+  document.getElementById('prepa-level-modal-close').addEventListener('click', close);
+  modal.addEventListener('click', function(e){
+    if (e.target === modal) close();
+  });
+
+  modal.querySelectorAll('.prepa-level-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var level = btn.getAttribute('data-level');
+      setPrepaForcedLevel(level);
+      showToast('✓ Niveau ' + labels[level] + ' sélectionné');
+      close();
+      renderPrepa();
+    });
+  });
+  document.getElementById('prepa-level-auto-btn').addEventListener('click', function(){
+    setPrepaForcedLevel(null);
+    showToast('✓ Détection automatique réactivée');
+    close();
+    renderPrepa();
+  });
+
+  // Focus initial sur la première option pour accessibilité clavier
+  setTimeout(function(){
+    var first = modal.querySelector('.prepa-level-opt');
+    if (first) first.focus();
+  }, 50);
 }
 
 // ---------- CALCULS ALLURES ET CHARGES ----------
