@@ -552,6 +552,10 @@ function applyTestConfig() {
   status.className = 'status ok';
   status.textContent = `✅ Configuration appliquée — Mode: ${TEST_CONFIG.mode}, Tier: ${TEST_CONFIG.tier}, Durée exposé: ${TEST_CONFIG.exposeDuration}s. Le simulateur démarre.`;
 
+  // === FIX V5b : Masquer le panneau de config et le bandeau pour ne pas polluer l'UI ===
+  document.querySelector('.test-banner').style.display = 'none';
+  document.querySelector('.test-config').style.display = 'none';
+
   // Lancer le simulateur
   document.getElementById('oral-simulator-root').style.display = 'block';
   setTimeout(() => OralSimulator.init(), 500);
@@ -993,8 +997,8 @@ const OralSimulator = (function() {
   function startExpose() {
     showScreen('expose');
     state.exposeText = '';
-    state._finalSegments = []; // Reset du buffer de transcription
-    state._lastSessionFinalsCount = 0;
+    state.committedText = ''; // Reset du buffer de transcription V5b
+    state.currentSessionText = '';
     let elapsed = 0;
     document.getElementById('oral-transcription').innerHTML = '<span class="provisoire">Commence à parler...</span>';
     state.timers.expose = setInterval(() => {
@@ -1082,8 +1086,8 @@ const OralSimulator = (function() {
     input.value = '';
 
     // Réinitialiser le buffer de transcription pour la prochaine réponse
-    state._finalSegments = [];
-    state._lastSessionFinalsCount = 0;
+    state.committedText = '';
+    state.currentSessionText = '';
 
     state.questionsCount++;
 
@@ -1496,63 +1500,62 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
       state.recognition = null;
     }
 
+    // === Architecture simplifiée pour éviter les doublons ===
+    //
+    // Le bug venait du fait que Chrome redémarre la reconnaissance vocale
+    // toutes les ~30 secondes (event 'onend'), et chaque redémarrage repart
+    // avec un resultIndex à 0, ce qui faisait que des segments déjà figés
+    // étaient réinjectés dans la transcription.
+    //
+    // SOLUTION : on sépare clairement deux états :
+    // - `committedText` : texte définitivement figé (ne change plus jamais)
+    // - `currentSessionText` : texte de la session de reconnaissance courante
+    //                          (sera figé dans committedText au onend)
+    //
+    // À chaque tour, l'affichage = committedText + currentSessionText + interim
+    // Et au redémarrage : committedText reste intact, currentSessionText repart à zéro.
+
+    state.committedText = state.committedText || '';
+    state.currentSessionText = '';
+    state._currentPhase = phase;
+
     state.recognition = new SR();
     state.recognition.lang = 'fr-FR';
     state.recognition.continuous = true;
     state.recognition.interimResults = true;
     state.recognition.maxAlternatives = 1;
 
-    // === Variables persistantes (pas réinitialisées entre les segments) ===
-    // On stocke chaque segment final indépendamment pour éviter les doublons
-    state._finalSegments = state._finalSegments || [];
-    state._currentPhase = phase;
-
     state.recognition.onresult = (e) => {
       let interim = '';
+      let sessionFinal = '';
 
-      // Reconstruire la liste complète des segments finaux à chaque appel
-      // (Chrome envoie parfois e.resultIndex de manière incohérente après un restart)
-      const allFinals = [];
+      // On parcourt TOUS les résultats de la session courante uniquement
       for (let i = 0; i < e.results.length; i++) {
         const result = e.results[i];
-        const transcript = result[0].transcript.trim();
+        const transcript = result[0].transcript;
         if (result.isFinal) {
-          allFinals.push(transcript);
+          sessionFinal += transcript;
         } else {
-          interim += transcript + ' ';
+          interim += transcript;
         }
       }
 
-      // Fusionner avec les segments précédents (en évitant les doublons)
-      // Les segments finaux d'une nouvelle session sont ajoutés à la fin
-      const previousFinalsCount = state._finalSegments.length;
-      const newFinalsFromThisSession = allFinals;
+      // La session courante remplace la précédente version
+      state.currentSessionText = sessionFinal;
 
-      // Si on a moins de segments qu'avant, c'est qu'on a redémarré la reco → on garde l'historique
-      // Sinon on remplace par la version courante
-      if (newFinalsFromThisSession.length >= state._lastSessionFinalsCount) {
-        // Même session, on remplace les derniers segments
-        state._finalSegments = state._finalSegments
-          .slice(0, previousFinalsCount - state._lastSessionFinalsCount)
-          .concat(newFinalsFromThisSession);
-      } else {
-        // Restart détecté, on ajoute simplement
-        state._finalSegments = state._finalSegments.concat(newFinalsFromThisSession);
-      }
-      state._lastSessionFinalsCount = newFinalsFromThisSession.length;
-
-      const finalText = state._finalSegments.join(' ').trim();
+      // L'affichage = ce qui a été figé + la session en cours + l'interim
+      const fullFinal = (state.committedText + ' ' + state.currentSessionText).trim();
+      const display = (fullFinal + ' ' + interim.trim()).trim();
 
       if (phase === 'expose') {
         const el = document.getElementById('oral-transcription');
-        if (finalText || interim) {
-          el.innerHTML = `<span class="definitif">${escapeHtml(finalText)}${finalText ? ' ' : ''}</span><span class="provisoire">${escapeHtml(interim)}</span>`;
+        if (display) {
+          el.innerHTML = `<span class="definitif">${escapeHtml(fullFinal)}</span>${interim.trim() ? ' <span class="provisoire">' + escapeHtml(interim.trim()) + '</span>' : ''}`;
         }
-        state.exposeText = finalText;
+        state.exposeText = fullFinal;
       } else if (phase === 'qr') {
         const input = document.getElementById('oral-qr-input');
-        // Pour le Q/R, on remet le texte complet à chaque tour (pas d'accumulation entre questions)
-        input.value = (finalText + ' ' + interim).trim();
+        input.value = display;
       }
     };
 
@@ -1561,23 +1564,34 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
       if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
         alert('Micro bloqué. Autorise l\'accès au micro dans Chrome (icône cadenas dans la barre d\'adresse).');
         state.isRecording = false;
+      } else if (e.error === 'no-speech' || e.error === 'aborted') {
+        // Erreurs normales, on continue
+        return;
       }
     };
 
     state.recognition.onend = () => {
+      // Au redémarrage : on FIGE la session courante dans committedText
+      if (state.currentSessionText && state.currentSessionText.trim()) {
+        state.committedText = (state.committedText + ' ' + state.currentSessionText).trim();
+        console.log('[SPEECH] Texte figé :', state.committedText.substring(state.committedText.length - 80));
+      }
+      state.currentSessionText = '';
+
       // Auto-restart si on est encore en phase active
       if (state.isRecording) {
-        // Reset du compteur de session pour que le prochain onresult sache qu'on a redémarré
-        state._lastSessionFinalsCount = 0;
         try {
           state.recognition.start();
         } catch(e) {
-          console.warn('[SPEECH] Restart impossible:', e.message);
+          // Si erreur (souvent : "InvalidStateError"), on attend un peu et on relance
+          setTimeout(() => {
+            if (state.isRecording) {
+              try { state.recognition.start(); } catch(e2) { console.warn('[SPEECH] Restart impossible:', e2.message); }
+            }
+          }, 200);
         }
       }
     };
-
-    state._lastSessionFinalsCount = 0;
 
     try {
       state.recognition.start();
@@ -1600,9 +1614,19 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
   }
 
   function showScreen(name) {
-    document.querySelectorAll('.oral-screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('oral-screen-' + name).classList.add('active');
-    window.scrollTo(0, 0);
+    // Désactiver tous les écrans
+    document.querySelectorAll('.oral-screen').forEach(s => {
+      s.classList.remove('active');
+      s.style.display = 'none';
+    });
+    // Activer l'écran demandé
+    const target = document.getElementById('oral-screen-' + name);
+    if (target) {
+      target.classList.add('active');
+      target.style.display = 'block';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log('[SCREEN] Écran actif :', name);
   }
 
   function addMessage(role, content, meta, isRelance) {
