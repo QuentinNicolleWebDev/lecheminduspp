@@ -155,6 +155,126 @@
   .oral-axe-points li { font-size: 13px; padding: 4px 0 4px 20px; position: relative; }
   .oral-axe-points li::before { content: ''; position: absolute; left: 0; top: 12px; width: 12px; height: 1px; background: #CC2229; }
 
+  /* === V5 : Styles pour les 3 jurés === */
+
+  /* Avatars différenciés par juré */
+  .oral-avatar.jury-officier { background: #CC2229; color: white; }
+  .oral-avatar.jury-elu { background: #1E40AF; color: white; }
+  .oral-avatar.jury-sousoff { background: #525252; color: white; }
+
+  /* Bulles différenciées par juré */
+  .oral-bulle.bulle-officier { border-left: 3px solid #CC2229; }
+  .oral-bulle.bulle-elu { border-left: 3px solid #1E40AF; }
+  .oral-bulle.bulle-sousoff { border-left: 3px solid #525252; }
+
+  .oral-bulle.relance.bulle-officier { border-left: 3px solid #CC2229; border-color: #CC2229; }
+  .oral-bulle.relance.bulle-elu { border-left: 3px solid #1E40AF; border-color: #1E40AF; }
+  .oral-bulle.relance.bulle-sousoff { border-left: 3px solid #525252; border-color: #525252; }
+
+  .oral-relance-tag.tag-officier { color: #CC2229; }
+  .oral-relance-tag.tag-elu { color: #1E40AF; }
+  .oral-relance-tag.tag-sousoff { color: #525252; }
+
+  /* === Écran "Entrée dans la salle" === */
+  .oral-salle-screen {
+    background: #1A1A1A; color: #F5EFE6; min-height: 80vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+  }
+  .oral-salle-content {
+    max-width: 900px; text-align: center;
+  }
+  .oral-salle-content h1 {
+    font-family: 'Playfair Display', serif; font-size: 40px;
+    color: white; margin-bottom: 16px; font-style: italic;
+  }
+  .oral-salle-subtitle {
+    font-size: 16px; color: #D4D0CA; margin-bottom: 48px;
+    font-style: italic;
+  }
+
+  .oral-jury-table {
+    display: flex; justify-content: center; gap: 40px;
+    margin: 48px 0; flex-wrap: wrap;
+  }
+  .oral-jure-card {
+    background: #2D2D2D; padding: 32px 24px; min-width: 200px;
+    border-top: 3px solid; transition: all 0.3s;
+  }
+  .oral-jure-card.officier { border-color: #CC2229; }
+  .oral-jure-card.elu { border-color: #1E40AF; }
+  .oral-jure-card.sousoff { border-color: #525252; }
+
+  .oral-jure-portrait {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: #4A4A4A; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; color: white;
+  }
+  .oral-jure-card.officier .oral-jure-portrait { background: #CC2229; }
+  .oral-jure-card.elu .oral-jure-portrait { background: #1E40AF; }
+  .oral-jure-card.sousoff .oral-jure-portrait { background: #525252; }
+
+  .oral-jure-role {
+    font-size: 11px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: #D4D0CA; margin-bottom: 8px;
+  }
+  .oral-jure-name {
+    font-family: 'Playfair Display', serif; font-size: 18px;
+    color: white; margin-bottom: 4px;
+  }
+  .oral-jure-grade {
+    font-size: 13px; color: #A0A0A0; font-style: italic;
+  }
+  .oral-jure-domain {
+    font-size: 12px; color: #D4D0CA; margin-top: 12px;
+    padding-top: 12px; border-top: 1px solid #4A4A4A;
+  }
+
+  .oral-salle-warning {
+    background: #2D2D2D; padding: 20px 32px; margin: 24px auto;
+    max-width: 600px; border-left: 3px solid #CC2229;
+    text-align: left;
+  }
+  .oral-salle-warning strong { color: white; }
+
+  .oral-salle-actions {
+    display: flex; gap: 16px; justify-content: center;
+    margin-top: 32px; flex-wrap: wrap;
+  }
+
+  /* Indicateur du juré qui parle (top du Q/R) */
+  .oral-jury-indicator {
+    background: #1A1A1A; color: white; padding: 12px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid #333;
+    font-size: 13px;
+  }
+  .oral-jury-indicator-left {
+    display: flex; align-items: center; gap: 24px;
+  }
+  .oral-jury-active {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .oral-jury-active-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #888;
+  }
+  .oral-jury-active.is-speaking .oral-jury-active-dot {
+    background: #2D7A5F;
+    animation: dotPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* Sélecteur tier dans le bandeau test */
+  @media (max-width: 900px) {
+    .oral-jury-table { flex-direction: column; align-items: center; }
+    .oral-jure-card { min-width: unset; width: 100%; max-width: 320px; }
+  }
+
   @media (max-width: 900px) {
     .oral-expose-body { grid-template-columns: 1fr; }
     .oral-debrief-grid { grid-template-columns: 1fr; }
@@ -166,7 +286,7 @@
 
 <!-- Bandeau d'avertissement -->
 <div class="test-banner">
-  ⚠️ MODE TEST V4 — Jury enrichi avec 45 questions types et la base de connaissances complète. Mode DIRECT recommandé pour exploiter pleinement.
+  ⚠️ MODE TEST V5a — Jury à 3 voix : Officier (président), Élu, Sous-officier. Tirage au sort à chaque session.
 </div>
 
 <!-- Panneau de configuration -->
@@ -282,6 +402,33 @@
     </div>
   </div>
 
+  <!-- ÉCRAN ENTRÉE DANS LA SALLE (V5) -->
+  <div id="oral-screen-salle" class="oral-screen oral-salle-screen">
+    <div class="oral-salle-content">
+      <span class="oral-tag">Entrée dans la salle</span>
+      <h1>Le jury <em>vous attend.</em></h1>
+      <p class="oral-salle-subtitle">Vous allez entrer dans la salle d'examen. Trois jurés sont assis derrière une table.</p>
+
+      <div class="oral-jury-table" id="oral-jury-table-display">
+        <!-- Les 3 jurés sont injectés dynamiquement ici par le JS -->
+      </div>
+
+      <div class="oral-salle-warning">
+        <strong>⚠️ Pensez à saluer le jury.</strong><br>
+        En entrant dans la salle, on s'adresse d'abord au président, puis aux membres du jury. Cette politesse est observée et notée.<br>
+        Au début de votre exposé, vous direz : <em>« Monsieur/Madame le/la président/e, mesdames/messieurs les membres du jury, je m'appelle... »</em>
+      </div>
+
+      <div class="oral-salle-actions">
+        <button class="oral-btn-secondary" onclick="OralSimulator.abandonSession()">Renoncer</button>
+        <button class="oral-btn-primary" onclick="OralSimulator.enterRoom()">
+          J'entre et je salue le jury
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ÉCRAN EXPOSÉ -->
   <div id="oral-screen-expose" class="oral-screen oral-expose-screen">
     <div class="oral-header">
@@ -321,11 +468,20 @@
   <!-- ÉCRAN Q/R -->
   <div id="oral-screen-qr" class="oral-screen">
     <div class="oral-header">
-      <div class="oral-phase-indicator">Phase 02 / 02 — <strong>Questions du jury</strong> <span style="color:#FBBF24;font-size:10px;margin-left:12px;">[TEST] Jury : <span id="oral-jury-persona">—</span></span></div>
+      <div class="oral-phase-indicator">Phase 02 / 02 — <strong>Questions du jury</strong></div>
       <div class="oral-timer" id="oral-qr-timer">
         <span class="oral-timer-pulse"></span>
         <span id="oral-qr-time">10:00</span>
       </div>
+    </div>
+    <!-- V5 : Indicateur des 3 jurés -->
+    <div class="oral-jury-indicator">
+      <div class="oral-jury-indicator-left">
+        <div class="oral-jury-active" id="indicator-officier"><span class="oral-jury-active-dot"></span><span>Officier (Président)</span></div>
+        <div class="oral-jury-active" id="indicator-elu"><span class="oral-jury-active-dot"></span><span>Élu</span></div>
+        <div class="oral-jury-active" id="indicator-sousoff"><span class="oral-jury-active-dot"></span><span>Sous-officier</span></div>
+      </div>
+      <div style="font-size: 11px; color: #888;">Le point vert indique le juré qui parle</div>
     </div>
     <div class="oral-qr-conversation" id="oral-qr-conversation">
       <div class="oral-conversation-inner" id="oral-conversation-inner"></div>
@@ -478,61 +634,72 @@ async function mockClaudeAPI(payload) {
     };
   }
 
-  // Récupère la personnalité du jury (stockée à l'init de la session)
-  const persona = window._juryPersona || 'sec';
+  // V5 : Détection du juré qui parle depuis le system prompt
+  const sys = payload.system || '';
+  let role = 'officier';
+  if (sys.includes("TU ES L'ÉLU")) role = 'elu';
+  else if (sys.includes("TU ES LE SOUS-OFFICIER")) role = 'sousoff';
 
-  if (isFirst) {
-    const questionsByPersona = {
-      technique: [
-        "Quelle est la différence fondamentale, en termes de cadre d'emploi, entre un sapeur-pompier volontaire et un sapeur-pompier professionnel ?",
-        "Qui est l'autorité de gestion d'un sapeur-pompier professionnel, et qui est l'autorité d'emploi ?",
-        "Définissez-moi un SDACR."
+  // Banques de questions par juré
+  const questionsByRole = {
+    officier: {
+      first: [
+        "Bien. Pour commencer, dites-moi : quelle est la différence fondamentale, en termes de cadre d'emploi, entre un sapeur-pompier volontaire et un sapeur-pompier professionnel ?",
+        "Merci pour votre présentation. Première question : qui est l'autorité de gestion d'un sapeur-pompier professionnel, et qui est l'autorité opérationnelle ?",
+        "Définissez-moi le SDACR."
       ],
-      bienveillant: [
-        "Merci pour votre exposé. Pour commencer, pouvez-vous me dire ce qu'est un SIS ?",
-        "D'accord. Concrètement, pour vous, qu'est-ce que devenir caporal change par rapport à votre statut actuel ?",
-        "Très bien. Parlez-moi de votre engagement de SPV. Qu'est-ce qui vous a marqué ?"
+      next: [
+        "[RELANCE] Précisez. Sur quel fondement juridique ?",
+        "Citez-moi trois grades de la filière sapeurs-pompiers non-officiers.",
+        "Qu'apporte la loi MATRAS de 2021 ?",
+        "[RELANCE] Et que dit l'article L. 1424-2 du CGCT exactement ?",
+        "Le règlement opérationnel, c'est quoi ? Qui l'arrête ?",
+        "Le DDSIS, ses deux casquettes, vous me les expliquez ?"
       ],
-      sec: [
-        "Différence SPV / SPP. Cadre d'emploi.",
-        "SDACR. Définition.",
-        "Autorité de gestion d'un SPP. Autorité d'emploi."
+      transitions: ['Précisez.', 'Sur quel fondement ?', 'Continuez.', '', 'Hmm.', 'Détaillez.']
+    },
+    elu: {
+      first: [
+        "Bien. Quels sont les trois versants de la fonction publique française ?",
+        "Quelle est la différence entre un cadre d'emplois et un corps ?",
+        "Qu'est-ce que le CGFP, et depuis quand est-il en vigueur ?"
       ],
-      comportementaliste: [
+      next: [
+        "Citez-moi 3 acteurs institutionnels de la fonction publique territoriale.",
+        "[RELANCE] Précisez le rôle du CDG par rapport au CNFPT.",
+        "Le CST a remplacé deux instances, lesquelles ?",
+        "Un événement international récent vous a-t-il marqué ces derniers mois ?",
+        "[RELANCE] Et quelles conséquences voyez-vous pour la France ?",
+        "Comment fonctionne la liste d'aptitude en FPT ?"
+      ],
+      transitions: ['Bien.', 'D\'accord.', 'Je vois.', '', 'Continuons.']
+    },
+    sousoff: {
+      first: [
         "Vous arrivez sur intervention SAP. Votre collègue glisse un billet trouvé chez la victime dans sa poche. Que faites-vous ?",
         "À la prise de garde, vous sentez clairement l'haleine d'un collègue chargée d'alcool. Que faites-vous ?",
-        "Un collègue tient régulièrement des propos racistes en chambrée. Les autres rient. Vous faites quoi ?"
-      ]
-    };
-    const list = questionsByPersona[persona] || questionsByPersona.sec;
-    return { text: list[Math.floor(Math.random() * list.length)], usage: {} };
+        "Le ménage et l'entretien des locaux, ça vous parle comment ?"
+      ],
+      next: [
+        "[RELANCE] Et si votre chef de garde décide de fermer les yeux ?",
+        "Un collègue tient régulièrement des propos racistes en chambrée. Les autres rient. Vous faites quoi ?",
+        "[RELANCE] Vous risquez d'être mis à l'écart par l'équipe, vous y avez pensé ?",
+        "Vous être prêt à faire les TIG, le reconditionnement matériel après chaque garde ?",
+        "Décrivez-moi votre dernière intervention marquante.",
+        "[RELANCE] Comment l'avez-vous gérée émotionnellement après ?"
+      ],
+      transitions: ['Je vous écoute.', 'Concrètement ?', '', 'Et après ?', 'Vous faites quoi ?']
+    }
+  };
+
+  const bank = questionsByRole[role];
+
+  if (isFirst) {
+    return { text: bank.first[Math.floor(Math.random() * bank.first.length)], usage: {} };
   }
 
-  // Réponse suivante : transition neutre + question
-  const transitions = {
-    technique: ['Précisez.', 'Sur quel fondement ?', 'Continuez.', '', 'Hmm.', 'Détaillez.'],
-    bienveillant: ['D\'accord.', 'Je vois.', 'Bien.', '', 'Continuons.', 'Très bien.'],
-    sec: ['', '', 'Suivant.', '.', 'Hmm.', ''],
-    comportementaliste: ['Je vous écoute.', 'Concrètement ?', '', 'Et après ?', 'Vous faites quoi ?', '']
-  };
-  const transition = (transitions[persona] || transitions.sec)[Math.floor(Math.random() * 6)];
-
-  const nextQuestions = [
-    "[RELANCE] Sur quel fondement juridique vous appuyez-vous précisément ?",
-    "Vous arrivez sur intervention SAP. Votre collègue glisse un billet trouvé chez la victime dans sa poche. Que faites-vous ?",
-    "Qu'est-ce que le SDACR, et qui l'élabore ?",
-    "[RELANCE] Précisez ce que vous entendez par 'cadre d'emploi'.",
-    "Citez-moi trois grades de la filière non-officier.",
-    "Un événement international récent vous a-t-il marqué ces derniers mois ?",
-    "À la prise de garde, vous sentez l'haleine d'un collègue chargée d'alcool. Que faites-vous ?",
-    "[RELANCE] Et si votre chef de garde décide de fermer les yeux ?",
-    "Le devoir de réserve, vous me l'expliquez ?",
-    "[RELANCE] Concrètement, comment ça s'applique sur les réseaux sociaux ?",
-    "Article 40 du Code de procédure pénale. Vous me dites ?",
-    "Le président du CASDIS dans votre département, c'est qui ?",
-    "Vous évoquez un parcours d'engagement. Pourquoi le SPP plutôt que de rester SPV ?"
-  ];
-  const question = nextQuestions[Math.floor(Math.random() * nextQuestions.length)];
+  const transition = bank.transitions[Math.floor(Math.random() * bank.transitions.length)];
+  const question = bank.next[Math.floor(Math.random() * bank.next.length)];
   const fullText = transition ? transition + ' ' + question : question;
   return { text: fullText, usage: {} };
 }
@@ -715,12 +882,13 @@ const OralSimulator = (function() {
       alert('Quota atteint'); return;
     }
 
-    // === Tirage au sort de la personnalité du jury ===
-    const personas = ['technique', 'bienveillant', 'sec', 'comportementaliste'];
-    window._juryPersona = personas[Math.floor(Math.random() * personas.length)];
-    console.log('[JURY] Personnalité tirée :', window._juryPersona);
+    // === V5 : Génération des 3 jurés (1 femme + 2 hommes par défaut) ===
+    state.jury = generateJury();
+    console.log('[JURY] Composition tirée :', state.jury);
 
     state.startedAt = new Date();
+    state.lastJurySpeaker = null; // pour la rotation
+
     const { data } = await supabase.from('oral_sessions').insert({
       member_email: state.memberEmail, member_tier: state.memberTier,
       week_iso: state.weekIso, status: 'in_progress'
@@ -733,8 +901,93 @@ const OralSimulator = (function() {
     state.timers.prep = setInterval(() => {
       count--;
       document.getElementById('oral-countdown').textContent = count;
-      if (count <= 0) { clearInterval(state.timers.prep); startExpose(); }
+      if (count <= 0) { clearInterval(state.timers.prep); showSalleScreen(); }
     }, 1000);
+  }
+
+  // === V5 : Génération aléatoire des 3 jurés ===
+  function generateJury() {
+    // Prénoms français crédibles
+    const prenomsHommes = ['Pascal', 'Bernard', 'Christophe', 'Frédéric', 'Olivier', 'Stéphane', 'Laurent', 'Patrick', 'Philippe', 'Vincent'];
+    const prenomsFemmes = ['Catherine', 'Isabelle', 'Sylvie', 'Nathalie', 'Christine', 'Martine', 'Véronique', 'Florence', 'Anne', 'Brigitte'];
+    const noms = ['Martin', 'Bernard', 'Dubois', 'Thomas', 'Robert', 'Richard', 'Petit', 'Durand', 'Leroy', 'Moreau', 'Simon', 'Laurent', 'Lefebvre', 'Michel', 'Garcia'];
+
+    // Tirer au sort la personne qui sera femme (1 femme + 2 hommes)
+    const femalePosition = Math.floor(Math.random() * 3); // 0 = officier, 1 = élu, 2 = sous-off
+
+    function pickPerson(isFemme) {
+      const prenom = isFemme
+        ? prenomsFemmes[Math.floor(Math.random() * prenomsFemmes.length)]
+        : prenomsHommes[Math.floor(Math.random() * prenomsHommes.length)];
+      const nom = noms[Math.floor(Math.random() * noms.length)];
+      return { prenom, nom, isFemme };
+    }
+
+    // Grades possibles pour l'officier
+    const gradesOfficier = ['Capitaine', 'Commandant', 'Lieutenant-colonel'];
+    const gradesSousOff = ['Sergent', 'Sergent-chef', 'Adjudant', 'Caporal-chef'];
+    const gradesElu = ['Conseiller départemental', 'Conseiller municipal', 'Maire', 'Adjoint au maire'];
+
+    const officier = {
+      ...pickPerson(femalePosition === 0),
+      role: 'officier',
+      grade: gradesOfficier[Math.floor(Math.random() * gradesOfficier.length)],
+      domaine: 'Statut SPP, organisation du SDIS, missions, textes',
+      avatarLetter: 'O'
+    };
+
+    const elu = {
+      ...pickPerson(femalePosition === 1),
+      role: 'elu',
+      grade: gradesElu[Math.floor(Math.random() * gradesElu.length)],
+      domaine: 'Culture administrative, FPT, fonction publique, culture générale',
+      avatarLetter: 'É'
+    };
+
+    const sousoff = {
+      ...pickPerson(femalePosition === 2),
+      role: 'sousoff',
+      grade: gradesSousOff[Math.floor(Math.random() * gradesSousOff.length)],
+      domaine: 'Technique opérationnelle, savoir-être, mises en situation',
+      avatarLetter: 'S'
+    };
+
+    return { officier, elu, sousoff };
+  }
+
+  // === V5 : Affichage de l'écran "Entrée dans la salle" ===
+  function showSalleScreen() {
+    showScreen('salle');
+    const container = document.getElementById('oral-jury-table-display');
+    const j = state.jury;
+
+    const cardHtml = (jure) => {
+      const titre = jure.isFemme ? 'Madame' : 'Monsieur';
+      const roleLabel = {
+        officier: 'Président du jury · Officier SPP',
+        elu: 'Membre du jury · Élu',
+        sousoff: 'Membre du jury · Sous-officier SPP'
+      }[jure.role];
+      return `
+        <div class="oral-jure-card ${jure.role}">
+          <div class="oral-jure-portrait">${jure.avatarLetter}</div>
+          <div class="oral-jure-role">${roleLabel}</div>
+          <div class="oral-jure-name">${titre} ${jure.prenom} ${jure.nom}</div>
+          <div class="oral-jure-grade">${jure.grade}</div>
+          <div class="oral-jure-domain">${jure.domaine}</div>
+        </div>
+      `;
+    };
+
+    // Ordre d'affichage : Officier au centre (président), Élu à gauche, Sous-off à droite
+    container.innerHTML = cardHtml(j.elu) + cardHtml(j.officier) + cardHtml(j.sousoff);
+  }
+
+  // === V5 : Le candidat entre dans la salle (clic bouton) ===
+  function enterRoom() {
+    state.juryGreeted = true; // le candidat a salué le jury
+    console.log('[CANDIDAT] A salué le jury en entrant');
+    startExpose();
   }
 
   function startExpose() {
@@ -772,16 +1025,6 @@ const OralSimulator = (function() {
   async function startQR() {
     showScreen('qr');
 
-    // Affichage de la personnalité (mode test uniquement, à retirer en prod)
-    const personaLabels = {
-      technique: 'Le Technique',
-      bienveillant: 'Le Bienveillant-Piégeux',
-      sec: 'Le Sec',
-      comportementaliste: 'Le Comportementaliste'
-    };
-    const el = document.getElementById('oral-jury-persona');
-    if (el) el.textContent = personaLabels[window._juryPersona] || '—';
-
     let elapsed = 0;
     state.timers.qr = setInterval(() => {
       elapsed++;
@@ -794,10 +1037,41 @@ const OralSimulator = (function() {
       if (remaining <= 0) { clearInterval(state.timers.qr); endQR(); }
     }, 1000);
 
-    showJuryThinking(true);
-    const q = await callJury({ isFirstQuestion: true });
+    // V5 : Première question = toujours l'officier (président qui ouvre)
+    state.currentSpeaker = 'officier';
+    state.lastJurySpeaker = 'officier';
+    state.relanceCount = 0; // compteur de relances consécutives par juré
+    updateJuryIndicator('officier', true);
+
+    showJuryThinking(true, state.currentSpeaker);
+    const q = await callJury({ isFirstQuestion: true, speaker: 'officier' });
     showJuryThinking(false);
-    addMessage('jury', q, 'Question 1');
+    addJuryMessage(q, 'officier', 'Question 1');
+    updateJuryIndicator('officier', false);
+  }
+
+  // V5 : Détermination du prochain juré qui parle
+  function pickNextSpeaker(isRelance) {
+    // Si c'est une relance, le même juré garde la parole (max 2 relances consécutives)
+    if (isRelance && state.relanceCount < 2) {
+      state.relanceCount++;
+      return state.lastJurySpeaker;
+    }
+    // Sinon : rotation stricte officier → élu → sous-off → officier...
+    state.relanceCount = 0;
+    const order = ['officier', 'elu', 'sousoff'];
+    const currentIdx = order.indexOf(state.lastJurySpeaker);
+    const nextIdx = (currentIdx + 1) % 3;
+    return order[nextIdx];
+  }
+
+  // V5 : Mise à jour de l'indicateur visuel du juré qui parle
+  function updateJuryIndicator(speaker, isSpeaking) {
+    document.querySelectorAll('.oral-jury-active').forEach(el => el.classList.remove('is-speaking'));
+    if (isSpeaking && speaker) {
+      const ind = document.getElementById('indicator-' + speaker);
+      if (ind) ind.classList.add('is-speaking');
+    }
   }
 
   async function sendAnswer() {
@@ -812,12 +1086,37 @@ const OralSimulator = (function() {
     state._lastSessionFinalsCount = 0;
 
     state.questionsCount++;
-    showJuryThinking(true);
-    const next = await callJury({ candidateAnswer: a });
+
+    // V5 : Détermine quel juré va répondre (on regarde si la réponse est probablement bonne pour décider relance ou non)
+    // En l'absence d'une vraie analyse à ce stade, on laisse le LLM décider via [RELANCE] dans sa réponse,
+    // mais on prévoit la rotation pour le NEXT speaker
+    const nextSpeaker = pickNextSpeaker(false); // par défaut on tourne, le LLM peut sur-prendre
+    state.currentSpeaker = nextSpeaker;
+    state.lastJurySpeaker = nextSpeaker;
+
+    updateJuryIndicator(nextSpeaker, true);
+    showJuryThinking(true, nextSpeaker);
+    const next = await callJury({ candidateAnswer: a, speaker: nextSpeaker });
     showJuryThinking(false);
+
     const isRelance = next.toLowerCase().includes('[relance]');
     const clean = next.replace(/^\[relance\]\s*/i, '').trim();
-    addMessage('jury', clean, isRelance ? 'Relance' : `Question ${Math.ceil(state.questionsCount/2) + 1}`, isRelance);
+
+    // Si c'est une relance, on REVIENT au juré précédent (qui creuse sa propre question)
+    let actualSpeaker = nextSpeaker;
+    if (isRelance && state.previousJurySpeaker && state.relanceCount < 2) {
+      actualSpeaker = state.previousJurySpeaker;
+      state.lastJurySpeaker = state.previousJurySpeaker;
+      state.relanceCount++;
+      updateJuryIndicator(nextSpeaker, false);
+      updateJuryIndicator(actualSpeaker, true);
+    } else {
+      state.previousJurySpeaker = nextSpeaker;
+      state.relanceCount = 0;
+    }
+
+    addJuryMessage(clean, actualSpeaker, isRelance ? 'Relance' : `Question ${Math.ceil(state.questionsCount/2) + 1}`, isRelance);
+    updateJuryIndicator(actualSpeaker, false);
   }
 
   async function endQR() {
@@ -844,7 +1143,7 @@ const OralSimulator = (function() {
   // === Routage de l'appel selon le mode ===
   async function callJury(opts) {
     const messages = buildMessages(opts);
-    const system = buildSystemPrompt(opts.requestDebrief);
+    const system = buildSystemPrompt(opts.requestDebrief, opts.speaker);
 
     if (TEST_CONFIG.mode === 'mock') {
       const r = await mockClaudeAPI({ messages, system, max_tokens: opts.requestDebrief ? 2000 : 600 });
@@ -894,9 +1193,9 @@ const OralSimulator = (function() {
     }
   }
 
-  function buildSystemPrompt(forDebrief) {
+  function buildSystemPrompt(forDebrief, speaker) {
     if (forDebrief) {
-      return `Tu es président de jury de concours de Caporal Sapeur-Pompier Professionnel français. L'entretien est terminé. Tu dois produire un débrief honnête et exigeant, fondé sur tes connaissances précises du concours.
+      return `Tu es président du jury de concours de Caporal Sapeur-Pompier Professionnel français. L'entretien est terminé. Tu produis un débrief honnête et exigeant, fondé sur tes connaissances précises du concours.
 
 ═══════════════════════════════════════════════════
 TES CONNAISSANCES DE RÉFÉRENCE
@@ -905,14 +1204,46 @@ TES CONNAISSANCES DE RÉFÉRENCE
 ${JURY_KNOWLEDGE_BASE}
 
 ═══════════════════════════════════════════════════
+GRILLE CACHÉE DE L'EXCELLENT CANDIDAT
+═══════════════════════════════════════════════════
+
+Un excellent candidat (15-18/20) est :
+1. Quelqu'un qui a compris l'environnement de travail (chaîne de commandement, sa place dans l'institution)
+2. Mature et posé (sait répondre calmement, ne se laisse pas déstabiliser)
+3. Humble sur ses lacunes : ne maîtrise pas tout sur le bout des doigts mais sait OÙ chercher les réponses
+4. Savoir-être irréprochable (politesse, posture, vocabulaire approprié)
+5. Motivé pour les belles interventions ET pour les tâches ingrates (TIG, ménage, entretien matériel, planning, formation continue)
+6. Sait s'intégrer dans une équipe : sait quand s'affirmer pour le besoin de la mission ET quand s'effacer au profit de l'esprit de corps
+7. Fiable, travailleur, demandeur, intéressé par tous les aspects du métier
+8. Apprécie l'activité physique sans en faire un objectif d'athlète
+
+Un candidat moyen (10-12/20) ne montre pas ces marqueurs ou les montre partiellement.
+
+ERREURS RÉDHIBITOIRES qui plombent la note (à signaler dans le débrief si présentes) :
+- Oubli de saluer le jury (président d'abord, puis membres)
+- Dire "caserne" au lieu de "centre de secours"
+- Donner son avis personnel AVANT de se référer aux textes réglementaires
+- Tenue inappropriée (mais pas toujours observable en simulation)
+- Vocabulaire familier ou tutoiement
+
+═══════════════════════════════════════════════════
 DONNÉES DE LA SESSION À ÉVALUER
 ═══════════════════════════════════════════════════
 
 EXPOSÉ DU CANDIDAT :
 """${state.exposeText}"""
 
+Le candidat a-t-il salué le jury en entrant dans la salle ? ${state.juryGreeted ? 'OUI' : 'NON (à pénaliser)'}
+
+A-t-il commencé son exposé par la formule "Monsieur/Madame le/la président/e, mesdames/messieurs les membres du jury, je m'appelle..." ? À détecter dans l'exposé.
+
 CONVERSATION COMPLÈTE :
-${state.conversation.map(m => `[${m.role.toUpperCase()}] ${m.content}`).join('\n')}
+${state.conversation.map(m => {
+  if (m.role === 'jury') {
+    return `[${m.speaker?.toUpperCase() || 'JURY'} - ${m.jureName || ''}] ${m.content}`;
+  }
+  return `[CANDIDAT] ${m.content}`;
+}).join('\n')}
 
 ═══════════════════════════════════════════════════
 INSTRUCTIONS POUR LE DÉBRIEF
@@ -920,19 +1251,18 @@ INSTRUCTIONS POUR LE DÉBRIEF
 
 Tu produis un débrief STRICTEMENT au format JSON suivant. Aucun texte avant ou après le JSON.
 
-Niveaux qualitatifs autorisés (5) : "Insuffisant", "À améliorer", "Satisfaisant", "Bon", "Excellent"
-Jauge : entier de 1 à 5 correspondant au niveau (1=Insuffisant, 5=Excellent).
+Niveaux qualitatifs (5) : "Insuffisant", "À améliorer", "Satisfaisant", "Bon", "Excellent". Jauge : entier 1-5.
 
 Tu évalues sur 5 axes OBLIGATOIRES :
-1. motivation — La sincérité et la solidité du projet de devenir caporal SPP
-2. coherence — La cohérence entre l'exposé initial et les réponses (incohérences relevées ?)
-3. metier — La maîtrise des connaissances techniques (statut, SIS, FPT, textes) — UTILISE TES CONNAISSANCES DE RÉFÉRENCE pour évaluer la précision factuelle
-4. deontologie — Le savoir-être, les réflexes éthiques, la gestion des mises en situation
-5. expression — La clarté, la structure, la posture orale, la gestion du temps
+1. motivation — Sincérité du projet, projection dans le métier (interventions ET tâches ingrates)
+2. coherence — Cohérence exposé/réponses, pas d'incohérences relevées
+3. metier — Maîtrise précise du statut, SIS, FPT, textes (utilise tes connaissances de référence)
+4. deontologie — Savoir-être, réflexes éthiques, mises en situation, attitude générale
+5. expression — Clarté, structure, posture orale, gestion du temps, vocabulaire approprié
 
-Pour chaque axe : commentaire factuel (2-3 phrases), points concrets à retravailler ou points forts (2-3 items courts).
+Pour chaque axe : commentaire factuel (2-3 phrases citant des moments précis), points concrets (2-3 items courts).
 
-Le verdict général doit être HONNÊTE — n'enrobe pas, ne console pas. Si le candidat a hésité, dis-le. Si une réponse était fausse, dis-le. Cite des moments précis de la conversation.
+Le verdict général doit être HONNÊTE — n'enrobe pas, ne console pas. Cite des moments précis. Si erreurs rédhibitoires, mentionne-les.
 
 FORMAT JSON STRICT :
 {
@@ -950,150 +1280,207 @@ FORMAT JSON STRICT :
 RÉPONDS UNIQUEMENT EN JSON VALIDE — RIEN D'AUTRE AVANT OU APRÈS.`;
     }
 
-    // === Personnalité du jury (tirée au sort à l'init de session) ===
-    const persona = window._juryPersona || 'sec';
-    const personaProfiles = {
-      technique: `PROFIL : Le TECHNIQUE
-- Tu es obsédé par le statut, l'organisation des SIS, les textes, les cadres d'emploi
-- Tu poses des questions précises, factuelles, sans détour
-- Tu creuses systématiquement la moindre approximation : "Précisez.", "Sur quel fondement ?", "Article ?"
-- Tu ne fais aucune mise en situation déontologique sauf si vraiment nécessaire
-- Ton ton est froid mais correct
-- Tes mots de transition autorisés : "Précisez.", "Sur quel fondement ?", "Continuez.", "Détaillez.", "Hmm." ou rien.`,
-      bienveillant: `PROFIL : Le BIENVEILLANT-PIÉGEUX
-- Tu parles doucement, tu sembles compréhensif
-- Tu utilises des "D'accord.", "Je vois.", "Bien.", "Continuons." pour mettre le candidat à l'aise
-- Mais tes questions sont parmi les plus dures : pièges, mises en situation tordues, questions à tiroir
-- Tu profites du faux confort que tu installes pour déstabiliser
-- Tu peux dire "Très bien." sans que ça veuille dire que la réponse était bonne — c'est un piège
-- Tes mots de transition autorisés : "D'accord.", "Je vois.", "Bien.", "Continuons.", "Très bien." (mais ATTENTION : "très bien" ne signale JAMAIS une bonne réponse, c'est une transition vide)`,
-      sec: `PROFIL : Le SEC
-- Tu parles peu, ton ton est coupant, tu vas droit au point sensible
-- Tu poses la question sans formule de politesse, parfois en fragments verbaux
-- Tu n'as pas de patience pour le bavardage — tu coupes ou enchaînes sec
-- Tu réponds par "Hmm." ou un silence avant de poser la suivante
-- Si le candidat noie le poisson, tu re-poses la même question avec une légère reformulation
-- Tes mots de transition autorisés : "Hmm.", "Suivant.", ".", ou rien (silence + question)`,
-      comportementaliste: `PROFIL : Le COMPORTEMENTALISTE
-- Tu testes en priorité les réflexes éthiques et le savoir-être
-- Tu enchaînes les mises en situation : vol par un collègue, alcool, harcèlement, ordre illégal
-- Tu pousses chaque réponse dans ses retranchements : "Et après ?", "Concrètement ?", "Vous faites quoi ?"
-- Tu cherches le moment où le candidat hésite ou contourne — c'est là que tu creuses
-- Tes mots de transition autorisés : "Je vous écoute.", "Concrètement ?", "Et après ?", "Vous faites quoi ?" ou rien.`
+    // === V5 : Construction du prompt pour le juré qui parle ===
+    const j = state.jury;
+    if (!j || !speaker) {
+      console.warn('[PROMPT] Juré ou speaker manquant');
+      return '';
+    }
+
+    const currentJure = j[speaker];
+    const titre = currentJure.isFemme ? 'Madame' : 'Monsieur';
+
+    // Détecter si le candidat est SPV/JSP/militaire dans son exposé
+    const exposeText = (state.exposeText || '').toLowerCase();
+    const isSPV = /\b(spv|sapeur[- ]?pompier[- ]?volontaire|volontaire|jsp|jeune sapeur|militaire|bspp|bmpm)\b/.test(exposeText);
+
+    // Profils des 3 jurés
+    const profiles = {
+      officier: `TU ES L'OFFICIER SPP — PRÉSIDENT DU JURY
+Tu es ${titre} ${currentJure.prenom} ${currentJure.nom}, ${currentJure.grade} de sapeurs-pompiers professionnels.
+Tu es le président de ce jury. C'est toi qui mènes l'entretien : tu as ouvert la session, tu poseras la dernière question, tu cadres le timing.
+
+TON DOMAINE de questionnement :
+- Statut du sapeur-pompier professionnel (cadre d'emplois, grades, formations)
+- Organisation et fonctionnement d'un SDIS / SIS
+- Missions des SIS (article L. 1424-2 CGCT)
+- Textes de référence (CGCT, lois 1996, 2004, MATRAS, décrets statutaires)
+- Vérification de cohérence du parcours présenté
+
+TON STYLE :
+- Autoritaire mais courtois, posé, professionnel
+- Tu poses des questions précises, factuelles
+- Tu sais creuser quand le candidat répond bien
+- Tu changes de thème silencieusement si le candidat sèche
+- Tu ne souris pas, ne félicites pas, mais tu n'es pas méchant
+- Mots de transition autorisés : "Précisez.", "Sur quel fondement ?", "Continuez.", "Détaillez.", "Hmm.", ou rien.`,
+
+      elu: `TU ES L'ÉLU — MEMBRE DU JURY
+Tu es ${titre} ${currentJure.prenom} ${currentJure.nom}, ${currentJure.grade}.
+Tu représentes la collectivité qui finance le SDIS. Tu es membre du jury.
+
+TON DOMAINE de questionnement :
+- Culture administrative générale (les 3 versants de la fonction publique, FPT, FPE, FPH)
+- Spécificités de la FPT (cadres d'emplois, libre administration, liste d'aptitude)
+- Acteurs institutionnels (CNFPT, CDG, DGCL, CSFPT, CGFP)
+- Fonctionnement institutionnel (CST, CAP, lois statutaires)
+- Culture générale NEUTRE (actualité grand public, niveau JT 20h : conflits internationaux, élections, événements sportifs ou culturels)
+- Tu évites les sujets politiques sensibles (immigration, gilets jaunes, etc.)
+
+TON STYLE :
+- Courtois, distant, parfois un peu hors-sol par rapport au métier de pompier
+- Tu utilises un français châtié
+- Tu poses tes questions calmement
+- Tu peux paraître condescendant sans le faire exprès
+- Mots de transition autorisés : "Bien.", "D'accord.", "Continuons.", "Je vois.", ou rien.`,
+
+      sousoff: `TU ES LE SOUS-OFFICIER SPP — MEMBRE DU JURY
+Tu es ${titre} ${currentJure.prenom} ${currentJure.nom}, ${currentJure.grade} de sapeurs-pompiers professionnels.
+Tu es le seul "homme/femme de terrain" au jury. Tu vas tester si le candidat est crédible côté pompier.
+
+LE CANDIDAT EST-IL SPV/JSP/MILITAIRE ? ${isSPV ? 'OUI — pose des questions techniques pointues' : 'NON (civil pur) — pose des questions opérationnelles plus générales et de savoir-être'}
+
+TON DOMAINE de questionnement :
+- Mises en situation déontologiques (vol, alcool, harcèlement, ordre illégal, secret pro)
+- Vie de caserne et savoir-être (esprit d'équipe, hiérarchie, tâches ingrates)
+- Vérification de la motivation profonde (acceptation des TIG, du ménage, de l'entretien)
+- ${isSPV ? "Questions techniques précises (SAP, incendie, matériels, gestes techniques, interventions vécues citées dans l'exposé)" : "Questions opérationnelles générales (qu'est-ce qui vous attire dans ce métier au-delà de l'image ? Comment gérez-vous le stress ?)"}
+
+TON STYLE :
+- Direct, concret, parfois un peu rugueux
+- "Entre nous on se comprend" : tu tests si le candidat sait de quoi il parle
+- Tu sais quand quelqu'un noie le poisson
+- Tu poses les questions piège sur les valeurs : "Et le ménage de la caserne, ça vous parle ?"
+- Mots de transition autorisés : "Et concrètement ?", "Et après ?", "Vous faites quoi ?", "Je vous écoute.", ou rien.`
     };
 
-    // === Sélection aléatoire de questions types selon la personnalité ===
+    // Sélection des questions types pertinentes pour CE juré
     let sampleQuestions = '';
     if (state.juryQuestions && state.juryQuestions.length > 0) {
-      const filterByPersona = {
-        technique: q => q.categorie.startsWith('statut_') || q.categorie.startsWith('sis_') || q.categorie.startsWith('fpt_'),
-        bienveillant: q => true, // tous les thèmes
-        sec: q => q.categorie.includes('statut_') || q.categorie.includes('sis_'),
-        comportementaliste: q => q.categorie.includes('deontologie') || q.categorie.includes('droits_obligations') || q.categorie.includes('double_autorite')
+      const filterByRole = {
+        officier: q => q.categorie.startsWith('statut_') || q.categorie.startsWith('sis_'),
+        elu: q => q.categorie.startsWith('fpt_') || q.categorie === 'sis_origines',
+        sousoff: q => q.categorie.includes('deontologie') || q.categorie.includes('droits_obligations') || q.categorie === 'statut_double_autorite' || q.categorie === 'statut_grades'
       };
 
-      const filtered = state.juryQuestions.filter(filterByPersona[persona] || (() => true));
+      const filtered = state.juryQuestions.filter(filterByRole[speaker] || (() => true));
       const pool = filtered.length > 0 ? filtered : state.juryQuestions;
-
-      // Tirer 8 questions au hasard
-      const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 8);
+      const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 5);
 
       sampleQuestions = shuffled.map(q => {
-        const attendus = q.reponse_attendue.slice(0, 5).map(r => '  • ' + r).join('\n');
-        const relances = q.relances.map(r => '  → ' + r).join('\n');
+        const attendus = q.reponse_attendue.slice(0, 4).map(r => '  • ' + r).join('\n');
+        const relances = q.relances.slice(0, 2).map(r => '  → ' + r).join('\n');
         return `▸ ${q.question}
-RÉPONSE ATTENDUE (éléments clés) :
+RÉPONSE ATTENDUE :
 ${attendus}
-RELANCES SI BONNE RÉPONSE :
+RELANCES :
 ${relances}`;
       }).join('\n\n---\n\n');
     }
 
-    return `Tu es membre d'un jury de concours de Caporal de Sapeur-Pompier Professionnel français. Le candidat vient de présenter ses motivations pendant 5 minutes, et tu vas maintenant le questionner pendant 10 minutes.
+    return `Tu es membre d'un jury de concours de Caporal de Sapeur-Pompier Professionnel français. C'est ton tour de poser une question au candidat. Tu es UN juré spécifique — joue ton rôle précisément.
 
-${personaProfiles[persona] || personaProfiles.sec}
+${profiles[speaker]}
 
-EXPOSÉ DU CANDIDAT (à mémoriser pour vérifier la cohérence) :
+═══════════════════════════════════════════════════
+EXPOSÉ DU CANDIDAT (à mémoriser)
+═══════════════════════════════════════════════════
 """${state.exposeText}"""
 
 ═══════════════════════════════════════════════════
-TES CONNAISSANCES DE RÉFÉRENCE — À UTILISER EN PRIORITÉ
+TES CONNAISSANCES DE RÉFÉRENCE
 ═══════════════════════════════════════════════════
 
 ${JURY_KNOWLEDGE_BASE}
 
 ${sampleQuestions ? `
 ═══════════════════════════════════════════════════
-BANQUE DE QUESTIONS TYPES POUR CETTE SESSION
+QUESTIONS TYPES DE TON DOMAINE
 ═══════════════════════════════════════════════════
 
-Tu DOIS prioritairement piocher tes questions dans cette banque (en les reformulant à ta sauce selon ta personnalité). Pour chaque question, tu connais la "réponse attendue" — c'est ta grille d'évaluation. Si le candidat couvre les points clés, tu utilises une RELANCE pour creuser. Sinon, tu changes de thème.
+Tu peux piocher dans ces questions (en les reformulant à ta sauce). Les "réponses attendues" sont ta grille d'évaluation.
 
 ${sampleQuestions}
-
-═══════════════════════════════════════════════════
 ` : ''}
 
 ═══════════════════════════════════════════════════
 RÈGLES ABSOLUES — IMMERSION TOTALE
 ═══════════════════════════════════════════════════
 
-❌ INTERDIT — Tu ne dois JAMAIS, sous aucun prétexte :
-- Qualifier la réponse du candidat ("bonne réponse", "exact", "tout à fait", "vous avez raison", "c'est ça")
-- Confirmer ou infirmer ("oui c'est ça", "non c'est faux", "vous vous trompez")
-- Féliciter ou complimenter ("bravo", "parfait", "intéressant")
-- Faire un commentaire pédagogique ("attention à ne pas confondre", "il faut savoir que")
-- Compléter ou corriger une réponse incomplète
-- Donner un signal au candidat sur la qualité de sa réponse, par quelque biais que ce soit
+❌ INTERDIT :
+- Qualifier la réponse ("bonne réponse", "exact", "vous avez raison", "c'est ça")
+- Confirmer/infirmer ("oui c'est ça", "non c'est faux")
+- Féliciter ("bravo", "parfait", "intéressant")
+- Faire un commentaire pédagogique ("attention à", "il faut savoir que")
+- Compléter ou corriger une réponse
+- Donner un signal sur la qualité de la réponse
 
-✅ AUTORISÉ — Tu peux uniquement :
-- Utiliser un des mots de transition de ton profil ci-dessus, OU rien du tout
-- Marquer un silence (juste poser la question suivante sans préambule)
+✅ AUTORISÉ :
+- Un mot de transition de TON profil, OU rien
+- Marquer un silence
 - Poser ta prochaine question
 
 ═══════════════════════════════════════════════════
 MÉTHODE — LE CREUSAGE
 ═══════════════════════════════════════════════════
 
-→ Si la réponse couvre les ÉLÉMENTS CLÉS attendus : tu CREUSES sur le même thème avec une question plus difficile (utilise les RELANCES de la banque). Tu marques [RELANCE] au début.
+→ Si la réponse couvre les ÉLÉMENTS CLÉS attendus : tu CREUSES sur le même thème avec une question plus difficile. Marque [RELANCE] au début.
 
-→ Si la réponse est INCOMPLÈTE : tu re-questionnes pour faire dire ce qui manque ("Précisez.", "Sur quel article ?", "Et concrètement ?"). Tu marques [RELANCE].
+→ Si la réponse est INCOMPLÈTE : tu re-questionnes pour faire dire ce qui manque. Marque [RELANCE].
 
-→ Si la réponse est FAUSSE ou si le candidat ESQUIVE : tu changes complètement de thème, sans aucune indication. Pioche une nouvelle question dans la banque sur un autre thème.
+→ Si la réponse est FAUSSE ou ESQUIVÉE : tu changes de thème silencieusement.
 
-→ Si le candidat NOIE le POISSON (réponse longue et vague) : tu re-poses la MÊME question plus directement. Une fois. Maximum deux. Si toujours esquive, tu changes.
+→ Si NOIE le POISSON : tu re-poses la MÊME question plus directement. Max 2 fois.
 
-→ Si tu repères une INCOHÉRENCE avec l'exposé initial : tu y reviens froidement ("Vous avez dit tout à l'heure que [X]. Comment expliquez-vous [Y] ?")
-
-═══════════════════════════════════════════════════
-THÈMES À COUVRIR DANS UNE SESSION COMPLÈTE
-═══════════════════════════════════════════════════
-
-Sur 10 minutes, varie les thèmes : statut SPP, organisation des SIS, FPT, mises en situation déontologiques, vérifications de cohérence du parcours, et 1-2 questions d'actualité grand public (niveau JT 20h : conflits internationaux, élections, événements sportifs ou culturels marquants).
+→ Si INCOHÉRENCE avec l'exposé : tu y reviens froidement.
 
 ═══════════════════════════════════════════════════
 FORMAT DE RÉPONSE
 ═══════════════════════════════════════════════════
 
-UNE seule question à la fois. 1 à 3 phrases maximum. Pas de paragraphe.
+UNE seule question. 1 à 3 phrases maximum.
 Si c'est une relance, commence par [RELANCE].
-Tu peux préfixer ton message d'un mot de transition autorisé OU rien.
+RESTE DANS TON DOMAINE — ne pose pas de question qui relèverait d'un autre juré (sauf cas de cohérence parcours).
 
-Exemple de bonne réponse de ta part :
+Exemple de bonne réponse :
 "Précisez. Sur quel fondement juridique ?"
 
-Exemple de mauvaise réponse (INTERDITE) :
-"Très bien, c'est exact ! Maintenant, pouvez-vous nous parler de..."
+Exemple INTERDIT :
+"Très bien, c'est exact ! Maintenant, parlez-moi de..."
 
-Le candidat doit sortir de l'oral en se demandant "ai-je bien fait ?". C'est la condition du réalisme.`;
+Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du concours.`;
   }
 
   function buildMessages(opts) {
-    if (opts.requestDebrief) return [{ role: 'user', content: 'L\'entretien est terminé. Produis le débrief JSON.' }];
-    if (opts.isFirstQuestion) return [{ role: 'user', content: 'Le candidat vient de finir son exposé. Pose ta première question.' }];
-    const h = state.conversation.map(m => ({ role: m.role === 'jury' ? 'assistant' : 'user', content: m.content }));
-    h.push({ role: 'user', content: opts.candidateAnswer });
-    return h;
+    if (opts.requestDebrief) return [{ role: 'user', content: 'L\'entretien est terminé. Produis maintenant le débrief JSON complet en suivant strictement les instructions.' }];
+
+    if (opts.isFirstQuestion) {
+      return [{
+        role: 'user',
+        content: `Le candidat vient de finir son exposé. En tant qu'officier président, c'est à toi d'ouvrir le questionnaire avec ta première question.`
+      }];
+    }
+
+    // Pour les tours suivants : on construit l'historique en marquant qui parle
+    const history = [];
+    state.conversation.forEach(m => {
+      if (m.role === 'jury') {
+        // On préfixe le message du juré pour que Claude sache qui a parlé
+        const speakerLabel = m.speaker
+          ? `[${{officier: 'Officier', elu: 'Élu', sousoff: 'Sous-officier'}[m.speaker]}]`
+          : '';
+        history.push({ role: 'assistant', content: `${speakerLabel} ${m.content}`.trim() });
+      } else {
+        history.push({ role: 'user', content: m.content });
+      }
+    });
+
+    // Ajouter la dernière réponse du candidat + signaler que c'est au tour du juré X
+    history.push({
+      role: 'user',
+      content: `${opts.candidateAnswer}\n\n---\n[INSTRUCTION SYSTÈME : c'est maintenant à toi de poser la prochaine question, en respectant ton profil de juré décrit dans le system prompt. Reste dans ton domaine.]`
+    });
+    return history;
   }
 
   function startSpeechRecognition(phase) {
@@ -1222,28 +1609,70 @@ Le candidat doit sortir de l'oral en se demandant "ai-je bien fait ?". C'est la 
     state.conversation.push({ role, content, meta, isRelance, timestamp: new Date().toISOString() });
     const inner = document.getElementById('oral-conversation-inner');
     const el = document.createElement('div');
-    el.className = 'oral-message ' + (role === 'candidat' ? 'candidat' : '');
-    const av = role === 'jury' ? 'J' : 'M';
-    const avC = role === 'jury' ? 'jury' : 'candidat-avatar';
-    const bC = role === 'jury' ? 'jury-bulle' + (isRelance ? ' relance' : '') : 'candidat-bulle';
+    el.className = 'oral-message candidat';
+    const av = (state.memberEmail?.[0] || 'M').toUpperCase();
     el.innerHTML = `
-      <div class="oral-avatar ${avC}">${av}</div>
+      <div class="oral-avatar candidat-avatar">${av}</div>
       <div class="oral-message-content">
-        <div class="oral-message-meta">${role === 'jury' ? 'Jury · ' + (meta || 'Question') : 'Toi · Réponse'}</div>
-        <div class="oral-bulle ${bC}">${isRelance ? '<span class="oral-relance-tag">↪ Le jury creuse</span>' : ''}${escapeHtml(content)}</div>
+        <div class="oral-message-meta">Toi · Réponse</div>
+        <div class="oral-bulle candidat-bulle">${escapeHtml(content)}</div>
       </div>`;
     inner.appendChild(el);
     document.getElementById('oral-qr-conversation').scrollTop = 9999999;
   }
 
-  function showJuryThinking(show) {
+  // V5 : Affichage d'un message d'un juré spécifique
+  function addJuryMessage(content, speaker, meta, isRelance) {
+    const jure = state.jury[speaker];
+    if (!jure) return;
+
+    state.conversation.push({
+      role: 'jury',
+      speaker: speaker,
+      jureName: `${jure.prenom} ${jure.nom}`,
+      jureGrade: jure.grade,
+      content,
+      meta,
+      isRelance,
+      timestamp: new Date().toISOString()
+    });
+
+    const titre = jure.isFemme ? 'Madame' : 'Monsieur';
+    const labelMap = {
+      officier: 'Officier (Président)',
+      elu: 'Élu',
+      sousoff: 'Sous-officier'
+    };
+
+    const inner = document.getElementById('oral-conversation-inner');
+    const el = document.createElement('div');
+    el.className = 'oral-message';
+    el.innerHTML = `
+      <div class="oral-avatar jury-${speaker}">${jure.avatarLetter}</div>
+      <div class="oral-message-content">
+        <div class="oral-message-meta">${labelMap[speaker]} · ${titre} ${jure.nom} · ${meta || ''}</div>
+        <div class="oral-bulle jury-bulle bulle-${speaker} ${isRelance ? 'relance' : ''}">
+          ${isRelance ? `<span class="oral-relance-tag tag-${speaker}">↪ Creuse sa propre question</span>` : ''}
+          ${escapeHtml(content)}
+        </div>
+      </div>`;
+    inner.appendChild(el);
+    document.getElementById('oral-qr-conversation').scrollTop = 9999999;
+  }
+
+  function showJuryThinking(show, speaker) {
     const ex = document.getElementById('oral-thinking');
     if (ex) ex.remove();
     if (!show) return;
+
+    const jure = speaker && state.jury ? state.jury[speaker] : null;
+    const text = jure
+      ? `${jure.isFemme ? 'Madame' : 'Monsieur'} ${jure.nom} consulte ses notes...`
+      : `Le jury réfléchit...`;
     const el = document.createElement('div');
     el.id = 'oral-thinking';
     el.className = 'oral-jury-pense';
-    el.innerHTML = `<div class="oral-jury-pense-dots"><span></span><span></span><span></span></div><div class="oral-jury-pense-text">Le jury réfléchit...</div>`;
+    el.innerHTML = `<div class="oral-jury-pense-dots"><span></span><span></span><span></span></div><div class="oral-jury-pense-text">${escapeHtml(text)}</div>`;
     document.getElementById('oral-conversation-inner').appendChild(el);
     document.getElementById('oral-qr-conversation').scrollTop = 9999999;
   }
@@ -1308,6 +1737,11 @@ Le candidat doit sortir de l'oral en se demandant "ai-je bien fait ?". C'est la 
     state.conversation = [];
     state.exposeText = '';
     state.questionsCount = 0;
+    state.jury = null;
+    state.lastJurySpeaker = null;
+    state.previousJurySpeaker = null;
+    state.relanceCount = 0;
+    state.juryGreeted = false;
     document.getElementById('oral-conversation-inner').innerHTML = '';
     loadQuota();
     showScreen('accueil');
@@ -1330,7 +1764,7 @@ Le candidat doit sortir de l'oral en se demandant "ai-je bien fait ?". C'est la 
     return `${d.getFullYear()}-W${w.toString().padStart(2,'0')}`;
   }
 
-  return { init, startSession, endExpose, sendAnswer, toggleQRMic, abandonSession, backToHome, restart, endQR, _getCurrentWeekIso };
+  return { init, startSession, endExpose, sendAnswer, toggleQRMic, abandonSession, backToHome, restart, endQR, enterRoom, _getCurrentWeekIso };
 })();
 
 console.log('%c[SIMULATEUR ORAL — MODE TEST]', 'background:#1A1A1A;color:#FBBF24;padding:8px 16px;font-size:14px;font-weight:bold;');
