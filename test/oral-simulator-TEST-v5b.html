@@ -1887,8 +1887,73 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
     }
     // Charger les voix (parfois asynchrone)
     const loadVoices = () => {
-      state.availableVoices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
-      console.log('[VOIX] Voix françaises disponibles :', state.availableVoices.length, state.availableVoices.map(v => v.name));
+      const allVoices = window.speechSynthesis.getVoices().filter(v => v.lang.startsWith('fr'));
+
+      // V5b-fix : pré-classification par genre — liste exhaustive
+      // Sources : Google, Microsoft, Apple, eSpeak, etc.
+      const femalePatterns = [
+        // Apple / macOS / iOS
+        'amélie', 'amelie', 'audrey', 'aurélie', 'aurelie', 'chantal', 'marie',
+        'thomas', 'virginie', 'julie',
+        // Google
+        'google français', 'google.*female',
+        // Microsoft
+        'hortense', 'julie', 'paulina', 'denise', 'eloise', 'eloïse', 'celeste', 'céleste',
+        'brigitte', 'josephine', 'joséphine', 'yvette', 'jacqueline',
+        // Indicateurs explicites
+        'female', 'femme', 'woman', '\\(female\\)', '\\(f\\)', 'f$',
+        // Microsoft cloud voices
+        'microsoft.*hortense', 'microsoft.*denise', 'microsoft.*eloise',
+        'microsoft.*celeste', 'microsoft.*brigitte', 'microsoft.*josephine',
+        'microsoft.*yvette', 'microsoft.*jacqueline'
+      ];
+      const malePatterns = [
+        // Apple / macOS / iOS
+        'thomas', 'jean', 'sébastien', 'sebastien', 'guillaume', 'henri',
+        // Google
+        'google.*male',
+        // Microsoft
+        'paul', 'claude', 'antoine', 'jacques', 'henri', 'alain', 'nicolas',
+        // Indicateurs explicites
+        'male', 'homme', 'man', '\\(male\\)', '\\(m\\)', 'm$',
+        // Microsoft cloud voices
+        'microsoft.*paul', 'microsoft.*claude', 'microsoft.*antoine',
+        'microsoft.*jacques', 'microsoft.*henri', 'microsoft.*alain',
+        'microsoft.*nicolas'
+      ];
+
+      // Note : "Thomas" est ambigu (Apple = homme, parfois autre). On le traite plus bas.
+
+      const isFemmeVoice = (voice) => {
+        const n = voice.name.toLowerCase();
+        // Détection prioritaire des marqueurs explicites
+        if (/\b(female|femme|woman)\b/i.test(voice.name)) return true;
+        if (/\b(male|homme)\b/i.test(voice.name) && !/female/i.test(voice.name)) return false;
+        // Détection par prénoms féminins typiques
+        const femInName = /\b(amélie|amelie|audrey|aurélie|aurelie|chantal|marie|virginie|julie|hortense|paulina|denise|eloise|eloïse|celeste|céleste|brigitte|josephine|joséphine|yvette|jacqueline)\b/i;
+        if (femInName.test(voice.name)) return true;
+        // Détection par prénoms masculins typiques
+        const masInName = /\b(thomas|jean|sébastien|sebastien|guillaume|henri|paul|claude|antoine|jacques|alain|nicolas)\b/i;
+        if (masInName.test(voice.name)) return false;
+        return null; // genre indéterminé
+      };
+
+      // Construit la liste classifiée
+      state.availableVoices = allVoices.map(v => ({
+        voice: v,
+        gender: isFemmeVoice(v),
+        name: v.name
+      }));
+
+      // Sépare les voix par genre
+      state.femaleVoices = state.availableVoices.filter(v => v.gender === true);
+      state.maleVoices = state.availableVoices.filter(v => v.gender === false);
+      state.unknownVoices = state.availableVoices.filter(v => v.gender === null);
+
+      console.log('[VOIX] Voix françaises totales :', state.availableVoices.length);
+      console.log('[VOIX] Femmes détectées :', state.femaleVoices.map(v => v.name));
+      console.log('[VOIX] Hommes détectés :', state.maleVoices.map(v => v.name));
+      console.log('[VOIX] Indéterminées :', state.unknownVoices.map(v => v.name));
     };
     loadVoices();
     if (window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -1896,26 +1961,34 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
     }
   }
 
-  // Sélection d'une voix par juré (homme grave / homme medium / femme medium)
+  // Sélection d'une voix par juré, en respectant strictement le genre
   function getVoiceForJure(speaker) {
     if (!state.availableVoices || state.availableVoices.length === 0) return null;
     const jure = state.jury && state.jury[speaker];
-    if (!jure) return state.availableVoices[0];
+    if (!jure) return state.availableVoices[0]?.voice;
 
-    // Filtre par genre quand possible (selon les noms typiques des voix)
     const isFemme = jure.isFemme;
-    const candidates = state.availableVoices.filter(v => {
-      const n = v.name.toLowerCase();
-      if (isFemme) {
-        return /femme|woman|female|aurélie|amélie|julie|virginie|chantal|marie|audrey/i.test(v.name);
-      }
-      return !/femme|woman|female|aurélie|amélie|julie|virginie|chantal|marie|audrey/i.test(v.name);
-    });
+    let pool = isFemme ? state.femaleVoices : state.maleVoices;
 
-    const pool = candidates.length > 0 ? candidates : state.availableVoices;
-    // Hash du speaker pour avoir une voix consistante
-    const idx = (speaker.charCodeAt(0) + speaker.charCodeAt(1)) % pool.length;
-    return pool[idx];
+    // Si aucune voix du bon genre n'est disponible, on se rabat sur les indéterminées
+    // puis sur n'importe quelle voix
+    if (pool.length === 0) {
+      pool = state.unknownVoices;
+      if (pool.length === 0) {
+        pool = state.availableVoices;
+      }
+    }
+
+    if (pool.length === 0) return null;
+
+    // Hash du speaker pour avoir une voix consistante par juré dans la session
+    // Mais on diversifie quand même les 2-3 jurés du même genre
+    const speakerIdx = { officier: 0, elu: 1, sousoff: 2 }[speaker] || 0;
+    const idx = speakerIdx % pool.length;
+    const selected = pool[idx];
+
+    console.log(`[VOIX] ${speaker} (${isFemme ? 'F' : 'H'}) → ${selected.name}`);
+    return selected.voice;
   }
 
   // Lire un texte avec la voix d'un juré
@@ -1932,7 +2005,20 @@ Le candidat doit sortir en se demandant "ai-je bien fait ?". C'est la règle du 
     if (voice) utterance.voice = voice;
     utterance.lang = 'fr-FR';
     utterance.rate = 0.95;
-    utterance.pitch = speaker === 'officier' ? 0.9 : (speaker === 'sousoff' ? 1.0 : 1.05);
+
+    // V5b-fix : pitch ajusté finement selon le genre du juré
+    // Si on a dû tomber sur une voix indéterminée, on force le pitch pour différencier
+    const jure = state.jury && state.jury[speaker];
+    const isFemme = jure?.isFemme;
+
+    if (isFemme) {
+      // Voix féminine : pitch plus haut
+      utterance.pitch = speaker === 'elu' ? 1.15 : (speaker === 'sousoff' ? 1.05 : 1.10);
+    } else {
+      // Voix masculine : pitch plus bas
+      utterance.pitch = speaker === 'officier' ? 0.85 : (speaker === 'sousoff' ? 0.95 : 0.90);
+    }
+
     utterance.volume = 1.0;
 
     if (onEndCallback) {
