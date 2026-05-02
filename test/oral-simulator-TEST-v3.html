@@ -166,7 +166,7 @@
 
 <!-- Bandeau d'avertissement -->
 <div class="test-banner">
-  ⚠️ MODE TEST V2 — Jury 100% neutre verbalement, 4 personnalités tirées au sort. Ouvre la console (F12) pour voir le jury actif.
+  ⚠️ MODE TEST V3 — Bug de transcription corrigé. Pour tester la pertinence des relances, passe en mode DIRECT (vraie IA).
 </div>
 
 <!-- Panneau de configuration -->
@@ -609,6 +609,8 @@ const OralSimulator = (function() {
   function startExpose() {
     showScreen('expose');
     state.exposeText = '';
+    state._finalSegments = []; // Reset du buffer de transcription
+    state._lastSessionFinalsCount = 0;
     let elapsed = 0;
     document.getElementById('oral-transcription').innerHTML = '<span class="provisoire">Commence à parler...</span>';
     state.timers.expose = setInterval(() => {
@@ -673,6 +675,11 @@ const OralSimulator = (function() {
     if (!a) return;
     addMessage('candidat', a);
     input.value = '';
+
+    // Réinitialiser le buffer de transcription pour la prochaine réponse
+    state._finalSegments = [];
+    state._lastSessionFinalsCount = 0;
+
     state.questionsCount++;
     showJuryThinking(true);
     const next = await callJury({ candidateAnswer: a });
@@ -888,29 +895,107 @@ Le candidat doit sortir de l'oral en se demandant "ai-je bien fait ?". C'est la 
 
   function startSpeechRecognition(phase) {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return;
+    if (!SR) {
+      console.warn('[SPEECH] Web Speech API non supportée — utilise Chrome ou Edge');
+      return;
+    }
+
+    // Stop toute reconnaissance en cours pour repartir propre
+    if (state.recognition) {
+      try { state.recognition.stop(); } catch(e) {}
+      state.recognition = null;
+    }
+
     state.recognition = new SR();
     state.recognition.lang = 'fr-FR';
     state.recognition.continuous = true;
     state.recognition.interimResults = true;
-    let final = '';
+    state.recognition.maxAlternatives = 1;
+
+    // === Variables persistantes (pas réinitialisées entre les segments) ===
+    // On stocke chaque segment final indépendamment pour éviter les doublons
+    state._finalSegments = state._finalSegments || [];
+    state._currentPhase = phase;
+
     state.recognition.onresult = (e) => {
       let interim = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        const t = e.results[i][0].transcript;
-        if (e.results[i].isFinal) final += t + ' ';
-        else interim += t;
+
+      // Reconstruire la liste complète des segments finaux à chaque appel
+      // (Chrome envoie parfois e.resultIndex de manière incohérente après un restart)
+      const allFinals = [];
+      for (let i = 0; i < e.results.length; i++) {
+        const result = e.results[i];
+        const transcript = result[0].transcript.trim();
+        if (result.isFinal) {
+          allFinals.push(transcript);
+        } else {
+          interim += transcript + ' ';
+        }
       }
+
+      // Fusionner avec les segments précédents (en évitant les doublons)
+      // Les segments finaux d'une nouvelle session sont ajoutés à la fin
+      const previousFinalsCount = state._finalSegments.length;
+      const newFinalsFromThisSession = allFinals;
+
+      // Si on a moins de segments qu'avant, c'est qu'on a redémarré la reco → on garde l'historique
+      // Sinon on remplace par la version courante
+      if (newFinalsFromThisSession.length >= state._lastSessionFinalsCount) {
+        // Même session, on remplace les derniers segments
+        state._finalSegments = state._finalSegments
+          .slice(0, previousFinalsCount - state._lastSessionFinalsCount)
+          .concat(newFinalsFromThisSession);
+      } else {
+        // Restart détecté, on ajoute simplement
+        state._finalSegments = state._finalSegments.concat(newFinalsFromThisSession);
+      }
+      state._lastSessionFinalsCount = newFinalsFromThisSession.length;
+
+      const finalText = state._finalSegments.join(' ').trim();
+
       if (phase === 'expose') {
-        document.getElementById('oral-transcription').innerHTML = `<span class="definitif">${final}</span><span class="provisoire">${interim}</span>`;
-        state.exposeText = final;
+        const el = document.getElementById('oral-transcription');
+        if (finalText || interim) {
+          el.innerHTML = `<span class="definitif">${escapeHtml(finalText)}${finalText ? ' ' : ''}</span><span class="provisoire">${escapeHtml(interim)}</span>`;
+        }
+        state.exposeText = finalText;
       } else if (phase === 'qr') {
-        document.getElementById('oral-qr-input').value = final + interim;
+        const input = document.getElementById('oral-qr-input');
+        // Pour le Q/R, on remet le texte complet à chaque tour (pas d'accumulation entre questions)
+        input.value = (finalText + ' ' + interim).trim();
       }
     };
-    state.recognition.onerror = (e) => console.warn('Speech error', e);
-    state.recognition.onend = () => { if (state.isRecording) try { state.recognition.start(); } catch(e){} };
-    try { state.recognition.start(); state.isRecording = true; } catch(e){}
+
+    state.recognition.onerror = (e) => {
+      console.warn('[SPEECH] Erreur:', e.error);
+      if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+        alert('Micro bloqué. Autorise l\'accès au micro dans Chrome (icône cadenas dans la barre d\'adresse).');
+        state.isRecording = false;
+      }
+    };
+
+    state.recognition.onend = () => {
+      // Auto-restart si on est encore en phase active
+      if (state.isRecording) {
+        // Reset du compteur de session pour que le prochain onresult sache qu'on a redémarré
+        state._lastSessionFinalsCount = 0;
+        try {
+          state.recognition.start();
+        } catch(e) {
+          console.warn('[SPEECH] Restart impossible:', e.message);
+        }
+      }
+    };
+
+    state._lastSessionFinalsCount = 0;
+
+    try {
+      state.recognition.start();
+      state.isRecording = true;
+      console.log('[SPEECH] Reconnaissance démarrée — phase:', phase);
+    } catch(e) {
+      console.warn('[SPEECH] Démarrage impossible:', e.message);
+    }
   }
 
   function stopSpeechRecognition() {
