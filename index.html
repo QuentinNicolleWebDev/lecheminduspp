@@ -4745,26 +4745,31 @@ if(window.location.search.indexOf('success') !== -1) {
       <!-- ============ BARRE D'ONGLETS ============ -->
       <!-- Mon planning en premier : c'est la page d'accueil de l'espace candidat,
            pour que le membre voie d'abord sa semaine de travail à son arrivée. -->
-      <div class="esp-tabs" role="tablist" aria-label="Sections de l'espace candidat">
-        <button class="esp-tab" id="esp-tab-btn-upgrade" role="tab" aria-selected="false" onclick="espSwitchTab('upgrade')">
+      <!-- Pattern WAI-ARIA tablist (commit 5/5) :
+           - aria-controls relie chaque bouton à son panneau
+           - tabindex roving : seul l'onglet actif est dans l'ordre Tab (0),
+             les autres ne sont accessibles qu'au sein du tablist via flèches.
+           - La synchro tabindex/aria-selected est faite dans espSwitchTab(). -->
+      <div class="esp-tabs" role="tablist" aria-label="Sections de l'espace candidat" onkeydown="espTabsKeydown(event)">
+        <button class="esp-tab" id="esp-tab-btn-upgrade" role="tab" aria-selected="false" aria-controls="esp-tab-upgrade" tabindex="-1" onclick="espSwitchTab('upgrade')">
           <span class="esp-tab-ic">⬆</span>Upgrade
         </button>
-        <button class="esp-tab active" id="esp-tab-btn-planning" role="tab" aria-selected="true" onclick="espSwitchTab('planning')">
+        <button class="esp-tab active" id="esp-tab-btn-planning" role="tab" aria-selected="true" aria-controls="esp-tab-planning" tabindex="0" onclick="espSwitchTab('planning')">
           <span class="esp-tab-ic">📅</span>Mon planning
         </button>
-        <button class="esp-tab" id="esp-tab-btn-stats" role="tab" aria-selected="false" onclick="espSwitchTab('stats')">
+        <button class="esp-tab" id="esp-tab-btn-stats" role="tab" aria-selected="false" aria-controls="esp-tab-stats" tabindex="-1" onclick="espSwitchTab('stats')">
           <span class="esp-tab-ic">📊</span>Statistiques
         </button>
-        <button class="esp-tab" id="esp-tab-btn-badges" role="tab" aria-selected="false" onclick="espSwitchTab('badges')">
+        <button class="esp-tab" id="esp-tab-btn-badges" role="tab" aria-selected="false" aria-controls="esp-tab-badges" tabindex="-1" onclick="espSwitchTab('badges')">
           <span class="esp-tab-ic">🏆</span>Badges
         </button>
-        <button class="esp-tab" id="esp-tab-btn-infos" role="tab" aria-selected="false" onclick="espSwitchTab('infos')">
+        <button class="esp-tab" id="esp-tab-btn-infos" role="tab" aria-selected="false" aria-controls="esp-tab-infos" tabindex="-1" onclick="espSwitchTab('infos')">
           <span class="esp-tab-ic">👤</span>Mes infos
         </button>
       </div>
 
       <!-- ============ ONGLET : STATISTIQUES ============ -->
-      <div class="esp-tab-pane" id="esp-tab-stats" role="tabpanel">
+      <div class="esp-tab-pane" id="esp-tab-stats" role="tabpanel" aria-labelledby="esp-tab-btn-stats" tabindex="0">
 
       <!-- Ancre invisible utilisée pour calculer la position cible du scroll
            (car la barre nav elle-même est sticky et son rect.top n'est donc pas fiable) -->
@@ -5017,7 +5022,7 @@ if(window.location.search.indexOf('success') !== -1) {
       </div><!-- /esp-tab-stats -->
 
       <!-- ============ ONGLET : UPGRADE ============ -->
-      <div class="esp-tab-pane" id="esp-tab-upgrade" role="tabpanel">
+      <div class="esp-tab-pane" id="esp-tab-upgrade" role="tabpanel" aria-labelledby="esp-tab-btn-upgrade" tabindex="0">
         <div class="esp-upgrade-wrap">
           <div class="esp-upgrade-title" id="esp-upg-title">Passe au niveau supérieur</div>
           <div class="esp-upgrade-sub" id="esp-upg-sub">Progresse plus vite avec une formule plus complète — débloque la prépa physique ou un accompagnement humain jusqu'au jour J.</div>
@@ -5031,7 +5036,7 @@ if(window.location.search.indexOf('success') !== -1) {
       </div><!-- /esp-tab-upgrade -->
 
       <!-- ============ ONGLET : MON PLANNING ============ -->
-      <div class="esp-tab-pane active" id="esp-tab-planning" role="tabpanel">
+      <div class="esp-tab-pane active" id="esp-tab-planning" role="tabpanel" aria-labelledby="esp-tab-btn-planning" tabindex="0">
         <div style="max-width:880px;margin:0 auto;padding:0 4px">
 
           <!-- Intro compacte -->
@@ -5125,7 +5130,7 @@ if(window.location.search.indexOf('success') !== -1) {
       </div><!-- /esp-tab-planning -->
 
       <!-- ============ ONGLET : BADGES ============ -->
-      <div class="esp-tab-pane" id="esp-tab-badges" role="tabpanel">
+      <div class="esp-tab-pane" id="esp-tab-badges" role="tabpanel" aria-labelledby="esp-tab-btn-badges" tabindex="0">
         <div class="esp-badges-header">
           <div>
             <div class="s-eyebrow" style="color:var(--red);margin-bottom:8px">Ma collection</div>
@@ -5137,7 +5142,7 @@ if(window.location.search.indexOf('success') !== -1) {
       </div><!-- /esp-tab-badges -->
 
       <!-- ============ ONGLET : MES INFOS ============ -->
-      <div class="esp-tab-pane" id="esp-tab-infos" role="tabpanel">
+      <div class="esp-tab-pane" id="esp-tab-infos" role="tabpanel" aria-labelledby="esp-tab-btn-infos" tabindex="0">
         <div class="esp-infos-wrap">
 
           <div class="esp-infos-row">
@@ -10753,18 +10758,63 @@ function submitReport(reason) {
 
 var espActiveTab = 'planning';
 
+// Liste ordonnée des onglets esp-tabs (utilisée pour la nav clavier).
+// L'ordre suit le DOM, pas l'ordre alphabétique : indispensable pour
+// que ArrowLeft/ArrowRight cyclent dans le bon sens visuel.
+var ESP_TABS_ORDER = ['upgrade','planning','stats','badges','infos'];
+
+// Handler clavier WAI-ARIA pour le tablist esp-tabs.
+// Conventions :
+//   ArrowLeft  / ArrowRight : navigation circulaire entre onglets visibles
+//   Home / End              : premier / dernier onglet visible
+//   Enter / Space           : activé par le navigateur via onclick natif
+// La sélection clavier active immédiatement l'onglet (pattern "automatic")
+// et déplace le focus dessus, conformément aux spec ARIA APG.
+// Les onglets cachés (ex : Upgrade pour Excellence) sont automatiquement
+// sautés en filtrant sur offsetParent.
+function espTabsKeydown(e) {
+  var key = e.key;
+  if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') return;
+  e.preventDefault();
+  // Construit la liste des onglets actuellement visibles dans le DOM
+  var visible = ESP_TABS_ORDER
+    .map(function(t){ return document.getElementById('esp-tab-btn-' + t); })
+    .filter(function(btn){ return btn && btn.offsetParent !== null; });
+  if (visible.length === 0) return;
+  // Index de l'onglet actuellement actif (focus ou aria-selected)
+  var currentIdx = visible.findIndex(function(btn){ return btn === document.activeElement; });
+  if (currentIdx === -1) {
+    currentIdx = visible.findIndex(function(btn){ return btn.getAttribute('aria-selected') === 'true'; });
+  }
+  if (currentIdx === -1) currentIdx = 0;
+  var nextIdx = currentIdx;
+  if (key === 'ArrowLeft')  nextIdx = (currentIdx - 1 + visible.length) % visible.length;
+  if (key === 'ArrowRight') nextIdx = (currentIdx + 1) % visible.length;
+  if (key === 'Home')       nextIdx = 0;
+  if (key === 'End')        nextIdx = visible.length - 1;
+  // Active l'onglet : extrait son nom depuis l'ID puis appelle espSwitchTab,
+  // qui met aussi à jour le tabindex pour que le focus survive.
+  var nextBtn = visible[nextIdx];
+  var nextName = nextBtn.id.replace('esp-tab-btn-', '');
+  espSwitchTab(nextName);
+  nextBtn.focus();
+}
+
 function espSwitchTab(tabName) {
   if (!tabName) tabName = 'planning';
   espActiveTab = tabName;
-  // Boutons
-  ['upgrade','stats','planning','badges','infos'].forEach(function(t){
+  // Synchronise classes + ARIA + tabindex roving sur les boutons et panes
+  ESP_TABS_ORDER.forEach(function(t){
     var btn = document.getElementById('esp-tab-btn-' + t);
     var pane = document.getElementById('esp-tab-' + t);
+    var isActive = (t === tabName);
     if (btn) {
-      btn.classList.toggle('active', t === tabName);
-      btn.setAttribute('aria-selected', t === tabName ? 'true' : 'false');
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      // Roving tabindex : seul l'onglet actif est dans l'ordre Tab global
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
     }
-    if (pane) pane.classList.toggle('active', t === tabName);
+    if (pane) pane.classList.toggle('active', isActive);
   });
   // Rendu on-demand selon onglet
   if (tabName === 'upgrade' && typeof renderUpgradeTab === 'function') renderUpgradeTab();
