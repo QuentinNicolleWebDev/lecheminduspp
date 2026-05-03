@@ -2855,7 +2855,17 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
   </div>
 </div>
 
-<!-- ===== MOBILE NAV ===== -->
+<!-- ===== MOBILE NAV =====
+     Architecture refonte (Phase 3 / commit 2) :
+     - Sections et liens portent data-audience="visitor|member" : source de vérité
+       unique alignée avec la nav desktop.
+     - Chaque .mobile-nav-link reçoit data-page : permettra l'indicateur d'état
+       actif au commit 3 (cohérent avec le desktop).
+     - Anciennes classes (.mobile-nav-visitor, .mobile-nav-member-only,
+       .mobile-nav-cta-signup, .mobile-nav-logout) CONSERVÉES TEMPORAIREMENT
+       pour rendu correct pendant la pause de validation visuelle (pause-1).
+     - L'a11y du drawer (role=dialog, focus trap, Escape) sera ajoutée au
+       commit 4 — ici on prépare uniquement la structure data-driven. -->
 <div class="mobile-nav" id="mobileNav">
   <!-- Header : logo + bouton fermer (toujours visible) -->
   <div class="mobile-nav-header">
@@ -2866,62 +2876,60 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
   <!-- Body scrollable -->
   <div class="mobile-nav-body">
     <!-- Bandeau pseudo (visible si connecté uniquement) -->
-    <div class="mobile-nav-member">
+    <div class="mobile-nav-member" data-audience="member">
       <div class="mobile-nav-member-pseudo" id="mobile-member-pseudo">—</div>
       <div class="mobile-nav-member-status" id="mobile-member-status">Candidat</div>
     </div>
 
     <!-- ============================================================
-         NAV MOBILE — VISITEUR (5 sections)
-         Masquée pour les membres connectés
-         Le retour à l'Accueil se fait via le logo en header (convention web).
+         NAV MOBILE — VISITEUR (5 sections) — data-audience="visitor"
+         Retour à l'Accueil via le logo en header (convention web).
          ============================================================ -->
-    <div class="mobile-nav-visitor">
+    <div class="mobile-nav-visitor" data-audience="visitor">
       <div class="mobile-nav-section first">Découvrir</div>
-      <div class="mobile-nav-link" onclick="goTo('parcours');closeMobileNav()"><span class="mn-ico">📖</span>Mon histoire<span class="mn-arrow">›</span></div>
-      <div class="mobile-nav-link" onclick="goTo('comment');closeMobileNav()"><span class="mn-ico">💡</span>Comment je t'aide<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="parcours" onclick="goTo('parcours');closeMobileNav()"><span class="mn-ico">📖</span>Mon histoire<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="comment" onclick="goTo('comment');closeMobileNav()"><span class="mn-ico">💡</span>Comment je t'aide<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">S'inscrire</div>
-      <div class="mobile-nav-link" onclick="goTo('formation');closeMobileNav()"><span class="mn-ico">📋</span>Tarifs<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="formation" onclick="goTo('formation');closeMobileNav()"><span class="mn-ico">📋</span>Tarifs<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Ressources gratuites</div>
-      <div class="mobile-nav-link" onclick="goTo('biblio');closeMobileNav()"><span class="mn-ico">📚</span>Bibliothèque<span class="mn-arrow">›</span></div>
-      <div class="mobile-nav-link" onclick="goTo('actu');closeMobileNav()"><span class="mn-ico">📰</span>Actualités<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="biblio" onclick="goTo('biblio');closeMobileNav()"><span class="mn-ico">📚</span>Bibliothèque<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="actu" onclick="goTo('actu');closeMobileNav()"><span class="mn-ico">📰</span>Actualités<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Communauté</div>
-      <div class="mobile-nav-link" onclick="goTo('candidats');closeMobileNav()"><span class="mn-ico">👥</span>Les candidats<sup>NEW</sup><span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="candidats" onclick="goTo('candidats');closeMobileNav()"><span class="mn-ico">👥</span>Les candidats<sup>NEW</sup><span class="mn-arrow">›</span></div>
     </div>
 
     <!-- ============================================================
-         NAV MOBILE — MEMBRE
-         Visible uniquement pour les membres connectés.
-         L'entrée "Mon espace" a été retirée du menu : on y accède via
-         le bouton avec le pseudo en haut à droite (toujours visible).
+         NAV MOBILE — MEMBRE — data-audience="member"
+         L'entrée "Mon espace" est portée par le bouton pseudo (header) ;
+         pas reprise ici pour éviter le doublon.
          ============================================================ -->
-    <div class="mobile-nav-member-only">
+    <div class="mobile-nav-member-only" data-audience="member">
       <div class="mobile-nav-section first">Préparation écrite</div>
-      <div class="mobile-nav-link" onclick="goTo('qcm');closeMobileNav()"><span class="mn-ico">🎯</span>QCM<span class="mn-arrow">›</span></div>
-      <div class="mobile-nav-link" onclick="goTo('concours');closeMobileNav()"><span class="mn-ico">⏱️</span>Mode concours<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="qcm" onclick="goTo('qcm');closeMobileNav()"><span class="mn-ico">🎯</span>QCM<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="concours" onclick="goTo('concours');closeMobileNav()"><span class="mn-ico">⏱️</span>Mode concours<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Préparation physique</div>
-      <div class="mobile-nav-link" onclick="goToPrepa();closeMobileNav()"><span class="mn-ico">💪</span>Préparation physique<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="prepa" onclick="goToPrepa();closeMobileNav()"><span class="mn-ico">💪</span>Préparation physique<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Ressources</div>
-      <div class="mobile-nav-link" onclick="goTo('biblio');closeMobileNav()"><span class="mn-ico">📚</span>Bibliothèque<span class="mn-arrow">›</span></div>
-      <div class="mobile-nav-link" onclick="goTo('actu');closeMobileNav()"><span class="mn-ico">📰</span>Actualités<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="biblio" onclick="goTo('biblio');closeMobileNav()"><span class="mn-ico">📚</span>Bibliothèque<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="actu" onclick="goTo('actu');closeMobileNav()"><span class="mn-ico">📰</span>Actualités<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Communauté</div>
-      <div class="mobile-nav-link" onclick="goTo('candidats');closeMobileNav()"><span class="mn-ico">👥</span>Les candidats<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="candidats" onclick="goTo('candidats');closeMobileNav()"><span class="mn-ico">👥</span>Les candidats<span class="mn-arrow">›</span></div>
     </div>
   </div>
 
   <!-- Footer : CTAs contextuels -->
   <div class="mobile-nav-footer">
-    <!-- CTA principal (non connectés) -->
-    <button class="btn btn-red mobile-nav-cta-signup" onclick="goTo('decouverte');closeMobileNav()">Essai gratuit</button>
-    <button class="btn btn-outline mobile-nav-cta-signup" onclick="goTo('connexion');closeMobileNav()">Se connecter</button>
-    <!-- Logout (connectés) -->
-    <button class="btn btn-outline mobile-nav-logout" onclick="logoutMember();closeMobileNav()">Déconnexion</button>
+    <!-- CTA principal (non connectés) — data-audience="visitor" -->
+    <button class="btn btn-red mobile-nav-cta-signup" data-audience="visitor" onclick="goTo('decouverte');closeMobileNav()">Essai gratuit</button>
+    <button class="btn btn-outline mobile-nav-cta-signup" data-audience="visitor" onclick="goTo('connexion');closeMobileNav()">Se connecter</button>
+    <!-- Logout (connectés) — data-audience="member" -->
+    <button class="btn btn-outline mobile-nav-logout" data-audience="member" onclick="logoutMember();closeMobileNav()">Déconnexion</button>
   </div>
 </div>
 
