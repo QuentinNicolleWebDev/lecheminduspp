@@ -2945,8 +2945,9 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
          ============================================================ -->
     <div class="mobile-nav-member-only" data-audience="member">
       <div class="mobile-nav-section first">Préparation écrite</div>
-      <div class="mobile-nav-link" data-page="qcm" onclick="goTo('qcm');closeMobileNav()"><span class="mn-ico">🎯</span>QCM<span class="mn-arrow">›</span></div>
-      <div class="mobile-nav-link" data-page="concours" onclick="goTo('concours');closeMobileNav()"><span class="mn-ico">⏱️</span>Mode concours<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="prepa-maths" onclick="goTo('prepa-maths');closeMobileNav()"><span class="mn-ico">🧮</span>Mathématiques<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="prepa-texte" onclick="goTo('prepa-texte');closeMobileNav()"><span class="mn-ico">📖</span>Étude de texte<span class="mn-arrow">›</span></div>
+      <div class="mobile-nav-link" data-page="prepa-equipier" onclick="goTo('prepa-equipier');closeMobileNav()"><span class="mn-ico">🚒</span>Connaissances équipier<span class="mn-arrow">›</span></div>
 
       <div class="mobile-nav-section">Préparation physique</div>
       <div class="mobile-nav-link" data-page="prepa" onclick="goToPrepa();closeMobileNav()"><span class="mn-ico">💪</span>Préparation physique<span class="mn-arrow">›</span></div>
@@ -3027,8 +3028,9 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
       <button class="nav-group-btn">Préparation écrite</button>
       <div class="nav-group-bar"></div>
       <div class="nav-dropdown">
-        <button class="nav-dropdown-item" data-page="qcm" onclick="goTo('qcm')"><span class="nav-item-ico">🎯</span>QCM</button>
-        <button class="nav-dropdown-item" data-page="concours" onclick="goTo('concours')"><span class="nav-item-ico">⏱️</span>Mode concours</button>
+        <button class="nav-dropdown-item" data-page="prepa-maths" onclick="goTo('prepa-maths')"><span class="nav-item-ico">🧮</span>Mathématiques</button>
+        <button class="nav-dropdown-item" data-page="prepa-texte" onclick="goTo('prepa-texte')"><span class="nav-item-ico">📖</span>Étude de texte</button>
+        <button class="nav-dropdown-item" data-page="prepa-equipier" onclick="goTo('prepa-equipier')"><span class="nav-item-ico">🚒</span>Connaissances équipier</button>
       </div>
     </div>
     <div class="nav-group nav-member-only" data-audience="member" id="navg-prepa-physique">
@@ -3926,6 +3928,59 @@ body.demo-mode:not(.is-logged) .examen-wrap{margin-top:118px}
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ============================= PAGES: PREPARATION ECRITE PAR THEMATIQUE =============================
+     3 pages thematiques (Maths / Etude de texte / Connaissances equipier).
+     Chaque page expose 3 blocs remplis au runtime par initPrepaTheme(themeKey) :
+       - Theorie  : clones de cards page-biblio filtrees sur le theme
+       - QCM      : mini-widget de lancement pre-configure sur les categories du theme
+       - Annales  : sujets filtres sur a.theme === themeKey via renderAnnalesForTheme()
+     Les pages page-qcm et page-concours sont CONSERVEES (fallback deeplinks, parcours
+     decouverte non-payant qui passe par .demo-nav-bar). =================================== -->
+<div class="page" id="page-prepa-maths">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Préparation écrite</div>
+      <div class="s-title">Mathématiques</div>
+      <div class="s-lead">Arithmétique, géométrie, mesures du quotidien — niveau fin de 3ème, sous chronomètre. Théorie, QCM ciblés et annales chronométrées rassemblés ici.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div id="prepa-maths-textes" class="prepa-theme-block"></div>
+    <div id="prepa-maths-qcm" class="prepa-theme-block" style="margin-top:48px"></div>
+    <div id="prepa-maths-annales" class="prepa-theme-block" style="margin-top:48px"></div>
+  </div>
+</div>
+
+<div class="page" id="page-prepa-texte">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Préparation écrite</div>
+      <div class="s-title">Étude de texte</div>
+      <div class="s-lead">Compréhension, synthèse et restitution d'un texte réglementaire ou professionnel. Méthodologie, QCM ciblés et annales chronométrées rassemblés ici.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div id="prepa-texte-textes" class="prepa-theme-block"></div>
+    <div id="prepa-texte-qcm" class="prepa-theme-block" style="margin-top:48px"></div>
+    <div id="prepa-texte-annales" class="prepa-theme-block" style="margin-top:48px"></div>
+  </div>
+</div>
+
+<div class="page" id="page-prepa-equipier">
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="s-eyebrow">Préparation écrite</div>
+      <div class="s-title">Connaissances équipier</div>
+      <div class="s-lead">Activités, compétences et culture professionnelle de l'équipier sapeur-pompier : doctrines opérationnelles, statut, organisation des SIS, divers. Théorie, QCM ciblés et annales chronométrées rassemblés ici.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div id="prepa-equipier-textes" class="prepa-theme-block"></div>
+    <div id="prepa-equipier-qcm" class="prepa-theme-block" style="margin-top:48px"></div>
+    <div id="prepa-equipier-annales" class="prepa-theme-block" style="margin-top:48px"></div>
   </div>
 </div>
 
@@ -4877,7 +4932,7 @@ if(window.location.search.indexOf('success') !== -1) {
           <div style="font-size:2.5rem;margin-bottom:12px">🕸️</div>
           <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--charcoal);margin-bottom:8px">Pas encore de données cette semaine</div>
           <div style="font-size:.88rem;color:var(--gray);line-height:1.65;max-width:480px;margin:0 auto 18px">Lance quelques sessions QCM dans la semaine pour voir apparaître ton radar de progression. Il se mettra à jour automatiquement.</div>
-          <button class="btn btn-red" onclick="goTo('qcm')">Démarrer un QCM →</button>
+          <button class="btn btn-red" onclick="goTo('prepa-equipier')">Démarrer un QCM →</button>
         </div>
       </div>
 
@@ -11056,6 +11111,9 @@ function goTo(id) {
     // (espace/demo-espace/profil → pas d'entrée nav dédiée, accès via le bouton du pseudo)
     qcm:         ['navg-prepa-ecrite'],
     concours:    ['navg-prepa-ecrite'],
+    'prepa-maths':    ['navg-prepa-ecrite'],
+    'prepa-texte':    ['navg-prepa-ecrite'],
+    'prepa-equipier': ['navg-prepa-ecrite'],
     prepa:       ['navg-prepa-physique'],
     'demo-prepa': ['navg-prepa-physique']
   };
@@ -11072,6 +11130,9 @@ function goTo(id) {
   if (id === 'qcm') { initQcm(); checkAccessGate('qcm'); }
   if (id === 'biblio' || id === 'actu') checkAccessGate(id);
   if (id === 'concours') { checkAccessGate('concours'); renderAnnalesThemes(); }
+  if (id === 'prepa-maths')    initPrepaTheme('maths');
+  if (id === 'prepa-texte')    initPrepaTheme('etude-texte');
+  if (id === 'prepa-equipier') initPrepaTheme('equipier');
   if (id === 'prepa') { checkAccessGate('prepa'); renderPrepa(); }
   if (id === 'espace') { renderEspace(); }
   if (id === 'demo-espace') { renderDemoEspace(); }
@@ -12721,22 +12782,22 @@ var tourSteps = [
     targetSelector: '#navg-prepa-ecrite',
     stepLabel: 'Étape 4 / 10',
     title: 'Préparation écrite',
-    text: "Sous cet onglet, tu retrouves les QCM thématiques (1000+ questions sourcées) et le Mode concours (annales chronométrées en conditions réelles).",
+    text: "Sous cet onglet, tu choisis ton épreuve : Mathématiques, Étude de texte ou Connaissances équipier. Chaque page regroupe la théorie, les QCM ciblés sur le thème et les annales chronométrées correspondantes.",
     onEnter: function(){ if (typeof espSwitchTab === 'function') espSwitchTab('planning'); }
   },
 
-  // ÉTAPE 5 — Révision Intelligente : la vraie valeur ajoutée
+  // ÉTAPE 5 — Révision Intelligente : la vraie valeur ajoutée (transversale aux 3 thèmes)
   {
-    page: 'qcm',
-    targetSelector: '#tab-review',
+    page: 'prepa-equipier',
+    targetSelector: '#prepa-equipier-rev-btn',
     stepLabel: 'Étape 5 / 10',
     title: 'La Révision Intelligente',
-    text: "C'est le mode qui te fera vraiment progresser. L'algorithme analyse ton historique et te ressort en priorité les questions sur lesquelles tu te trompes. Plus tu pratiques, plus il te connaît."
+    text: "C'est le mode qui te fera vraiment progresser. L'algorithme analyse ton historique sur les 3 thèmes et te ressort en priorité les questions sur lesquelles tu te trompes. Plus tu pratiques, plus il te connaît."
   },
 
   // ÉTAPE 6 — Préparation physique
   {
-    page: 'qcm',
+    page: 'prepa-equipier',
     targetSelector: '#navg-prepa-physique',
     stepLabel: 'Étape 6 / 10',
     title: 'Préparation physique',
@@ -17373,6 +17434,191 @@ function loadAnnalesIndex() {
     annalesData = data;
     return data;
   });
+}
+
+// ============================= PREPARATION ECRITE PAR THEMATIQUE =============================
+// initPrepaTheme(themeKey) remplit les 3 containers (Theorie / QCM / Annales) de la page
+// thematique correspondante. Pas de duplication de moteur :
+//   - Theorie : clones outerHTML des .biblio-card des sections biblio-acc concernees
+//   - QCM     : configure selectedCats + randomNb + qcmMode puis appelle launchQcm() existant
+//   - Annales : reutilise loadAnnalesIndex() en filtrant sur a.theme === annalesKey
+// La Revision intelligente reste TRANSVERSALE (pioche dans tout l'historique) — on l'expose
+// juste comme raccourci sur chaque page thematique, jamais on ne la cloisonne par theme.
+var PREPA_THEME_MAP = {
+  'maths': {
+    label: 'Mathématiques',
+    biblioAcc: ['maths'],
+    qcmCats: ['maths'],
+    qcmCatsExtra: [],
+    annalesKey: 'maths'
+  },
+  'etude-texte': {
+    label: 'Étude de texte',
+    biblioAcc: ['methodo'],
+    // Categorie QCM dediee 'methodo-texte' a creer plus tard. En attendant : etat vide propre.
+    qcmCats: [],
+    qcmCatsExtra: [],
+    annalesKey: 'etude-texte'
+  },
+  'equipier': {
+    label: 'Connaissances équipier',
+    biblioAcc: ['doctrines','culture','divers'],
+    qcmCats: ['textes','statut','sis','divers'].concat(DOCTRINES_SUBCATS),
+    qcmCatsExtra: HORS_PROGRAMME_SUBCATS.slice(),
+    annalesKey: 'equipier'
+  }
+};
+
+// Le slug DOM diffère du themeKey uniquement pour 'etude-texte' (raccourci 'texte' dans les ids HTML)
+function _prepaThemeSlug(themeKey) { return themeKey === 'etude-texte' ? 'texte' : themeKey; }
+
+function initPrepaTheme(themeKey) {
+  var conf = PREPA_THEME_MAP[themeKey];
+  if (!conf) return;
+  var slug = _prepaThemeSlug(themeKey);
+  renderPrepaTheme_Textes(slug, conf);
+  renderPrepaTheme_Qcm(slug, themeKey, conf);
+  renderPrepaTheme_Annales(slug, conf.annalesKey);
+}
+
+// Bloc Theorie : clones outerHTML des biblio-cards des sections demandees
+function renderPrepaTheme_Textes(slug, conf) {
+  var container = document.getElementById('prepa-' + slug + '-textes');
+  if (!container) return;
+  var cards = [];
+  conf.biblioAcc.forEach(function(acc) {
+    var section = document.querySelector('.biblio-acc-section[data-acc="' + acc + '"]');
+    if (!section) return;
+    section.querySelectorAll('.biblio-card').forEach(function(card) { cards.push(card); });
+  });
+
+  var html = '<div class="s-eyebrow">Théorie & sources</div>' +
+             '<div style="font-family:\'Playfair Display\',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:8px">Les <em style="color:var(--red)">documents clés</em> de l\'épreuve</div>' +
+             '<div style="font-size:.9rem;color:var(--gray);line-height:1.7;max-width:640px;margin-bottom:24px">Fiches de synthèse, doctrines officielles et textes structurants — extraits de la bibliothèque, ciblés sur ce thème.</div>';
+
+  if (cards.length === 0) {
+    html += '<div style="background:white;border:1px dashed var(--border);padding:32px;text-align:center;color:var(--gray);font-size:.9rem">📭 Aucun document pour ce thème pour l\'instant.</div>';
+  } else {
+    html += '<div class="biblio-grid">' + cards.map(function(c){ return c.outerHTML; }).join('') + '</div>';
+    html += '<div style="margin-top:16px"><button class="btn btn-outline-red" onclick="goTo(\'biblio\')">Voir toute la bibliothèque →</button></div>';
+  }
+  container.innerHTML = html;
+}
+
+// Bloc QCM : mini-widget de lancement pre-configure sur les categories du theme +
+// rappel transversal (Revision intelligente, Aleatoire) accessible depuis chaque page.
+function renderPrepaTheme_Qcm(slug, themeKey, conf) {
+  var container = document.getElementById('prepa-' + slug + '-qcm');
+  if (!container) return;
+
+  var html = '<div class="s-eyebrow">QCM ciblés</div>' +
+             '<div style="font-family:\'Playfair Display\',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:8px">Pratique <em style="color:var(--red)">sur le thème</em></div>';
+
+  if (conf.qcmCats.length === 0) {
+    html += '<div style="font-size:.9rem;color:var(--gray);line-height:1.7;max-width:640px;margin-bottom:24px">Les QCM dédiés à ce thème arrivent prochainement. En attendant, tu peux pratiquer en mode aléatoire ou via la révision intelligente.</div>' +
+            '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+              '<button class="btn btn-outline-red" onclick="launchReviewSession()">🧠 Révision intelligente</button>' +
+              '<button class="btn btn-outline-red" onclick="goTo(\'qcm\')">🔀 Aléatoire (tous thèmes)</button>' +
+            '</div>';
+    container.innerHTML = html;
+    return;
+  }
+
+  html += '<div style="font-size:.9rem;color:var(--gray);line-height:1.7;max-width:640px;margin-bottom:24px">Choisis combien de questions tu veux traiter, puis lance la session.</div>' +
+          '<div class="qcm-nb-row" style="margin-bottom:18px">' +
+            '<button class="qcm-nb-btn" onclick="setPrepaThemeNb(this,5)">5</button>' +
+            '<button class="qcm-nb-btn active" onclick="setPrepaThemeNb(this,10)">10</button>' +
+            '<button class="qcm-nb-btn" onclick="setPrepaThemeNb(this,20)">20</button>' +
+            '<button class="qcm-nb-btn" onclick="setPrepaThemeNb(this,30)">30</button>' +
+            '<button class="qcm-nb-btn" onclick="setPrepaThemeNb(this,50)">50</button>' +
+          '</div>' +
+          '<div id="prepa-' + slug + '-qcm-launcher" data-nb="10">' +
+            '<button class="btn btn-red" onclick="launchPrepaThemeQcm(\'' + themeKey + '\')">🎯 Lancer la session</button>' +
+          '</div>' +
+          '<div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-light);display:flex;gap:12px;flex-wrap:wrap;align-items:center">' +
+            '<div style="font-size:.72rem;color:var(--gray);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-right:6px">Transversal :</div>' +
+            '<button class="btn btn-outline-red" id="prepa-' + slug + '-rev-btn" onclick="launchReviewSession()" style="font-size:.85rem">🧠 Révision intelligente</button>' +
+            '<button class="btn btn-outline-red" onclick="goTo(\'qcm\')" style="font-size:.85rem">🔀 Aléatoire (tous thèmes)</button>' +
+          '</div>';
+
+  if (conf.qcmCatsExtra && conf.qcmCatsExtra.length > 0) {
+    html += '<details style="margin-top:24px;background:white;border:1px solid var(--border-light);padding:16px 20px">' +
+              '<summary style="cursor:pointer;font-size:.88rem;color:var(--gray);font-weight:600">Pour aller plus loin (hors programme — ' + conf.qcmCatsExtra.length + ' sous-thèmes)</summary>' +
+              '<div style="font-size:.82rem;color:var(--gray);line-height:1.6;margin-top:12px">Sujets non au programme officiel mais utiles à ta culture professionnelle (forêts, agricole, ULM, etc.). Jamais piochés en mode aléatoire ni en révision intelligente — réservés à la consultation volontaire.</div>' +
+              '<button class="btn btn-outline-red" style="margin-top:14px;font-size:.82rem" onclick="launchPrepaThemeQcm(\'' + themeKey + '\', true)">Inclure les hors programme dans la session</button>' +
+            '</details>';
+  }
+
+  container.innerHTML = html;
+}
+
+// Bloc Annales : reutilise loadAnnalesIndex() en filtrant sur a.theme === annalesKey
+function renderPrepaTheme_Annales(slug, themeKey) {
+  var container = document.getElementById('prepa-' + slug + '-annales');
+  if (!container) return;
+
+  container.innerHTML = '<div class="s-eyebrow">Mode concours</div>' +
+                        '<div style="font-family:\'Playfair Display\',serif;font-size:1.6rem;color:var(--charcoal);margin-bottom:8px">Les <em style="color:var(--red)">annales</em> du thème</div>' +
+                        '<div style="font-size:.9rem;color:var(--gray);line-height:1.7;max-width:640px;margin-bottom:24px">Sujets officiels en mode examen chronométré (1 heure).</div>' +
+                        '<div id="prepa-' + slug + '-annales-list" style="display:grid;gap:12px">⏳ Chargement...</div>';
+
+  loadAnnalesIndex().then(function(data) {
+    var list = document.getElementById('prepa-' + slug + '-annales-list');
+    if (!list) return;
+    var annales = (data.annales || []).filter(function(a) {
+      if (a.theme !== themeKey) return false;
+      if (isPaidMember && a.is_demo) return false;
+      return true;
+    });
+    annales.sort(function(a, b) { return (b.year || 0) - (a.year || 0); });
+    if (annales.length === 0) {
+      list.innerHTML = '<div style="background:white;border:1px dashed var(--border);padding:32px;text-align:center;color:var(--gray);font-size:.9rem">📭 Aucun sujet pour l\'instant. Reviens bientôt.</div>';
+      return;
+    }
+    list.innerHTML = annales.map(function(a) {
+      return '<div class="annale-sujet-card">' +
+        '<div class="annale-sujet-year">' + (a.year || '—') + '</div>' +
+        '<div class="annale-sujet-body">' +
+          '<div class="annale-sujet-title">' + (a.title || 'Sujet ' + a.year) + '</div>' +
+          '<div class="annale-sujet-meta">' + (a.nb_questions || '?') + ' questions · ' + (a.duration_min || 60) + ' minutes · Mode examen chronométré</div>' +
+        '</div>' +
+        '<div class="annale-sujet-actions">' +
+          '<button class="btn btn-red" onclick="startExam(\'' + a.id + '\')">🎯 Lancer l\'examen</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }).catch(function() {
+    var list = document.getElementById('prepa-' + slug + '-annales-list');
+    if (list) list.innerHTML = '<div style="color:var(--gray);font-size:.9rem">⚠️ Impossible de charger les annales.</div>';
+  });
+}
+
+// Helpers de lancement QCM thematique
+function setPrepaThemeNb(btn, nb) {
+  var row = btn.parentNode;
+  row.querySelectorAll('.qcm-nb-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  // Le launcher est le sibling juste apres la nb-row
+  var launcher = row.parentNode.querySelector('[id$="-qcm-launcher"]');
+  if (launcher) launcher.dataset.nb = nb;
+}
+
+function launchPrepaThemeQcm(themeKey, includeExtra) {
+  var conf = PREPA_THEME_MAP[themeKey];
+  if (!conf) return;
+  var slug = _prepaThemeSlug(themeKey);
+  var launcher = document.getElementById('prepa-' + slug + '-qcm-launcher');
+  var nb = launcher ? parseInt(launcher.dataset.nb, 10) || 10 : 10;
+
+  if (typeof selectedCats !== 'object' || !selectedCats) selectedCats = {};
+  Object.keys(selectedCats).forEach(function(k) { selectedCats[k] = false; });
+  conf.qcmCats.forEach(function(c) { selectedCats[c] = true; });
+  if (includeExtra && conf.qcmCatsExtra) {
+    conf.qcmCatsExtra.forEach(function(c) { selectedCats[c] = true; });
+  }
+  qcmMode = '';      // mode "selection thematique" (ni review, ni random)
+  randomNb = nb;
+  launchQcm();
 }
 
 // ---------- AFFICHAGE DES 3 THEMES ----------
